@@ -8,7 +8,7 @@ namespace ftec {
 	class SpriteBatch {
 
 	private:
-		VBORenderable vbo;
+		VBORenderable m_Vbo;
 		unsigned int index;
 	public:
 		SpriteBatch();

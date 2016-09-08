@@ -3,8 +3,8 @@
 
 namespace ftec {
 	SpriteBatch::SpriteBatch()
-	{
-	}
+		:m_Vbo(16)
+	{}
 
 	SpriteBatch::~SpriteBatch()
 	{

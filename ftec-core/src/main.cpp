@@ -7,8 +7,9 @@
 #include "graphics/SpriteBatch.h"
 #include "math/mat4.h"
 #include "resources/ResourceManager.h"
+#include "graphics/Renderer.h"
 #include "scene/Scene.h"
-#include "graphics/Texture.h"
+#include "graphics/Material.h"
 
 int main(void)
 {
@@ -31,13 +32,26 @@ int main(void)
 	LOG("Libraries loaded.");
 	LOG("OpenGL" << glGetString(GL_VERSION));
 
-	SpriteBatch batch;
+	auto texture = ResourceManager::getDefault().load<Texture>("textures/spritesheet");
+	auto shader = ResourceManager::getDefault().load<Shader>("shaders/default");
+
+	Material material(texture, shader);
+	Camera camera(90.f,16.f/6.f,.1f,1000.f);
+	vec3 position;
+	Renderer renderer;
+	VBORenderable renderable(3);
+
+	renderable.m_Vertices[0].position = vec3(0, 0, 0);
+	renderable.m_Vertices[1].position = vec3(0, 0, 0);
+	renderable.m_Vertices[2].position = vec3(0, 0, 0);
+
+	renderable.update(0, 3);
 
 	//Start running the shit out of this game
 	while (!window.isCloseRequested()){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		Scene::getCurrent().update();
+		renderer.draw(renderable, material, camera, position);
 
 		window.update();
 	}
