@@ -12,6 +12,8 @@
 #include "graphics/Material.h"
 #include "io/ioutils.h"
 
+void initGL();
+
 int main(void)
 {
 	using namespace ftec;
@@ -28,6 +30,8 @@ int main(void)
 	if (glewInit() != GLEW_OK) {
 		TERMINATE("Couldn't init glew!");
 	}
+
+	initGL();
 
 	//Tell the world how great we are
 	LOG("Libraries loaded.");
@@ -86,4 +90,9 @@ int main(void)
 	glfwTerminate();
 
 	return 0;
+}
+
+void initGL() {
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.5f);
 }

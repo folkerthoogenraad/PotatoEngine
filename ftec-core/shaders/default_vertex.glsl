@@ -14,9 +14,9 @@ void main()
 {
 	v_Uv = uv;
 
-	vec3 worldNormal = u_MatrixModel * vec4(normal, 0.0);
+	vec4 worldNormal = u_MatrixModel * vec4(normal, 0.0);
 
-	vec3 lightDir = normalize(vec3(0.0, 0.0, 1.0));
+	vec4 lightDir = normalize(vec4(0.0, 0.0, 1.0, 0.0));
 
 	float lightness = dot(lightDir, worldNormal);
 
@@ -24,6 +24,7 @@ void main()
 		lightness = 0.1;
 	}
 	
-	v_Color =  vec4(1.0,1.0,1.0,1.0)  * lightness;
+	v_Color =  vec4(1.0,1.0,1.0,1.0) * lightness;
+	v_Color.a = 1.0;
     gl_Position = u_MatrixProjection * u_MatrixView * u_MatrixModel * vec4(position, 1.0);
 }

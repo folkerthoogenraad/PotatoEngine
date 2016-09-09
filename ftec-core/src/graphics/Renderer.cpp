@@ -6,6 +6,12 @@ namespace ftec {
 
 	void Renderer::draw(const VBORenderable& renderable, const Material & material, const Camera &camera, const mat4& modelMatrix)
 	{
+		//TODO dont figure this shit out at run time
+
+		int positionIndex = 0;
+		int normalIndex = 1;
+		int uvIndex = 2;
+
 		if (material.m_Shader && material.m_Texture) {
 			Shader &shader = *material.m_Shader;
 			Texture &texture = *material.m_Texture;
@@ -25,22 +31,28 @@ namespace ftec {
 			int mainTextureLocation = shader.getUniformLocation("u_MainTexture");
 
 			shader.setUniform(mainTextureLocation, 0);
+
+			positionIndex = shader.getAttributeLocation("position");
+			normalIndex = shader.getAttributeLocation("normal");
+			uvIndex = shader.getAttributeLocation("uv");
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, renderable.m_Vbo);
 		//Vertices
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(VBORenderable::VBORVertex), 0);
+		glEnableVertexAttribArray(positionIndex);
+		glVertexAttribPointer(positionIndex, 3, GL_FLOAT, false, sizeof(VBORenderable::VBORVertex), 0);
 		//Normals
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(VBORenderable::VBORVertex), (void*) sizeof(vec3));
+		glEnableVertexAttribArray(normalIndex);
+		glVertexAttribPointer(normalIndex, 3, GL_FLOAT, false, sizeof(VBORenderable::VBORVertex), (void*) sizeof(vec3));
 		//UVs
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, false, sizeof(VBORenderable::VBORVertex), (void*) (sizeof(vec3) + sizeof(vec3)));
+		glEnableVertexAttribArray(uvIndex);
+		glVertexAttribPointer(uvIndex, 2, GL_FLOAT, false, sizeof(VBORenderable::VBORVertex), (void*) (sizeof(vec3) + sizeof(vec3)));
 
 		glDrawArrays(GL_TRIANGLES, renderable.firstIndex, renderable.lastIndex);
 
-		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(positionIndex);
+		glDisableVertexAttribArray(normalIndex);
+		glDisableVertexAttribArray(uvIndex);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		if (material.m_Shader && material.m_Texture) {

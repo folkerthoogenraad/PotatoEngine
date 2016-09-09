@@ -3,7 +3,7 @@
 uniform sampler2D u_MainTexture;
 
 varying vec4 v_Color;
-varying vec4 v_Uv;
+varying vec2 v_Uv;
 
 void main()
 {
