@@ -9,11 +9,10 @@ namespace ftec {
 	class Renderer {
 
 	public:
-		Renderer() = default;
-		~Renderer() = default;
+		Renderer() = delete;
 
 		//Todo add other options ofcourse
-		void draw(const VBORenderable &renderable, const Material &material, const Camera &camera, const vec3 &position);
+		static void draw(const VBORenderable &renderable, const Material &material, const Camera &camera, const mat4 &modelMatrix = mat4::identity());
 
 	};
 }

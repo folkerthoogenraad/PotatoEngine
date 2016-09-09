@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <GLFW\glfw3.h>
+#include "math/math.h"
 
 namespace ftec {
 	class Window {
@@ -9,13 +10,18 @@ namespace ftec {
 
 		GLFWwindow *m_Window;
 
+		vec2 m_MousePosition;
+
 		bool m_CloseRequested;
 	public:
 		Window(std::string name, int width, int height);
 		~Window();
 		void update();
+		inline vec2 getMousePosition() const { return m_MousePosition; }
 		inline bool isCloseRequested() const { return m_CloseRequested; }
+		friend void cursor_position_callback(GLFWwindow* glfwWindow, double xpos, double ypos);
 	private:
 		void init();
 	};
+	void cursor_position_callback(GLFWwindow* glfwWindow, double xpos, double ypos);
 }

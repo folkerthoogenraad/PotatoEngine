@@ -120,12 +120,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\graphics\Camera.cpp" />
+    <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\SpriteBatch.cpp" />
     <ClCompile Include="src\graphics\Texture.cpp" />
     <ClCompile Include="src\graphics\VBORenderable.cpp" />
     <ClCompile Include="src\graphics\Window.cpp" />
+    <ClCompile Include="src\io\ioutils.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\math\mat4.cpp" />
     <ClCompile Include="src\math\quaternion.cpp" />
@@ -144,6 +146,7 @@
     <ClInclude Include="src\graphics\SpriteBatch.h" />
     <ClInclude Include="src\graphics\Texture.h" />
     <ClInclude Include="src\graphics\Window.h" />
+    <ClInclude Include="src\io\ioutils.h" />
     <ClInclude Include="src\logger\log.h" />
     <ClInclude Include="src\math\mat4.h" />
     <ClInclude Include="src\math\math.h" />
@@ -153,6 +156,10 @@
     <ClInclude Include="src\math\vec4.h" />
     <ClInclude Include="src\resources\ResourceManager.h" />
     <ClInclude Include="src\scene\Scene.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\default_fragment.glsl" />
+    <None Include="shaders\default_vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

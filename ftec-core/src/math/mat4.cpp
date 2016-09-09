@@ -168,15 +168,15 @@ namespace ftec{
 		float q = 1.0f / tan(0.5f * fov * (3.141592653 / 180));
 		float a = q / asp;
 
-		float b = (near + far) / (near - far);
+		float b = -(near + far) / (near - far);
 		float c = (2 * near * far) / (near - far);
 
 		result.elements[0 + 0 * 4] = a;
 		result.elements[1 + 1 * 4] = q;
 		result.elements[2 + 2 * 4] = b;
 
-		result.elements[3 + 2 * 4] = -1;
-		result.elements[2 + 3 * 4] = c;
+		result.elements[3 + 2 * 4] = c;
+		result.elements[2 + 3 * 4] = -1;
 
 		return result;
 	}

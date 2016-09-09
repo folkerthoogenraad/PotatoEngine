@@ -3,21 +3,21 @@
 
 namespace ftec {
 	class Camera {
-	private:
-		vec3 position;
+	public:
+		vec3 m_Position;
 
-		//TODO figure out if this is a great idea (hint: its not)
-		float pitch;
-		float yaw;
+		float m_Fov, m_AspectRatio, m_Near, m_Far;
 
-		float fov, aspect, near, far;
-
+		float m_Pitch, m_Yaw;
 	public:
 		Camera(float fov, float aspect, float near, float far);
 		~Camera() = default;
 
-		mat4 getProjectionMatrix();
-		mat4 getViewMatrix();
+		mat4 getProjectionMatrix() const;
+		mat4 getViewMatrix() const;
+
+		bool operator==(const Camera &other);
+		bool operator!=(const Camera &other);
 
 	};
 }

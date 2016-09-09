@@ -2,7 +2,7 @@
 
 namespace ftec {
 	VBORenderable::VBORenderable(size_t size)
-		: m_Vertices()
+		: m_Vertices(), firstIndex(0), lastIndex(size)
 	{
 		m_Vertices.resize(size);
 
