@@ -27,7 +27,7 @@ int main(void)
 	}
 
 	//Create window and OpenGL context on current thread
-	Window window("PotatoEngine", 1024, 768);
+	Window window("PotatoEngine", 800, 600, false);
 
 	//Initialize extentions
 	if (glewInit() != GLEW_OK) {
@@ -42,25 +42,12 @@ int main(void)
 	LOG("Libraries loaded.");
 	LOG("OpenGL" << glGetString(GL_VERSION));
 
-	auto texture = ResourceManager::getDefault().load<Texture>("textures/art.png");
+	auto texture = ResourceManager::getDefault().load<Texture>("textures/wheelchair_texture.png");
 	auto shader = ResourceManager::getDefault().load<Shader>("shaders/default");
+	auto mesh = ResourceManager::getDefault().load<Mesh>("mesh/test.obj");
 
 	Material mat(texture, shader);
 	Camera cam(60, 4.f / 3.f, .1f, 1000.f);
-
-	VBORenderable renderable(3);
-	renderable.m_Vertices[0].position = vec3(0, .5f, 0);
-	renderable.m_Vertices[0].normal = vec3(0, 0, 1);
-	renderable.m_Vertices[0].uv = vec2(.5f, 1);
-
-	renderable.m_Vertices[1].position = vec3(-.5f, -.5f, 0);
-	renderable.m_Vertices[1].normal = vec3(0, 0, 1);
-	renderable.m_Vertices[1].uv = vec2(0, 0);
-
-	renderable.m_Vertices[2].position = vec3(.5f, -.5f, 0);
-	renderable.m_Vertices[2].normal = vec3(0, 0, 1);
-	renderable.m_Vertices[2].uv = vec2(1, 0);
-	renderable.update(0, 3);
 
 	float f = 0;
 
@@ -82,11 +69,11 @@ int main(void)
 		if (cam.m_Yaw > 30) cam.m_Yaw = 30;
 		if (cam.m_Yaw < -30) cam.m_Yaw = -30;
 
+		const float distance = -5;
+
 		f += 1.f;
 
-		Renderer::draw(renderable, mat, cam, mat4::translation(vec3(0, 0, -10)) * mat4::rotation(f, vec3(0, 1, 0)));//* 
-		Renderer::draw(renderable, mat, cam, mat4::translation(vec3(2, 0, -10)) * mat4::rotation(f, vec3(1, 0, 0)));//* 
-		Renderer::draw(renderable, mat, cam, mat4::translation(vec3(-2, 0, -10)) * mat4::rotation(f, vec3(0, 0, 1)));//* 
+		Renderer::draw(*mesh, mat, cam, mat4::translation(vec3(0, -1.7f, distance)) * mat4::rotation(f, vec3(0, 1, 0)));
 
 		window.update();
 	}
@@ -98,6 +85,9 @@ int main(void)
 }
 
 void initGL() {
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.5f);
+	glAlphaFunc(GL_GREATER, 0.1f);
+
+	glClearColor(.2f, .4f, 8.f, 1.f);
 }

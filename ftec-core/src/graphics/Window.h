@@ -11,10 +11,10 @@ namespace ftec {
 		GLFWwindow *m_Window;
 
 		vec2 m_MousePosition;
-
+		bool m_Fullscreen;
 		bool m_CloseRequested;
 	public:
-		Window(std::string name, int width, int height);
+		Window(std::string name, int width, int height, bool full);
 		~Window();
 		void update();
 		inline vec2 getMousePosition() const { return m_MousePosition; }

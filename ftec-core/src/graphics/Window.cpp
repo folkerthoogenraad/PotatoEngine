@@ -2,8 +2,8 @@
 #include "logger/log.h"
 
 namespace ftec {
-	Window::Window(std::string name, int width, int height)
-		:m_Width(width), m_Height(height), m_Name(name)
+	Window::Window(std::string name, int width, int height, bool fullscreen)
+		:m_Width(width), m_Height(height), m_Name(name), m_Fullscreen(fullscreen)
 	{
 		init();
 	}
@@ -32,7 +32,7 @@ namespace ftec {
 
 	void Window::init()
 	{
-		m_Window = glfwCreateWindow(m_Width, m_Height, m_Name.c_str(), NULL, NULL);
+		m_Window = glfwCreateWindow(m_Width, m_Height, m_Name.c_str(), m_Fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 		if (!m_Window)
 		{
 			//TODO throw error

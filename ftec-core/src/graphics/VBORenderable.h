@@ -6,6 +6,7 @@
 #include <vector>
 
 //TODO make this non copyable for resource reasons
+//Pretty deprecated
 
 namespace ftec {
 	class VBORenderable {
@@ -27,5 +28,8 @@ namespace ftec {
 
 		///Offset and amount in vertices
 		void update(size_t offset, size_t amount);
+
+		///Realocates m_Vertices.size() on the OpenGL side of things
+		void realocate();
 	};
 }

@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
+    <ClCompile Include="src\graphics\Mesh.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\SpriteBatch.cpp" />
@@ -140,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="src\graphics\Camera.h" />
     <ClInclude Include="src\graphics\Material.h" />
+    <ClInclude Include="src\graphics\Mesh.h" />
     <ClInclude Include="src\graphics\VBORenderable.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\graphics\Shader.h" />
