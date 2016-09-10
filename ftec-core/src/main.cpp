@@ -1,6 +1,9 @@
 #define GLEW_STATIC
+#define FREEIMAGE_LIB
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "FreeImage.h"
 
 #include "logger/log.h"
 #include "graphics/Window.h"
@@ -31,13 +34,15 @@ int main(void)
 		TERMINATE("Couldn't init glew!");
 	}
 
+	FreeImage_Initialise();
+
 	initGL();
 
 	//Tell the world how great we are
 	LOG("Libraries loaded.");
 	LOG("OpenGL" << glGetString(GL_VERSION));
 
-	auto texture = ResourceManager::getDefault().load<Texture>(DEFAULT_TEXTURE_CHECKERBOARD);
+	auto texture = ResourceManager::getDefault().load<Texture>("textures/art.png");
 	auto shader = ResourceManager::getDefault().load<Shader>("shaders/default");
 
 	Material mat(texture, shader);
@@ -86,7 +91,7 @@ int main(void)
 		window.update();
 	}
 
-
+	FreeImage_DeInitialise();
 	glfwTerminate();
 
 	return 0;
