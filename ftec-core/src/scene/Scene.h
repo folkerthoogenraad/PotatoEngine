@@ -1,21 +1,32 @@
 #pragma once
 
 #include <memory>
+#include <vector>
+
+#include "Entity.h"
 #include "graphics/Camera.h"
 
 namespace ftec {
 	class Scene {
-		Camera camera;
+	public:
+		Camera m_Camera;
+
 	private:
-		static std::unique_ptr<Scene> currentScene;
+		static std::shared_ptr<Scene> currentScene;
+	public:
+		std::vector<std::shared_ptr<Entity>> entities;
 	public:
 		Scene();
-		~Scene() = default;
+		virtual ~Scene() = default;
 
-		void update();
+		static inline std::shared_ptr<Scene> getCurrent() { return currentScene; };
+		static inline void setCurrent(std::shared_ptr<Scene> scene) { currentScene = scene; };
 
-		static inline Scene &getCurrent() { return *currentScene; };
-		static inline void setCurrent(const Scene &scene) { currentScene = std::make_unique<Scene>(scene); };
+		virtual void update();
+		virtual void render();
 
+		void addEntity(std::shared_ptr<Entity> entity);
+		void removeEntity(std::shared_ptr<Entity> entity);
 	};
+
 }
