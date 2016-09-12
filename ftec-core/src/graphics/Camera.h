@@ -10,6 +10,7 @@ namespace ftec {
 
 		float m_Pitch, m_Yaw;
 	public:
+		Camera() = default;
 		Camera(float fov, float aspect, float near, float far);
 		~Camera() = default;
 

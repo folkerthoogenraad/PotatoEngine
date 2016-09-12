@@ -27,6 +27,7 @@ namespace ftec{
 		vec3& operator*=(const vec3& right);
 		vec3& operator/=(const vec3& right);
 
+		friend vec3 operator-(const vec3& left);
 
         static const int COMPONENTS = 3;
 

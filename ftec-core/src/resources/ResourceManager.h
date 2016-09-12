@@ -19,12 +19,6 @@ namespace ftec {
 		Resources m_Resources;
 
 	public:
-		static ResourceManager &getDefault() {
-			static ResourceManager manager;
-			return manager;
-		}
-
-	public:
 		template <typename T>
 		std::shared_ptr<T> load(const std::string &name)
 		{

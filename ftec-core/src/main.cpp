@@ -1,9 +1,5 @@
-#define GLEW_STATIC
-#define FREEIMAGE_LIB
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include "FreeImage.h"
+#include "engine/Engine.h"
 
 #include "logger/log.h"
 #include "graphics/Window.h"
@@ -15,79 +11,53 @@
 #include "graphics/Material.h"
 #include "io/ioutils.h"
 
-void initGL();
+#include "engine/Game.h"
+
+using namespace ftec;
+
+class DefaultGame : public Game {
+public:
+
+	Camera cam;
+	std::shared_ptr<Mesh> mesh;
+	Material mat;
+
+	DefaultGame() : mat(0, 0) {
+
+	}
+
+	void init() override {
+		auto texture = Engine::getResourceManager().load<Texture>("textures/table_texture.png");
+		auto shader = Engine::getResourceManager().load<Shader>("shaders/default");
+		mesh = Engine::getResourceManager().load<Mesh>("mesh/test.obj");
+
+		mat = Material(texture, shader);
+		cam = Camera(60, 4.f / 3.f, .1f, 1000.f);
+		cam.m_Position.y = 1.7f;
+	}
+
+	void update() override {
+
+	}
+
+	void render() override {
+		Renderer::draw(*mesh, mat, cam, mat4::translation(vec3(0, 0, -5)) * mat4::rotation(5, vec3(0, 1, 0)));
+		Renderer::draw(*mesh, mat, cam, mat4::translation(vec3(3, 0, -4)) * mat4::rotation(10, vec3(0, 1, 0)));
+		Renderer::draw(*mesh, mat, cam, mat4::translation(vec3(-3.5, 0, -4.5)) * mat4::rotation(-5, vec3(0, 1, 0)));
+		Renderer::draw(*mesh, mat, cam, mat4::translation(vec3(0.5, 0, -8)) * mat4::rotation(15, vec3(0, 1, 0)));
+	}
+
+	void destroy() override {
+
+	}
+};
 
 int main(void)
-{
-	using namespace ftec;
+{	
+	Engine::create(std::make_unique<DefaultGame>());
 
-	//Initialize GLFW
-	if (!glfwInit()) {
-		TERMINATE("Failed to initialize GLFW");
-	}
-
-	//Create window and OpenGL context on current thread
-	Window window("PotatoEngine", 800, 600, false);
-
-	//Initialize extentions
-	if (glewInit() != GLEW_OK) {
-		TERMINATE("Couldn't init glew!");
-	}
-
-	FreeImage_Initialise();
-
-	initGL();
-
-	//Tell the world how great we are
-	LOG("Libraries loaded.");
-	LOG("OpenGL" << glGetString(GL_VERSION));
-
-	auto texture = ResourceManager::getDefault().load<Texture>("textures/wheelchair_texture.png");
-	auto shader = ResourceManager::getDefault().load<Shader>("shaders/default");
-	auto mesh = ResourceManager::getDefault().load<Mesh>("mesh/test.obj");
-
-	Material mat(texture, shader);
-	Camera cam(60, 4.f / 3.f, .1f, 1000.f);
-
-	float f = 0;
-
-	vec2 previousMousePosition = window.getMousePosition();
-
-	//Start running the shit out of this game
-	while (!window.isCloseRequested()){
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		vec2 newMousePosition = window.getMousePosition();
-		vec2 delta = newMousePosition - previousMousePosition;
-		previousMousePosition = newMousePosition;
-
-		cam.m_Yaw += delta.x / 50.f;
-		cam.m_Pitch += delta.y / 50.f;
-
-		if (cam.m_Pitch > 30) cam.m_Pitch = 30;
-		if (cam.m_Pitch < -30) cam.m_Pitch = -30;
-		if (cam.m_Yaw > 30) cam.m_Yaw = 30;
-		if (cam.m_Yaw < -30) cam.m_Yaw = -30;
-
-		const float distance = -5;
-
-		f += 1.f;
-
-		Renderer::draw(*mesh, mat, cam, mat4::translation(vec3(0, -1.7f, distance)) * mat4::rotation(f, vec3(0, 1, 0)));
-
-		window.update();
-	}
-
-	FreeImage_DeInitialise();
-	glfwTerminate();
+	std::cin.get();
 
 	return 0;
 }
 
-void initGL() {
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.1f);
-
-	glClearColor(.2f, .4f, 8.f, 1.f);
-}

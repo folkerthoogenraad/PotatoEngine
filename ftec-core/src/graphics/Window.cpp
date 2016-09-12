@@ -15,8 +15,20 @@ namespace ftec {
 
 	void Window::update()
 	{
+		poll();
+		swap();
+	}
+
+	void Window::poll()
+	{
 		glfwPollEvents();
 		m_CloseRequested = glfwWindowShouldClose(m_Window);
+
+		//TODO setup things for input stuff
+	}
+
+	void Window::swap()
+	{
 		glfwSwapBuffers(m_Window);
 	}
 	

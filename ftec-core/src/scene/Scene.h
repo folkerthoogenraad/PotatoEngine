@@ -11,16 +11,11 @@ namespace ftec {
 	public:
 		Camera m_Camera;
 
-	private:
-		static std::shared_ptr<Scene> currentScene;
 	public:
 		std::vector<std::shared_ptr<Entity>> entities;
 	public:
 		Scene();
 		virtual ~Scene() = default;
-
-		static inline std::shared_ptr<Scene> getCurrent() { return currentScene; };
-		static inline void setCurrent(std::shared_ptr<Scene> scene) { currentScene = scene; };
 
 		virtual void update();
 		virtual void render();

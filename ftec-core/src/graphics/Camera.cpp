@@ -14,7 +14,8 @@ namespace ftec {
 
 	mat4 ftec::Camera::getViewMatrix() const
 	{
-		return mat4::translation(m_Position) * mat4::rotation(m_Yaw, vec3(0, 1, 0)) * mat4::rotation(m_Pitch, vec3(1, 0, 0));
+		//TODO negative position 
+		return mat4::translation(-m_Position) * mat4::rotation(m_Yaw, vec3(0, 1, 0)) * mat4::rotation(m_Pitch, vec3(1, 0, 0));
 	}
 	bool Camera::operator==(const Camera & other)
 	{

@@ -16,9 +16,9 @@ void main()
 
 	vec4 worldNormal = u_MatrixModel * vec4(normal, 0.0);
 
-	vec4 lightDir = normalize(vec4(0.0, 0.0, 1.0, 0.0));
+	vec4 lightDir = normalize(vec4(-1.0, -1.0, -1.0, 0.0));
 
-	float lightness = dot(lightDir, worldNormal);
+	float lightness = dot(-lightDir, worldNormal);
 
 	if(lightness < 0.1){
 		lightness = 0.1;

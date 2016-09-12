@@ -1,6 +1,7 @@
 #include "Mesh.h"
 #include <fstream>
 #include <string>
+#include "logger/log.h"
 #include <sstream>
 
 namespace ftec {
@@ -25,6 +26,9 @@ namespace ftec {
 		//TODO lots of checks to validate the data given in the stuff here
 		//TODO use buffer subdata, probably not useful in most cases here though
 
+		if (m_Vertices.size() == 0 || m_Normals.size() == 0 || m_Uvs.size() == 0 || m_Triangles.size() == 0)
+			return;//Its not gonna work now is it
+
 		glBindBuffer(GL_ARRAY_BUFFER, m_VerticesVBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * m_Vertices.size(), &m_Vertices[0], GL_STATIC_DRAW);
 
@@ -46,6 +50,9 @@ namespace ftec {
 		auto mesh = make_shared<Mesh>();
 
 		fstream input(name);
+
+		if (!input)
+			return mesh;
 
 		vector<vec3> vertexInput;
 		vector<vec3> normalInput;
@@ -104,6 +111,10 @@ namespace ftec {
 					reader.get();
 					reader >> f[i].normal;
 
+					f[i].vertex -= 1;
+					f[i].uv -= 1;
+					f[i].normal -= 1;
+
 					//std::cout << "Face: " << f[i].vertex << " / " << f[i].uv << " / " << f[i].normal << std::endl;
 					triangleInput.push_back(f[i]);
 				}
@@ -113,21 +124,25 @@ namespace ftec {
 		
 		//Now we just need to map it to the OpenGL way
 
-		mesh->m_Vertices = vertexInput; //Vertices are easy luckaly :)
-
-		//Resize normal and uv buffers
-		mesh->m_Normals.resize(vertexInput.size());
-		mesh->m_Uvs.resize(vertexInput.size());
+		mesh->m_Vertices.clear(); 
+		mesh->m_Normals.clear();
+		mesh->m_Uvs.clear();
 
 		//And ofcourse change this one
-		mesh->m_Triangles.resize(triangleInput.size());
+		mesh->m_Triangles.clear();
 
 		for (int i = 0; i < triangleInput.size(); i++) {
 			Face &f = triangleInput[i];
 
-			mesh->m_Normals[f.vertex - 1] = normalInput[f.normal - 1];
-			mesh->m_Uvs[f.vertex - 1] = uvInput[f.uv - 1];
-			mesh->m_Triangles[i] = f.vertex - 1;
+			//This is so far away from a good idea...
+			//This should be fixed sometime (because of memory usage)
+			//I should look out for s off and s on
+
+			mesh->m_Vertices.push_back(vertexInput[f.vertex]);
+			mesh->m_Normals.push_back(normalInput[f.normal]);
+			mesh->m_Uvs.push_back(uvInput[f.uv]);
+
+			mesh->m_Triangles.push_back(i);
 		}
 
 		mesh->upload();
