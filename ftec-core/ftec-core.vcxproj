@@ -72,7 +72,7 @@
     <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\FreeImage\include;$(SolutionDir)Dependencies\GLFW\include;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\FreeImage\include;$(SolutionDir)Dependencies\GLFW\include;$(ProjectDir)src_game;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\FreeImage\lib;$(SolutionDir)Dependencies\GLFW\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -132,7 +132,9 @@
     <ClCompile Include="src\graphics\VBORenderable.cpp" />
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\io\ioutils.cpp" />
-    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src_game\game\NoClipCameraEntity.cpp" />
+    <ClCompile Include="src_game\game\Razura.cpp" />
+    <ClCompile Include="src_game\main.cpp" />
     <ClCompile Include="src\math\mat4.cpp" />
     <ClCompile Include="src\math\quaternion.cpp" />
     <ClCompile Include="src\math\vec2.cpp" />
@@ -165,6 +167,8 @@
     <ClInclude Include="src\resources\ResourceManager.h" />
     <ClInclude Include="src\scene\Entity.h" />
     <ClInclude Include="src\scene\Scene.h" />
+    <ClInclude Include="src_game\game\NoClipCameraEntity.h" />
+    <ClInclude Include="src_game\game\Razura.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default_fragment.glsl" />

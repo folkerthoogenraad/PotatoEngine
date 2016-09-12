@@ -10,9 +10,8 @@ namespace ftec {
 	class Scene {
 	public:
 		Camera m_Camera;
-
-	public:
-		std::vector<std::shared_ptr<Entity>> entities;
+	private:
+		std::vector<std::shared_ptr<Entity>> m_Entities;
 	public:
 		Scene();
 		virtual ~Scene() = default;

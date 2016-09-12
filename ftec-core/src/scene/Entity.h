@@ -7,6 +7,8 @@ namespace ftec {
 	protected:
 		vec3 m_Position;
 	public:
+		Entity() = default;
+		virtual ~Entity() = default;
 		virtual void update() = 0;
 		virtual void render() = 0;
 	};

@@ -10,19 +10,26 @@ namespace ftec {
 
 	void Scene::update()
 	{
-
+		for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {
+			auto obj = *i;
+			obj->update();
+		}
 	}
 	void Scene::render()
 	{
-
+		for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {
+			auto obj = *i;
+			obj->render();
+		}
 	}
 	void Scene::addEntity(std::shared_ptr<Entity> entity)
 	{
-		entities.push_back(entity);
+		m_Entities.push_back(entity);
 	}
 
 	void Scene::removeEntity(std::shared_ptr<Entity> entity)
 	{
 		//TODO
 	}
+
 }

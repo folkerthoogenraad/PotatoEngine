@@ -38,9 +38,10 @@ namespace ftec {
 
 	void Engine::destroy()
 	{
-		LOG("Releasing resources...");
+		//Release these resources first
+		currentScene.reset();
+		window.reset();
 		manager.reset();
-		LOG("Destorying engines");
 		FreeImage_DeInitialise();
 		glfwTerminate();
 	}
@@ -69,8 +70,14 @@ namespace ftec {
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			game.update();
+			
+			if(getScene())
+				getScene()->update();
 
 			game.render();
+
+			if (getScene())
+				getScene()->render();
 
 			getWindow().swap();
 		}
