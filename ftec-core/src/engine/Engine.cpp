@@ -17,7 +17,7 @@ namespace ftec {
 		}
 
 		//Create context and stuff
-		window = std::make_unique<Window>("PotatoEngine", 800, 600, false);
+		window = std::make_unique<Window>("PotatoEngine", 1920, 1080, true);
 
 		//Initialize extentions
 		if (glewInit() != GLEW_OK) {

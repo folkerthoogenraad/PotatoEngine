@@ -18,6 +18,7 @@ namespace ftec {
 	{
 
 	}
+
 	void Razura::render()
 	{
 
@@ -26,10 +27,16 @@ namespace ftec {
 	void Razura::init()
 	{
 		std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+		Engine::setScene(scene);
+
+		auto texture = Engine::getResourceManager().load<Texture>("textures/wheelchair_texture.png");
+		auto shader = Engine::getResourceManager().load<Shader>("shaders/default");
+		auto mesh = Engine::getResourceManager().load<Mesh>("mesh/test.obj");
+
+		scene->addMesh(vec3(0,0,-3), mesh, Material(texture, shader));
 
 		scene->addEntity(std::make_shared<NoClipCameraEntity>());
 
-		Engine::setScene(scene);
 	}
 
 	void Razura::destroy()

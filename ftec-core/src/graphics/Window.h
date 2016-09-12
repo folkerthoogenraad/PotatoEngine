@@ -20,6 +20,9 @@ namespace ftec {
 
 		void poll();
 		void swap();
+
+		inline float getWidth() { return m_Width; }
+		inline float getHeight() { return m_Height; }
 		
 		inline vec2 getMousePosition() const { return m_MousePosition; }
 		inline bool isCloseRequested() const { return m_CloseRequested; }
