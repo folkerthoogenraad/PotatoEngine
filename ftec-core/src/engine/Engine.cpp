@@ -103,6 +103,7 @@ namespace ftec {
 		glAlphaFunc(GL_GREATER, 0.1f);
 
 		//glClearColor(.2f, .4f, .8f, 1.f);
-		glClearColor(.0f, .0f, .0f, 1.f);
+		//glClearColor(.0f, .0f, .0f, 1.f);
+		glClearColor(132.f / 255.f, 119.f / 255.f, 106.f / 255.f, 1.f);
 	}
 }

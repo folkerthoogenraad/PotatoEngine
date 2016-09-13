@@ -7,6 +7,7 @@
 namespace ftec {
 	NoClipCameraEntity::NoClipCameraEntity()
 	{
+
 	}
 	NoClipCameraEntity::~NoClipCameraEntity()
 	{

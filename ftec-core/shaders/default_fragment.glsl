@@ -25,16 +25,18 @@ void main()
 
 	lightness = (intensity - distance / (radius / intensity));
 	
-	if(lightness < 0.0)
-		lightness = 0.0;
+	if(lightness < 0.2)
+		lightness = 0.2;
 
 	lightness *= dot(lightDirection, v_WorldNormal);
 	
-	if(lightness < 0.0)
-		lightness = 0.0;
+	if(lightness < 0.2)
+		lightness = 0.2;
+
+	lightness = max(lightness, v_Lightness);
 
 	
-	vec4 resultColor = v_Color * lightness;
+	vec4 resultColor = v_Color * lightness;// * lightness;
 	resultColor.a = 1.0;
 
     gl_FragColor = texture(u_MainTexture, v_Uv) * resultColor;
