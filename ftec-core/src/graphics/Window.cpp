@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "logger/log.h"
+#include "engine/Input.h"
 
 namespace ftec {
 	Window::Window(std::string name, int width, int height, bool fullscreen)
@@ -27,20 +28,16 @@ namespace ftec {
 		//TODO setup things for input stuff
 	}
 
+	void Window::setCursorMode(int mode)
+	{
+		glfwSetInputMode(m_Window, GLFW_CURSOR, mode);
+	}
+
 	void Window::swap()
 	{
 		glfwSwapBuffers(m_Window);
 	}
-	
-	//The cursor position callback
-	void cursor_position_callback(GLFWwindow* glfwWindow, double xpos, double ypos)
-	{
-		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
-		if (wp) {
-			Window &window = *wp;
-			window.m_MousePosition = vec2(xpos, ypos);
-		}
-	}
+
 
 	void Window::init()
 	{
@@ -55,5 +52,24 @@ namespace ftec {
 		glfwSetWindowUserPointer(m_Window, this);
 		glfwSwapInterval(1);
 		glfwSetCursorPosCallback(m_Window, cursor_position_callback);
+		glfwSetKeyCallback(m_Window, key_callback);
+	}
+
+	//The cursor position callback
+	void cursor_position_callback(GLFWwindow* glfwWindow, double xpos, double ypos)
+	{
+		//TODO remove legacy
+		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
+		if (wp) {
+			Window &window = *wp;
+			window.m_MousePosition = vec2(xpos, ypos);
+		}
+		Input::handleCursor((float)xpos, (float)ypos);
+	}
+
+
+	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		Input::handleKey(key, scancode, action, mods);
 	}
 }

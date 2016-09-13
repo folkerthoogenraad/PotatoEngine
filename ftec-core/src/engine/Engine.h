@@ -1,10 +1,9 @@
 #pragma once
 
-#define GLEW_STATIC
+#include "graphics/GL.h"
+
 #define FREEIMAGE_LIB
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include "FreeImage.h"
 #include "logger/log.h"
 

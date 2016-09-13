@@ -2,10 +2,40 @@
 
 uniform sampler2D u_MainTexture;
 
+uniform float u_Intensity;
+uniform vec3 u_LightPosition;
+
+varying vec4 v_WorldPosition;
+varying vec4 v_WorldNormal;
+
 varying vec4 v_Color;
 varying vec2 v_Uv;
+varying float v_Lightness;
 
 void main()
 {
-    gl_FragColor = texture(u_MainTexture, v_Uv) * v_Color;
+	float lightness = v_Lightness;
+
+	float radius = 8.0;
+	float intensity = u_Intensity + 1.0;
+
+	vec4 lightPosition = vec4(u_LightPosition, 0.0);//vec4(0.0,2.0,0.0,0.0);
+	vec4 lightDirection = normalize(lightPosition - v_WorldPosition);
+	float distance = distance(lightPosition, v_WorldPosition);
+
+	lightness = (intensity - distance / (radius / intensity));
+	
+	if(lightness < 0.0)
+		lightness = 0.0;
+
+	lightness *= dot(lightDirection, v_WorldNormal);
+	
+	if(lightness < 0.0)
+		lightness = 0.0;
+
+	
+	vec4 resultColor = v_Color * lightness;
+	resultColor.a = 1.0;
+
+    gl_FragColor = texture(u_MainTexture, v_Uv) * resultColor;
 }

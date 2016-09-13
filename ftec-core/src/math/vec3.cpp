@@ -36,6 +36,37 @@ namespace ftec{
 		return *this;
 	}
 
+	vec3& vec3::add(float other)
+	{
+		x += other;
+		y += other;
+		z += other;
+		return *this;
+	}
+
+	vec3& vec3::subtract(float other)
+	{
+		x -= other;
+		y -= other;
+		z -= other;
+		return *this;
+	}
+
+	vec3& vec3::divide(float other)
+	{
+		x /= other;
+		y /= other;
+		z /= other;
+		return *this;
+	}
+
+	vec3& vec3::multiply(float other)
+	{
+		x *= other;
+		y *= other;
+		z *= other;
+		return *this;
+	}
 
 	vec3 operator+(const vec3& left, const vec3& right){
 		return vec3(left.x + right.x, left.y + right.y, left.z + right.z);
@@ -50,6 +81,18 @@ namespace ftec{
 		return vec3(left.x / right.x, left.y / right.y, left.z / right.z);
 	}
 
+	vec3 operator+(const vec3& left, float right) {
+		return vec3(left.x + right, left.y + right, left.z + right);
+	}
+	vec3 operator-(const vec3& left, float right) {
+		return vec3(left.x - right, left.y - right, left.z - right);
+	}
+	vec3 operator*(const vec3& left, float right) {
+		return vec3(left.x * right, left.y * right, left.z * right);
+	}
+	vec3 operator/(const vec3& left, float right) {
+		return vec3(left.x / right, left.y / right, left.z / right);
+	}
 
 	vec3& vec3::operator+=(const vec3& right){
 		return add(right);

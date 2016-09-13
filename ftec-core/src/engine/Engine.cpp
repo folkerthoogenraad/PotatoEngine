@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "Time.h"
+#include "Input.h"
 
 namespace ftec {
 
@@ -11,28 +12,33 @@ namespace ftec {
 	
 	void Engine::init()
 	{
+		LOG("Loading GLFW...");
 		//Initialize GLFW
 		if (!glfwInit()) {
 			TERMINATE("Failed to initialize GLFW");
 		}
+		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		window = std::make_unique<Window>("PotatoEngine", 1920, 1080, true);
+		window = std::make_unique<Window>("PotatoEngine", 1280, 720, false);
 
+		LOG("Loading GLEW...");
 		//Initialize extentions
 		if (glewInit() != GLEW_OK) {
 			TERMINATE("Couldn't init glew!");
 		}
+		LOG("GLEW Loaded.");
 
 		FreeImage_Initialise();
+
+		LOG("Loading OpenGL...");
 
 		initGL();
 
 		manager = std::make_unique<ResourceManager>();
 
 		//Tell the world how great we are
-		LOG("Libraries loaded.");
-		LOG("OpenGL" << glGetString(GL_VERSION));
+		LOG("OpenGL " << glGetString(GL_VERSION) << " Loaded.");
 
 	}
 
@@ -57,6 +63,9 @@ namespace ftec {
 
 		//Start running the shit out of this game
 		while (!Engine::getWindow().isCloseRequested()) {
+			
+			Input::reset();
+
 			getWindow().poll();
 
 			double currentTime = glfwGetTime();
@@ -89,12 +98,11 @@ namespace ftec {
 	}
 
 	static void initGL() {
-		LOG("Initialize the OpenGL stuff");
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.1f);
 
-		glClearColor(.2f, .4f, .8f, 1.f);
-		//glClearColor(.0f, .0f, .0f, 1.f);
+		//glClearColor(.2f, .4f, .8f, 1.f);
+		glClearColor(.0f, .0f, .0f, 1.f);
 	}
 }

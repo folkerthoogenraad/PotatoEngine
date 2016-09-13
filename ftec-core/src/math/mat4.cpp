@@ -119,15 +119,15 @@ namespace ftec{
 		float z = axis.z;
 
 		result.elements[0 + 0 * 4] = x * omc + c;
-		result.elements[0 + 1 * 4] = y * x * omc + z * s;
-		result.elements[0 + 2 * 4] = x * z * omc - y * s;
+		result.elements[1 + 0 * 4] = y * x * omc + z * s;
+		result.elements[2 + 0 * 4] = x * z * omc - y * s;
 
-		result.elements[1 + 0 * 4] = x * y * omc - z * s;
+		result.elements[0 + 1 * 4] = x * y * omc - z * s;
 		result.elements[1 + 1 * 4] = y * omc + c;
-		result.elements[1 + 2 * 4] = y * z * omc + x * s;
+		result.elements[2 + 1 * 4] = y * z * omc + x * s;
 
-		result.elements[2 + 0 * 4] = x * z * omc + y * s;
-		result.elements[2 + 1 * 4] = y * z * omc - x * s;
+		result.elements[0 + 2 * 4] = x * z * omc + y * s;
+		result.elements[1 + 2 * 4] = y * z * omc - x * s;
 		result.elements[2 + 2 * 4] = z * omc + c;
 
 		return result;
@@ -140,6 +140,66 @@ namespace ftec{
 		result.elements[0 + 0 * 4] = scale.x;
 		result.elements[1 + 1 * 4] = scale.y;
 		result.elements[2 + 2 * 4] = scale.z;
+
+		return result;
+	}
+
+	mat4 mat4::rotationX(float angle)
+	{
+		mat4 result;
+
+		float r = angle * (3.141592654 / 180);
+		float s = sin(r);
+		float c = cos(r);
+
+		result.elements[0 + 0 * 4] = 1;
+		
+		result.elements[1 + 1 * 4] = c;
+		result.elements[2 + 1 * 4] = -s;
+
+		result.elements[1 + 2 * 4] = s;
+		result.elements[2 + 2 * 4] = c;
+
+		result.elements[3 + 3 * 4] = 1;
+
+		return result;
+	}
+
+	mat4 mat4::rotationY(float angle)
+	{
+		mat4 result;
+
+		float r = angle * (3.141592654 / 180);
+		float s = sin(r);
+		float c = cos(r);
+
+		result.elements[1 + 1 * 4] = 1;
+
+		result.elements[0 + 0 * 4] = c;
+		result.elements[2 + 0 * 4] = s;
+		result.elements[0 + 2 * 4] = -s;
+		result.elements[2 + 2 * 4] = c;
+
+		result.elements[3 + 3 * 4] = 1;
+
+		return result;
+	}
+
+	mat4 mat4::rotationZ(float angle)
+	{
+		mat4 result;
+
+		float r = angle * (3.141592654 / 180);
+		float s = sin(r);
+		float c = cos(r);
+
+		result.elements[0 + 0 * 4] = c;
+		result.elements[1 + 0 * 4] = -s;
+		result.elements[1 + 0 * 4] = s;
+		result.elements[1 + 1 * 4] = c;
+
+		result.elements[2 + 2 * 4] = 1;
+		result.elements[3 + 3 * 4] = 1;
 
 		return result;
 	}

@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "graphics/Renderer.h"
 #include "engine/Engine.h"
+#include "engine/Time.h"
 
 namespace ftec {
 
@@ -22,7 +23,6 @@ namespace ftec {
 		for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {
 			StaticGeometry &geometry = *i;
 			Renderer::draw(*geometry.mesh, geometry.material, m_Camera, mat4::translation(geometry.position));
-			//static void draw(const Mesh &mesh, const Material &material, const Camera &camera, const mat4 &modelMatrix = mat4::identity());
 			
 		}
 

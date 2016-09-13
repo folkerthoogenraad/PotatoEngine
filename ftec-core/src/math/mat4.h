@@ -27,6 +27,10 @@ namespace ftec {
 		static mat4 rotation(float angle, const vec3& axis);
 		static mat4 scale(const vec3& scale);
 
+		static mat4 rotationX(float angle);
+		static mat4 rotationY(float angle);
+		static mat4 rotationZ(float angle);
+
 		//operators
 		friend mat4 operator*(mat4 left, const mat4& right);
 		mat4 operator*=(const mat4& right);

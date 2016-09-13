@@ -16,13 +16,11 @@ namespace ftec {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		LOG("Created texture");
 	}
 
 	Texture::~Texture()
 	{
 		glDeleteTextures(1, &m_TextureID);
-		LOG("Deleted texture");
 	}
 
 	void Texture::bind()

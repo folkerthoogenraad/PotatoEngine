@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClCompile Include="src\engine\Engine.cpp" />
     <ClCompile Include="src\engine\Game.cpp" />
+    <ClCompile Include="src\engine\Input.cpp" />
     <ClCompile Include="src\engine\Time.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
@@ -146,8 +147,10 @@
   <ItemGroup>
     <ClInclude Include="src\engine\Engine.h" />
     <ClInclude Include="src\engine\Game.h" />
+    <ClInclude Include="src\engine\Input.h" />
     <ClInclude Include="src\engine\Time.h" />
     <ClInclude Include="src\graphics\Camera.h" />
+    <ClInclude Include="src\graphics\GL.h" />
     <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\Mesh.h" />
     <ClInclude Include="src\graphics\VBORenderable.h" />

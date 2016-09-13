@@ -6,4 +6,6 @@ namespace ftec {
 
 	float Time::sinTime = 0;
 	float Time::cosTime = 0;
+	float Time::sin2Time = 0;
+	float Time::cos2Time = 0;
 }

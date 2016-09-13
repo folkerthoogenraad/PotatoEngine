@@ -16,11 +16,21 @@ namespace ftec{
 		vec3& divide(const vec3& other);
 		vec3& multiply(const vec3& other);
 
+		vec3& add(float other);
+		vec3& subtract(float other);
+		vec3& divide(float other);
+		vec3& multiply(float other);
+
 
 		friend vec3 operator+(const vec3& left, const vec3& right);
 		friend vec3 operator-(const vec3& left, const vec3& right);
 		friend vec3 operator*(const vec3& left, const vec3& right);
 		friend vec3 operator/(const vec3& left, const vec3& right);
+
+		friend vec3 operator+(const vec3& left, float right);
+		friend vec3 operator-(const vec3& left, float right);
+		friend vec3 operator*(const vec3& left, float right);
+		friend vec3 operator/(const vec3& left, float right);
 
 		vec3& operator+=(const vec3& right);
 		vec3& operator-=(const vec3& right);
