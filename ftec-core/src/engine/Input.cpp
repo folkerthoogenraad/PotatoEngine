@@ -47,7 +47,7 @@ namespace ftec {
 	void Input::handleCursor(float x, float y)
 	{
 		vec2 newPosition(x, y);
-		mouseDelta = newPosition - mousePosition;
+		mouseDelta += newPosition - mousePosition;
 		mousePosition = newPosition;
 	}
 

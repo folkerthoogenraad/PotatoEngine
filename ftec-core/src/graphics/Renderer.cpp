@@ -5,7 +5,7 @@
 
 namespace ftec {
 
-	void Renderer::draw(const VBORenderable& renderable, const Material & material, const Camera &camera, const mat4& modelMatrix)
+	void Renderer::drawDirect(const VBORenderable& renderable, const Material & material, const Camera &camera, const mat4& modelMatrix)
 	{
 		//TODO dont figure this shit out at run time
 
@@ -62,7 +62,7 @@ namespace ftec {
 		}
 	}
 	
-	void Renderer::draw(const Mesh & mesh, const Material & material, const Camera & camera, const mat4 & modelMatrix)
+	void Renderer::drawDirect(const Mesh & mesh, const Material & material, const Camera & camera, const mat4 & modelMatrix)
 	{
 		//TODO dont figure this shit out at run time
 
@@ -89,13 +89,6 @@ namespace ftec {
 			int mainTextureLocation = shader.getUniformLocation("u_MainTexture");
 
 			shader.setUniform(mainTextureLocation, 0);
-
-			//Temp
-			int intensityLocation = shader.getUniformLocation("u_Intensity");
-			shader.setUniform(intensityLocation, Time::sinTime / 2.0f + 1);
-
-			int lightPositionLocation = shader.getUniformLocation("u_LightPosition");
-			shader.setUniform(lightPositionLocation, vec3(Time::cosTime * 8, 2.0, Time::sin2Time * 8));
 
 			positionIndex = shader.getAttributeLocation("position");
 			normalIndex = shader.getAttributeLocation("normal");
@@ -133,4 +126,5 @@ namespace ftec {
 			material.m_Texture->unbind();
 		}
 	}
+
 }

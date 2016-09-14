@@ -38,7 +38,7 @@ namespace ftec {
 			motion.x -= 1;
 		}
 		
-		mat4 transform = mat4::rotation(cam.m_Yaw, vec3(0,1,0)) * mat4::rotation(cam.m_Pitch, vec3(1,0,0));
+		mat4 transform = mat4::rotation(cam.m_Yaw, vec3(0,1,0));
 		motion = transform * motion;
 
 		motion.y = 0;
@@ -46,6 +46,10 @@ namespace ftec {
 			motion.y -= 1;
 		}if (Input::isKeyDown(GLFW_KEY_Z)) {
 			motion.y += 1;
+		}
+		
+		if (motion.magnitude() > 1) {
+			motion.normalize();
 		}
 
 		cam.m_Position += motion * 3.f * Time::deltaTime;

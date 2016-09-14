@@ -32,7 +32,7 @@ namespace ftec {
 		m_Index = 0;
 
 		//Its now ready for rendering
-		Renderer::draw(m_Vbo,m_Material,m_Camera);
+		Renderer::drawDirect(m_Vbo,m_Material,m_Camera);
 	}
 
 	void SpriteBatch::vertex(vec3 p)

@@ -19,8 +19,8 @@ namespace ftec {
 		Resources m_Resources;
 
 	public:
-		template <typename T>
-		std::shared_ptr<T> load(const std::string &name)
+		template <typename T, typename ... U>
+		std::shared_ptr<T> load(const std::string &name)//
 		{
 			const std::type_info* c = &typeid(T);
 

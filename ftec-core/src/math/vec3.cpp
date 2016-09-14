@@ -68,6 +68,22 @@ namespace ftec{
 		return *this;
 	}
 
+	vec3 & vec3::normalize()
+	{
+		float l = magnitude();
+		if (l > 0) {
+			x /= l;
+			y /= l;
+			z /= l;
+		}
+		return *this;
+	}
+
+	float vec3::magnitude()
+	{
+		return (float) sqrt(x*x + y*y + z*z);
+	}
+
 	vec3 operator+(const vec3& left, const vec3& right){
 		return vec3(left.x + right.x, left.y + right.y, left.z + right.z);
 	}

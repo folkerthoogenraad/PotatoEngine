@@ -12,9 +12,9 @@ namespace ftec {
 	public:
 		Renderer() = delete;
 
-		//Todo add other options ofcourse
-		static void draw(const VBORenderable &renderable, const Material &material, const Camera &camera, const mat4 &modelMatrix = mat4::identity());
-		static void draw(const Mesh &mesh, const Material &material, const Camera &camera, const mat4 &modelMatrix = mat4::identity());
+		//Use Graphics::draw instead
+		static void drawDirect(const VBORenderable &renderable, const Material &material, const Camera &camera, const mat4 &modelMatrix = mat4::identity());
+		static void drawDirect(const Mesh &mesh, const Material &material, const Camera &camera, const mat4 &modelMatrix = mat4::identity());
 
 	};
 }

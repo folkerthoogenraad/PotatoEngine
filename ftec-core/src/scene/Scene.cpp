@@ -1,7 +1,7 @@
 #include "Scene.h"
-#include "graphics/Renderer.h"
 #include "engine/Engine.h"
 #include "engine/Time.h"
+#include "graphics/Graphics.h"
 
 namespace ftec {
 
@@ -20,10 +20,12 @@ namespace ftec {
 	}
 	void Scene::render()
 	{
+		Graphics::enqueueCamera(m_Camera);
+
 		for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {
 			StaticGeometry &geometry = *i;
-			Renderer::draw(*geometry.mesh, geometry.material, m_Camera, mat4::translation(geometry.position));
-			
+
+			Graphics::enqueueMesh(geometry.mesh.get(), &geometry.material, mat4::translation(geometry.position), LAYER_STATIC);
 		}
 
 		for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {

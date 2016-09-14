@@ -21,6 +21,8 @@ namespace ftec{
 		vec3& divide(float other);
 		vec3& multiply(float other);
 
+		vec3& normalize();
+		float magnitude();
 
 		friend vec3 operator+(const vec3& left, const vec3& right);
 		friend vec3 operator-(const vec3& left, const vec3& right);
@@ -40,7 +42,6 @@ namespace ftec{
 		friend vec3 operator-(const vec3& left);
 
         static const int COMPONENTS = 3;
-
 
 		friend bool operator==(const vec3& left, const vec3& right);
 
