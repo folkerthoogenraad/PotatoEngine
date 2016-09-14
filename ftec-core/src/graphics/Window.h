@@ -1,8 +1,8 @@
 #pragma once
 
-#include "graphics/GL.h"
+#include "GL.h"
+
 #include <string>
-#include <GLFW\glfw3.h>
 #include "math/math.h"
 
 namespace ftec {

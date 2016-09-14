@@ -20,7 +20,7 @@ namespace ftec {
 	}
 	void Scene::render()
 	{
-		Graphics::enqueueCamera(m_Camera);
+		Graphics::enqueueCamera(&m_Camera);
 
 		for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {
 			StaticGeometry &geometry = *i;

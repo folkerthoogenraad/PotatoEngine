@@ -11,12 +11,12 @@ namespace ftec {
 
 	private:
 		struct EnqueuedMesh {
-			EnqueuedMesh(const Mesh *m, const Material *mat, const mat4 &model, int layer)
+			EnqueuedMesh(const Mesh *m, const Material *mat, const mat4 &model, Layer layer)
 				:mesh(m), material(mat), modelMatrix(model), layer(layer){};
 			const Mesh *mesh;
 			const Material *material;
 			mat4 modelMatrix;
-			int layer;
+			Layer layer;
 		};
 
 		static std::vector<EnqueuedMesh> meshes;
@@ -28,10 +28,10 @@ namespace ftec {
 		static void begin();
 
 		//Enqueues the mesh for rendering
-		static void enqueueMesh(const Mesh *mesh, const Material *material, const mat4 &modelMatrix = mat4::identity(), int layer = LAYER_ALL);
+		static void enqueueMesh(const Mesh *mesh, const Material *material, const mat4 &modelMatrix = mat4::identity(), Layer layer = LAYER_ALL);
 
 		//Enqueues the camera to render the scene
-		static void enqueueCamera(const Camera &camera);
+		static void enqueueCamera(const Camera *camera);
 
 		//Ends drawing, performs all draw calls and stuff
 		static void end();

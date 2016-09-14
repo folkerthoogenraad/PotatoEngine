@@ -1,5 +1,6 @@
 #pragma once
 
+typedef int Layer;
 #define LAYER_ALL 0xFFFFFFFF
 #define LAYER_NONE 0
 

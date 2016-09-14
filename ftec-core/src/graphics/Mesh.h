@@ -3,7 +3,7 @@
 #include "resources/ResourceManager.h"
 #include <vector>
 #include "math/vec2.h"
-#include <gl/glew.h>
+#include "GL.h"
 #include "math/vec3.h"
 
 namespace ftec {

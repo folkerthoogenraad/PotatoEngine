@@ -1,6 +1,8 @@
 #pragma once
 #include "math/mat4.h"
 #include "Layer.h"
+#include <memory>
+#include "RenderBuffer.h"
 
 namespace ftec {
 	class Camera {
@@ -14,7 +16,8 @@ namespace ftec {
 
 		float m_Pitch, m_Yaw;
 
-		int m_LayerMask;
+		Layer m_LayerMask;
+		std::shared_ptr<RenderBuffer> m_RenderTarget;
 	public:
 		Camera() = default;
 		Camera(float fov, float aspect, float near, float far);
@@ -22,6 +25,8 @@ namespace ftec {
 
 		mat4 getProjectionMatrix() const;
 		mat4 getViewMatrix() const;
+
+		inline bool hasRenderTarget() const { return m_RenderTarget != 0; };
 
 		bool operator==(const Camera &other);
 		bool operator!=(const Camera &other);

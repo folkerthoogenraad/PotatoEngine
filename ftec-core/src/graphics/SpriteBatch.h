@@ -1,6 +1,5 @@
 #pragma once
 
-#include <gl/glew.h>
 #include "VBORenderable.h"
 #include "math/vec3.h"
 #include <memory>

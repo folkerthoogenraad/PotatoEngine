@@ -1,7 +1,7 @@
 #pragma once
 
 #include "resources/ResourceManager.h"
-#include <GL/glew.h>
+#include "GL.h"
 #include "math/math.h"
 
 namespace ftec {

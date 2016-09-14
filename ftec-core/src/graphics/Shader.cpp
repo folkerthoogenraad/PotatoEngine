@@ -63,14 +63,14 @@ namespace ftec {
 		};
 		checkLinkError(m_Program);
 
-		/*
 		glDetachShader(m_Program, vertexShader);
 		glDetachShader(m_Program, fragmentShader);
 		glDeleteShader(vertexShader);
-		glDeleteShader(fragmentShader);*/
+		glDeleteShader(fragmentShader);
 	}
 	Shader::~Shader()
 	{
+		glDeleteProgram(m_Program);
 	}
 
 	void Shader::use()
