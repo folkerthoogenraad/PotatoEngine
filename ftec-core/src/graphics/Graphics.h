@@ -4,6 +4,7 @@
 #include "Material.h"
 #include "Camera.h"
 #include "math/math.h"
+#include "Light.h"
 
 namespace ftec {
 	
@@ -21,6 +22,7 @@ namespace ftec {
 
 		static std::vector<EnqueuedMesh> meshes;
 		static std::vector<const Camera*> cameras;
+		static std::vector<const Light*> lights;
 		static bool drawing;
 
 	public:
@@ -32,6 +34,9 @@ namespace ftec {
 
 		//Enqueues the camera to render the scene
 		static void enqueueCamera(const Camera *camera);
+
+		//Enqueues the camera to render the scene
+		static void enqueueLight(const Light *light);
 
 		//Ends drawing, performs all draw calls and stuff
 		static void end();

@@ -7,8 +7,8 @@ namespace ftec {
 	class RenderBuffer {
 	private: //might someday be public?
 		GLuint m_Framebuffer;
-		Texture m_DepthAttachment;
-		Texture m_ColorAttachment;
+		std::shared_ptr<Texture> m_DepthAttachment;
+		std::shared_ptr<Texture> m_ColorAttachment;
 		int m_Width;
 		int m_Height;
 	public:
@@ -18,7 +18,10 @@ namespace ftec {
 		void bind() const;
 		void unbind() const;
 
-		const Texture &getTexture() const { return m_ColorAttachment; }
-		const Texture &getDepthTexture() const { return m_DepthAttachment; }
+		inline int getWidth() const { return m_Width; }
+		inline int getHeight() const { return m_Height; }
+
+		std::shared_ptr<Texture>  getTexture() const { return m_ColorAttachment; }
+		std::shared_ptr<Texture> getDepthTexture() const { return m_DepthAttachment; }
 	};
 }

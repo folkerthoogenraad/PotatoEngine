@@ -241,4 +241,28 @@ namespace ftec{
 		return result;
 	}
 
+	//TODO look at the resulting matrix, see if it looks a bit correctish
+	mat4 mat4::fromForward(const vec3 & forward, const vec3 & up)
+	{
+		vec3 zaxis = forward;
+		vec3 xaxis = vec3::cross(up, zaxis);
+		vec3 yaxis = vec3::cross(zaxis, xaxis);
+
+		mat4 result;
+
+		result.elements[0 + 0 * 4] = xaxis.x;
+		result.elements[1 + 0 * 4] = xaxis.y;
+		result.elements[2 + 0 * 4] = xaxis.z;
+
+		result.elements[0 + 1 * 4] = yaxis.x;
+		result.elements[1 + 1 * 4] = yaxis.y;
+		result.elements[2 + 1 * 4] = yaxis.z;
+
+		result.elements[0 + 2 * 4] = zaxis.x;
+		result.elements[1 + 2 * 4] = zaxis.y;
+		result.elements[2 + 2 * 4] = zaxis.z;
+
+		return result;
+	}
+
 }

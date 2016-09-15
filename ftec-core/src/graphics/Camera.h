@@ -3,6 +3,7 @@
 #include "Layer.h"
 #include <memory>
 #include "RenderBuffer.h"
+#include "Shader.h"
 
 namespace ftec {
 	class Camera {
@@ -18,6 +19,9 @@ namespace ftec {
 
 		Layer m_LayerMask;
 		std::shared_ptr<RenderBuffer> m_RenderTarget;
+
+		bool m_RenderToScreen = true; //render the renderbuffer to the screen after we are done with the backbuffer stuff
+		std::shared_ptr<Shader> m_PostProcessingShader = nullptr;
 	public:
 		Camera() = default;
 		Camera(float fov, float aspect, float near, float far);

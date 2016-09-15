@@ -16,6 +16,8 @@ namespace ftec {
 		void bind() const;
 		void unbind() const;
 
+		inline GLuint id() const { return m_TextureID; }
+
 		static std::shared_ptr<Texture> load(const std::string &name);
 	};
 }

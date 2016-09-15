@@ -62,7 +62,12 @@ namespace ftec {
 		}
 	}
 	
-	void Renderer::drawDirect(const Mesh & mesh, const Material & material, const Camera & camera, const mat4 & modelMatrix)
+	void Renderer::drawDirect(const Mesh & mesh, const Material & material, const Light &light, const Camera & camera, const mat4 & modelMatrix)
+	{
+		drawDirect(mesh, material, light, camera.getProjectionMatrix(), camera.getViewMatrix(), modelMatrix);
+	}
+
+	void Renderer::drawDirect(const Mesh & mesh, const Material & material, const Light &light, const mat4 & projectionMatrix, const mat4 & viewMatrix, const mat4 & modelMatrix)
 	{
 		//TODO dont figure this shit out at run time
 
@@ -83,8 +88,8 @@ namespace ftec {
 			int matrixProjectionLocation = shader.getUniformLocation("u_MatrixProjection");
 
 			shader.setUniform(matrixModelLocation, modelMatrix);
-			shader.setUniform(matrixViewLocation, camera.getViewMatrix());
-			shader.setUniform(matrixProjectionLocation, camera.getProjectionMatrix());
+			shader.setUniform(matrixViewLocation, viewMatrix);
+			shader.setUniform(matrixProjectionLocation, projectionMatrix);
 
 			int mainTextureLocation = shader.getUniformLocation("u_MainTexture");
 
@@ -93,6 +98,29 @@ namespace ftec {
 			positionIndex = shader.getAttributeLocation("position");
 			normalIndex = shader.getAttributeLocation("normal");
 			uvIndex = shader.getAttributeLocation("uv");
+
+			//TODO multiple lights and stuffs
+			int lightEnabledLocation = shader.getUniformLocation("u_Light.enabled");
+			int lightDirectionLocation = shader.getUniformLocation("u_Light.direction");
+			int lightShadowsEnabledLocation = shader.getUniformLocation("u_Light.shadowsEnabled");
+
+			shader.setUniform(lightEnabledLocation, light.m_Enabled);
+			shader.setUniform(lightDirectionLocation, light.m_Direction);
+			shader.setUniform(lightShadowsEnabledLocation, light.isShadowsEnabled());
+			
+			if (light.isShadowsEnabled()) {
+				int lightShadowMatrixLocation = shader.getUniformLocation("u_Light.shadowMatrix");
+				int lightShadowTexture = shader.getUniformLocation("u_Light.shadowTexture");
+
+				glActiveTexture(GL_TEXTURE1);
+
+				light.getShadowBuffer()->getDepthTexture()->bind();
+
+				shader.setUniform(lightShadowMatrixLocation, light.getShadowMatrix());
+				shader.setUniform(lightShadowTexture, 1);
+
+				glActiveTexture(GL_TEXTURE0);
+			}
 		}
 
 		//Vertices
@@ -111,7 +139,7 @@ namespace ftec {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.m_IndicesVBO);
 
 		glDrawElements(
-			GL_TRIANGLES,  
+			GL_TRIANGLES,
 			mesh.m_Triangles.size(),
 			GL_UNSIGNED_INT,
 			(void*)0

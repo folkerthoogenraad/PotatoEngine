@@ -21,7 +21,7 @@ namespace ftec {
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		window = std::make_unique<Window>("PotatoEngine", 640, 480, false);
+		window = std::make_unique<Window>("PotatoEngine", 1280, 720, false);
 
 		LOG("Loading GLEW...");
 		//Initialize extentions
@@ -76,24 +76,22 @@ namespace ftec {
 
 			previousTime = currentTime;
 
-			if (!game.m_PreventClear)
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 			game.update();
 
 			if (getScene())
 				getScene()->update();
-			
+
+			//Begin the full rendering pipeline
+			Graphics::begin();
+
 			game.render();
 
 			if (getScene()) {
-				//Begin the full rendering pipeline
-				Graphics::begin();
-
 				getScene()->render();
-				
-				Graphics::end();
 			}
+
+			//End the rendering pipeline and draw to the screen :D
+			Graphics::end();
 			
 
 			getWindow().swap();
@@ -113,8 +111,8 @@ namespace ftec {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		
-		//glClearColor(.2f, .4f, .8f, 1.f);
+		glClearColor(.2f, .4f, .8f, 1.f);
 		//glClearColor(.0f, .0f, .0f, 1.f);
-		glClearColor(132.f / 255.f, 119.f / 255.f, 106.f / 255.f, 1.f);
+		//glClearColor(132.f / 255.f, 119.f / 255.f, 106.f / 255.f, 1.f);
 	}
 }

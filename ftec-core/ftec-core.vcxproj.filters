@@ -93,6 +93,9 @@
     <ClCompile Include="src\graphics\RenderBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\logger\log.h">
@@ -185,9 +188,16 @@
     <ClInclude Include="src\graphics\RenderBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default_vertex.glsl" />
     <None Include="shaders\default_fragment.glsl" />
+    <None Include="shaders\passthrough_fragment.glsl" />
+    <None Include="shaders\passthrough_vertex.glsl" />
+    <None Include="shaders\post_fragment.glsl" />
+    <None Include="shaders\post_vertex.glsl" />
   </ItemGroup>
 </Project>

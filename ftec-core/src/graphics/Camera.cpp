@@ -1,8 +1,8 @@
 #include "Camera.h"
 
 namespace ftec {
-	ftec::Camera::Camera(float fov, float aspect, float near, float far)
-		:m_Fov(fov), m_AspectRatio(aspect), m_Near(near), m_Far(far), m_Pitch(0), m_Yaw(0), m_LayerMask(LAYER_ALL)
+	Camera::Camera(float fov, float aspect, float near, float far)
+		:m_Fov(fov), m_AspectRatio(aspect), m_Near(near), m_Far(far), m_Pitch(0), m_Yaw(0), m_LayerMask(LAYER_ALL), m_RenderToScreen(true), m_PostProcessingShader(nullptr)
 	{
 		
 	}

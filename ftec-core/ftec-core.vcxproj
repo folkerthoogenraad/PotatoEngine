@@ -125,6 +125,7 @@
     <ClCompile Include="src\engine\Time.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\Graphics.cpp" />
+    <ClCompile Include="src\graphics\Light.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Mesh.cpp" />
     <ClCompile Include="src\graphics\RenderBuffer.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="src\graphics\GL.h" />
     <ClInclude Include="src\graphics\Graphics.h" />
     <ClInclude Include="src\graphics\Layer.h" />
+    <ClInclude Include="src\graphics\Light.h" />
     <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\Mesh.h" />
     <ClInclude Include="src\graphics\RenderBuffer.h" />
@@ -181,6 +183,10 @@
   <ItemGroup>
     <None Include="shaders\default_fragment.glsl" />
     <None Include="shaders\default_vertex.glsl" />
+    <None Include="shaders\passthrough_fragment.glsl" />
+    <None Include="shaders\passthrough_vertex.glsl" />
+    <None Include="shaders\post_fragment.glsl" />
+    <None Include="shaders\post_vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

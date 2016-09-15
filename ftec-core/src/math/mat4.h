@@ -22,6 +22,7 @@ namespace ftec {
 		static mat4 orthographic(float l, float r, float b, float t, float n, float f);
 		static mat4 perspective(float fov, float asp, float near, float far);
 		static mat4 lookAt(const vec3 &eye, const vec3 &center, const vec3 &up = vec3(0, 1, 0));
+		static mat4 fromForward(const vec3 &forward, const vec3 &up);
 
 		static mat4 translation(const vec3& translation);
 		static mat4 rotation(float angle, const vec3& axis);

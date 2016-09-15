@@ -3,8 +3,6 @@
 namespace ftec {
 	class Game {
 	public:
-		bool m_PreventClear = false;
-	public:
 		Game();
 		virtual ~Game();
 

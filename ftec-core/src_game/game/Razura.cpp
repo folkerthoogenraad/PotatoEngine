@@ -3,6 +3,7 @@
 #include "engine/Engine.h"
 #include "engine/Input.h"
 #include "NoClipCameraEntity.h"
+#include "graphics/Graphics.h"
 
 namespace ftec {
 	Razura::Razura()
@@ -20,17 +21,27 @@ namespace ftec {
 
 	}
 
+	std::shared_ptr<Light> light;
 	void Razura::render()
 	{
-
+		Graphics::enqueueLight(light.get());
 	}
 
 	void Razura::init()
 	{
 		Input::setCursorMode(CURSOR_GRABBED);
 
+		light = std::make_shared<Light>();
+
+		light->m_Direction = vec3(1, -1, 0).normalize();
+		light->setShadowsEnabled(true);
+
 		std::shared_ptr<Scene> scene = std::make_shared<Scene>();
 		scene->m_Camera.m_Position.y += 1.7f;
+
+		float resolutionIncrease = 1.f;
+		scene->m_Camera.m_RenderTarget = std::make_shared<RenderBuffer>((int) (Engine::getWindow().getWidth() * resolutionIncrease), (int) (Engine::getWindow().getHeight() * resolutionIncrease));
+		scene->m_Camera.m_PostProcessingShader = Engine::getResourceManager().load<Shader>("shaders/post");
 
 		Engine::setScene(scene);
 

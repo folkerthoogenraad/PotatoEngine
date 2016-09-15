@@ -24,6 +24,9 @@ namespace ftec{
 		vec3& normalize();
 		float magnitude();
 
+		static vec3 cross(const vec3 &left, const vec3 &right);
+		static float dot(const vec3 &left, const vec3 &right);
+
 		friend vec3 operator+(const vec3& left, const vec3& right);
 		friend vec3 operator-(const vec3& left, const vec3& right);
 		friend vec3 operator*(const vec3& left, const vec3& right);
