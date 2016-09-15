@@ -27,9 +27,13 @@ void main()
 	
 	if(u_Light.shadowsEnabled){
 		float bias = 0.005;
-		if(texture(u_Light.shadowTexture, vec2(v_WorldLightPosition.x / 2.0 + 0.5, v_WorldLightPosition.y / 2.0 + 0.5)).z < v_WorldLightPosition.z / 2.0 + 0.5 - bias){
-			lightness = 0.1;
+
+		if(v_WorldLightPosition.x > 0 && v_WorldLightPosition.x < 1 && v_WorldLightPosition.y > 0 && v_WorldLightPosition.y < 1){
+			if(texture(u_Light.shadowTexture, v_WorldLightPosition.xy).z < v_WorldLightPosition.z - bias){
+				lightness -= 0.4;
+			}
 		}
+
 	}
 
 	vec4 resultColor = v_Color * lightness;

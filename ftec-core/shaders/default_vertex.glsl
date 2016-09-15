@@ -38,8 +38,9 @@ void main()
 	if(u_Light.enabled){
 		vec4 lightDir = vec4(u_Light.direction, 0.0);
 		lightness = dot(-lightDir, worldNormal);
+
 		if(u_Light.shadowsEnabled){
-			v_WorldLightPosition = u_Light.shadowMatrix * u_MatrixModel * vec4(position, 1.0);
+			v_WorldLightPosition = (u_Light.shadowMatrix * u_MatrixModel * vec4(position, 1.0)) / 2.0 + 0.5;
 		}
 	}
 	

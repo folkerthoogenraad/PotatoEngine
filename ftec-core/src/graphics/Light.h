@@ -3,7 +3,7 @@
 #include "RenderBuffer.h"
 #include "math/math.h"
 
-#define SHADOW_RESOLUTION 4096
+#define SHADOW_RESOLUTION 1024
 
 namespace ftec {
 	//TODO class LightWorld or something LightSpace

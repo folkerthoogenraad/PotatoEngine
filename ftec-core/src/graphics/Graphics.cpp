@@ -3,7 +3,7 @@
 #include "Renderer.h"
 #include "engine/Engine.h"
 
-#define DEBUG_GRAPHICS 0
+#define DEBUG_GRAPHICS 1
 
 namespace ftec {
 
