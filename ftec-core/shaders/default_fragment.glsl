@@ -28,12 +28,24 @@ void main()
 	if(u_Light.shadowsEnabled){
 		float bias = 0.005;
 
+		//if this pixel is in range for the shadow map size
 		if(v_WorldLightPosition.x > 0 && v_WorldLightPosition.x < 1 && v_WorldLightPosition.y > 0 && v_WorldLightPosition.y < 1){
+
+			//Is this pixel in the light, or is it in the darkness
 			if(texture(u_Light.shadowTexture, v_WorldLightPosition.xy).z < v_WorldLightPosition.z - bias){
-				lightness -= 0.4;
+
+				//Shade it, but not too much
+				if(lightness > 0.4){
+					lightness = 0.4;
+				}
 			}
 		}
 
+	}
+
+	lightness = floor(lightness * 5.0) / 5.0;
+	if(lightness < 0.2){
+		lightness = 0.2;
 	}
 
 	vec4 resultColor = v_Color * lightness;

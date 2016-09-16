@@ -33,7 +33,7 @@ namespace ftec {
 
 		light = std::make_shared<Light>();
 
-		light->m_Direction = vec3(1, -1, 0).normalize();
+		light->m_Direction = vec3(-0.5f, -1, -0.5f).normalize();
 		light->setShadowsEnabled(true);
 
 		std::shared_ptr<Scene> scene = std::make_shared<Scene>();
@@ -46,17 +46,19 @@ namespace ftec {
 		Engine::setScene(scene);
 
 		auto texture = Engine::getResourceManager().load<Texture>("textures/color_pallet.png");
+		auto white = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
 		auto shader = Engine::getResourceManager().load<Shader>("shaders/default");
 
 		auto rock = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/rocks/rock1.obj");
 		auto tree = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/trees/tree1.obj");
 		auto ground = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/ground/ground1.obj");
+		auto ape = Engine::getResourceManager().load<Mesh>("mesh/ape.obj");
 
 		scene->addMesh(vec3(0, 0, 0), ground, Material(texture, shader));
 		scene->addMesh(vec3(2, 0, 2), tree, Material(texture, shader));
-		scene->addMesh(vec3(1, 0, 0), rock, Material(texture, shader));
-		scene->addMesh(vec3(1, 0, 2), rock, Material(texture, shader));
-		scene->addMesh(vec3(2, 0, 1), rock, Material(texture, shader));
+
+		scene->addMesh(vec3(4, 2, 4), rock, Material(texture, shader));
+		scene->addMesh(vec3(-2, 0, -2), ape, Material(white, shader));
 
 		scene->addEntity(std::make_shared<NoClipCameraEntity>());
 
