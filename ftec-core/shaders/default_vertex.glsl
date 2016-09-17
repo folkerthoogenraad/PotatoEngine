@@ -45,8 +45,8 @@ void main()
 	}
 	
 
-	if(lightness < 0.1){
-		lightness = 0.1;
+	if(lightness < 0.2){
+		lightness = 0.2;
 	}
 	
 	v_WorldPosition = u_MatrixModel * vec4(position, 1.0);

@@ -208,15 +208,13 @@ namespace ftec{
 	{
 		mat4 result;
 
-		//row + column * 4
-
 		result.elements[0 + 0 * 4] = 2.0f / (r - l);
 		result.elements[1 + 1 * 4] = 2.0f / (t - b);
 		result.elements[2 + 2 * 4] = 2.0f / (n - f);
 
-		result.elements[0 + 3 * 4] = (l + r) / (l - r);
-		result.elements[1 + 3 * 4] = (b + t) / (b - t);
-		result.elements[2 + 3 * 4] = (f + n) / (f - n);
+		result.elements[3 + 0 * 4] = (l + r) / (l - r);
+		result.elements[3 + 1 * 4] = (b + t) / (b - t);
+		result.elements[3 + 2 * 4] = (f + n) / (f - n);
 
 		return result;
 	}
@@ -237,6 +235,38 @@ namespace ftec{
 
 		result.elements[3 + 2 * 4] = c;
 		result.elements[2 + 3 * 4] = -1;
+		result.elements[3 + 3 * 4] = 0;
+
+		return result;
+	}
+
+	mat4 mat4::lookAt(const vec3 & eye, const vec3 & center, const vec3 & up)
+	{
+		mat4 result;
+
+		vec3 zaxis = (center - eye).normalize();
+		vec3 xaxis = vec3::cross(up, zaxis).normalize();
+		vec3 yaxis = vec3::cross(zaxis, xaxis);
+
+		result.elements[0 + 0 * 4] = xaxis.x;
+		result.elements[1 + 0 * 4] = xaxis.y;
+		result.elements[2 + 0 * 4] = xaxis.z;
+		result.elements[3 + 0 * 4] = -vec3::dot(xaxis, eye);
+
+		result.elements[0 + 1 * 4] = yaxis.x;
+		result.elements[1 + 1 * 4] = yaxis.y;
+		result.elements[2 + 1 * 4] = yaxis.z;
+		result.elements[3 + 1 * 4] = -vec3::dot(yaxis, eye);
+
+		result.elements[0 + 2 * 4] = zaxis.x;
+		result.elements[1 + 2 * 4] = zaxis.y;
+		result.elements[2 + 2 * 4] = zaxis.z;
+		result.elements[3 + 2 * 4] = -vec3::dot(zaxis, eye);
+
+		result.elements[0 + 3 * 4] = 0;
+		result.elements[1 + 3 * 4] = 0;
+		result.elements[2 + 3 * 4] = 0;
+		result.elements[3 + 3 * 4] = 1;
 
 		return result;
 	}

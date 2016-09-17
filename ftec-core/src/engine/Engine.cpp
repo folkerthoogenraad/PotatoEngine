@@ -108,8 +108,8 @@ namespace ftec {
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.1f);
 
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_BACK);
 		
 		glClearColor(.2f, .4f, .8f, 1.f);
 		//glClearColor(.0f, .0f, .0f, 1.f);

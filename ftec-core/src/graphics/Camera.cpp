@@ -9,7 +9,7 @@ namespace ftec {
 
 	mat4 ftec::Camera::getProjectionMatrix() const
 	{
-		return mat4::perspective(m_Fov, m_AspectRatio, m_Near, m_Far) * mat4::translation(vec3(0, 0, 1));
+		return mat4::perspective(m_Fov, m_AspectRatio, m_Near, m_Far);// *mat4::translation(vec3(0, 0, 1));
 	}
 
 	mat4 ftec::Camera::getViewMatrix() const
