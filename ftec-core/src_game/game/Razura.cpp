@@ -52,6 +52,7 @@ namespace ftec {
 		auto rock = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/rocks/rock1.obj");
 		auto tree = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/trees/tree1.obj");
 		auto ground = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/ground/ground1.obj");
+		auto test3 = Engine::getResourceManager().load<Mesh>("mesh/test3.obj");
 		auto ape = Engine::getResourceManager().load<Mesh>("mesh/ape.obj");
 
 		scene->addMesh(vec3(0, 0, 0), ground, Material(texture, shader));
@@ -59,6 +60,7 @@ namespace ftec {
 
 		scene->addMesh(vec3(4, 2, 4), rock, Material(texture, shader));
 		scene->addMesh(vec3(-2, 0, -2), ape, Material(white, shader));
+		scene->addMesh(vec3(2, 0, -2), test3, Material(white, shader));
 
 		scene->addEntity(std::make_shared<NoClipCameraEntity>());
 

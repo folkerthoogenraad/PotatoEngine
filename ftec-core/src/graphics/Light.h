@@ -9,6 +9,7 @@ namespace ftec {
 	//TODO class LightWorld or something LightSpace
 	class Light {
 	public:
+		vec3 m_Position = vec3();
 		vec3 m_Direction = vec3(-1.0,-1.0,-1.0).normalize();
 		bool m_Enabled = true;
 	private:

@@ -83,6 +83,12 @@ namespace ftec {
 
 		drawing = false;
 
+		if (cameras.size() < 1)
+			return;//If there are no camera's, we might as well just stop drawing.
+
+		//Temp shit... This should be different
+		const auto mainCamera = cameras.front();
+
 		//Draw for every light
 		for (auto l : lights) {
 

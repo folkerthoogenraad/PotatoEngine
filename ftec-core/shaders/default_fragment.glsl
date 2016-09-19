@@ -43,7 +43,6 @@ void main()
 
 	}
 
-	lightness = floor(lightness * 5.0) / 5.0;
 	if(lightness < 0.2){
 		lightness = 0.2;
 	}
