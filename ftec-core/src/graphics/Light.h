@@ -9,7 +9,6 @@ namespace ftec {
 	//TODO class LightWorld or something LightSpace
 	class Light {
 	public:
-		vec3 m_Position = vec3();
 		vec3 m_Direction = vec3(-1.0,-1.0,-1.0).normalize();
 		bool m_Enabled = true;
 	private:
@@ -23,7 +22,7 @@ namespace ftec {
 
 		inline bool isShadowsEnabled() const { return m_ShadowsEnabled; };
 		inline std::shared_ptr<RenderBuffer> getShadowBuffer() const { return m_ShadowMap; };
-		mat4 getShadowMatrix() const;
+		mat4 getShadowMatrix(const vec3 &position = vec3()) const;
 
 		static inline Light defaultLight() { return Light(); };
 	};

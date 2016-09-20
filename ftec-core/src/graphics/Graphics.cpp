@@ -54,7 +54,6 @@ namespace ftec {
 
 			material->m_Shader = Engine::getResourceManager().load<Shader>("shaders/passthrough");
 		}
-	
 	}
 
 	void Graphics::enqueueMesh(const Mesh *mesh, const Material *material, const mat4 &modelMatrix, Layer layer)
@@ -85,9 +84,6 @@ namespace ftec {
 
 		if (cameras.size() < 1)
 			return;//If there are no camera's, we might as well just stop drawing.
-
-		//Temp shit... This should be different
-		const auto mainCamera = cameras.front();
 
 		//Draw for every light
 		for (auto l : lights) {

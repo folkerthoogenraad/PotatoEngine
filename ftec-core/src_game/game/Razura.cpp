@@ -46,21 +46,21 @@ namespace ftec {
 		Engine::setScene(scene);
 
 		auto texture = Engine::getResourceManager().load<Texture>("textures/color_pallet.png");
-		auto white = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
 		auto shader = Engine::getResourceManager().load<Shader>("shaders/default");
 
-		auto rock = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/rocks/rock1.obj");
-		auto tree = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/trees/tree1.obj");
 		auto ground = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/ground/ground1.obj");
-		auto test3 = Engine::getResourceManager().load<Mesh>("mesh/test3.obj");
-		auto ape = Engine::getResourceManager().load<Mesh>("mesh/ape.obj");
+		auto tree = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/trees/tree1.obj");
+		auto building = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/buildings/urban_building1.obj");
 
 		scene->addMesh(vec3(0, 0, 0), ground, Material(texture, shader));
-		scene->addMesh(vec3(2, 0, 2), tree, Material(texture, shader));
 
-		scene->addMesh(vec3(4, 2, 4), rock, Material(texture, shader));
-		scene->addMesh(vec3(-2, 0, -2), ape, Material(white, shader));
-		scene->addMesh(vec3(2, 0, -2), test3, Material(white, shader));
+		scene->addMesh(vec3(0, 0, 2), tree, Material(texture, shader));
+		scene->addMesh(vec3(7, 0, 1), tree, Material(texture, shader));
+		scene->addMesh(vec3(-7, 0, 2), tree, Material(texture, shader));
+
+		scene->addMesh(vec3(0, 0, -6), building, Material(texture, shader));
+		scene->addMesh(vec3(-7, 0, -6), building, Material(texture, shader));
+		scene->addMesh(vec3(7, 0, -6), building, Material(texture, shader));
 
 		scene->addEntity(std::make_shared<NoClipCameraEntity>());
 

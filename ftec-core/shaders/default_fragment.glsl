@@ -35,9 +35,7 @@ void main()
 			if(texture(u_Light.shadowTexture, v_WorldLightPosition.xy).z < v_WorldLightPosition.z - bias){
 
 				//Shade it, but not too much
-				if(lightness > 0.4){
-					lightness = 0.4;
-				}
+				lightness -= 0.4;
 			}
 		}
 

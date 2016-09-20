@@ -17,10 +17,10 @@ namespace ftec {
 		}
 	}
 
-	mat4 Light::getShadowMatrix() const
+	mat4 Light::getShadowMatrix(const vec3 &position) const
 	{
 		//return mat4::scale(vec3(0.2f, 0.2f, -0.2f)) * mat4::rotationX(45) * mat4::rotationY(45);
 		//return  mat4::fromForward(m_Direction, vec3(0,1,0)) * mat4::scale(vec3(0.1f, 0.1f, -0.5f)); // TODO some shadow range calculations or something
-		return mat4::orthographic(-3, 3, -3, 3, 10, -10) * mat4::lookAt(-m_Direction + m_Position, m_Position);
+		return mat4::orthographic(-10, 10, -10, 10, 10, -10) * mat4::lookAt(-m_Direction + position, position);
 	}
 }
