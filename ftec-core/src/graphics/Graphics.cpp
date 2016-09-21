@@ -54,7 +54,6 @@ namespace ftec {
 
 			material->m_Shader = Engine::getResourceManager().load<Shader>("shaders/passthrough");
 		}
-	
 	}
 
 	void Graphics::enqueueMesh(const Mesh *mesh, const Material *material, const mat4 &modelMatrix, Layer layer)
@@ -83,6 +82,9 @@ namespace ftec {
 
 		drawing = false;
 
+		if (cameras.size() < 1)
+			return;//If there are no camera's, we might as well just stop drawing.
+
 		//Draw for every light
 		for (auto l : lights) {
 
@@ -90,7 +92,7 @@ namespace ftec {
 			if (l->isShadowsEnabled()) {
 				l->getShadowBuffer()->bind();
 
-				glViewport(0, 0, l->getShadowBuffer()->getWidth(), l->getShadowBuffer()->getHeight());
+				Renderer::renderport(0, 0, l->getShadowBuffer()->getWidth(), l->getShadowBuffer()->getHeight());
 
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -109,7 +111,7 @@ namespace ftec {
 
 #if DEBUG_GRAPHICS
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				glViewport(0, 0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight());
+				Renderer::renderport(0, 0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight());
 
 				material->m_Texture = l->getShadowBuffer()->getDepthTexture();
 
@@ -130,7 +132,7 @@ namespace ftec {
 			//Set the correct render target, if the camera has a custom render target
 			if (c->hasRenderTarget()) {
 				c->m_RenderTarget->bind();
-				glViewport(0, 0, c->m_RenderTarget->getWidth(), c->m_RenderTarget->getHeight());
+				Renderer::renderport(0, 0, c->m_RenderTarget->getWidth(), c->m_RenderTarget->getHeight());
 			}
 
 			//TODO do this only if the camera requests this
@@ -156,8 +158,8 @@ namespace ftec {
 
 				if (c->m_RenderToScreen) {
 					//TODO dont do it like this probably
+					Renderer::renderport(0, 0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight());
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-					glViewport(0, 0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight());
 
 
 					material->m_Texture = c->m_RenderTarget->getTexture();

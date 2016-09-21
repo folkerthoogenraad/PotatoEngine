@@ -36,7 +36,7 @@ namespace ftec {
 		static void enqueueCamera(const Camera *camera);
 
 		//Enqueues the camera to render the scene
-		static void enqueueLight(const Light *light);
+		static void enqueueLight(const Light *light); //Loss of constness because setting light position, should be different probably
 
 		//Ends drawing, performs all draw calls and stuff
 		static void end();

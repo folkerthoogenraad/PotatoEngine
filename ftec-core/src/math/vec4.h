@@ -37,6 +37,8 @@ namespace ftec{
 
 		friend std::ostream& operator<<(std::ostream& left, const vec4& right);
 
+		inline static vec4 white() { return vec4(1, 1, 1, 1); }
+
 	};
 
 }

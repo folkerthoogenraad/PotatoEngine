@@ -20,6 +20,7 @@ namespace ftec {
 	}
 	void Scene::render()
 	{
+		//This should obviously be batched.
 		Graphics::enqueueCamera(&m_Camera);
 
 		for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {

@@ -136,6 +136,8 @@
     <ClCompile Include="src\graphics\VBORenderable.cpp" />
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\io\ioutils.cpp" />
+    <ClCompile Include="src\potato_ui\Event.cpp" />
+    <ClCompile Include="src\potato_ui\Panel.cpp" />
     <ClCompile Include="src_game\game\NoClipCameraEntity.cpp" />
     <ClCompile Include="src_game\game\Razura.cpp" />
     <ClCompile Include="src_game\main.cpp" />
@@ -155,6 +157,7 @@
     <ClInclude Include="src\graphics\Camera.h" />
     <ClInclude Include="src\graphics\GL.h" />
     <ClInclude Include="src\graphics\Graphics.h" />
+    <ClInclude Include="src\graphics\Graphics2D.h" />
     <ClInclude Include="src\graphics\Layer.h" />
     <ClInclude Include="src\graphics\Light.h" />
     <ClInclude Include="src\graphics\Material.h" />
@@ -174,6 +177,10 @@
     <ClInclude Include="src\math\vec2.h" />
     <ClInclude Include="src\math\vec3.h" />
     <ClInclude Include="src\math\vec4.h" />
+    <ClInclude Include="src\potato_ui\Event.h" />
+    <ClInclude Include="src\potato_ui\Layout.h" />
+    <ClInclude Include="src\potato_ui\Panel.h" />
+    <ClInclude Include="src\potato_ui\PotatoUI.h" />
     <ClInclude Include="src\resources\ResourceManager.h" />
     <ClInclude Include="src\scene\Entity.h" />
     <ClInclude Include="src\scene\Scene.h" />

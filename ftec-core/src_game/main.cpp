@@ -3,6 +3,7 @@
 #include "engine/Engine.h"
 #include "game/Razura.h"
 
+#include <iostream>
 
 int main(void)
 {

@@ -22,7 +22,7 @@ namespace ftec {
 
 		inline bool isShadowsEnabled() const { return m_ShadowsEnabled; };
 		inline std::shared_ptr<RenderBuffer> getShadowBuffer() const { return m_ShadowMap; };
-		mat4 getShadowMatrix() const;
+		mat4 getShadowMatrix(const vec3 &position = vec3()) const;
 
 		static inline Light defaultLight() { return Light(); };
 	};
