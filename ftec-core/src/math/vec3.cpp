@@ -42,7 +42,7 @@ namespace ftec{
 	}
 
 	template<typename T>
-	vec3<T>& vec3<T>::add(float other)
+	vec3<T>& vec3<T>::add(T other)
 	{
 		x += other;
 		y += other;
@@ -51,7 +51,7 @@ namespace ftec{
 	}
 
 	template<typename T>
-	vec3<T>& vec3<T>::subtract(float other)
+	vec3<T>& vec3<T>::subtract(T other)
 	{
 		x -= other;
 		y -= other;
@@ -60,7 +60,7 @@ namespace ftec{
 	}
 
 	template<typename T>
-	vec3<T>& vec3<T>::divide(float other)
+	vec3<T>& vec3<T>::divide(T other)
 	{
 		x /= other;
 		y /= other;
@@ -69,7 +69,7 @@ namespace ftec{
 	}
 
 	template<typename T>
-	vec3<T>& vec3<T>::multiply(float other)
+	vec3<T>& vec3<T>::multiply(T other)
 	{
 		x *= other;
 		y *= other;
@@ -129,19 +129,19 @@ namespace ftec{
 	}
 
 	template<typename T>
-	vec3<T> operator+(const vec3<T>& left, float right) {
+	vec3<T> operator+(const vec3<T>& left, T right) {
 		return vec3(left.x + right, left.y + right, left.z + right);
 	}
 	template<typename T>
-	vec3<T> operator-(const vec3<T>& left, float right) {
+	vec3<T> operator-(const vec3<T>& left, T right) {
 		return vec3(left.x - right, left.y - right, left.z - right);
 	}
 	template<typename T>
-	vec3<T> operator*(const vec3<T>& left, float right) {
+	vec3<T> operator*(const vec3<T>& left, T right) {
 		return vec3(left.x * right, left.y * right, left.z * right);
 	}
 	template<typename T>
-	vec3<T> operator/(const vec3<T>& left, float right) {
+	vec3<T> operator/(const vec3<T>& left, T right) {
 		return vec3(left.x / right, left.y / right, left.z / right);
 	}
 

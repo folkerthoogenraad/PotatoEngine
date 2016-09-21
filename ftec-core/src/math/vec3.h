@@ -17,10 +17,10 @@ namespace ftec{
 		vec3<T>& divide(const vec3<T>& other);
 		vec3<T>& multiply(const vec3<T>& other);
 
-		vec3<T>& add(float other);
-		vec3<T>& subtract(float other);
-		vec3<T>& divide(float other);
-		vec3<T>& multiply(float other);
+		vec3<T>& add(T other);
+		vec3<T>& subtract(T other);
+		vec3<T>& divide(T other);
+		vec3<T>& multiply(T other);
 
 		vec3<T>& normalize();
 		T magnitude();
@@ -33,10 +33,10 @@ namespace ftec{
 		friend vec3<T>operator*(const vec3<T>& left, const vec3<T>& right);
 		friend vec3<T>operator/(const vec3<T>& left, const vec3<T>& right);
 
-		friend vec3<T>operator+(const vec3<T>& left, float right);
-		friend vec3<T>operator-(const vec3<T>& left, float right);
-		friend vec3<T>operator*(const vec3<T>& left, float right);
-		friend vec3<T>operator/(const vec3<T>& left, float right);
+		friend vec3<T>operator+(const vec3<T>& left, T right);
+		friend vec3<T>operator-(const vec3<T>& left, T right);
+		friend vec3<T>operator*(const vec3<T>& left, T right);
+		friend vec3<T>operator/(const vec3<T>& left, T right);
 
 		vec3<T>& operator+=(const vec3<T>& right);
 		vec3<T>& operator-=(const vec3<T>& right);
