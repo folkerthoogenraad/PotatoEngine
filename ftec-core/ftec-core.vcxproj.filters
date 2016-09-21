@@ -191,6 +191,15 @@
     <ClInclude Include="src\graphics\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\potato_ui\PotatoUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\potato_ui\Layout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\potato_ui\Panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default_vertex.glsl" />

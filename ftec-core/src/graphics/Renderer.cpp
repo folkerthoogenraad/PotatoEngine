@@ -155,4 +155,20 @@ namespace ftec {
 		}
 	}
 
+	void Renderer::clip(int x, int y, int width, int height)
+	{
+		glScissor(x, y, width, height);
+	}
+
+	void Renderer::viewport(int x, int y, int width, int height)
+	{
+		glViewport(x, y, width, height);
+	}
+
+	void Renderer::renderport(int x, int y, int width, int height)
+	{
+		viewport(x, y, width, height);
+		clip(x, y, width, height);
+	}
+
 }

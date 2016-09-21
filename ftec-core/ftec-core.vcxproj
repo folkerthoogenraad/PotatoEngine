@@ -174,6 +174,9 @@
     <ClInclude Include="src\math\vec2.h" />
     <ClInclude Include="src\math\vec3.h" />
     <ClInclude Include="src\math\vec4.h" />
+    <ClInclude Include="src\potato_ui\Layout.h" />
+    <ClInclude Include="src\potato_ui\Panel.h" />
+    <ClInclude Include="src\potato_ui\PotatoUI.h" />
     <ClInclude Include="src\resources\ResourceManager.h" />
     <ClInclude Include="src\scene\Entity.h" />
     <ClInclude Include="src\scene\Scene.h" />
