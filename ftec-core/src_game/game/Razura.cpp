@@ -52,7 +52,7 @@ namespace ftec {
 		auto rock = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/rocks/rock1.obj");
 		auto tree = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/trees/tree1.obj");
 		auto ground = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/ground/ground1.obj");
-		auto ape = Engine::getResourceManager().load<Mesh>("mesh/ape.obj");
+		auto ape = Engine::getResourceManager().load<Mesh>("mesh/Tree.obj");
 
 		scene->addMesh(vec3(0, 0, 0), ground, Material(texture, shader));
 		scene->addMesh(vec3(2, 0, 2), tree, Material(texture, shader));

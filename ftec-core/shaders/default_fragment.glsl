@@ -24,6 +24,11 @@ varying float v_Lightness;
 void main()
 {
 	float lightness = v_Lightness;
+
+	/*if(u_Light.enabled){
+		vec4 lightDir = vec4(u_Light.direction, 0.0);
+		lightness = dot(-lightDir, v_WorldNormal);
+	}*/
 	
 	if(u_Light.shadowsEnabled){
 		float bias = 0.005;
@@ -43,7 +48,9 @@ void main()
 
 	}
 
-	lightness = floor(lightness * 5.0) / 5.0;
+	//Cell shading
+	//lightness = floor(lightness * 5.0) / 5.0;
+
 	if(lightness < 0.2){
 		lightness = 0.2;
 	}
