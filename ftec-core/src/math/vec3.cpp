@@ -2,9 +2,11 @@
 
 namespace ftec{
 
-	vec3::vec3(float x, float y, float z) : x(x), y(y), z(z) {};
+	template<typename T>
+	vec3<T>::vec3(T x, T y, T z) : x(x), y(y), z(z) {};
 
-	vec3& vec3::add(const vec3& other)
+	template<typename T>
+	vec3<T>& vec3<T>::add(const vec3<T>& other)
 	{
 		x += other.x;
 		y += other.y;
@@ -12,7 +14,8 @@ namespace ftec{
 		return *this;
 	}
 
-	vec3& vec3::subtract(const vec3& other)
+	template<typename T>
+	vec3<T>& vec3<T>::subtract(const vec3<T>& other)
 	{
 		x -= other.x;
 		y -= other.y;
@@ -20,7 +23,8 @@ namespace ftec{
 		return *this;
 	}
 
-	vec3& vec3::divide(const vec3& other)
+	template<typename T>
+	vec3<T>& vec3<T>::divide(const vec3<T>& other)
 	{
 		x /= other.x;
 		y /= other.y;
@@ -28,7 +32,8 @@ namespace ftec{
 		return *this;
 	}
 
-	vec3& vec3::multiply(const vec3& other)
+	template<typename T>
+	vec3<T>& vec3<T>::multiply(const vec3<T>& other)
 	{
 		x *= other.x;
 		y *= other.y;
@@ -36,7 +41,8 @@ namespace ftec{
 		return *this;
 	}
 
-	vec3& vec3::add(float other)
+	template<typename T>
+	vec3<T>& vec3<T>::add(float other)
 	{
 		x += other;
 		y += other;
@@ -44,7 +50,8 @@ namespace ftec{
 		return *this;
 	}
 
-	vec3& vec3::subtract(float other)
+	template<typename T>
+	vec3<T>& vec3<T>::subtract(float other)
 	{
 		x -= other;
 		y -= other;
@@ -52,7 +59,8 @@ namespace ftec{
 		return *this;
 	}
 
-	vec3& vec3::divide(float other)
+	template<typename T>
+	vec3<T>& vec3<T>::divide(float other)
 	{
 		x /= other;
 		y /= other;
@@ -60,7 +68,8 @@ namespace ftec{
 		return *this;
 	}
 
-	vec3& vec3::multiply(float other)
+	template<typename T>
+	vec3<T>& vec3<T>::multiply(float other)
 	{
 		x *= other;
 		y *= other;
@@ -68,9 +77,10 @@ namespace ftec{
 		return *this;
 	}
 
-	vec3 & vec3::normalize()
+	template<typename T>
+	vec3<T> & vec3<T>::normalize()
 	{
-		float l = magnitude();
+		T l = magnitude();
 		if (l > 0) {
 			x /= l;
 			y /= l;
@@ -79,73 +89,91 @@ namespace ftec{
 		return *this;
 	}
 
-	float vec3::magnitude()
+	template<typename T>
+	T vec3<T>::magnitude()
 	{
-		return (float) sqrt(x*x + y*y + z*z);
+		return (T) sqrt(x*x + y*y + z*z);
 	}
 
-	vec3 vec3::cross(const vec3 & left, const vec3 & right)
+	template<typename T>
+	vec3<T> vec3<T>::cross(const vec3<T>& left, const vec3<T>& right)
 	{
-		return vec3(
+		return vec3<T>(
 			left.y * right.z - left.z * right.y,
 			left.z * right.x - left.x * right.z,
 			left.x * right.y - left.y * right.x
 		);
 	}
 
-	float vec3::dot(const vec3 & left, const vec3 & right)
+	template<typename T>
+	T vec3<T>::dot(const vec3<T>& left, const vec3<T>& right)
 	{
 		return left.x * right.x + left.y * right.y + left.z * right.z;
 	}
 
-	vec3 operator+(const vec3& left, const vec3& right){
+	template<typename T>
+	vec3<T> operator+(const vec3<T>& left, const vec3<T>& right){
 		return vec3(left.x + right.x, left.y + right.y, left.z + right.z);
 	}
-	vec3 operator-(const vec3& left, const vec3& right){
+	template<typename T>
+	vec3<T> operator-(const vec3<T>& left, const vec3<T>& right){
 		return vec3(left.x - right.x, left.y - right.y, left.z - right.z);
 	}
-	vec3 operator*(const vec3& left, const vec3& right){
+	template<typename T>
+	vec3<T> operator*(const vec3<T>& left, const vec3<T>& right){
 		return vec3(left.x * right.x, left.y * right.y, left.z * right.z);
 	}
-	vec3 operator/(const vec3& left, const vec3& right){
+	template<typename T>
+	vec3<T> operator/(const vec3<T>& left, const vec3<T>& right){
 		return vec3(left.x / right.x, left.y / right.y, left.z / right.z);
 	}
 
-	vec3 operator+(const vec3& left, float right) {
+	template<typename T>
+	vec3<T> operator+(const vec3<T>& left, float right) {
 		return vec3(left.x + right, left.y + right, left.z + right);
 	}
-	vec3 operator-(const vec3& left, float right) {
+	template<typename T>
+	vec3<T> operator-(const vec3<T>& left, float right) {
 		return vec3(left.x - right, left.y - right, left.z - right);
 	}
-	vec3 operator*(const vec3& left, float right) {
+	template<typename T>
+	vec3<T> operator*(const vec3<T>& left, float right) {
 		return vec3(left.x * right, left.y * right, left.z * right);
 	}
-	vec3 operator/(const vec3& left, float right) {
+	template<typename T>
+	vec3<T> operator/(const vec3<T>& left, float right) {
 		return vec3(left.x / right, left.y / right, left.z / right);
 	}
 
-	vec3& vec3::operator+=(const vec3& right){
+	template<typename T>
+	vec3<T>& vec3<T>::operator+=(const vec3<T>& right){
 		return add(right);
 	}
-	vec3& vec3::operator-=(const vec3& right){
+	template<typename T>
+	vec3<T>& vec3<T>::operator-=(const vec3<T>& right){
 		return subtract(right);
 	}
-	vec3& vec3::operator*=(const vec3& right){
+	template<typename T>
+	vec3<T>& vec3<T>::operator*=(const vec3<T>& right){
 		return multiply(right);
 	}
-	vec3& vec3::operator/=(const vec3& right){
+	template<typename T>
+	vec3<T>& vec3<T>::operator/=(const vec3<T>& right){
 		return divide(right);
 	}
 
-	vec3 operator-(const vec3 & left)
+	template<typename T>
+	vec3<T> operator-(const vec3<T>& left)
 	{
-		return vec3(-left.x, -left.y, -left.z);
+		return vec3<T>(-left.x, -left.y, -left.z);
 	}
 
-	bool operator==(const vec3& left, const vec3& right){
+	template<typename T>
+	bool operator==(const vec3<T>& left, const vec3<T>& right){
 		return left.x == right.x && left.y == right.y && left.z == right.z;
 	}
-	std::ostream& operator<<(std::ostream& left, const vec3& right){
+	template<typename T>
+	std::ostream& operator<<(std::ostream& left, const vec3<T>& right){
 		return left << "(" << right.x << ", " << right.y << ", " << right.z << ")";
 	}
 }

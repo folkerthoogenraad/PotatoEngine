@@ -44,10 +44,10 @@ namespace ftec {
 		glVertexAttribPointer(positionIndex, 3, GL_FLOAT, false, sizeof(VBORenderable::VBORVertex), 0);
 		//Normals
 		glEnableVertexAttribArray(normalIndex);
-		glVertexAttribPointer(normalIndex, 3, GL_FLOAT, false, sizeof(VBORenderable::VBORVertex), (void*) sizeof(vec3));
+		glVertexAttribPointer(normalIndex, 3, GL_FLOAT, false, sizeof(VBORenderable::VBORVertex), (void*) sizeof(vec3f));
 		//UVs
 		glEnableVertexAttribArray(uvIndex);
-		glVertexAttribPointer(uvIndex, 2, GL_FLOAT, false, sizeof(VBORenderable::VBORVertex), (void*) (sizeof(vec3) + sizeof(vec3)));
+		glVertexAttribPointer(uvIndex, 2, GL_FLOAT, false, sizeof(VBORenderable::VBORVertex), (void*) (sizeof(vec3f) + sizeof(vec3f)));
 
 		glDrawArrays(GL_TRIANGLES, renderable.firstIndex, renderable.lastIndex);
 
@@ -155,20 +155,20 @@ namespace ftec {
 		}
 	}
 
-	void Renderer::clip(int x, int y, int width, int height)
+	void Renderer::clip(const rect2i &rectangle)
 	{
-		glScissor(x, y, width, height);
+		glScissor(rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height());
 	}
 
-	void Renderer::viewport(int x, int y, int width, int height)
+	void Renderer::viewport(const rect2i &rectangle)
 	{
-		glViewport(x, y, width, height);
+		glViewport(rectangle.x(), rectangle.y(), rectangle.width(), rectangle.height());
 	}
 
-	void Renderer::renderport(int x, int y, int width, int height)
+	void Renderer::renderport(const rect2i &rectangle)
 	{
-		viewport(x, y, width, height);
-		clip(x, y, width, height);
+		viewport(rectangle);
+		clip(rectangle);
 	}
 
 }

@@ -2,9 +2,11 @@
 
 namespace ftec{
 
-	vec4::vec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {};
+	template<typename T>
+	vec4<T>::vec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {};
 
-	vec4& vec4::add(const vec4& other)
+	template<typename T>
+	vec4<T>&  vec4<T>::add(const vec4<T>&  other)
 	{
 		x += other.x;
 		y += other.y;
@@ -13,7 +15,8 @@ namespace ftec{
 		return *this;
 	}
 
-	vec4& vec4::subtract(const vec4& other)
+	template<typename T>
+	vec4<T>&  vec4<T>::subtract(const vec4<T>&  other)
 	{
 		x -= other.x;
 		y -= other.y;
@@ -22,7 +25,8 @@ namespace ftec{
 		return *this;
 	}
 
-	vec4& vec4::divide(const vec4& other)
+	template<typename T>
+	vec4<T>&  vec4<T>::divide(const vec4<T>&  other)
 	{
 		x /= other.x;
 		y /= other.y;
@@ -31,7 +35,8 @@ namespace ftec{
 		return *this;
 	}
 
-	vec4& vec4::multiply(const vec4& other)
+	template<typename T>
+	vec4<T>&  vec4<T>::multiply(const vec4<T>&  other)
 	{
 		x *= other.x;
 		y *= other.y;
@@ -41,38 +46,48 @@ namespace ftec{
 	}
 
 
-	vec4 operator+(const vec4& left, const vec4& right){
+	template<typename T>
+	vec4<T> operator+(const vec4<T>&  left, const vec4<T>&  right){
 		return vec4(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
 	}
-	vec4 operator-(const vec4& left, const vec4& right){
+	template<typename T>
+	vec4<T> operator-(const vec4<T>&  left, const vec4<T>&  right){
 		return vec4(left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w);
 	}
-	vec4 operator*(const vec4& left, const vec4& right){
+	template<typename T>
+	vec4<T> operator*(const vec4<T>&  left, const vec4<T>&  right){
 		return vec4(left.x * right.x, left.y * right.y, left.z * right.z, left.w * right.w);
 	}
-	vec4 operator/(const vec4& left, const vec4& right){
+	template<typename T>
+	vec4<T> operator/(const vec4<T>&  left, const vec4<T>&  right){
 		return vec4(left.x / right.x, left.y / right.y, left.z / right.z, left.w / right.w);
 	}
 
 
-	vec4& vec4::operator+=(const vec4& right){
+	template<typename T>
+	vec4<T>&  vec4<T>::operator+=(const vec4<T>&  right){
 		return add(right);
 	}
-	vec4& vec4::operator-=(const vec4& right){
+	template<typename T>
+	vec4<T>&  vec4<T>::operator-=(const vec4<T>&  right){
 		return subtract(right);
 	}
-	vec4& vec4::operator*=(const vec4& right){
+	template<typename T>
+	vec4<T>&  vec4<T>::operator*=(const vec4<T>&  right){
 		return multiply(right);
 	}
-	vec4& vec4::operator/=(const vec4& right){
+	template<typename T>
+	vec4<T>&  vec4<T>::operator/=(const vec4<T>&  right){
 		return divide(right);
 	}
 
 
-	bool operator==(const vec4& left, const vec4& right){
+	template<typename T>
+	bool operator==(const vec4<T>&  left, const vec4<T>&  right){
 		return left.x == right.x && left.y == right.y && left.z == right.z && left.w == right.w;
 	}
-	std::ostream& operator<<(std::ostream& left, const vec4& right){
+	template<typename T>
+	std::ostream& operator<<(std::ostream& left, const vec4<T>&  right){
 		return left << "(" << right.x << ", " << right.y << ", " << right.z << ", " << right.w << ")";
 	}
 }

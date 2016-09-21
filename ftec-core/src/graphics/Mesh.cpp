@@ -30,13 +30,13 @@ namespace ftec {
 			return;//Its not gonna work now is it
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_VerticesVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * m_Vertices.size(), &m_Vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3f) * m_Vertices.size(), &m_Vertices[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_NormalsVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * m_Normals.size(), &m_Normals[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3f) * m_Normals.size(), &m_Normals[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_UvsVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * m_Uvs.size(), &m_Uvs[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2f) * m_Uvs.size(), &m_Uvs[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndicesVBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * m_Triangles.size(), &m_Triangles[0], GL_STATIC_DRAW);
@@ -54,9 +54,9 @@ namespace ftec {
 		if (!input)
 			return mesh;
 
-		vector<vec3> vertexInput;
-		vector<vec3> normalInput;
-		vector<vec2> uvInput;
+		vector<vec3f> vertexInput;
+		vector<vec3f> normalInput;
+		vector<vec2f> uvInput;
 
 		vector<Face> triangleInput;
 
@@ -72,7 +72,7 @@ namespace ftec {
 			reader >> character;
 
 			if (character == "v") {
-				vec3 v;
+				vec3f v;
 
 				reader >> v.x;
 				reader >> v.y;
@@ -82,7 +82,7 @@ namespace ftec {
 				vertexInput.push_back(v);
 			}
 			else if (character == "vt") {
-				vec2 v;
+				vec2f v;
 
 				reader >> v.x;
 				reader >> v.y;
@@ -91,7 +91,7 @@ namespace ftec {
 				uvInput.push_back(v);
 			}
 			else if (character == "vn") {
-				vec3 v;
+				vec3f v;
 
 				reader >> v.x;
 				reader >> v.y;

@@ -12,9 +12,9 @@ namespace ftec {
 	class VBORenderable {
 	public:
 		struct VBORVertex {
-			vec3 position;
-			vec3 normal;
-			vec2 uv;
+			vec3f position;
+			vec3f normal;
+			vec2f uv;
 		};
 
 	public:

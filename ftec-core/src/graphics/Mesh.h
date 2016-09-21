@@ -15,9 +15,9 @@ namespace ftec {
 	public:
 		GLuint m_VerticesVBO, m_UvsVBO, m_NormalsVBO, m_IndicesVBO;
 		
-		std::vector<vec3> m_Vertices;
-		std::vector<vec3> m_Normals;
-		std::vector<vec2> m_Uvs;
+		std::vector<vec3f> m_Vertices;
+		std::vector<vec3f> m_Normals;
+		std::vector<vec2f> m_Uvs;
 		std::vector<unsigned int> m_Triangles;
 	public:
 		Mesh();

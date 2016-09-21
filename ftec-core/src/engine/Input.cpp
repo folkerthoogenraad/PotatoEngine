@@ -6,15 +6,15 @@ namespace ftec {
 	std::set<int> Input::downKeys = std::set<int>();
 	std::set<int> Input::pressedKeys = std::set<int>();
 	std::set<int> Input::releasedKeys = std::set<int>();
-	vec2 Input::mousePosition = vec2();
-	vec2 Input::mouseDelta = vec2();
+	vec2f Input::mousePosition = vec2f();
+	vec2f Input::mouseDelta = vec2f();
 
-	vec2 Input::getMousePosition()
+	vec2f Input::getMousePosition()
 	{
 		return mousePosition;
 	}
 
-	vec2 Input::getMouseDelta()
+	vec2f Input::getMouseDelta()
 	{
 		return mouseDelta;
 	}
@@ -28,7 +28,7 @@ namespace ftec {
 	{
 		pressedKeys.clear();
 		releasedKeys.clear();
-		mouseDelta = vec2();
+		mouseDelta = vec2f();
 
 	}
 
@@ -46,7 +46,7 @@ namespace ftec {
 
 	void Input::handleCursor(float x, float y)
 	{
-		vec2 newPosition(x, y);
+		vec2f newPosition(x, y);
 		mouseDelta += newPosition - mousePosition;
 		mousePosition = newPosition;
 	}

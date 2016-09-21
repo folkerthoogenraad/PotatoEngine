@@ -24,7 +24,7 @@ namespace ftec {
 		void begin();
 		void end();
 		void flush();
-		void vertex(vec3 position);
+		void vertex(vec3f position);
 		void material(const Material&);
 		void camera(const Camera&);
 	};

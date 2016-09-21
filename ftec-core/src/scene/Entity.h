@@ -5,7 +5,7 @@
 namespace ftec {
 	class Entity {
 	protected:
-		vec3 m_Position;
+		vec3f m_Position;
 	public:
 		Entity() = default;
 		virtual ~Entity() = default;

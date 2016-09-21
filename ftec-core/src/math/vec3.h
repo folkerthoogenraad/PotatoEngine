@@ -5,52 +5,57 @@
 
 namespace ftec{
 
+	template<typename T>
 	struct vec3
 	{
-		float x, y, z;
+		T x, y, z;
 
-		vec3(float x = 0, float y = 0, float z = 0);
+		vec3(T x = 0, T y = 0, T z = 0);
 
-		vec3& add(const vec3& other);
-		vec3& subtract(const vec3& other);
-		vec3& divide(const vec3& other);
-		vec3& multiply(const vec3& other);
+		vec3<T>& add(const vec3<T>& other);
+		vec3<T>& subtract(const vec3<T>& other);
+		vec3<T>& divide(const vec3<T>& other);
+		vec3<T>& multiply(const vec3<T>& other);
 
-		vec3& add(float other);
-		vec3& subtract(float other);
-		vec3& divide(float other);
-		vec3& multiply(float other);
+		vec3<T>& add(float other);
+		vec3<T>& subtract(float other);
+		vec3<T>& divide(float other);
+		vec3<T>& multiply(float other);
 
-		vec3& normalize();
-		float magnitude();
+		vec3<T>& normalize();
+		T magnitude();
 
-		static vec3 cross(const vec3 &left, const vec3 &right);
-		static float dot(const vec3 &left, const vec3 &right);
+		static vec3<T>cross(const vec3<T>&left, const vec3<T>&right);
+		static T dot(const vec3<T>&left, const vec3<T>&right);
 
-		friend vec3 operator+(const vec3& left, const vec3& right);
-		friend vec3 operator-(const vec3& left, const vec3& right);
-		friend vec3 operator*(const vec3& left, const vec3& right);
-		friend vec3 operator/(const vec3& left, const vec3& right);
+		friend vec3<T>operator+(const vec3<T>& left, const vec3<T>& right);
+		friend vec3<T>operator-(const vec3<T>& left, const vec3<T>& right);
+		friend vec3<T>operator*(const vec3<T>& left, const vec3<T>& right);
+		friend vec3<T>operator/(const vec3<T>& left, const vec3<T>& right);
 
-		friend vec3 operator+(const vec3& left, float right);
-		friend vec3 operator-(const vec3& left, float right);
-		friend vec3 operator*(const vec3& left, float right);
-		friend vec3 operator/(const vec3& left, float right);
+		friend vec3<T>operator+(const vec3<T>& left, float right);
+		friend vec3<T>operator-(const vec3<T>& left, float right);
+		friend vec3<T>operator*(const vec3<T>& left, float right);
+		friend vec3<T>operator/(const vec3<T>& left, float right);
 
-		vec3& operator+=(const vec3& right);
-		vec3& operator-=(const vec3& right);
-		vec3& operator*=(const vec3& right);
-		vec3& operator/=(const vec3& right);
+		vec3<T>& operator+=(const vec3<T>& right);
+		vec3<T>& operator-=(const vec3<T>& right);
+		vec3<T>& operator*=(const vec3<T>& right);
+		vec3<T>& operator/=(const vec3<T>& right);
 
-		friend vec3 operator-(const vec3& left);
+		friend vec3<T>operator-(const vec3<T>& left);
 
         static const int COMPONENTS = 3;
 
-		friend bool operator==(const vec3& left, const vec3& right);
+		friend bool operator==(const vec3<T>& left, const vec3<T>& right);
 
-		friend std::ostream& operator<<(std::ostream& left, const vec3& right);
+		friend std::ostream& operator<<(std::ostream& left, const vec3<T>& right);
 
 	};
+	
+	typedef vec3<float> vec3f;
+	typedef vec3<int> vec3i;
+	typedef vec3<double> vec3d;
 
 }
 

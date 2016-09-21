@@ -2,30 +2,37 @@
 
 namespace ftec{
 
-	vec2::vec2(float x, float y) : x(x), y(y) {};
+	template<typename T>
+	vec2<T>::vec2(T x, T y)
+	{
+	}
 
-	vec2& vec2::add(const vec2& other)
+	template<typename T>
+	vec2<T>& vec2<T>::add(const vec2<T>& other)
 	{
 		x += other.x;
 		y += other.y;
 		return *this;
 	}
 
-	vec2& vec2::subtract(const vec2& other)
+	template<typename T>
+	vec2<T>& vec2<T>::subtract(const vec2<T>& other)
 	{
 		x -= other.x;
 		y -= other.y;
 		return *this;
 	}
 
-	vec2& vec2::divide(const vec2& other)
+	template<typename T>
+	vec2<T>& vec2<T>::divide(const vec2<T>& other)
 	{
 		x /= other.x;
 		y /= other.y;
 		return *this;
 	}
 
-	vec2& vec2::multiply(const vec2& other)
+	template<typename T>
+	vec2<T>& vec2<T>::multiply(const vec2<T>& other)
 	{
 		x *= other.x;
 		y *= other.y;
@@ -33,38 +40,51 @@ namespace ftec{
 	}
 
 
-	vec2 operator+(const vec2& left, const vec2& right){
+	template<typename T>
+	vec2<T> operator+(const vec2<T>& left, const vec2<T>& right){
 		return vec2(left.x + right.x, left.y + right.y);
 	}
-	vec2 operator-(const vec2& left, const vec2& right){
+
+	template<typename T>
+	vec2<T> operator-(const vec2<T>& left, const vec2<T>& right){
 		return vec2(left.x - right.x, left.y - right.y);
 	}
-	vec2 operator*(const vec2& left, const vec2& right){
+
+	template<typename T>
+	vec2<T> operator*(const vec2<T>& left, const vec2<T>& right){
 		return vec2(left.x * right.x, left.y * right.y);
 	}
-	vec2 operator/(const vec2& left, const vec2& right){
+
+	template<typename T>
+	vec2<T> operator/(const vec2<T>& left, const vec2<T>& right){
 		return vec2(left.x / right.x, left.y / right.y);
 	}
 
 
-	vec2& vec2::operator+=(const vec2& right){
+	template<typename T>
+	vec2<T>& vec2<T>::operator+=(const vec2<T>& right){
 		return add(right);
 	}
-	vec2& vec2::operator-=(const vec2& right){
+	template<typename T>
+	vec2<T>& vec2<T>::operator-=(const vec2<T>& right){
 		return subtract(right);
 	}
-	vec2& vec2::operator*=(const vec2& right){
+	template<typename T>
+	vec2<T>& vec2<T>::operator*=(const vec2<T>& right){
 		return multiply(right);
 	}
-	vec2& vec2::operator/=(const vec2& right){
+	template<typename T>
+	vec2<T>& vec2<T>::operator/=(const vec2<T>& right){
 		return divide(right);
 	}
 
 
-	bool operator==(const vec2& left, const vec2& right){
+	template<typename T>
+	bool operator==(const vec2<T>& left, const vec2<T>& right){
 		return left.x == right.x && left.y == right.y;
 	}
-	std::ostream& operator<<(std::ostream& left, const vec2& right){
+	template<typename T>
+	std::ostream& operator<<(std::ostream& left, const vec2<T>& right){
 		return left << "(" << right.x << ", " << right.y << ")";
 	}
 }

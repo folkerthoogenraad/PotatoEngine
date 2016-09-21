@@ -39,9 +39,9 @@ namespace ftec{
 		return *this;
 	}
 
-	vec4 mat4::multiply(const vec4 & other) const
+	vec4f mat4::multiply(const vec4f & other) const
 	{
-		return vec4(
+		return vec4f(
 			other.x * elements[0 + 0 * 4] + other.y * elements[1 + 0 * 4] + other.z * elements[2 + 0 * 4] + other.w * elements[3 + 0 * 4],
 			other.x * elements[0 + 1 * 4] + other.y * elements[1 + 1 * 4] + other.z * elements[2 + 1 * 4] + other.w * elements[3 + 1 * 4],
 			other.x * elements[0 + 2 * 4] + other.y * elements[1 + 2 * 4] + other.z * elements[2 + 2 * 4] + other.w * elements[3 + 2 * 4],
@@ -49,9 +49,9 @@ namespace ftec{
 		);
 	}
 
-	vec3 mat4::multiply(const vec3 & other) const
+	vec3f mat4::multiply(const vec3f & other) const
 	{
-		return vec3(
+		return vec3f(
 			other.x * elements[0 + 0 * 4] + other.y * elements[1 + 0 * 4] + other.z * elements[2 + 0 * 4] + elements[3 + 0 * 4],
 			other.x * elements[0 + 1 * 4] + other.y * elements[1 + 1 * 4] + other.z * elements[2 + 1 * 4] + elements[3 + 1 * 4],
 			other.x * elements[0 + 2 * 4] + other.y * elements[1 + 2 * 4] + other.z * elements[2 + 2 * 4] + elements[3 + 2 * 4]
@@ -63,12 +63,12 @@ namespace ftec{
 		return left.multiply(right);
 	}
 
-	vec4 operator*(const mat4 &left, const vec4 & right)
+	vec4f operator*(const mat4 &left, const vec4f & right)
 	{
 		return left.multiply(right);
 	}
 
-	vec3 operator*(const mat4 &left, const vec3 & right)
+	vec3f operator*(const mat4 &left, const vec3f & right)
 	{
 		return left.multiply(right);
 	}
@@ -94,7 +94,7 @@ namespace ftec{
 		return left;
 	}
 
-	mat4 mat4::translation(const vec3& translation)
+	mat4 mat4::translation(const vec3f& translation)
 	{
 		mat4 result;
 
@@ -105,7 +105,7 @@ namespace ftec{
 		return result;
 	}
 
-	mat4 mat4::rotation(float angle, const vec3& axis)
+	mat4 mat4::rotation(float angle, const vec3f& axis)
 	{
 		mat4 result;
 
@@ -133,7 +133,7 @@ namespace ftec{
 		return result;
 	}
 
-	mat4 mat4::scale(const vec3& scale)
+	mat4 mat4::scale(const vec3f& scale)
 	{
 		mat4 result;
 
@@ -240,28 +240,28 @@ namespace ftec{
 		return result;
 	}
 
-	mat4 mat4::lookAt(const vec3 & eye, const vec3 & center, const vec3 & up)
+	mat4 mat4::lookAt(const vec3f & eye, const vec3f & center, const vec3f & up)
 	{
 		mat4 result;
 
-		vec3 zaxis = (center - eye).normalize();
-		vec3 xaxis = vec3::cross(up, zaxis).normalize();
-		vec3 yaxis = vec3::cross(zaxis, xaxis);
+		vec3f zaxis = (center - eye).normalize();
+		vec3f xaxis = vec3f::cross(up, zaxis).normalize();
+		vec3f yaxis = vec3f::cross(zaxis, xaxis);
 
 		result.elements[0 + 0 * 4] = xaxis.x;
 		result.elements[1 + 0 * 4] = xaxis.y;
 		result.elements[2 + 0 * 4] = xaxis.z;
-		result.elements[3 + 0 * 4] = -vec3::dot(xaxis, eye);
+		result.elements[3 + 0 * 4] = -vec3f::dot(xaxis, eye);
 
 		result.elements[0 + 1 * 4] = yaxis.x;
 		result.elements[1 + 1 * 4] = yaxis.y;
 		result.elements[2 + 1 * 4] = yaxis.z;
-		result.elements[3 + 1 * 4] = -vec3::dot(yaxis, eye);
+		result.elements[3 + 1 * 4] = -vec3f::dot(yaxis, eye);
 
 		result.elements[0 + 2 * 4] = zaxis.x;
 		result.elements[1 + 2 * 4] = zaxis.y;
 		result.elements[2 + 2 * 4] = zaxis.z;
-		result.elements[3 + 2 * 4] = -vec3::dot(zaxis, eye);
+		result.elements[3 + 2 * 4] = -vec3f::dot(zaxis, eye);
 
 		result.elements[0 + 3 * 4] = 0;
 		result.elements[1 + 3 * 4] = 0;
@@ -272,11 +272,11 @@ namespace ftec{
 	}
 
 	//TODO look at the resulting matrix, see if it looks a bit correctish
-	mat4 mat4::fromForward(const vec3 & forward, const vec3 & up)
+	mat4 mat4::fromForward(const vec3f & forward, const vec3f & up)
 	{
-		vec3 zaxis = forward;
-		vec3 xaxis = vec3::cross(up, zaxis);
-		vec3 yaxis = vec3::cross(zaxis, xaxis);
+		vec3f zaxis = forward;
+		vec3f xaxis = vec3f::cross(up, zaxis);
+		vec3f yaxis = vec3f::cross(zaxis, xaxis);
 
 		mat4 result;
 

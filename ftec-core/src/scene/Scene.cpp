@@ -44,7 +44,7 @@ namespace ftec {
 		//TODO
 	}
 
-	void Scene::addMesh(const vec3 & position, std::shared_ptr<Mesh> mesh, const Material &material)
+	void Scene::addMesh(const vec3f & position, std::shared_ptr<Mesh> mesh, const Material &material)
 	{
 		StaticGeometry s;
 		s.mesh = mesh;

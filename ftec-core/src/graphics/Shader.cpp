@@ -98,17 +98,17 @@ namespace ftec {
 		glUniformMatrix4fv(location, 1, GL_TRUE, &m.elements[0]);
 	}
 
-	void Shader::setUniform(int location, const vec2 &v)
+	void Shader::setUniform(int location, const vec2f &v)
 	{
 		glUniform2f(location, v.x, v.y);
 	}
 
-	void Shader::setUniform(int location, const vec3 &v)
+	void Shader::setUniform(int location, const vec3f &v)
 	{
 		glUniform3f(location, v.x, v.y, v.z);
 	}
 
-	void Shader::setUniform(int location, const vec4 &v)
+	void Shader::setUniform(int location, const vec4f &v)
 	{
 		glUniform4f(location, v.x, v.y, v.z, v.w);
 	}

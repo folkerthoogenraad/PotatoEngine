@@ -3,6 +3,7 @@
 #include "engine/Engine.h"
 #include "engine/Time.h"
 #include "engine/Input.h"
+#include "math/vec3.h"
 
 namespace ftec {
 	NoClipCameraEntity::NoClipCameraEntity()
@@ -26,7 +27,7 @@ namespace ftec {
 		if (cam.m_Pitch < -90)
 			cam.m_Pitch = -90;
 
-		vec3 motion;
+		vec3f motion;
 
 		if (Input::isKeyDown(GLFW_KEY_W)) {
 			motion.z += 1;
@@ -38,7 +39,7 @@ namespace ftec {
 			motion.x -= 1;
 		}
 		
-		mat4 transform = mat4::rotation(cam.m_Yaw, vec3(0,1,0));
+		mat4 transform = mat4::rotation(cam.m_Yaw, vec3f(0,1,0));
 		motion = transform * motion;
 
 		motion.y = 0;

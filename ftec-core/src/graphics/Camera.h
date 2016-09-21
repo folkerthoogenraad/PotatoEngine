@@ -8,7 +8,7 @@
 namespace ftec {
 	class Camera {
 	public:
-		vec3 m_Position;
+		vec3f m_Position;
 
 		//TODO add render target
 		//TODO add ortho camera

@@ -10,28 +10,17 @@ namespace ftec {
 
 namespace potato {
 
+	typedef ftec::vec2i Position;
+	typedef ftec::vec2i Dimension;
+
 	class Event;
-
-	struct Dimension {
-		int width;
-		int heigth;
-
-		ftec::vec2 toVector();
-	};
-
-	struct Position {
-		int x;
-		int y;
-
-		ftec::vec2 toVector();
-	};
 
 	class Panel {
 	protected:
 		Dimension m_Size;
 		Position m_Position;
 
-		ftec::vec4 m_BackgroundColor = ftec::vec4::white();
+		ftec::vec4f m_BackgroundColor = ftec::vec4f::white();
 
 		bool m_Opaque;
 

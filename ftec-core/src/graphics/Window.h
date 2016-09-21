@@ -12,7 +12,7 @@ namespace ftec {
 
 		GLFWwindow *m_Window;
 
-		vec2 m_MousePosition;
+		vec2f m_MousePosition;
 		bool m_Fullscreen;
 		bool m_CloseRequested;
 	public:
@@ -28,7 +28,7 @@ namespace ftec {
 		inline float getWidth() { return m_Width; }
 		inline float getHeight() { return m_Height; }
 		
-		inline vec2 getMousePosition() const { return m_MousePosition; }
+		inline vec2f getMousePosition() const { return m_MousePosition; }
 		inline bool isCloseRequested() const { return m_CloseRequested; }
 		friend void cursor_position_callback(GLFWwindow* glfwWindow, double xpos, double ypos);
 		friend void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

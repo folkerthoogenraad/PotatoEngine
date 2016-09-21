@@ -35,7 +35,7 @@ namespace ftec {
 		Renderer::drawDirect(m_Vbo,m_Material,m_Camera);
 	}
 
-	void SpriteBatch::vertex(vec3 p)
+	void SpriteBatch::vertex(vec3f p)
 	{
 		m_Vbo.m_Vertices[m_Index].position = p;
 		m_Index++;

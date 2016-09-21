@@ -31,17 +31,17 @@ namespace ftec {
 		if (!mesh) { //TODO not do this here.
 			mesh = std::make_shared<Mesh>();
 			mesh->m_Vertices = {
-				vec3(-1,-1),
-				vec3(1,-1),
-				vec3(1,1),
-				vec3(-1,1)
+				vec3f(-1,-1),
+				vec3f(1,-1),
+				vec3f(1,1),
+				vec3f(-1,1)
 			};
-			mesh->m_Normals = { vec3(0,0,1), vec3(0,0,1), vec3(0,0,1), vec3(0,0,1) };
+			mesh->m_Normals = { vec3f(0,0,1), vec3f(0,0,1), vec3f(0,0,1), vec3f(0,0,1) };
 			mesh->m_Uvs = {
-				vec2(0,0),
-				vec2(1,0),
-				vec2(1,1),
-				vec2(0,1)
+				vec2f(0,0),
+				vec2f(1,0),
+				vec2f(1,1),
+				vec2f(0,1)
 			};
 			mesh->m_Triangles = {
 				0, 1, 2,
@@ -92,7 +92,7 @@ namespace ftec {
 			if (l->isShadowsEnabled()) {
 				l->getShadowBuffer()->bind();
 
-				Renderer::renderport(0, 0, l->getShadowBuffer()->getWidth(), l->getShadowBuffer()->getHeight());
+				Renderer::renderport(rect2i(0, 0, l->getShadowBuffer()->getWidth(), l->getShadowBuffer()->getHeight()));
 
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -132,7 +132,7 @@ namespace ftec {
 			//Set the correct render target, if the camera has a custom render target
 			if (c->hasRenderTarget()) {
 				c->m_RenderTarget->bind();
-				Renderer::renderport(0, 0, c->m_RenderTarget->getWidth(), c->m_RenderTarget->getHeight());
+				Renderer::renderport(rect2i(0, 0, c->m_RenderTarget->getWidth(), c->m_RenderTarget->getHeight()));
 			}
 
 			//TODO do this only if the camera requests this
@@ -158,7 +158,7 @@ namespace ftec {
 
 				if (c->m_RenderToScreen) {
 					//TODO dont do it like this probably
-					Renderer::renderport(0, 0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight());
+					Renderer::renderport(rect2i(0, 0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight()));
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 

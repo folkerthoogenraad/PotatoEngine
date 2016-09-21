@@ -19,9 +19,9 @@ namespace ftec {
 		int getAttributeLocation(const std::string &attribute);
 
 		void setUniform(int location, const mat4 &m);
-		void setUniform(int location, const vec2 &v);
-		void setUniform(int location, const vec3 &v);
-		void setUniform(int location, const vec4 &v);
+		void setUniform(int location, const vec2f &v);
+		void setUniform(int location, const vec3f &v);
+		void setUniform(int location, const vec4f &v);
 		void setUniform(int location, float f);
 		void setUniform(int location, int i);
 

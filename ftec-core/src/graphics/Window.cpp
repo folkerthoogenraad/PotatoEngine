@@ -62,7 +62,7 @@ namespace ftec {
 		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
 		if (wp) {
 			Window &window = *wp;
-			window.m_MousePosition = vec2(xpos, ypos);
+			window.m_MousePosition = vec2f(xpos, ypos);
 		}
 		Input::handleCursor((float)xpos, (float)ypos);
 	}

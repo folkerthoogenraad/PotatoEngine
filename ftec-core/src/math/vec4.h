@@ -7,39 +7,44 @@ namespace ftec{
 
 
 
+	template<typename T>
 	struct vec4
 	{
-		float x, y, z, w;
+		T x, y, z, w;
 
-		vec4(float x = 0, float y = 0, float z = 0, float w = 0);
+		vec4(T x = 0, T y = 0, T z = 0, T w = 0);
 
-		vec4& add(const vec4& other);
-		vec4& subtract(const vec4& other);
-		vec4& divide(const vec4& other);
-		vec4& multiply(const vec4& other);
+		vec4<T>&  add(const vec4<T>&  other);
+		vec4<T>&  subtract(const vec4<T>&  other);
+		vec4<T>&  divide(const vec4<T>&  other);
+		vec4<T>&  multiply(const vec4<T>&  other);
 
 
-		friend vec4 operator+(const vec4& left, const vec4& right);
-		friend vec4 operator-(const vec4& left, const vec4& right);
-		friend vec4 operator*(const vec4& left, const vec4& right);
-		friend vec4 operator/(const vec4& left, const vec4& right);
+		friend vec4<T> operator+(const vec4<T>&  left, const vec4<T>&  right);
+		friend vec4<T> operator-(const vec4<T>&  left, const vec4<T>&  right);
+		friend vec4<T> operator*(const vec4<T>&  left, const vec4<T>&  right);
+		friend vec4<T> operator/(const vec4<T>&  left, const vec4<T>&  right);
 
-		vec4& operator+=(const vec4& right);
-		vec4& operator-=(const vec4& right);
-		vec4& operator*=(const vec4& right);
-		vec4& operator/=(const vec4& right);
+		vec4<T>&  operator+=(const vec4<T>&  right);
+		vec4<T>&  operator-=(const vec4<T>&  right);
+		vec4<T>&  operator*=(const vec4<T>&  right);
+		vec4<T>&  operator/=(const vec4<T>&  right);
 
 
         static const int COMPONENTS = 4;
 
 
-		friend bool operator==(const vec4& left, const vec4& right);
+		friend bool operator==(const vec4<T>&  left, const vec4<T>&  right);
 
-		friend std::ostream& operator<<(std::ostream& left, const vec4& right);
+		friend std::ostream& operator<<(std::ostream& left, const vec4<T>&  right);
 
-		inline static vec4 white() { return vec4(1, 1, 1, 1); }
+		inline static vec4<T> white() { return vec4(1, 1, 1, 1); }
 
 	};
+
+	typedef vec4<float> vec4f;
+	typedef vec4<int> vec4i;
+	typedef vec4<double> vec4d;
 
 }
 

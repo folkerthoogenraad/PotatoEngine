@@ -15,18 +15,18 @@ namespace ftec {
 
 		mat4& multiply(const mat4& other);
 
-		vec4 multiply(const vec4& other) const;
-		vec3 multiply(const vec3& other) const;
+		vec4f multiply(const vec4f& other) const;
+		vec3f multiply(const vec3f& other) const;
 
 		static mat4 identity();
 		static mat4 orthographic(float l, float r, float b, float t, float n, float f);
 		static mat4 perspective(float fov, float asp, float near, float far);
-		static mat4 lookAt(const vec3 &eye, const vec3 &center, const vec3 &up = vec3(0, 1, 0));
-		static mat4 fromForward(const vec3 &forward, const vec3 &up);
+		static mat4 lookAt(const vec3f &eye, const vec3f &center, const vec3f &up = vec3f(0, 1, 0));
+		static mat4 fromForward(const vec3f &forward, const vec3f &up);
 
-		static mat4 translation(const vec3& translation);
-		static mat4 rotation(float angle, const vec3& axis);
-		static mat4 scale(const vec3& scale);
+		static mat4 translation(const vec3f& translation);
+		static mat4 rotation(float angle, const vec3f& axis);
+		static mat4 scale(const vec3f& scale);
 
 		static mat4 rotationX(float angle);
 		static mat4 rotationY(float angle);
@@ -36,8 +36,8 @@ namespace ftec {
 		friend mat4 operator*(mat4 left, const mat4& right);
 		mat4 operator*=(const mat4& right);
 
-		friend vec4 operator*(const mat4 &left, const vec4& right);
-		friend vec3 operator*(const mat4 &left, const vec3& right);
+		friend vec4f operator*(const mat4 &left, const vec4f& right);
+		friend vec3f operator*(const mat4 &left, const vec3f& right);
 
 		friend std::ostream& operator<<(std::ostream& left, const mat4& right);
 
