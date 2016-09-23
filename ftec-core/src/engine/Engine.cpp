@@ -70,7 +70,7 @@ namespace ftec {
 			getWindow().poll();
 
 			double currentTime = glfwGetTime();
-			Time::deltaTime = previousTime - currentTime;
+			Time::deltaTime = (float) (previousTime - currentTime);
 			Time::runTime += Time::deltaTime;
 			Time::calculateSinCosTime();
 

@@ -23,11 +23,11 @@ namespace ftec {
 		unsigned int lastIndex;
 		GLuint m_Vbo;
 	public:
-		VBORenderable(size_t size);
+		VBORenderable(unsigned int size);
 		~VBORenderable();
 
 		///Offset and amount in vertices
-		void update(size_t offset, size_t amount);
+		void update(unsigned int offset, unsigned int amount);
 
 		///Realocates m_Vertices.size() on the OpenGL side of things
 		void realocate();

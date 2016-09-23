@@ -4,6 +4,8 @@
 namespace ftec {
 	void Graphics2D::clip(const rect2i &rectangle)
 	{
+		this->m_ClippingRectangle = rectangle;
+
 		//TODO Flushing
 		Renderer::clip(rectangle);
 	}

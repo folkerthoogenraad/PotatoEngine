@@ -4,9 +4,12 @@
 namespace potato {
 
 	enum class EventType {
-		MOUSE_CLICK,
+		MOUSE_PRESS,
+		MOUSE_RELEASE,
 		MOUSE_MOVE,
-		KEYBOARD_PRESS,
+		KEY_PRESS,
+		KEY_RELEASE,
+		KEY_TYPED,
 	};
 
 	class EventData {

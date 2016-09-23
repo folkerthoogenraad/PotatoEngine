@@ -170,6 +170,7 @@
     <ClInclude Include="src\graphics\SpriteBatch.h" />
     <ClInclude Include="src\graphics\Texture.h" />
     <ClInclude Include="src\graphics\Window.h" />
+    <ClInclude Include="src\io\defer.h" />
     <ClInclude Include="src\io\ioutils.h" />
     <ClInclude Include="src\logger\log.h" />
     <ClInclude Include="src\math\mat4.h" />

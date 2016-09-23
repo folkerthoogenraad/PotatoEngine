@@ -1,7 +1,7 @@
 #include "VBORenderable.h"
 
 namespace ftec {
-	VBORenderable::VBORenderable(size_t size)
+	VBORenderable::VBORenderable(unsigned int size)
 		: m_Vertices(), firstIndex(0), lastIndex(size)
 	{
 		m_Vertices.resize(size);
@@ -14,7 +14,7 @@ namespace ftec {
 		glDeleteBuffers(1, &m_Vbo);
 	}
 
-	void VBORenderable::update(size_t offset, size_t amount)
+	void VBORenderable::update(unsigned int offset, unsigned int amount)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
 		glBufferSubData(GL_ARRAY_BUFFER, offset * sizeof(VBORVertex), amount * sizeof(VBORVertex), &m_Vertices[offset]);

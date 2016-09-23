@@ -109,7 +109,7 @@ namespace ftec{
 	{
 		mat4 result;
 
-		float r = angle * (3.141592654 / 180);
+		float r = angle * (3.141592654f / 180.f);
 		float c = cos(r);
 		float s = sin(r);
 		float omc = 1 - c;
@@ -148,7 +148,7 @@ namespace ftec{
 	{
 		mat4 result;
 
-		float r = angle * (3.141592654 / 180);
+		float r = angle * (3.141592654f / 180.f);
 		float s = sin(r);
 		float c = cos(r);
 
@@ -169,7 +169,7 @@ namespace ftec{
 	{
 		mat4 result;
 
-		float r = angle * (3.141592654 / 180);
+		float r = angle * (3.141592654f / 180.f);
 		float s = sin(r);
 		float c = cos(r);
 
@@ -189,7 +189,7 @@ namespace ftec{
 	{
 		mat4 result;
 
-		float r = angle * (3.141592654 / 180);
+		float r = angle * (3.141592654f / 180.f);
 		float s = sin(r);
 		float c = cos(r);
 
@@ -223,7 +223,7 @@ namespace ftec{
 	{
 		mat4 result;
 
-		float q = 1.0f / tan(0.5f * fov * (3.141592653 / 180));
+		float q = 1.0f / tan(0.5f * fov * (3.141592653f / 180.f));
 		float a = q / asp;
 
 		float b = (near + far) / (near - far);

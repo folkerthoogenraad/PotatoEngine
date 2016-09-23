@@ -14,10 +14,10 @@ namespace ftec {
 		static float cos2Time;
 
 		static inline void calculateSinCosTime() {
-			sinTime = sin(runTime);
-			cosTime = cos(runTime);
-			sin2Time = sin(runTime*2);
-			cos2Time = cos(runTime*2);
+			sinTime = sinf(runTime);
+			cosTime = cosf(runTime);
+			sin2Time = sinf(runTime*2);
+			cos2Time = cosf(runTime*2);
 		}
 	};
 }

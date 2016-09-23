@@ -158,7 +158,7 @@ namespace ftec {
 
 				if (c->m_RenderToScreen) {
 					//TODO dont do it like this probably
-					Renderer::renderport(rect2i(0, 0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight()));
+					Renderer::renderport(rect2i(0, 0, (int) Engine::getWindow().getWidth(), (int) Engine::getWindow().getHeight()));
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 

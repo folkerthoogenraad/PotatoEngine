@@ -16,7 +16,6 @@ namespace ftec {
 		T &width() { return size.x; }
 		T &height() { return size.y; }
 
-		//TODO test if this is needed
 		const T &x() const { return position.x; }
 		const T &y() const { return position.y; }
 		const T &width() const { return size.x; }

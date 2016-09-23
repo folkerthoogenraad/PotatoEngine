@@ -4,6 +4,7 @@
 #include <vector>
 
 namespace ftec {
+	
 	Shader::Shader(const std::string &vertexSource, const std::string &fragmentSource)
 	{
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -21,10 +22,9 @@ namespace ftec {
 		auto checkCompileError = [&](GLuint sh){
 			GLint success = 0;
 			glGetShaderiv(sh, GL_COMPILE_STATUS, &success);
-			if (success == GL_FALSE) {
-				LOG_ERROR("Shader failed to compile");
 
-				GLint maxLength = 0;
+			if (success == GL_FALSE) {
+				LOG_ERROR("Shader failed to compile"); GLint maxLength = 0;
 				glGetShaderiv(sh, GL_INFO_LOG_LENGTH, &maxLength);
 
 				// The maxLength includes the NULL character
@@ -33,8 +33,9 @@ namespace ftec {
 
 				const char *d = &errorLog[0];
 				LOG_ERROR(d);
-
 			}
+			
+
 		};
 
 		checkCompileError(vertexShader);
@@ -43,6 +44,13 @@ namespace ftec {
 		m_Program = glCreateProgram();
 		glAttachShader(m_Program, vertexShader);
 		glAttachShader(m_Program, fragmentShader);
+
+		glBindAttribLocation(m_Program, SHADER_ATTRIBUTE_POSITION, SHADER_ATTRIBUTE_POSITION_NAME);
+		glBindAttribLocation(m_Program, SHADER_ATTRIBUTE_NORMAL, SHADER_ATTRIBUTE_NORMAL_NAME);
+		glBindAttribLocation(m_Program, SHADER_ATTRIBUTE_UV, SHADER_ATTRIBUTE_UV_NAME);
+
+		glBindFragDataLocation(m_Program, 0, SHADER_OUTPUT_COLOR_NAME);
+
 		glLinkProgram(m_Program);
 
 		auto checkLinkError = [&](GLuint program) {
@@ -68,6 +76,7 @@ namespace ftec {
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 	}
+
 	Shader::~Shader()
 	{
 		glDeleteProgram(m_Program);

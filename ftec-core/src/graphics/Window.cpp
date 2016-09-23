@@ -23,9 +23,7 @@ namespace ftec {
 	void Window::poll()
 	{
 		glfwPollEvents();
-		m_CloseRequested = glfwWindowShouldClose(m_Window);
-
-		//TODO setup things for input stuff
+		m_CloseRequested = glfwWindowShouldClose(m_Window) > 0; //fucking warnings
 	}
 
 	void Window::setCursorMode(int mode)
@@ -62,10 +60,10 @@ namespace ftec {
 		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
 		if (wp) {
 			Window &window = *wp;
-			window.m_MousePosition = vec2f(xpos, ypos);
+			window.m_MousePosition = vec2f((float) xpos, (float) ypos);
 		}
-		Input::handleCursor((float)xpos, (float)ypos);
-	}
+		Input::handleCursor((float) xpos, (float) ypos);
+	 }
 
 
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)

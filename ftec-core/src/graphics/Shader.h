@@ -4,6 +4,16 @@
 #include "GL.h"
 #include "math/math.h"
 
+#define SHADER_ATTRIBUTE_POSITION 0
+#define SHADER_ATTRIBUTE_NORMAL 1
+#define SHADER_ATTRIBUTE_UV 2
+
+#define SHADER_ATTRIBUTE_POSITION_NAME "position"
+#define SHADER_ATTRIBUTE_NORMAL_NAME "normal"
+#define SHADER_ATTRIBUTE_UV_NAME "uv"
+
+#define SHADER_OUTPUT_COLOR_NAME "FragColor"
+
 namespace ftec {
 	class Shader : public ManagableResource {
 	private:

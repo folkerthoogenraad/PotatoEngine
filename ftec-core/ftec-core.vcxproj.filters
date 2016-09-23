@@ -218,6 +218,9 @@
     <ClInclude Include="src\math\rect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\io\defer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default_vertex.glsl" />

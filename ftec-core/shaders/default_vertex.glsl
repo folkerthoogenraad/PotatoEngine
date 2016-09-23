@@ -1,4 +1,4 @@
-
+#version 150
 
 uniform mat4 u_MatrixModel;
 uniform mat4 u_MatrixView;
@@ -14,18 +14,18 @@ struct Light{
 
 uniform Light u_Light;
 
-attribute vec3 position;
-attribute vec3 normal;
-attribute vec2 uv;
+in vec3 position;
+in vec3 normal;
+in vec2 uv;
 
-varying vec2 v_Uv;
+out vec2 v_Uv;
 
-varying vec4 v_WorldPosition;
-varying vec4 v_WorldNormal;
-varying vec3 v_WorldLightPosition;
+out vec4 v_WorldPosition;
+out vec4 v_WorldNormal;
+out vec4 v_WorldLightPosition;
 
-varying vec4 v_Color;
-varying float v_Lightness;
+out vec4 v_Color;
+out float v_Lightness;
 
 
 void main()
