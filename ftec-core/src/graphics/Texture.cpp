@@ -60,7 +60,7 @@ namespace ftec {
 		else {
 			//Load the image using FreeImage
 
-			auto loadImage = [&](GLuint texID) {
+			auto loadImage = [&](Texture &t) {
 
 				//image format
 				FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -100,10 +100,13 @@ namespace ftec {
 					return false;
 
 				//bind to the new texture ID
-				glBindTexture(GL_TEXTURE_2D, texID);
+				t.bind();
 				//store the texture data for OpenGL use
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height,
 					0, GL_BGRA, GL_UNSIGNED_BYTE, bits);
+
+				t.m_Width = width;
+				t.m_Height = height;
 
 				//Free FreeImage's copy of the data
 				FreeImage_Unload(dib);
@@ -113,7 +116,7 @@ namespace ftec {
 				return true;
 			};
 
-			if (!loadImage(texture->m_TextureID)) {
+			if (!loadImage(*texture)) {
 				TERMINATE("Failed to load texture...");
 			}
 

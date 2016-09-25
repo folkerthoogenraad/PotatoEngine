@@ -16,10 +16,15 @@ namespace ftec {
 		T &width() { return size.x; }
 		T &height() { return size.y; }
 
-		const T &x() const { return position.x; }
-		const T &y() const { return position.y; }
-		const T &width() const { return size.x; }
-		const T &height() const { return size.y; }
+		T x() const { return position.x; }
+		T y() const { return position.y; }
+		T width() const { return size.x; }
+		T height() const { return size.y; }
+
+		T left() const { return position.x; }
+		T right() const { return position.x + size.x; }
+		T top() const { return position.y; }
+		T bottom() const { return position.y + size.y; }
 
 	};
 

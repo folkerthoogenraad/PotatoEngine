@@ -1,17 +1,41 @@
 #include "Graphics2D.h"
 #include "Renderer.h"
 
-namespace ftec {
-	void Graphics2D::clip(const rect2i &rectangle)
-	{
-		this->m_ClippingRectangle = rectangle;
+#include "Texture.h"
+#include "Sprite.h"
 
-		//TODO Flushing
-		Renderer::clip(rectangle);
+namespace ftec {
+
+	void Graphics2D::drawRectangle(const rect2f & rectangle, bool fill)
+	{
+	}
+	void Graphics2D::drawString(const std::string & text, const vec2f & position)
+	{
+	}
+	void Graphics2D::drawSprite(const Sprite & sprite, const vec2f & position)
+	{
+	}
+	void Graphics2D::drawClear()
+	{
+	}
+	void Graphics2D::setClip(const rect2i &rectangle)
+	{
+		flush();
+
+		this->m_ClippingRectangle = rectangle;
 	}
 
-	void Graphics2D::clear()
+	void Graphics2D::setColor(const color & color)
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//TODO find out what is more efficient
+		//Adding 4 bytes per vertex of memory to copy
+		//Or add a drawcall
+
+		this->m_Color = color;
+	}
+
+	void Graphics2D::flush()
+	{
+		Renderer::clip(this->m_ClippingRectangle);
 	}
 }

@@ -174,4 +174,6 @@ namespace ftec {
 	typedef vec4<int> vec4i;
 	typedef vec4<double> vec4d;
 
+	typedef vec4<float> color;
+
 }
