@@ -3,6 +3,7 @@
 #include <string>
 #include "logger/log.h"
 #include <sstream>
+#include "GL.h"
 
 namespace ftec {
 	Mesh::Mesh()

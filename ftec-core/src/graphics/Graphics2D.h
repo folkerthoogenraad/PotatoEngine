@@ -1,6 +1,8 @@
 #pragma once
 #include "math/rect.h"
 #include "math/vec4.h"
+
+#include "SpriteBatch.h"
 #include <memory>
 
 namespace ftec {
@@ -13,8 +15,11 @@ namespace ftec {
 		//White texture for white shading (thanks obama)
 		std::shared_ptr<Texture> m_WhiteTexture;
 
+		//This has the current shader and the current texture.
+		Material m_Material;
+
 		rect2i m_ClippingRectangle;
-		color m_Color;
+		color32 m_Color;
 	public:
 		void drawRectangle(const rect2f& rectangle, bool fill);
 		void drawString(const std::string &text, const vec2f &position);
@@ -24,11 +29,13 @@ namespace ftec {
 
 		//Set stuff
 		void setClip(const rect2i &rectangle);
-		void setColor(const color &color);
+		void setColor(const color32 &color);
+		void setShader(std::shared_ptr<Shader> shader);
 
 		//Returns the current clipping area, as set by clip
 		inline const rect2i &getClip() { return m_ClippingRectangle; };
-		inline const color &getColor() { return m_Color; }
+		inline const color32 &getColor() { return m_Color; }
+		inline std::shared_ptr<Shader> getShader() { return m_Material.m_Shader; }
 
 	protected:
 		void flush();

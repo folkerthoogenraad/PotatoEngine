@@ -1,6 +1,5 @@
 #pragma once
 
-#include "GL.h"
 #include "math/vec3.h"
 #include "math/vec2.h"
 #include <vector>

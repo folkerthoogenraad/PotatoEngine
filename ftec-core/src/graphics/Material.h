@@ -19,5 +19,8 @@ namespace ftec {
 		bool operator!=(const Material &right) {
 			return !(*this == right);
 		}
+
+		//Releases the two resources so that they can get cleaned up
+		void release();
 	};
 }

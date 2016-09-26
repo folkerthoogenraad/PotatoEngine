@@ -25,13 +25,18 @@ namespace ftec {
 		this->m_ClippingRectangle = rectangle;
 	}
 
-	void Graphics2D::setColor(const color & color)
+	void Graphics2D::setColor(const color32 & color)
 	{
 		//TODO find out what is more efficient
 		//Adding 4 bytes per vertex of memory to copy
 		//Or add a drawcall
 
 		this->m_Color = color;
+	}
+
+	void Graphics2D::setShader(std::shared_ptr<Shader> shader)
+	{
+		m_Material.m_Shader = shader;
 	}
 
 	void Graphics2D::flush()

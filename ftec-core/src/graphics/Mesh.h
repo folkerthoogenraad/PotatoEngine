@@ -3,10 +3,13 @@
 #include "resources/ResourceManager.h"
 #include <vector>
 #include "math/vec2.h"
-#include "GL.h"
 #include "math/vec3.h"
 
+typedef unsigned int GLuint;
+
 namespace ftec {
+	
+
 	class Mesh : public ManagableResource {
 	private:
 		struct Face {

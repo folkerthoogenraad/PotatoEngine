@@ -5,27 +5,44 @@
 #include <memory>
 #include "Material.h"
 #include "Camera.h"
+#include <vector>
+
+typedef unsigned int GLuint;
 
 namespace ftec {
+
+	enum class Primitive {
+		LINES,
+		QUADS,
+		TRIANGLES
+	};
 
 	class SpriteBatch {
 
 	private:
 		Material m_Material;
-		Camera m_Camera;
+		Primitive m_Primitive;
 
-		VBORenderable m_Vbo;
-		unsigned int m_Index;
 		bool m_Drawing;
+
+		vec2f m_Uv;
+		color32 m_Color;
+
+		GLuint m_VerticesVBO, m_UvsVBO, m_ColorsVBO;
+		unsigned int m_Size;
+
+		std::vector<vec3f> m_Vertices;
+		std::vector<vec2f> m_Uvs;
+		std::vector<color32> m_Colors;
 	public:
 		SpriteBatch();
 		~SpriteBatch();
 
-		void begin();
+		void begin(Primitive primitive, const Material &material);
 		void end();
-		void flush();
-		void vertex(vec3f position);
-		void material(const Material&);
-		void camera(const Camera&);
+
+		void vertex(const vec3f &position);
+		void color(const color32 &color);
+		void uv(const vec2f &uv);
 	};
 }
