@@ -21,27 +21,24 @@ namespace ftec {
 
 	}
 
-	std::shared_ptr<Light> light;
 	void Razura::render()
 	{
-		Graphics::enqueueLight(light.get());
+
 	}
 
 	void Razura::init()
 	{
 		Input::setCursorMode(CURSOR_GRABBED);
 
-		light = std::make_shared<Light>();
-
-		light->m_Direction = vec3f(-0.5f, -1, -0.5f).normalize();
-		light->setShadowsEnabled(true);
 
 		std::shared_ptr<Scene> scene = std::make_shared<Scene>();
 		scene->m_Camera.m_Position.y += 1.7f;
 
+		scene->m_Light.m_Direction = vec3f(-0.5f, -1, -0.5f).normalize();
+		scene->m_Light.setShadowsEnabled(true);
+
 		float resolutionIncrease = 1.f;
 		scene->m_Camera.m_RenderTarget = std::make_shared<RenderBuffer>((int) (Engine::getWindow().getWidth() * resolutionIncrease), (int) (Engine::getWindow().getHeight() * resolutionIncrease));
-		scene->m_Camera.m_PostProcessingShader = Engine::getResourceManager().load<Shader>("shaders/post");
 
 		Engine::setScene(scene);
 

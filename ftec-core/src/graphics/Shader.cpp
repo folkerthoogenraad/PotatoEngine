@@ -48,6 +48,7 @@ namespace ftec {
 		glBindAttribLocation(m_Program, SHADER_ATTRIBUTE_POSITION, SHADER_ATTRIBUTE_POSITION_NAME);
 		glBindAttribLocation(m_Program, SHADER_ATTRIBUTE_NORMAL, SHADER_ATTRIBUTE_NORMAL_NAME);
 		glBindAttribLocation(m_Program, SHADER_ATTRIBUTE_UV, SHADER_ATTRIBUTE_UV_NAME);
+		glBindAttribLocation(m_Program, SHADER_ATTRIBUTE_COLOR, SHADER_ATTRIBUTE_COLOR_NAME);
 
 		glBindFragDataLocation(m_Program, 0, SHADER_OUTPUT_COLOR_NAME);
 

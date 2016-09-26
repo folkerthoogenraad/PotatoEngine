@@ -4,6 +4,17 @@
 
 namespace ftec {
 
+	//Forward declare for the typedefs
+	template<typename T> struct vec4;
+
+	typedef vec4<float> vec4f;
+	typedef vec4<int> vec4i;
+	typedef vec4<double> vec4d;
+
+	typedef vec4<float> color;
+	typedef vec4<unsigned char> color32;
+
+	//Implementation here
 	template<typename T>
 	struct vec4
 	{
@@ -166,14 +177,11 @@ namespace ftec {
 			return left << "(" << right.x << ", " << right.y << ", " << right.z << ", " << right.w << ")";
 		}
 
-		inline static vec4 white() { return vec4(1, 1, 1, 1); }
+		inline static color white() { return color(1,1,1,1); }
+		inline static color32 white32() { return color32(255, 255, 255, 255); }
 
 	};
 
-	typedef vec4<float> vec4f;
-	typedef vec4<int> vec4i;
-	typedef vec4<double> vec4d;
-
-	typedef vec4<float> color;
+	
 
 }

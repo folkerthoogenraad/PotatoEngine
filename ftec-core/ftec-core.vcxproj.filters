@@ -233,7 +233,7 @@
     <None Include="shaders\default_fragment.glsl" />
     <None Include="shaders\passthrough_fragment.glsl" />
     <None Include="shaders\passthrough_vertex.glsl" />
-    <None Include="shaders\post_fragment.glsl" />
-    <None Include="shaders\post_vertex.glsl" />
+    <None Include="shaders\default2d_vertex.glsl" />
+    <None Include="shaders\default2d_fragment.glsl" />
   </ItemGroup>
 </Project>

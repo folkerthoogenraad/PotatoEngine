@@ -193,12 +193,12 @@
     <ClInclude Include="src_game\game\Razura.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\default2d_fragment.glsl" />
+    <None Include="shaders\default2d_vertex.glsl" />
     <None Include="shaders\default_fragment.glsl" />
     <None Include="shaders\default_vertex.glsl" />
     <None Include="shaders\passthrough_fragment.glsl" />
     <None Include="shaders\passthrough_vertex.glsl" />
-    <None Include="shaders\post_fragment.glsl" />
-    <None Include="shaders\post_vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

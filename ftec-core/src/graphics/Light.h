@@ -24,6 +24,7 @@ namespace ftec {
 		inline std::shared_ptr<RenderBuffer> getShadowBuffer() const { return m_ShadowMap; };
 		mat4 getShadowMatrix(const vec3f &position = vec3f()) const;
 
+		//This is too stupid and should not even exist
 		static inline Light defaultLight() { return Light(); };
 	};
 }

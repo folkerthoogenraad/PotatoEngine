@@ -101,6 +101,8 @@ namespace ftec {
 				for (auto m : meshes) {
 
 					//TODO layer masks with ignore shadows
+					//TODO draw shadows per camera and not per global.
+					//TODO make a different render pass for this, instead of using this draw direct stuff
 					Renderer::drawDirect(*m.mesh, *m.material, Light::defaultLight(), projection, mat4::identity(), m.modelMatrix);
 
 
@@ -138,18 +140,13 @@ namespace ftec {
 			//TODO do this only if the camera requests this
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			
-			const Light *l = nullptr;
-			if (lights.size() > 0)
-				l = lights.front();
-
 			for (auto m : meshes) {
 				//TODO material sorting
 				//TODO batching
 
 				//Only draw when layer masks align
 				if((m.layer & c->m_LayerMask) != 0)
-					Renderer::drawDirect(*m.mesh, *m.material, l == nullptr ? Light::defaultLight() : *l, *c, m.modelMatrix);
+					Renderer::drawDirect(*m.mesh, *m.material, m.modelMatrix);
 			}
 
 			//Reset the render target, if the camera has no render target any more
@@ -168,7 +165,7 @@ namespace ftec {
 					if (c->m_PostProcessingShader)
 						material->m_Shader = c->m_PostProcessingShader;
 
-					Renderer::drawDirect(*mesh, *material, l == nullptr ? Light::defaultLight() : *l, mat4::identity(), mat4::identity(), mat4::identity());
+					Renderer::drawDirect(*mesh, *material, Light::defaultLight(), mat4::identity(), mat4::identity(), mat4::identity());
 				
 					if (c->m_PostProcessingShader)
 						material->m_Shader = oldShader;

@@ -7,6 +7,7 @@
 #include "graphics/Mesh.h"
 #include "graphics/Material.h"
 #include "graphics/Camera.h"
+#include "graphics/Light.h"
 
 namespace ftec {
 	struct StaticGeometry {
@@ -19,6 +20,7 @@ namespace ftec {
 	class Scene {
 	public:
 		Camera m_Camera;
+		Light m_Light;		//Should be an array ofcourse, but that does not matter right now
 	private:
 		std::vector<std::shared_ptr<Entity>> m_Entities;
 		std::vector<StaticGeometry> m_StaticGeometry;

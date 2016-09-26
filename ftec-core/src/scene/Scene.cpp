@@ -23,6 +23,9 @@ namespace ftec {
 		//This should obviously be batched.
 		Graphics::enqueueCamera(&m_Camera);
 
+		//Obviously this should be different
+		Graphics::enqueueLight(&m_Light);
+
 		for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {
 			StaticGeometry &geometry = *i;
 
