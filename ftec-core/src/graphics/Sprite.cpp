@@ -11,6 +11,7 @@ namespace ftec {
 		: m_Texture(texture), m_TextureRectangle(rectangle)
 	{
 		this->recalculateUVRectangle();
+		this->recalculateLocalBounds();
 	}
 
 	void Sprite::recalculateUVRectangle()
@@ -20,5 +21,13 @@ namespace ftec {
 
 		m_UVRectangle.width() = m_TextureRectangle.width() / (float)m_Texture->getWidth();
 		m_UVRectangle.height() = m_TextureRectangle.height() / (float)m_Texture->getHeight();
+	}
+
+	void Sprite::recalculateLocalBounds()
+	{
+		m_LocalBounds.x() = 0;
+		m_LocalBounds.y() = 0;
+		m_LocalBounds.width() = m_TextureRectangle.width();
+		m_LocalBounds.height() = m_TextureRectangle.height();;
 	}
 }

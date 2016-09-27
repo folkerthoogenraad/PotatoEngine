@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "Sprite.h"
 #include "engine/Engine.h"
+#include "Font.h"
 
 namespace ftec {
 
@@ -40,7 +41,18 @@ namespace ftec {
 
 	void Graphics2D::drawString(const std::string & text, const vec2f & position)
 	{
+		vec2f currentPosition = position;
 
+		auto f = Engine::getResourceManager().load<Font>("fonts/default12.fnt");
+
+		for (char c : text) {
+			//This should be done with a has, and then a reference get, that throws an exception when the character does not exist in the font.
+			FontCharacter *fontCharacter = f->getCharacter(c);
+			if (fontCharacter) {
+				drawSprite(*fontCharacter->sprite, currentPosition);
+				currentPosition.x += fontCharacter->xadvance;
+			}
+		}
 	}
 
 	void Graphics2D::drawSprite(const Sprite & sprite, const vec2f & position)
@@ -49,13 +61,13 @@ namespace ftec {
 
 		batch.color(m_Color);
 		batch.uv(vec2f(sprite.m_UVRectangle.left(), sprite.m_UVRectangle.top()));
-		batch.vertex(vec3f(sprite.m_TextureRectangle.left() + position.x, sprite.m_TextureRectangle.top() + position.y));
+		batch.vertex(vec3f(sprite.m_LocalBounds.left() + position.x, sprite.m_LocalBounds.top() + position.y));
 		batch.uv(vec2f(sprite.m_UVRectangle.right(), sprite.m_UVRectangle.top()));
-		batch.vertex(vec3f(sprite.m_TextureRectangle.right() + position.x, sprite.m_TextureRectangle.top() + position.y));
+		batch.vertex(vec3f(sprite.m_LocalBounds.right() + position.x, sprite.m_LocalBounds.top() + position.y));
 		batch.uv(vec2f(sprite.m_UVRectangle.right(), sprite.m_UVRectangle.bottom()));
-		batch.vertex(vec3f(sprite.m_TextureRectangle.right() + position.x, sprite.m_TextureRectangle.bottom() + position.y));
+		batch.vertex(vec3f(sprite.m_LocalBounds.right() + position.x, sprite.m_LocalBounds.bottom() + position.y));
 		batch.uv(vec2f(sprite.m_UVRectangle.left(), sprite.m_UVRectangle.bottom()));
-		batch.vertex(vec3f(sprite.m_TextureRectangle.left() + position.x, sprite.m_TextureRectangle.bottom() + position.y));
+		batch.vertex(vec3f(sprite.m_LocalBounds.left() + position.x, sprite.m_LocalBounds.bottom() + position.y));
 	}
 
 	void Graphics2D::drawClear()

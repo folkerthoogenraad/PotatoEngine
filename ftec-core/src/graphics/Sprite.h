@@ -9,6 +9,10 @@ namespace ftec {
 	class Sprite {
 	public:
 		std::shared_ptr<Texture> m_Texture;
+		
+		//This is where stuff gets weird. This needs some explaining
+		rect2f m_LocalBounds;
+
 		rect2f m_TextureRectangle;
 		rect2f m_UVRectangle;
 	public:
@@ -17,5 +21,6 @@ namespace ftec {
 		~Sprite() = default;
 	protected:
 		void recalculateUVRectangle();
+		void recalculateLocalBounds();
 	};
 }
