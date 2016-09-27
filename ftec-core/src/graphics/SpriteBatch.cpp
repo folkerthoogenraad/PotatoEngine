@@ -2,7 +2,23 @@
 #include "Renderer.h"
 #include "logger/log.h"
 
+#include "GraphicsState.h"
+
 namespace ftec {
+
+	inline GLenum glPrimitive(const Primitive &p)
+	{
+		switch (p)
+		{
+		case Primitive::LINES:
+			return GL_LINES;
+		case Primitive::QUADS:
+			return GL_QUADS;
+		default:
+			return GL_TRIANGLES;
+		}
+	}
+
 	SpriteBatch::SpriteBatch()
 	{
 		glGenBuffers(1, &m_VerticesVBO);
@@ -17,7 +33,7 @@ namespace ftec {
 		glDeleteBuffers(1, &m_UvsVBO);
 	}
 
-	void SpriteBatch::begin(Primitive primitive, const Material & material)
+	void SpriteBatch::begin(Primitive primitive)
 	{
 		if (m_Drawing) {
 			LOG_ERROR("Can't begin drawing when drawing");
@@ -26,7 +42,6 @@ namespace ftec {
 		m_Drawing = true;
 
 		this->m_Primitive = primitive;
-		this->m_Material = material;
 
 		m_Size = 0;
 		m_Vertices.clear();
@@ -41,19 +56,15 @@ namespace ftec {
 			return;
 		}
 		m_Drawing = false;
+
+		//We don't have to draw if we don't have to draw <3
+		if (m_Vertices.size() <= 0)
+			return;
 		
 		//TODO the actual drawing
 		//TODO assert that the actual sizes are the same
 
-		if (m_Material.m_Shader && m_Material.m_Texture) {
-			Shader &shader = *m_Material.m_Shader;
-			Texture &texture = *m_Material.m_Texture;
-
-			shader.use();
-			texture.bind();
-
-			//Do stuff 
-		}
+		GraphicsState::prepare();
 
 		//Drawing code here
 
@@ -73,22 +84,17 @@ namespace ftec {
 		glBindBuffer(GL_ARRAY_BUFFER, m_ColorsVBO);
 		glBufferData(GL_ARRAY_BUFFER, m_Colors.size() * sizeof(color32), (void*) &m_Colors[0], GL_DYNAMIC_DRAW);
 		glEnableVertexAttribArray(SHADER_ATTRIBUTE_COLOR);
-		glVertexAttribPointer(SHADER_ATTRIBUTE_NORMAL, 4, GL_UNSIGNED_BYTE, true, 0, 0);
+		glVertexAttribPointer(SHADER_ATTRIBUTE_COLOR, 4, GL_UNSIGNED_BYTE, true, 0, 0);
 		
 		glDrawArrays(
-			GL_TRIANGLES, //TODO primitive mode
+			glPrimitive(m_Primitive),
 			0,
-			m_Vertices.size()
+			(GLsizei) m_Vertices.size()
 			);
 
 		glDisableVertexAttribArray(SHADER_ATTRIBUTE_POSITION);
 		glDisableVertexAttribArray(SHADER_ATTRIBUTE_UV);
 		glDisableVertexAttribArray(SHADER_ATTRIBUTE_COLOR);
-
-		if (m_Material.m_Shader && m_Material.m_Texture) {
-			m_Material.m_Shader->reset();
-			m_Material.m_Texture->unbind();
-		}
 	}
 
 	void SpriteBatch::vertex(const vec3f & position)

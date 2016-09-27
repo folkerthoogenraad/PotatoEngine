@@ -20,7 +20,6 @@ namespace ftec {
 	class SpriteBatch {
 
 	private:
-		Material m_Material;
 		Primitive m_Primitive;
 
 		bool m_Drawing;
@@ -38,11 +37,13 @@ namespace ftec {
 		SpriteBatch();
 		~SpriteBatch();
 
-		void begin(Primitive primitive, const Material &material);
+		void begin(Primitive primitive);
 		void end();
 
 		void vertex(const vec3f &position);
 		void color(const color32 &color);
 		void uv(const vec2f &uv);
+
+		inline int count() { return m_Vertices.size(); }
 	};
 }

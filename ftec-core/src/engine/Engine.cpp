@@ -53,61 +53,12 @@ namespace ftec {
 		glfwTerminate();
 	}
 
-	void Engine::create(std::unique_ptr<Game> g)
-	{
-		Game &game = *g;
-		init();
-
-		game.init();
-		
-		double previousTime = glfwGetTime();
-
-		//Start running the shit out of this game
-		while (!Engine::getWindow().isCloseRequested()) {
-
-			Input::reset();
-
-			getWindow().poll();
-
-			double currentTime = glfwGetTime();
-			Time::deltaTime = (float) (previousTime - currentTime);
-			Time::runTime += Time::deltaTime;
-			Time::calculateSinCosTime();
-
-			previousTime = currentTime;
-
-			game.update();
-
-			if (getScene())
-				getScene()->update();
-
-			//Begin the full rendering pipeline
-			Graphics::begin();
-
-			game.render();
-
-			if (getScene()) {
-				getScene()->render();
-			}
-
-			//End the rendering pipeline and draw to the screen :D
-			Graphics::end();
-			
-
-			getWindow().swap();
-		}
-		
-		game.destroy();
-		g.reset();
-
-		destroy();
-	}
-
 	static void initGL() {
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_ALPHA_TEST);
 		glEnable(GL_SCISSOR_TEST);
 		glAlphaFunc(GL_GREATER, 0.1f);
+		glDepthFunc(GL_LEQUAL);
 
 		//glEnable(GL_CULL_FACE);
 		//glCullFace(GL_BACK);

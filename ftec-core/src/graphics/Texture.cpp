@@ -117,7 +117,7 @@ namespace ftec {
 			};
 
 			if (!loadImage(*texture)) {
-				TERMINATE("Failed to load texture...");
+				TERMINATE("Failed to load texture: " << name);
 			}
 
 		}

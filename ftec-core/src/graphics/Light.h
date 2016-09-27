@@ -10,7 +10,7 @@ namespace ftec {
 	class Light {
 	public:
 		vec3f m_Direction = vec3f(-1.0,-1.0,-1.0).normalize();
-		bool m_Enabled = true;
+		bool m_Enabled = true; //TODO remove this enabled
 	private:
 		bool m_ShadowsEnabled = false;
 		std::shared_ptr<RenderBuffer> m_ShadowMap;

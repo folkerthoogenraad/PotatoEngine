@@ -9,8 +9,8 @@
 
 int main(void)
 {
-	ftec::Engine::create(std::make_unique<ftec::Razura>());
-
+	ftec::Engine::create<ftec::Razura>();
+	WAIT();
 	return 0;
 }
 

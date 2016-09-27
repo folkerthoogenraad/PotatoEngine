@@ -1,4 +1,5 @@
 #include "VBORenderable.h"
+#include "GL.h"
 
 namespace ftec {
 	VBORenderable::VBORenderable(unsigned int size)

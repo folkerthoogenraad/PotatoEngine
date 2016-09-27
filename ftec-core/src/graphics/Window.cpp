@@ -36,9 +36,20 @@ namespace ftec {
 		glfwSwapBuffers(m_Window);
 	}
 
+	void Window::setVisible(bool visible)
+	{
+		if (visible) {
+			glfwShowWindow(m_Window);
+		}
+		else {
+			glfwHideWindow(m_Window);
+		}
+	}
+
 
 	void Window::init()
 	{
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		m_Window = glfwCreateWindow(m_Width, m_Height, m_Name.c_str(), m_Fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 		if (!m_Window)
 		{

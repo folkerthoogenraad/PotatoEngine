@@ -24,6 +24,7 @@ namespace ftec {
 		void swap();
 
 		void setCursorMode(int mode);
+		void setVisible(bool visible);
 
 		inline float getWidth() { return (float)m_Width; }
 		inline float getHeight() { return (float)m_Height; }

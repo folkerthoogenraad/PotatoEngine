@@ -7,6 +7,7 @@ namespace ftec {
 	class Texture;
 
 	class Sprite {
+	public:
 		std::shared_ptr<Texture> m_Texture;
 		rect2f m_TextureRectangle;
 		rect2f m_UVRectangle;

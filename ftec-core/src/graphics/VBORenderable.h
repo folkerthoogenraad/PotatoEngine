@@ -7,6 +7,8 @@
 //TODO make this non copyable for resource reasons
 //Pretty deprecated
 
+typedef unsigned int GLuint;
+
 namespace ftec {
 	class VBORenderable {
 	public:
