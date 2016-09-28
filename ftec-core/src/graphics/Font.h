@@ -17,8 +17,8 @@ namespace ftec {
 	private:
 		std::map<char, FontCharacter> m_Characters;
 	public:
-		bool hasCharacter(char input);
-		const FontCharacter &getCharacter(char input);
+		bool hasCharacter(char input) const;
+		const FontCharacter &getCharacter(char input) const;
 
 		static std::shared_ptr<Font> load(const std::string &name);
 	};

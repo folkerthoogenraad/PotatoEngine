@@ -23,7 +23,9 @@ namespace ftec {
 
 	void Razura::update()
 	{
-
+		if (Input::getTypedKeys().size() > 0) {
+			LOG(Input::getTypedKeys());
+		}
 	}
 
 	void Razura::render()
@@ -33,7 +35,7 @@ namespace ftec {
 		graphics.drawClear();
 		graphics.drawSprite(sprite, vec2f(64, 64));
 
-		graphics.drawString("Dit is een test text {} <> 123456780 abcdefghijklmnopqrstuvwxyz áçé *-+", vec2f(16,128));
+		graphics.drawString("Font rendering test `~1!2@3#4$5%6^7&8*9(0)-_=+\\][{};':\",./<>?", vec2f(16, 128));
 	}
 
 	void Razura::init()

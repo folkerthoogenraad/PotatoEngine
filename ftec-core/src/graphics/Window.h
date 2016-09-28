@@ -15,6 +15,7 @@ namespace ftec {
 		vec2f m_MousePosition;
 		bool m_Fullscreen;
 		bool m_CloseRequested;
+		bool m_Resized;
 	public:
 		Window(std::string name, int width, int height, bool full);
 		~Window();
@@ -31,11 +32,13 @@ namespace ftec {
 		
 		inline vec2f getMousePosition() const { return m_MousePosition; }
 		inline bool isCloseRequested() const { return m_CloseRequested; }
+		inline bool isResized() const { return m_Resized; }
+
 		friend void cursor_position_callback(GLFWwindow* glfwWindow, double xpos, double ypos);
 		friend void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		friend void type_callback(GLFWwindow* window, unsigned int unicode);
+		friend void resize_callback(GLFWwindow* window, int width, int height);
 	private:
 		void init();
 	};
-	void cursor_position_callback(GLFWwindow* glfwWindow, double xpos, double ypos);
-	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 }

@@ -9,14 +9,16 @@
 
 namespace ftec {
 
-	bool Font::hasCharacter(char input)
+	bool Font::hasCharacter(char input) const
 	{
 		return m_Characters.find(input) != m_Characters.end();
 	}
-	const FontCharacter & Font::getCharacter(char input)
+
+	const FontCharacter & Font::getCharacter(char input) const
 	{
 		return m_Characters.find(input)->second;
 	}
+
 	std::shared_ptr<Font> Font::load(const std::string & name)
 	{
 		using namespace std;

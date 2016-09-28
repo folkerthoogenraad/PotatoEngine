@@ -6,6 +6,7 @@ namespace ftec {
 	std::set<int> Input::downKeys = std::set<int>();
 	std::set<int> Input::pressedKeys = std::set<int>();
 	std::set<int> Input::releasedKeys = std::set<int>();
+	std::string Input::typedKeys = "";
 	vec2f Input::mousePosition = vec2f();
 	vec2f Input::mouseDelta = vec2f();
 
@@ -29,7 +30,7 @@ namespace ftec {
 		pressedKeys.clear();
 		releasedKeys.clear();
 		mouseDelta = vec2f();
-
+		typedKeys = "";
 	}
 
 	void Input::handleKey(int key, int scancode, int action, int mods)
@@ -49,6 +50,11 @@ namespace ftec {
 		vec2f newPosition(x, y);
 		mouseDelta += newPosition - mousePosition;
 		mousePosition = newPosition;
+	}
+
+	void Input::handleTyped(unsigned int unicode)
+	{
+		typedKeys += (char)unicode;
 	}
 
 	bool Input::isKeyDown(int keycode)
