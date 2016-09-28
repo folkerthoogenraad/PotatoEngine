@@ -43,7 +43,7 @@ namespace ftec {
 	{
 		vec2f currentPosition = position;
 
-		auto f = Engine::getResourceManager().load<Font>("fonts/default12.fnt");
+		auto f = Engine::getResourceManager().load<Font>("fonts/default14.fnt");
 
 		for (char c : text) {
 			//This should be done with a has, and then a reference get, that throws an exception when the character does not exist in the font.

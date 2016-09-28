@@ -18,12 +18,13 @@ namespace ftec {
 	Razura::Razura()
 		:sprite(Engine::getResourceManager().load<Texture>("textures/spritesheet.png"), rect2f(0, 0, 16, 16))
 	{
-		Engine::getResourceManager().load<Font>("fonts/default12.fnt");
+
 	}
 
+	std::string str;
 	void Razura::update()
 	{
-
+		str += Input::getTypedKeys();
 	}
 
 	void Razura::render()
@@ -33,7 +34,7 @@ namespace ftec {
 		graphics.drawClear();
 		graphics.drawSprite(sprite, vec2f(64, 64));
 
-		graphics.drawString("Dit is een test text {} <> 123456780 abcdefghijklmnopqrstuvwxyz áçé *-+", vec2f(16,128));
+		graphics.drawString(str, vec2f(16,128));
 	}
 
 	void Razura::init()

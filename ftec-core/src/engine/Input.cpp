@@ -8,6 +8,7 @@ namespace ftec {
 	std::set<int> Input::releasedKeys = std::set<int>();
 	vec2f Input::mousePosition = vec2f();
 	vec2f Input::mouseDelta = vec2f();
+	std::string Input::typedKeys = "";
 
 	vec2f Input::getMousePosition()
 	{
@@ -29,7 +30,7 @@ namespace ftec {
 		pressedKeys.clear();
 		releasedKeys.clear();
 		mouseDelta = vec2f();
-
+		typedKeys = "";
 	}
 
 	void Input::handleKey(int key, int scancode, int action, int mods)
@@ -42,7 +43,14 @@ namespace ftec {
 			releasedKeys.insert(key);
 			downKeys.erase(key);
 		}
+
 	}
+
+	void Input::handleKeyTyped(unsigned int typed)
+	{
+		typedKeys += (char)typed;
+	}
+
 
 	void Input::handleCursor(float x, float y)
 	{

@@ -1,6 +1,7 @@
 #pragma once
 #include "math/vec2.h"
 #include <set>
+#include <string>
 #include "graphics/GL.h"
 
 #define CURSOR_NORMAL GLFW_CURSOR_NORMAL
@@ -13,6 +14,7 @@ namespace ftec {
 		static std::set<int> downKeys;
 		static std::set<int> pressedKeys;
 		static std::set<int> releasedKeys;
+		static std::string typedKeys;
 
 		static vec2f mousePosition;
 		static vec2f mouseDelta;
@@ -29,9 +31,12 @@ namespace ftec {
 		static vec2f getMousePosition();
 		static vec2f getMouseDelta();
 
+		static const std::string &getTypedKeys() { return typedKeys; }
+
 		static void setCursorMode(int mode);
 		static void reset();
 
+		static void handleKeyTyped(unsigned int typed);
 		static void handleKey(int key, int scancode, int action, int mods);
 		static void handleCursor(float x, float y);
 	};

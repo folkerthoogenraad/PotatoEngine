@@ -37,5 +37,6 @@ namespace ftec {
 		void init();
 	};
 	void cursor_position_callback(GLFWwindow* glfwWindow, double xpos, double ypos);
-	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods); 
+	void type_callback(GLFWwindow* window, unsigned int unicode);
 }

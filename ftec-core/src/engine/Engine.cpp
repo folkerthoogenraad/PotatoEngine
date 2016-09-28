@@ -59,7 +59,7 @@ namespace ftec {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_SCISSOR_TEST);
-		glAlphaFunc(GL_GREATER, 0.1f);
+		glAlphaFunc(GL_GREATER, 0.01f);
 		glDepthFunc(GL_LEQUAL);
 
 		//glEnable(GL_CULL_FACE);

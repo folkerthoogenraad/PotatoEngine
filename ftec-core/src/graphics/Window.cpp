@@ -62,6 +62,7 @@ namespace ftec {
 		glfwSwapInterval(1);
 		glfwSetCursorPosCallback(m_Window, cursor_position_callback);
 		glfwSetKeyCallback(m_Window, key_callback);
+		glfwSetCharCallback(m_Window, type_callback);
 	}
 
 	//The cursor position callback
@@ -80,5 +81,10 @@ namespace ftec {
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		Input::handleKey(key, scancode, action, mods);
+	}
+
+	void type_callback(GLFWwindow* window, unsigned int unicode)
+	{
+		Input::handleKeyTyped(unicode);
 	}
 }
