@@ -177,8 +177,14 @@ namespace ftec {
 			return left << "(" << right.x << ", " << right.y << ", " << right.z << ", " << right.w << ")";
 		}
 
-		inline static color white() { return color(1,1,1,1); }
-		inline static color32 white32() { return color32(255, 255, 255, 255); }
+		inline static color32 white() { return color32(255, 255, 255, 255); }
+		inline static color32 red() { return color32(255, 0, 0, 255); }
+		inline static color32 green() { return color32(0, 255, 0, 255); }
+		inline static color32 blue() { return color32(0, 0, 255, 255); }
+		inline static color32 black() { return color32(0,0,0,255); }
+
+
+		inline static color32 dkgray() { return color32(50, 50, 50, 255); }
 
 	};
 

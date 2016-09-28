@@ -15,41 +15,26 @@
 namespace ftec {
 
 	Razura::Razura()
-		:sprite(Engine::getResourceManager().load<Texture>("textures/spritesheet.png"), rect2f(0, 0, 16, 16))
+		:sprite(Engine::getResourceManager().load<Texture>("textures/spritesheet.png"), rect2f(16, 0, 33, 33))
 	{
-		Engine::getResourceManager().load<Font>("fonts/default12.fnt");
+
 	}
 
 
-	float f = 0;
-	float t = 0;
-	bool running = false;
+	float z = 0;
+	float p = 0;
 
 	void Razura::update()
 	{
-		if (Input::isKeyPressed(GLFW_KEY_SPACE)) {
-			running = !running;
-		}
-		
-		const float dist = 256.f;
-		const float speed = 3.f;
-		
-		if (running) {
+		p -= Input::getScroll().y * 32.f;
 
-			t += Time::deltaTime * speed;
-			if (t > 1) {
-				t = 1;
-				f = dist;
-			}
-		}
-		else {
-			t -= Time::deltaTime * speed;
-			if (t < 0) {
-				t = 0;
-				f = 0;
-			}
-		}
-		f = tween(0.f, dist, t, curves::CubicBezier());
+		z = tween(z, p, Time::deltaTime * 10.f);
+
+		if(p < 0)
+			p = 0;
+
+		if (p > 128.f)
+			p = 128.f;
 	}
 
 	void Razura::render()
@@ -57,9 +42,10 @@ namespace ftec {
 		Graphics2D graphics;
 
 		graphics.drawClear();
-		graphics.drawSprite(sprite, vec2f(64 + f, 64));
+		graphics.drawSprite(sprite, vec2f(2, 128));
 
-		graphics.drawString("Font rendering test `~1!2@3#4$5%6^7&8*9(0)-_=+\\][{};':\",./<>?", vec2f(2,128));
+		graphics.setColor(color32::dkgray());
+		graphics.drawString("Font rendering test `~1!2@3#4$5%6^7&8*9(0)-_=+\\][{};':\",./<>?", vec2f(0,z));
 	}
 
 	void Razura::init()

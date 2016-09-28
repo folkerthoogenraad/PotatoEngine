@@ -65,7 +65,8 @@ namespace ftec {
 		//glEnable(GL_CULL_FACE);
 		//glCullFace(GL_BACK);
 		
-		glClearColor(.2f, .4f, .8f, 0.f);
+		//glClearColor(.2f, .4f, .8f, 0.f);
+		glClearColor(1.f, 1.f, 1.f, 1.f);
 		//glClearColor(.0f, .0f, .0f, 1.f);
 		//glClearColor(132.f / 255.f, 119.f / 255.f, 106.f / 255.f, 1.f);
 	}

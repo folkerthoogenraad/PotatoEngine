@@ -124,7 +124,6 @@ namespace ftec {
 					string &s = get<2>(p);
 					string result = s.substr(1, s.length() - 2);
 					//Surrounded by quotes
-					LOG("Loading texture " << result);
 
 					//Hardcoded relative pathing (TODO FIX THIS SOMEDAY MAN)
 					textures.push_back(Engine::getResourceManager().load<Texture>("fonts/" + result));
