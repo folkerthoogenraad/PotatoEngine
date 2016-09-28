@@ -5,7 +5,7 @@
 #include <iostream>
 #include "potato_ui/Panel.h"
 #include "io/defer.h"
-#include "math/vec4.h"
+#include "math/math.h"
 
 int main(void)
 {

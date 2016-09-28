@@ -65,6 +65,7 @@ namespace ftec {
 		glfwSetKeyCallback(m_Window, key_callback);
 		glfwSetWindowSizeCallback(m_Window, resize_callback);
 		glfwSetCharCallback(m_Window, type_callback);
+		glfwSetScrollCallback(m_Window, scroll_callback);
 	}
 
 	//The cursor position callback
@@ -97,5 +98,10 @@ namespace ftec {
 			wp->m_Width = width;
 			wp->m_Height = height;
 		}
+	}
+
+	void scroll_callback(GLFWwindow * window, double xoffset, double yoffset)
+	{
+		Input::handleScroll((float)xoffset, (float)yoffset);
 	}
 }
