@@ -8,6 +8,17 @@
 #include "engine/Engine.h"
 
 namespace ftec {
+
+	bool Font::hasCharacter(char input) const
+	{
+		return m_Characters.find(input) != m_Characters.end();
+	}
+
+	const FontCharacter & Font::getCharacter(char input) const
+	{
+		return m_Characters.find(input)->second;
+	}
+
 	std::shared_ptr<Font> Font::load(const std::string & name)
 	{
 		using namespace std;
@@ -113,7 +124,6 @@ namespace ftec {
 					string &s = get<2>(p);
 					string result = s.substr(1, s.length() - 2);
 					//Surrounded by quotes
-					LOG("Loading texture " << result);
 
 					//Hardcoded relative pathing (TODO FIX THIS SOMEDAY MAN)
 					textures.push_back(Engine::getResourceManager().load<Texture>("fonts/" + result));

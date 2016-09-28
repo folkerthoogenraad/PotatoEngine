@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "vec2.h"
 
 namespace ftec{
 
@@ -10,6 +11,7 @@ namespace ftec{
 		T x, y, z;
 
 		vec3(T x = 0, T y = 0, T z = 0) : x(x), y(y), z(z) {};
+		vec3(vec2<T> v) : x(v.x), y(v.y), z(0) {};
 
 		vec3<T>& add(const vec3<T>& other)
 		{

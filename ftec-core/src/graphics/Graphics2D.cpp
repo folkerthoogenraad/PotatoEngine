@@ -47,27 +47,30 @@ namespace ftec {
 
 		for (char c : text) {
 			//This should be done with a has, and then a reference get, that throws an exception when the character does not exist in the font.
-			FontCharacter *fontCharacter = f->getCharacter(c);
-			if (fontCharacter) {
-				drawSprite(*fontCharacter->sprite, currentPosition);
-				currentPosition.x += fontCharacter->xadvance;
+			if (f->hasCharacter(c)) {
+				auto fch = f->getCharacter(c);
+				drawSprite(*fch.sprite, currentPosition);
+				currentPosition.x += fch.xadvance;
 			}
 		}
 	}
 
 	void Graphics2D::drawSprite(const Sprite & sprite, const vec2f & position)
 	{
-		setTexture(sprite.m_Texture);
+		setTexture(sprite.texture());
 
 		batch.color(m_Color);
-		batch.uv(vec2f(sprite.m_UVRectangle.left(), sprite.m_UVRectangle.top()));
-		batch.vertex(vec3f(sprite.m_LocalBounds.left() + position.x, sprite.m_LocalBounds.top() + position.y));
-		batch.uv(vec2f(sprite.m_UVRectangle.right(), sprite.m_UVRectangle.top()));
-		batch.vertex(vec3f(sprite.m_LocalBounds.right() + position.x, sprite.m_LocalBounds.top() + position.y));
-		batch.uv(vec2f(sprite.m_UVRectangle.right(), sprite.m_UVRectangle.bottom()));
-		batch.vertex(vec3f(sprite.m_LocalBounds.right() + position.x, sprite.m_LocalBounds.bottom() + position.y));
-		batch.uv(vec2f(sprite.m_UVRectangle.left(), sprite.m_UVRectangle.bottom()));
-		batch.vertex(vec3f(sprite.m_LocalBounds.left() + position.x, sprite.m_LocalBounds.bottom() + position.y));
+		batch.uv(sprite.uvs().topleft());
+		batch.vertex(position + sprite.bounds().topleft());
+
+		batch.uv(sprite.uvs().topright());
+		batch.vertex(position + sprite.bounds().topright());
+
+		batch.uv(sprite.uvs().bottomright());
+		batch.vertex(position + sprite.bounds().bottomright());
+
+		batch.uv(sprite.uvs().bottomleft());
+		batch.vertex(position + sprite.bounds().bottomleft());
 	}
 
 	void Graphics2D::drawClear()
@@ -117,6 +120,7 @@ namespace ftec {
 
 		calls++;
 
+		Renderer::viewport(rect2i(0,0, (int)Engine::getWindow().getWidth(), (int)Engine::getWindow().getHeight()));
 		Renderer::clip(this->m_ClippingRectangle);
 
 		GraphicsState::m_TextureEnabled = true;

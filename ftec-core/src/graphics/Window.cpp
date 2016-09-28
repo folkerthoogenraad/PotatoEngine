@@ -23,6 +23,7 @@ namespace ftec {
 	void Window::poll()
 	{
 		glfwPollEvents();
+		m_Resized = false;
 		m_CloseRequested = glfwWindowShouldClose(m_Window) > 0; //fucking warnings
 	}
 
@@ -62,7 +63,9 @@ namespace ftec {
 		glfwSwapInterval(1);
 		glfwSetCursorPosCallback(m_Window, cursor_position_callback);
 		glfwSetKeyCallback(m_Window, key_callback);
+		glfwSetWindowSizeCallback(m_Window, resize_callback);
 		glfwSetCharCallback(m_Window, type_callback);
+		glfwSetScrollCallback(m_Window, scroll_callback);
 	}
 
 	//The cursor position callback
@@ -83,8 +86,22 @@ namespace ftec {
 		Input::handleKey(key, scancode, action, mods);
 	}
 
-	void type_callback(GLFWwindow* window, unsigned int unicode)
+	void type_callback(GLFWwindow * window, unsigned int unicode)
 	{
-		Input::handleKeyTyped(unicode);
+		Input::handleTyped(unicode);
+	}
+	void resize_callback(GLFWwindow * window, int width, int height)
+	{
+		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (wp) {
+			wp->m_Resized = true;
+			wp->m_Width = width;
+			wp->m_Height = height;
+		}
+	}
+
+	void scroll_callback(GLFWwindow * window, double xoffset, double yoffset)
+	{
+		Input::handleScroll((float)xoffset, (float)yoffset);
 	}
 }

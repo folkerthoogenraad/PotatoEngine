@@ -6,9 +6,10 @@ namespace ftec {
 	std::set<int> Input::downKeys = std::set<int>();
 	std::set<int> Input::pressedKeys = std::set<int>();
 	std::set<int> Input::releasedKeys = std::set<int>();
+	std::string Input::typedKeys = "";
 	vec2f Input::mousePosition = vec2f();
 	vec2f Input::mouseDelta = vec2f();
-	std::string Input::typedKeys = "";
+	vec2f Input::scrollDelta = vec2f();
 
 	vec2f Input::getMousePosition()
 	{
@@ -18,6 +19,11 @@ namespace ftec {
 	vec2f Input::getMouseDelta()
 	{
 		return mouseDelta;
+	}
+
+	vec2f Input::getScroll()
+	{
+		return scrollDelta;
 	}
 
 	void Input::setCursorMode(int mode)
@@ -30,6 +36,7 @@ namespace ftec {
 		pressedKeys.clear();
 		releasedKeys.clear();
 		mouseDelta = vec2f();
+		scrollDelta = vec2f();
 		typedKeys = "";
 	}
 
@@ -46,17 +53,22 @@ namespace ftec {
 
 	}
 
-	void Input::handleKeyTyped(unsigned int typed)
-	{
-		typedKeys += (char)typed;
-	}
-
 
 	void Input::handleCursor(float x, float y)
 	{
 		vec2f newPosition(x, y);
 		mouseDelta += newPosition - mousePosition;
 		mousePosition = newPosition;
+	}
+
+	void Input::handleScroll(float x, float y)
+	{
+		scrollDelta += vec2f(x, y);
+	}
+
+	void Input::handleTyped(unsigned int unicode)
+	{
+		typedKeys += (char)unicode;
 	}
 
 	bool Input::isKeyDown(int keycode)

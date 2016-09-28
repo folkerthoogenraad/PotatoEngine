@@ -26,6 +26,11 @@ namespace ftec {
 		T top() const { return position.y; }
 		T bottom() const { return position.y + size.y; }
 
+		vec2<T> topleft() const { return vec2<T>(left(), top()); }
+		vec2<T> topright() const { return vec2<T>(right(), top()); }
+		vec2<T> bottomleft() const { return vec2<T>(left(), bottom()); }
+		vec2<T> bottomright() const { return vec2<T>(right(), bottom()); }
+
 	};
 
 	typedef rect2<float> rect2f;

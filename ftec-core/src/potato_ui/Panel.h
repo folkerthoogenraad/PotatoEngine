@@ -20,7 +20,7 @@ namespace potato {
 		Dimension m_Size;
 		Position m_Position;
 
-		ftec::vec4f m_BackgroundColor = ftec::vec4f::white();
+		ftec::color32 m_BackgroundColor = ftec::color32::white();
 
 		bool m_Focusable;
 		bool m_Opaque;
