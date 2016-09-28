@@ -8,6 +8,15 @@
 #include "engine/Engine.h"
 
 namespace ftec {
+
+	bool Font::hasCharacter(char input)
+	{
+		return m_Characters.find(input) != m_Characters.end();
+	}
+	const FontCharacter & Font::getCharacter(char input)
+	{
+		return m_Characters.find(input)->second;
+	}
 	std::shared_ptr<Font> Font::load(const std::string & name)
 	{
 		using namespace std;
