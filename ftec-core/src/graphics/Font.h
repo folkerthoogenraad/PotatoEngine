@@ -13,12 +13,26 @@ namespace ftec {
 		std::shared_ptr<Sprite> sprite = nullptr;
 	};
 
+	enum class FontAlign {
+		CENTER = 0,
+		LEFT = 1,
+		RIGHT = 2,
+		TOP = 1,
+		BOTTOM = 2
+	};
+
 	class Font : public ManagableResource {
 	private:
 		std::map<char, FontCharacter> m_Characters;
+		std::string m_Name;
+		float m_Size;
 	public:
 		bool hasCharacter(char input) const;
 		const FontCharacter &getCharacter(char input) const;
+		const std::string &getName() const { return m_Name; };
+		float getSize() const { return m_Size; }
+
+		vec2f measure(const std::string&);
 
 		static std::shared_ptr<Font> load(const std::string &name);
 	};

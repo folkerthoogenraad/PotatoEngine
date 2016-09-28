@@ -22,6 +22,7 @@ namespace ftec {
 
 	float z = 0;
 	float p = 0;
+	std::string str = "";
 
 	void Razura::update()
 	{
@@ -34,6 +35,13 @@ namespace ftec {
 
 		if (p > 128.f)
 			p = 128.f;
+
+		str += Input::getKeyString();
+		if (Input::isKeyTyped(GLFW_KEY_BACKSPACE))
+			str = str.substr(0, str.length() - 1);
+
+		if (Input::isKeyTyped(GLFW_KEY_ENTER))
+			str += '\n';
 	}
 
 	void Razura::render()
@@ -43,8 +51,23 @@ namespace ftec {
 		graphics.drawClear();
 		graphics.drawSprite(sprite, vec2f(2, 128));
 
+		float x = 128;
+		float y = 128;
+
+		graphics.setLineWidth(1.f);
+		graphics.setColor(color32::red());
+		graphics.drawRectangle(rect2f(x, y, 16, 16), true);
+		graphics.setColor(color32::blue());
+		graphics.drawRectangle(rect2f(x, y, 16, 16), false);
+		graphics.setColor(color32::black());
+		graphics.setLineWidth(2.f);
+		graphics.drawLine(vec2f(x,y), Input::getMousePosition());
+		
 		graphics.setColor(color32::dkgray());
-		graphics.drawString("Font rendering test `~1!2@3#4$5%6^7&8*9(0)-_=+\\][{};':\",./<>?", vec2f(0,z));
+		graphics.setHorizontalAlign(FontAlign::LEFT);
+		graphics.setVerticalAlign(FontAlign::TOP);
+
+		graphics.drawString(str, vec2f(1280.f/2.f,16.f + z));
 	}
 
 	void Razura::init()

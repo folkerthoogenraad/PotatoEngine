@@ -11,6 +11,60 @@ namespace ftec {
 
 	static void initGL();
 	
+	void Engine::loop(Game & game)
+	{
+		double previousTime = glfwGetTime();
+		double second = 0;
+		int frames = 0;
+
+		Engine::getWindow().setVisible(true);
+
+		//Start running the shit out of this game
+		while (!Engine::getWindow().isCloseRequested()) {
+
+			Input::reset();
+
+			getWindow().poll();
+
+			double currentTime = glfwGetTime();
+			Time::deltaTime = (float)(currentTime - previousTime);
+			Time::runTime += Time::deltaTime;
+			Time::calculateSinCosTime();
+
+			second += Time::deltaTime;
+			if (second > 1) {
+				second -= 1;
+				LOG("FPS: " << frames);
+				frames = 0;
+			}
+
+			previousTime = currentTime;
+
+			game.update();
+			game.render();
+			frames++;
+
+			//TODO don't render stuff like this
+			/*if (getScene())
+			getScene()->update();
+
+			//Begin the full rendering pipeline
+			Graphics::begin();
+
+			game.render();
+
+			if (getScene()) {
+			getScene()->render();
+			}
+
+			//End the rendering pipeline and draw to the screen :D
+			Graphics::end();*/
+
+
+			getWindow().swap();
+		}
+	}
+
 	void Engine::init()
 	{
 		LOG("Loading GLFW...");
@@ -59,7 +113,7 @@ namespace ftec {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_SCISSOR_TEST);
-		glAlphaFunc(GL_GREATER, 0.01f);
+		glAlphaFunc(GL_GREATER, 0.1f);
 		glDepthFunc(GL_LEQUAL);
 
 		//glEnable(GL_CULL_FACE);

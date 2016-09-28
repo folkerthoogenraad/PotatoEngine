@@ -19,6 +19,30 @@ namespace ftec {
 		return m_Characters.find(input)->second;
 	}
 
+	vec2f Font::measure(const std::string &text)
+	{
+		vec2f rect(0, m_Size);
+
+		float currentX = 0;
+
+		for (char c : text) {
+			if (c == '\n') {
+				currentX = 0;
+				rect.y += m_Size;
+				continue;
+			}
+
+			if (hasCharacter(c)) {
+				auto ch = getCharacter(c);
+
+				currentX += ch.xadvance;
+				rect.x = std::fmax(rect.x, currentX);
+			}
+		}
+
+		return rect;
+	}
+
 	std::shared_ptr<Font> Font::load(const std::string & name)
 	{
 		using namespace std;
@@ -77,7 +101,7 @@ namespace ftec {
 					(float)stoi(get<2>(hv))
 				);
 
-				//offset
+				//xoffset //yoffset
 				parseValue(); parseValue();
 				
 				auto xadv = parseValue();
@@ -106,6 +130,16 @@ namespace ftec {
 
 			if (type == "info") {
 				//LOG_DEBUG("Ignoring info");
+				auto face = parseValue();
+				if (!get<0>(face) || get<1>(face) != "face") {
+					LOG_ERROR("NOT A FACE ):");
+				}
+				font->m_Name = get<2>(face).substr(1, get<2>(face).size() - 2);
+				auto size = parseValue();
+				if (!get<0>(size) || get<1>(size) != "size") {
+					LOG_ERROR("NOT A SIZE ):");
+				}
+				font->m_Size = stoi(get<2>(size));
 			}
 			else if (type == "common") {
 				//LOG_DEBUG("Ignoring common");

@@ -3,8 +3,8 @@
 #include "engine/Input.h"
 
 namespace ftec {
-	Window::Window(std::string name, int width, int height, bool fullscreen)
-		:m_Width(width), m_Height(height), m_Name(name), m_Fullscreen(fullscreen)
+	Window::Window(std::string name, int width, int height, bool fullscreen, int msaa)
+		:m_Width(width), m_Height(height), m_Name(name), m_Fullscreen(fullscreen), m_MSAA(msaa)
 	{
 		init();
 	}
@@ -51,6 +51,7 @@ namespace ftec {
 	void Window::init()
 	{
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+		glfwWindowHint(GLFW_SAMPLES, m_MSAA);
 		m_Window = glfwCreateWindow(m_Width, m_Height, m_Name.c_str(), m_Fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 		if (!m_Window)
 		{

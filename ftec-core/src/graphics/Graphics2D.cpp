@@ -12,6 +12,11 @@ namespace ftec {
 	Graphics2D::Graphics2D()
 	{
 		m_WhiteTexture = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
+		m_Font = Engine::getResourceManager().load<Font>("fonts/default14.fnt");
+
+		m_VAlign = FontAlign::TOP;
+		m_HAlign = FontAlign::LEFT;
+
 		m_Material.m_Texture = m_WhiteTexture;
 		m_Material.m_Shader = Engine::getResourceManager().load<Shader>("shaders/default2d");
 		m_ClippingRectangle.width() = Engine::getWindow().getWidth();
@@ -33,26 +38,58 @@ namespace ftec {
 		setTexture(m_WhiteTexture);
 
 		batch.color(m_Color);
-		batch.vertex(vec3f(rectangle.left(), rectangle.top()));
-		batch.vertex(vec3f(rectangle.right(), rectangle.top()));
-		batch.vertex(vec3f(rectangle.right(), rectangle.bottom()));
-		batch.vertex(vec3f(rectangle.left(), rectangle.bottom()));
+		if (fill) {
+			batch.vertex(rectangle.topleft());
+			batch.vertex(rectangle.topright());
+			batch.vertex(rectangle.bottomright());
+			batch.vertex(rectangle.bottomleft());
+		}
+		else {
+			drawLine(rectangle.topleft(), rectangle.topright());
+			drawLine(rectangle.topright(), rectangle.bottomright());
+			drawLine(rectangle.bottomright(), rectangle.bottomleft());
+			drawLine(rectangle.bottomleft(), rectangle.topleft());
+		}
 	}
 
 	void Graphics2D::drawString(const std::string & text, const vec2f & position)
 	{
-		vec2f currentPosition = position;
+		vec2f start = position;
 
-		auto f = Engine::getResourceManager().load<Font>("fonts/default14.fnt");
+		//TODO figure this out for each line, not for the complete string
+		if (m_HAlign != FontAlign::LEFT || m_VAlign != FontAlign::TOP) {
+			vec2f bounds = m_Font->measure(text);
+			
+			if (m_HAlign == FontAlign::CENTER)
+				start.x -= bounds.x / 2;
+
+			if (m_HAlign == FontAlign::RIGHT)
+				start.x -= bounds.x;
+
+			if (m_VAlign == FontAlign::CENTER)
+				start.y -= bounds.y / 2;
+
+			if (m_VAlign == FontAlign::BOTTOM)
+				start.y -= bounds.y;
+		}
+
+
+		vec2f currentPosition = start;
 
 		for (char c : text) {
 			//This should be done with a has, and then a reference get, that throws an exception when the character does not exist in the font.
-			if (f->hasCharacter(c)) {
-				auto fch = f->getCharacter(c);
+			if (c == '\n') {
+				currentPosition.x = start.x; //startX
+				currentPosition.y += m_Font->getSize();
+				continue;
+			}
+			if (m_Font->hasCharacter(c)) {
+				auto fch = m_Font->getCharacter(c);
 				drawSprite(*fch.sprite, currentPosition);
 				currentPosition.x += fch.xadvance;
 			}
 		}
+
 	}
 
 	void Graphics2D::drawSprite(const Sprite & sprite, const vec2f & position)
@@ -60,17 +97,34 @@ namespace ftec {
 		setTexture(sprite.texture());
 
 		batch.color(m_Color);
+
 		batch.uv(sprite.uvs().topleft());
 		batch.vertex(position + sprite.bounds().topleft());
 
-		batch.uv(sprite.uvs().topright());
-		batch.vertex(position + sprite.bounds().topright());
+		batch.uv(sprite.uvs().bottomleft());
+		batch.vertex(position + sprite.bounds().bottomleft());
 
 		batch.uv(sprite.uvs().bottomright());
 		batch.vertex(position + sprite.bounds().bottomright());
 
-		batch.uv(sprite.uvs().bottomleft());
-		batch.vertex(position + sprite.bounds().bottomleft());
+		batch.uv(sprite.uvs().topright());
+		batch.vertex(position + sprite.bounds().topright());
+	}
+
+	void Graphics2D::drawLine(const vec2f & start, const vec2f & end)
+	{
+		const float lw = m_LineWidth / 2.f;
+		vec2f dir = end - start;
+		float length = dir.magnitude();
+		dir /= length;
+		vec2f normal(dir.y, -dir.x);
+		
+		setTexture(m_WhiteTexture);
+		batch.color(m_Color);
+		batch.vertex(start + normal * lw);
+		batch.vertex(start - normal * lw);
+		batch.vertex(end - normal * lw);
+		batch.vertex(end + normal * lw);
 	}
 
 	void Graphics2D::drawClear()

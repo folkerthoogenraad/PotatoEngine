@@ -132,6 +132,23 @@ namespace ftec {
 			return divide(right);
 		}
 
+		vec2<T>& operator+=(T right)
+		{
+			return add(right);
+		}
+		vec2<T>& operator-=(T right)
+		{
+			return subtract(right);
+		}
+		vec2<T>& operator*=(T right)
+		{
+			return multiply(right);
+		}
+		vec2<T>& operator/=(T right)
+		{
+			return divide(right);
+		}
+
 		friend vec2<T>operator-(const vec2<T>& left)
 		{
 			return vec2<T>(-left.x, -left.y);

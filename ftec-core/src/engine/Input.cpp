@@ -6,7 +6,8 @@ namespace ftec {
 	std::set<int> Input::downKeys = std::set<int>();
 	std::set<int> Input::pressedKeys = std::set<int>();
 	std::set<int> Input::releasedKeys = std::set<int>();
-	std::string Input::typedKeys = "";
+	std::set<int> Input::typedKeys = std::set<int>();
+	std::string Input::keystring = "";
 	vec2f Input::mousePosition = vec2f();
 	vec2f Input::mouseDelta = vec2f();
 	vec2f Input::scrollDelta = vec2f();
@@ -35,9 +36,10 @@ namespace ftec {
 	{
 		pressedKeys.clear();
 		releasedKeys.clear();
+		typedKeys.clear();
 		mouseDelta = vec2f();
 		scrollDelta = vec2f();
-		typedKeys = "";
+		keystring = "";
 	}
 
 	void Input::handleKey(int key, int scancode, int action, int mods)
@@ -45,10 +47,14 @@ namespace ftec {
 		if (action == GLFW_PRESS) {
 			pressedKeys.insert(key);
 			downKeys.insert(key);
+			typedKeys.insert(key);
 		}
 		if (action == GLFW_RELEASE) {
 			releasedKeys.insert(key);
 			downKeys.erase(key);
+		}
+		if (action == GLFW_REPEAT) {
+			typedKeys.insert(key);
 		}
 
 	}
@@ -68,7 +74,7 @@ namespace ftec {
 
 	void Input::handleTyped(unsigned int unicode)
 	{
-		typedKeys += (char)unicode;
+		keystring += (char)unicode;
 	}
 
 	bool Input::isKeyDown(int keycode)
@@ -84,6 +90,11 @@ namespace ftec {
 	bool Input::isKeyReleased(int keycode)
 	{
 		return releasedKeys.find(keycode) != releasedKeys.end();
+	}
+
+	bool Input::isKeyTyped(int keycode)
+	{
+		return typedKeys.find(keycode) != typedKeys.end();
 	}
 
 	float Input::getMouseX()

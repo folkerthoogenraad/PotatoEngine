@@ -14,7 +14,8 @@ namespace ftec {
 		static std::set<int> downKeys;
 		static std::set<int> pressedKeys;
 		static std::set<int> releasedKeys;
-		static std::string typedKeys;
+		static std::set<int> typedKeys;
+		static std::string keystring;
 
 		static vec2f mousePosition;
 		static vec2f mouseDelta;
@@ -23,6 +24,7 @@ namespace ftec {
 		static bool isKeyDown(int keycode);
 		static bool isKeyPressed(int keycode);
 		static bool isKeyReleased(int keycode);
+		static bool isKeyTyped(int keycode);
 
 		static float getMouseX();
 		static float getMouseY();
@@ -36,11 +38,12 @@ namespace ftec {
 		static void setCursorMode(int mode);
 		static void reset();
 
-		static const std::string &getTypedKeys() { return typedKeys; }
+		static const std::string &getKeyString() { return keystring; }
 
 		static const std::set<int> &getKeysDown() { return downKeys; }
 		static const std::set<int> &getKeysPressed() { return releasedKeys; }
 		static const std::set<int> &getKeysReleased() { return pressedKeys; }
+		static const std::set<int> &getKeysTyped() { return typedKeys; }
 
 		static void handleKey(int key, int scancode, int action, int mods);
 		static void handleCursor(float x, float y);
