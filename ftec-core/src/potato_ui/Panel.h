@@ -85,8 +85,5 @@ namespace potato {
 		std::weak_ptr<Panel> getParent() { return m_Parent; }
 
 
-		//Static helper stuff
-		//TODO change this name
-		static void inputEditText(std::string &string, size_t &cursorPos);
 	};
 }

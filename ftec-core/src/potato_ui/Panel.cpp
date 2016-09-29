@@ -116,33 +116,5 @@ namespace potato {
 		this->m_Children.push_back(panel);
 	}
 
-	void Panel::inputEditText(std::string & string, size_t &cursorPosition)
-	{
-		if (ftec::Input::isKeyTyped(GLFW_KEY_LEFT)) {
-			cursorPosition -= 1;
-		}
-		if (ftec::Input::isKeyTyped(GLFW_KEY_RIGHT)) {
-			cursorPosition += 1;
-		}
-
-		if (cursorPosition < 0) cursorPosition = 0;
-		if (cursorPosition > string.length()) cursorPosition = string.length();
-
-		string.insert(cursorPosition, ftec::Input::getKeyString());
-		cursorPosition += ftec::Input::getKeyString().length();
-
-		if (ftec::Input::isKeyTyped(GLFW_KEY_BACKSPACE)) {
-			
-			if (string.length() > 0) {
-
-				string.erase(cursorPosition-1, (size_t)1);
-				cursorPosition--;
-
-				if (cursorPosition < 0) cursorPosition = 0;
-				if (cursorPosition > string.length()) cursorPosition = string.length();
-			}
-			
-			
-		}
-	}
+	
 }

@@ -126,6 +126,9 @@
     <ClCompile Include="src\potato_ui\PotatoUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\potato_ui\EditText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\logger\log.h">
@@ -251,9 +254,6 @@
     <ClInclude Include="src\graphics\Font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\tween.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\Curve.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -261,6 +261,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\potato_ui\TextField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\potato_ui\EditText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

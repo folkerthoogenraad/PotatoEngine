@@ -147,6 +147,7 @@
     <ClCompile Include="src\io\ioutils.cpp" />
     <ClCompile Include="src\math\Curve.cpp" />
     <ClCompile Include="src\potato_ui\Button.cpp" />
+    <ClCompile Include="src\potato_ui\EditText.cpp" />
     <ClCompile Include="src\potato_ui\Event.cpp" />
     <ClCompile Include="src\potato_ui\Panel.cpp" />
     <ClCompile Include="src\potato_ui\PotatoUI.cpp" />
@@ -193,11 +194,12 @@
     <ClInclude Include="src\math\math.h" />
     <ClInclude Include="src\math\quaternion.h" />
     <ClInclude Include="src\math\rect.h" />
-    <ClInclude Include="src\math\tween.h" />
+    <ClInclude Include="src\math\helpers.h" />
     <ClInclude Include="src\math\vec2.h" />
     <ClInclude Include="src\math\vec3.h" />
     <ClInclude Include="src\math\vec4.h" />
     <ClInclude Include="src\potato_ui\Button.h" />
+    <ClInclude Include="src\potato_ui\EditText.h" />
     <ClInclude Include="src\potato_ui\Event.h" />
     <ClInclude Include="src\potato_ui\Layout.h" />
     <ClInclude Include="src\potato_ui\Panel.h" />

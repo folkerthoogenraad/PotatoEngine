@@ -31,5 +31,40 @@ namespace ftec {
 		return a + (b - a) * curve.interpolate(f);
 	}
 
+	template<typename T>
+	inline void clamp(T &value, const T &min, const T &max)
+	{
+		if (value < min) value = min;
+		if (value > max) value = max;
+	}
 
+	template<typename T>
+	inline const T & max(const T &a, const T &b)
+	{
+		if (a > b)
+			return a;
+		return b;
+	}
+
+	template<typename T>
+	inline const T & min(const T &a, const T &b)
+	{
+		if (a < b)
+			return a;
+		return b;
+	}
+
+	template<typename T>
+	inline T distance(const T &a, const T &b)
+	{
+		return max(a,b) - min(a,b);
+	}
+
+	template<typename T>
+	inline T abs(const T &a)
+	{
+		if (a < 0)
+			return -a;
+		return a;
+	}
 }

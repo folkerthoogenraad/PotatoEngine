@@ -15,7 +15,7 @@ namespace potato {
 		Panel::update();
 
 		if (m_Focus) {
-			Panel::inputEditText(m_Text, m_CursorPosition);
+			m_EditText.parseInput();
 		}
 	}
 
@@ -34,22 +34,32 @@ namespace potato {
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
 		graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
 
-		if (m_Text.length() == 0) {
+		if (m_EditText.length() == 0) {
 			graphics.setColor(PotatoColor::secondaryText);
 			graphics.drawString(m_Hint, ftec::vec2f(m_Bounds.x(), m_Bounds.center().y));
 		}
 		else {
 			graphics.setColor(PotatoColor::primaryText);
-			graphics.drawString(m_Text, ftec::vec2f(m_Bounds.x(), m_Bounds.center().y));
+			graphics.drawString(m_EditText.m_Text, ftec::vec2f(m_Bounds.x(), m_Bounds.center().y));
 		}
 
 		if (m_Focus) {
-			graphics.setColor(PotatoColor::primaryText);
-			
-			auto size = m_Font->measure(m_Text.substr(0, m_CursorPosition));
+			//A bit of alpha here
+			graphics.setColor(ftec::color32(0xFF,0xFF,0xFF,0x88));
+
+			auto start = m_Font->measure(m_EditText.m_Text.substr(0, m_EditText.selectionStart())).x - 1;
+			auto end = m_Font->measure(m_EditText.m_Text.substr(0, m_EditText.selectionEnd())).x + 1;
 			auto center = m_Bounds.center();
 
-			graphics.drawLine(ftec::vec2i(m_Bounds.x() + size.x, center.y - m_Font->getSize()/2), ftec::vec2i(m_Bounds.x() + size.x, center.y + m_Font->getSize() / 2));
+			graphics.drawRectangle(
+				ftec::rect2f(
+					m_Bounds.x() + start,
+					center.y - m_Font->getSize()/2,
+					end - start,
+					m_Font->getSize()
+				),
+				true
+			);
 		}
 
 	}
