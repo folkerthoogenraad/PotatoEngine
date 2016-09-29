@@ -19,18 +19,25 @@ namespace ftec {
 
 		m_Material.m_Texture = m_WhiteTexture;
 		m_Material.m_Shader = Engine::getResourceManager().load<Shader>("shaders/default2d");
-		m_ClippingRectangle.width() = Engine::getWindow().getWidth();
-		m_ClippingRectangle.height() = Engine::getWindow().getHeight();
+		resetClip();
 		m_Color = color32(255, 255, 255, 255);
-		batch.begin(Primitive::QUADS);
-
 	}
 
 	Graphics2D::~Graphics2D()
 	{
-		flush();
-		batch.end();
+		end();
 		//LOG("Graphics2D drawcalls:" << calls);
+	}
+
+	void Graphics2D::begin() {
+		batch.begin(Primitive::QUADS);
+	}
+
+	void Graphics2D::end() {
+		if (batch.isDrawing()) {
+			flush();
+			batch.end();
+		}
 	}
 
 	void Graphics2D::drawRectangle(const rect2f & rectangle, bool fill)
@@ -49,6 +56,27 @@ namespace ftec {
 			drawLine(rectangle.topright(), rectangle.bottomright());
 			drawLine(rectangle.bottomright(), rectangle.bottomleft());
 			drawLine(rectangle.bottomleft(), rectangle.topleft());
+		}
+	}
+
+	void Graphics2D::drawCircle(const vec2f & center, float radius, bool fill)
+	{
+		if (fill) {
+			setTexture(m_WhiteTexture);
+			batch.color(m_Color);
+
+			const float steps = 32;
+			const float anglePerStep = 2 * PI / steps;
+			for (float i = 0; i < steps; i += 2) {
+				batch.vertex(center);
+
+				batch.vertex(center + vec3f(cosf(anglePerStep * (i + 0)), sinf(anglePerStep * (i + 0))) * radius);
+				batch.vertex(center + vec3f(cosf(anglePerStep * (i + 1)), sinf(anglePerStep * (i + 1))) * radius);
+				batch.vertex(center + vec3f(cosf(anglePerStep * (i + 2)), sinf(anglePerStep * (i + 2))) * radius);
+			}
+		}
+		else {
+			//TODO
 		}
 	}
 
@@ -139,6 +167,14 @@ namespace ftec {
 		flush();
 
 		this->m_ClippingRectangle = rectangle;
+	}
+
+	void Graphics2D::resetClip()
+	{
+		m_ClippingRectangle.x() = 0;
+		m_ClippingRectangle.y() = 0;
+		m_ClippingRectangle.width() = Engine::getWindow().getWidth();
+		m_ClippingRectangle.height() = Engine::getWindow().getHeight();
 	}
 
 	void Graphics2D::setColor(const color32 & color)

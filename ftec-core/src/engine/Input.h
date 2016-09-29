@@ -17,6 +17,10 @@ namespace ftec {
 		static std::set<int> typedKeys;
 		static std::string keystring;
 
+		static std::set<int> downMouse;
+		static std::set<int> pressedMouse;
+		static std::set<int> releasedMouse;
+
 		static vec2f mousePosition;
 		static vec2f mouseDelta;
 		static vec2f scrollDelta;
@@ -25,6 +29,10 @@ namespace ftec {
 		static bool isKeyPressed(int keycode);
 		static bool isKeyReleased(int keycode);
 		static bool isKeyTyped(int keycode);
+
+		static bool isMouseButtonDown(int keycode);
+		static bool isMouseButtonPressed(int keycode);
+		static bool isMouseButtonReleased(int keycode);
 
 		static float getMouseX();
 		static float getMouseY();
@@ -41,13 +49,18 @@ namespace ftec {
 		static const std::string &getKeyString() { return keystring; }
 
 		static const std::set<int> &getKeysDown() { return downKeys; }
-		static const std::set<int> &getKeysPressed() { return releasedKeys; }
-		static const std::set<int> &getKeysReleased() { return pressedKeys; }
+		static const std::set<int> &getKeysPressed() { return pressedKeys; }
+		static const std::set<int> &getKeysReleased() { return releasedKeys; }
 		static const std::set<int> &getKeysTyped() { return typedKeys; }
+
+		static const std::set<int> &getMouseButtonsDown() { return downMouse; }
+		static const std::set<int> &getMouseButtonsPressed() { return pressedMouse; }
+		static const std::set<int> &getMouseButtonsReleased() { return releasedMouse; }
 
 		static void handleKey(int key, int scancode, int action, int mods);
 		static void handleCursor(float x, float y);
 		static void handleScroll(float x, float y);
 		static void handleTyped(unsigned int unicode);
+		static void handleMouse(int button, int action, int mods);
 	};
 }

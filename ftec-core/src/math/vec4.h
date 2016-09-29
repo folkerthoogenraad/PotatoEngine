@@ -20,6 +20,8 @@ namespace ftec {
 	{
 		T x, y, z, w;
 
+		template<typename S>
+		vec4(const vec4<S> &other) : x((T)other.x), y((T)other.y), z((T)other.z), w((T)other.w) {};
 		vec4(T x = 0, T y = 0, T z = 0, T w = 0) : x(x), y(y), z(z), w(w) {};
 
 		vec4<T>& add(const vec4<T>& other)

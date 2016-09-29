@@ -17,8 +17,9 @@ namespace ftec {
 		bool m_Fullscreen;
 		bool m_CloseRequested;
 		bool m_Resized;
+		bool m_vSync;
 	public:
-		Window(std::string name, int width, int height, bool full, int msaa = 0);
+		Window(std::string name, int width, int height, bool full = false, bool vsync = true, int msaa = 0);
 		~Window();
 		void update();
 
@@ -41,6 +42,7 @@ namespace ftec {
 		friend void type_callback(GLFWwindow* window, unsigned int unicode);
 		friend void resize_callback(GLFWwindow* window, int width, int height);
 		friend void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+		friend void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 	private:
 		void init();
 	};

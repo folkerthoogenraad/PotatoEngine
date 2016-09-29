@@ -6,24 +6,33 @@
 
 namespace ftec {
 	class Graphics2D;
+	class Font;
 }
 
 namespace potato {
 
-	typedef ftec::vec2i Position;
-	typedef ftec::vec2i Dimension;
+	typedef ftec::rect2i Bounds;
 
 	class Event;
 
 	class Panel {
 	protected:
-		Dimension m_Size;
-		Position m_Position;
+		Bounds m_Bounds;
 
 		ftec::color32 m_BackgroundColor = ftec::color32::white();
+		ftec::color32 m_ForegroundColor = ftec::color32::black();
 
-		bool m_Focusable;
-		bool m_Opaque;
+		std::shared_ptr<ftec::Font> m_Font;
+
+		bool m_Hovering = false;
+		bool m_ChildHovering = false;
+
+		bool m_Pressed = false;
+
+		bool m_Focusable = false;
+		bool m_Opaque = true;
+
+		bool m_Focus = false;
 
 		std::shared_ptr<Layout> m_Layout;
 
@@ -34,11 +43,10 @@ namespace potato {
 		std::vector<std::shared_ptr<Panel>> m_Children;
 	
 	public:
-		Dimension &size() { return m_Size; }
-		const Dimension &size() const { return m_Size; }
+		Panel();
 
-		Position &position() { return m_Position; }
-		const Position &position() const { return m_Position; }
+		Bounds &bounds() { return m_Bounds; }
+		const Bounds &bounds() const { return m_Bounds; }
 
 		void opaque(bool op) { m_Opaque = op; }
 		bool opaque() const { return m_Opaque; }
@@ -46,24 +54,39 @@ namespace potato {
 		void focusable(bool f) { m_Focusable = f; }
 		bool focusable() const { return m_Focusable; }
 
+		ftec::color32 &background() { return m_BackgroundColor; }
+		const ftec::color32 &background() const { return m_BackgroundColor; }
+
+		ftec::color32 &foreground() { return m_ForegroundColor; }
+		const ftec::color32 &foreground() const { return m_ForegroundColor; }
+
 		//Called each time the panel needs to be drawn
 		virtual void draw(ftec::Graphics2D &graphics);
 
-		//Called each time an update is needed, this is only called when continues update is enabled
+		//Called each update (for animation, for everything)
 		virtual void update();
 
-		//Called each time an event is here
-		virtual void process(Event &event);
+		virtual void onClick();
+		virtual void onHoverEnter();
+		virtual void onHoverLeave();
 
-		virtual void onClick() {}
-		virtual void onHoverEnter() {}
-		virtual void onHoverLeave() {}
+		bool isHovering() const { return m_Hovering; }
+		bool isHoveringChild() const { return m_ChildHovering; }
+		bool isHoveringSelf() const { return m_Hovering && !m_ChildHovering; }
 
+		bool inBounds(ftec::vec2i point);
+		bool inChildBounds(ftec::vec2i point);
+		bool inSelfBounds(ftec::vec2i point);
 
 		void setLayout(std::shared_ptr<Layout> layout) { this->m_Layout = layout; }
-		void addPanel(std::shared_ptr<Panel> panel) { this->m_Children.push_back(panel); }
+		void addPanel(std::shared_ptr<Panel> panel);
 
 		void setParent(std::weak_ptr<Panel> parent) { this->m_Parent = parent; }
 		std::weak_ptr<Panel> getParent() { return m_Parent; }
+
+
+		//Static helper stuff
+		//TODO change this name
+		static void inputEditText(std::string &string, size_t &cursorPos);
 	};
 }

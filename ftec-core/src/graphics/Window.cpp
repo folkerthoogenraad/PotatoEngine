@@ -3,8 +3,8 @@
 #include "engine/Input.h"
 
 namespace ftec {
-	Window::Window(std::string name, int width, int height, bool fullscreen, int msaa)
-		:m_Width(width), m_Height(height), m_Name(name), m_Fullscreen(fullscreen), m_MSAA(msaa)
+	Window::Window(std::string name, int width, int height, bool fullscreen, bool vsync, int msaa)
+		:m_Width(width), m_Height(height), m_Name(name), m_Fullscreen(fullscreen), m_MSAA(msaa), m_vSync(vsync)
 	{
 		init();
 	}
@@ -61,8 +61,10 @@ namespace ftec {
 
 		glfwMakeContextCurrent(m_Window);
 		glfwSetWindowUserPointer(m_Window, this);
-		glfwSwapInterval(1);
+		glfwSwapInterval(m_vSync ? 1 : 0);
+
 		glfwSetCursorPosCallback(m_Window, cursor_position_callback);
+		glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 		glfwSetKeyCallback(m_Window, key_callback);
 		glfwSetWindowSizeCallback(m_Window, resize_callback);
 		glfwSetCharCallback(m_Window, type_callback);
@@ -104,5 +106,11 @@ namespace ftec {
 	void scroll_callback(GLFWwindow * window, double xoffset, double yoffset)
 	{
 		Input::handleScroll((float)xoffset, (float)yoffset);
+	}
+
+
+	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+	{
+		Input::handleMouse(button, action, mods);
 	}
 }

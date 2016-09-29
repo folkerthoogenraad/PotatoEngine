@@ -36,7 +36,12 @@ namespace ftec {
 		Graphics2D();
 		~Graphics2D();
 
+		void begin();
+		void end();
+
 		void drawRectangle(const rect2f& rectangle, bool fill);
+		void drawCircle(const vec2f &center, float radius, bool fill);
+
 		void drawString(const std::string &text, const vec2f &position);
 		void drawSprite(const Sprite &sprite, const vec2f &position);
 		void drawLine(const vec2f &start, const vec2f &end);
@@ -45,6 +50,7 @@ namespace ftec {
 
 		//Set stuff
 		void setClip(const rect2i &rectangle);
+		void resetClip();
 		void setColor(const color32 &color);
 		void setShader(std::shared_ptr<Shader> shader);
 

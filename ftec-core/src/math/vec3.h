@@ -10,6 +10,8 @@ namespace ftec{
 	{
 		T x, y, z;
 
+		template<typename S>
+		vec3(const vec3<S> &other) : x((T)other.x), y((T)other.y), z((T)other.z) {};
 		vec3(T x = 0, T y = 0, T z = 0) : x(x), y(y), z(z) {};
 		vec3(vec2<T> v) : x(v.x), y(v.y), z(0) {};
 

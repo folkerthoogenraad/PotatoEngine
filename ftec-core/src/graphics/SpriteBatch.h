@@ -44,6 +44,8 @@ namespace ftec {
 		void color(const color32 &color);
 		void uv(const vec2f &uv);
 
+		bool isDrawing() { return m_Drawing; }
+
 		inline int count() { return m_Vertices.size(); }
 	};
 }

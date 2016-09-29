@@ -7,6 +7,11 @@ namespace ftec {
 	std::set<int> Input::pressedKeys = std::set<int>();
 	std::set<int> Input::releasedKeys = std::set<int>();
 	std::set<int> Input::typedKeys = std::set<int>();
+
+	std::set<int> Input::downMouse = std::set<int>();
+	std::set<int> Input::pressedMouse = std::set<int>();
+	std::set<int> Input::releasedMouse = std::set<int>();
+
 	std::string Input::keystring = "";
 	vec2f Input::mousePosition = vec2f();
 	vec2f Input::mouseDelta = vec2f();
@@ -37,6 +42,8 @@ namespace ftec {
 		pressedKeys.clear();
 		releasedKeys.clear();
 		typedKeys.clear();
+		pressedMouse.clear();
+		releasedMouse.clear();
 		mouseDelta = vec2f();
 		scrollDelta = vec2f();
 		keystring = "";
@@ -77,6 +84,18 @@ namespace ftec {
 		keystring += (char)unicode;
 	}
 
+	void Input::handleMouse(int button, int action, int mods)
+	{
+		if (action == GLFW_PRESS) {
+			pressedMouse.insert(button);
+			downMouse.insert(button);
+		}
+		if (action == GLFW_RELEASE) {
+			releasedMouse.insert(button);
+			downMouse.erase(button);
+		}
+	}
+
 	bool Input::isKeyDown(int keycode)
 	{
 		return downKeys.find(keycode) != downKeys.end();
@@ -95,6 +114,21 @@ namespace ftec {
 	bool Input::isKeyTyped(int keycode)
 	{
 		return typedKeys.find(keycode) != typedKeys.end();
+	}
+
+	bool Input::isMouseButtonPressed(int keycode)
+	{
+		return pressedMouse.find(keycode) != pressedMouse.end();
+	}
+
+	bool Input::isMouseButtonDown(int keycode)
+	{
+		return downMouse.find(keycode) != downMouse.end();
+	}
+
+	bool Input::isMouseButtonReleased(int keycode)
+	{
+		return releasedMouse.find(keycode) != releasedMouse.end();
 	}
 
 	float Input::getMouseX()

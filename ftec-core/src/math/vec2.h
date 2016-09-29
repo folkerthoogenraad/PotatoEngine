@@ -9,6 +9,9 @@ namespace ftec {
 	{
 		T x, y;
 
+		template<typename S>
+		vec2(const vec2<S> &other) : x((T)other.x), y((T)other.y) {};
+
 		vec2(T x = 0, T y = 0) : x(x), y(y) {};
 
 		vec2<T>& add(const vec2<T>& other)
