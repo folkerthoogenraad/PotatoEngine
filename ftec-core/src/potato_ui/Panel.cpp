@@ -69,6 +69,13 @@ namespace potato {
 			}
 		}
 		
+		//Tabbing between focus things
+		{
+			if (ftec::Input::isKeyTyped(GLFW_KEY_TAB)) {
+				switchFocus();
+			}
+		}
+
 
 		//Update children
 		for (auto child : m_Children) {
@@ -86,6 +93,52 @@ namespace potato {
 
 	void Panel::onHoverLeave()
 	{
+	}
+
+	void Panel::switchFocus()
+	{
+		//TODO optimize this function with only one loop (keep track of first focusable index, and next after current)
+		if (m_Children.size() == 0)
+			return;
+
+		int currentFocus = -1;
+		int idx = 0;
+		int focusCount = 0;
+
+		//Find the child with focus
+		for (auto c : m_Children) {
+			if (c->m_Focus) {
+				currentFocus = idx;
+				focusCount++;
+			}
+			idx++;
+		}
+		
+		//If there currently is nothing focussed
+		if (focusCount == 0) {
+			return;
+		}if (focusCount > 1)
+			LOG_ERROR("Focus count > 1");
+		
+		//Unfocus the current focus
+		m_Children[currentFocus]->m_Focus = false;
+
+		//See if we can find a next target to focus
+		for (int i = currentFocus + 1; i < m_Children.size(); i++) {
+			if (m_Children[i]->focusable()) {
+				//if we can, we return
+				m_Children[i]->m_Focus = true;
+				return;
+			}
+		}
+
+		//If we can't, we look for our next target!
+		for (auto c : m_Children) {
+			if (c->m_Focusable) {
+				c->m_Focus = true;
+				return;
+			}
+		}
 	}
 
 	bool Panel::inBounds(ftec::vec2i point)
@@ -113,6 +166,7 @@ namespace potato {
 
 	void Panel::addPanel(std::shared_ptr<Panel> panel)
 	{
+		panel->setParent(this);
 		this->m_Children.push_back(panel);
 	}
 

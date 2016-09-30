@@ -2,6 +2,8 @@
 #include "logger/log.h"
 #include "Renderer.h"
 #include "engine/Engine.h"
+#include "GraphicsState.h"
+#include "Cubemap.h"
 
 #define DEBUG_GRAPHICS 0
 
@@ -138,15 +140,51 @@ namespace ftec {
 			}
 
 			//TODO do this only if the camera requests this
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			GraphicsState::matrixProjection = c->getProjectionMatrix();
+			GraphicsState::matrixView = c->getViewMatrix();
+			GraphicsState::matrixModel = mat4::translation(c->m_Position);
+
+			GraphicsState::eyePosition = c->m_Position;
+
+			//Set skybox to normal version
+			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test");
+			GraphicsState::m_Shader = Engine::getResourceManager().load<Shader>("shaders/skybox");
+			auto mesh = Engine::getResourceManager().load<Mesh>("mesh/skybox.obj");
+
+			GraphicsState::m_TextureEnabled = false;
+			GraphicsState::m_LightEnabled = false;
+
+			Renderer::drawDirect(*mesh);
+
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			//Set skybox to blurred version
+			//GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test2");
+
+			GraphicsState::m_LightEnabled = true;
+
+			GraphicsState::m_Lights[0].enabled = true;
+			GraphicsState::m_Lights[0].light.m_Direction = vec3f(0.7f,-0.4f,-0.7f).normalize();
+
+			GraphicsState::m_TextureEnabled = true;
 
 			for (auto m : meshes) {
 				//TODO material sorting
 				//TODO batching
 
 				//Only draw when layer masks align
-				if((m.layer & c->m_LayerMask) != 0)
-					Renderer::drawDirect(*m.mesh, *m.material, m.modelMatrix);
+				if ((m.layer & c->m_LayerMask) != 0) {
+
+					GraphicsState::matrixModel = m.modelMatrix;
+					GraphicsState::m_Shader = m.material->m_Shader;
+
+					GraphicsState::m_Textures[0].enabled = true;
+					GraphicsState::m_Textures[0].texture = m.material->m_Texture;
+
+					Renderer::drawDirect(*m.mesh);
+				}
 			}
 
 			//Reset the render target, if the camera has no render target any more

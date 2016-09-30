@@ -13,4 +13,16 @@ namespace potato {
 	ftec::color32 PotatoColor::divider =		ftec::color32(0xBD, 0xBD, 0xBD, 0xFF);
 	ftec::color32 PotatoColor::accent =			ftec::color32(0x9E, 0x9E, 0x9E, 0xFF);
 	ftec::color32 PotatoColor::iconsText =		ftec::color32(0xFF, 0xFF, 0xFF, 0xFF);
+
+
+	std::string PotatoClipboard::data = "";
+	//TODO make this use the windows clipboard
+	const std::string &PotatoClipboard::getData() {
+		return data;
+	}
+
+	void PotatoClipboard::setData(const std::string &input) {
+		data = input;
+	}
+
 }

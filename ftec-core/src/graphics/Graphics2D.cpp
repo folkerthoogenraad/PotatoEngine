@@ -171,6 +171,8 @@ namespace ftec {
 
 	void Graphics2D::resetClip()
 	{
+		flush();
+
 		m_ClippingRectangle.x() = 0;
 		m_ClippingRectangle.y() = 0;
 		m_ClippingRectangle.width() = Engine::getWindow().getWidth();
@@ -204,20 +206,27 @@ namespace ftec {
 
 	void Graphics2D::flush()
 	{
+		//Is Graphics2D responseable for this?
+		Renderer::viewport(rect2i(0, 0, (int)Engine::getWindow().getWidth(), (int)Engine::getWindow().getHeight()));
+		Renderer::clip(this->m_ClippingRectangle);
+
 		if (batch.count() <= 0) {
 			return;
 		}
 
 		calls++;
 
-		Renderer::viewport(rect2i(0,0, (int)Engine::getWindow().getWidth(), (int)Engine::getWindow().getHeight()));
-		Renderer::clip(this->m_ClippingRectangle);
+		//Disable lighting
+		GraphicsState::m_LightEnabled = false;
 
 		GraphicsState::m_TextureEnabled = true;
 		GraphicsState::m_Shader = m_Material.m_Shader;
 		GraphicsState::m_Textures[0].enabled = true;
-		GraphicsState::m_Textures[0].texture = m_Material.m_Texture;// Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_CHECKERBOARD);
+		GraphicsState::m_Textures[0].texture = m_Material.m_Texture;
+		GraphicsState::m_Skybox = nullptr;
 
+		GraphicsState::matrixModel = mat4::identity();
+		GraphicsState::matrixView = mat4::identity();
 		GraphicsState::matrixProjection = mat4::orthographic(0,Engine::getWindow().getWidth(), Engine::getWindow().getHeight(), 0, -100, 100);
 
 		batch.end();

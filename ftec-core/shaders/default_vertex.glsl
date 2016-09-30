@@ -30,7 +30,6 @@ out float v_Lightness;
 
 void main()
 {
-
 	vec4 worldNormal = u_MatrixModel * vec4(normal, 0.0);
 
 	float lightness = 0.0;
@@ -44,7 +43,6 @@ void main()
 		}
 	}
 	
-
 	if(lightness < 0.2){
 		lightness = 0.2;
 	}

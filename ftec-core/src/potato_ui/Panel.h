@@ -37,7 +37,8 @@ namespace potato {
 		std::shared_ptr<Layout> m_Layout;
 
 		//Optional parent
-		std::weak_ptr<Panel> m_Parent;
+		//shared ptr from this? maybe?
+		Panel *m_Parent;
 
 		//List of children
 		std::vector<std::shared_ptr<Panel>> m_Children;
@@ -70,6 +71,8 @@ namespace potato {
 		virtual void onHoverEnter();
 		virtual void onHoverLeave();
 
+		void switchFocus();
+
 		bool isHovering() const { return m_Hovering; }
 		bool isHoveringChild() const { return m_ChildHovering; }
 		bool isHoveringSelf() const { return m_Hovering && !m_ChildHovering; }
@@ -81,8 +84,8 @@ namespace potato {
 		void setLayout(std::shared_ptr<Layout> layout) { this->m_Layout = layout; }
 		void addPanel(std::shared_ptr<Panel> panel);
 
-		void setParent(std::weak_ptr<Panel> parent) { this->m_Parent = parent; }
-		std::weak_ptr<Panel> getParent() { return m_Parent; }
+		void setParent(Panel *parent) { this->m_Parent = parent; }
+		Panel *getParent() { return m_Parent; }
 
 
 	};

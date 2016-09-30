@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "Shader.h"
+#include "Cubemap.h"
 #include "Texture.h"
 #include "logger/log.h"
 
@@ -12,10 +13,12 @@ namespace ftec {
 	bool GraphicsState::m_LightEnabled = false;
 	bool GraphicsState::m_TextureEnabled = true;
 	std::shared_ptr<Shader> GraphicsState::m_Shader = nullptr;
+	std::shared_ptr<Cubemap> GraphicsState::m_Skybox = nullptr;
 
 	mat4 GraphicsState::matrixModel;
 	mat4 GraphicsState::matrixView;
 	mat4 GraphicsState::matrixProjection;
+	vec3f GraphicsState::eyePosition;
 
 	TextureSlot GraphicsState::m_Textures[MAX_TEXTURES];
 	LightSlot GraphicsState::m_Lights[MAX_LIGHTS];
@@ -53,9 +56,24 @@ namespace ftec {
 			}
 		}
 
-		if (m_LightEnabled) {
-
+		int skyboxLocation = shader.getUniformLocation("u_Skybox");
+		if (skyboxLocation > -1) {
+			glActiveTexture(GL_TEXTURE0 + MAX_TEXTURES);
+			m_Skybox->bind();
+			shader.setUniform(skyboxLocation, MAX_TEXTURES);
 		}
+		glActiveTexture(GL_TEXTURE0);
+
+		if (m_LightEnabled) {
+			int lightEnabledLocation = shader.getUniformLocation("u_Light.enabled");
+			int lightDirectionLocation = shader.getUniformLocation("u_Light.direction");
+
+			shader.setUniform(lightEnabledLocation, m_Lights[0].enabled);
+			shader.setUniform(lightDirectionLocation, m_Lights[0].light.m_Direction);
+		}
+
+		int eyePositionLocation = shader.getUniformLocation("u_EyePosition");
+		shader.setUniform(eyePositionLocation, eyePosition);
 	}
 
 }

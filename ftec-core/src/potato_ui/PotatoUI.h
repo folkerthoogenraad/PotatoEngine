@@ -11,6 +11,7 @@ PotatoUI (obviously).
 */
 
 #include "math/math.h"
+#include <string>
 
 namespace potato {
 	class PotatoColor {
@@ -26,5 +27,13 @@ namespace potato {
 		static ftec::color32 divider;
 		static ftec::color32 accent;
 		static ftec::color32 iconsText;
+	};
+
+	class PotatoClipboard {
+	private:
+		static std::string data;
+	public:
+		static const std::string &getData();
+		static void setData(const std::string &);
 	};
 }

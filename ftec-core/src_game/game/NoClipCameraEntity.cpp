@@ -30,13 +30,13 @@ namespace ftec {
 		vec3f motion;
 
 		if (Input::isKeyDown(GLFW_KEY_W)) {
-			motion.z += 1;
-		}if (Input::isKeyDown(GLFW_KEY_S)) {
 			motion.z -= 1;
+		}if (Input::isKeyDown(GLFW_KEY_S)) {
+			motion.z += 1;
 		}if (Input::isKeyDown(GLFW_KEY_A)) {
-			motion.x += 1;
-		}if (Input::isKeyDown(GLFW_KEY_D)) {
 			motion.x -= 1;
+		}if (Input::isKeyDown(GLFW_KEY_D)) {
+			motion.x += 1;
 		}
 		
 		mat4 transform = mat4::rotation(cam.m_Yaw, vec3f(0,1,0));
@@ -44,9 +44,9 @@ namespace ftec {
 
 		motion.y = 0;
 		if (Input::isKeyDown(GLFW_KEY_Q)) {
-			motion.y -= 1;
-		}if (Input::isKeyDown(GLFW_KEY_Z)) {
 			motion.y += 1;
+		}if (Input::isKeyDown(GLFW_KEY_Z)) {
+			motion.y -= 1;
 		}
 		
 		if (motion.magnitude() > 1) {

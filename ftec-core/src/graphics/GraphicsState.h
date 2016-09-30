@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math/mat4.h"
+#include "math/math.h"
 #include "Light.h"
 #include <memory>
 
@@ -8,6 +8,7 @@ namespace ftec{
 
 	class Texture;
 	class Shader;
+	class Cubemap;
 
 	struct TextureSlot {
 		bool enabled = false;
@@ -30,9 +31,12 @@ namespace ftec{
 		static bool m_TextureEnabled;
 
 		static std::shared_ptr<Shader> m_Shader;
+		static std::shared_ptr<Cubemap> m_Skybox;
 
 		static TextureSlot m_Textures[MAX_TEXTURES];
 		static LightSlot m_Lights[MAX_LIGHTS];
+
+		static vec3f eyePosition;//Rename, todo
 
 		static mat4 matrixModel;
 		static mat4 matrixView;

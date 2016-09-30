@@ -19,6 +19,8 @@ namespace ftec {
 		static void drawDirect(const Mesh &mesh, const Material &material, const Light &light, const mat4 &projectionMatrix = mat4::identity(), const mat4 &viewMatrix = mat4::identity(), const mat4 &modelMatrix = mat4::identity());
 		static void drawDirect(const Mesh &mesh, const Material &material, const mat4 &modelMatrix = mat4::identity());
 
+		static void drawDirect(const Mesh &mesh);
+
 		//Sets the clipping plane
 		static void clip(const rect2i &rectangle);
 		//Sets the viewport
@@ -26,5 +28,7 @@ namespace ftec {
 
 		//Sets both the viewport and the clipping plane
 		static void renderport(const rect2i &rectangle);
+
+		static void clear();
 	};
 }
