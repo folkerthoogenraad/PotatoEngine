@@ -68,7 +68,7 @@ void main()
 	
 	vec4 textureSample = texture(u_Textures[0], v_Uv);
 
-	FragColor = mix(textureSample, skyboxSample, 0.5) * resultColor;
+	FragColor = mix(textureSample, skyboxSample, 1.0) * resultColor;
 
 	//Full chrome
 	//FragColor = texture(u_Skybox, boxLighting);
