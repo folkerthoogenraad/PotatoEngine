@@ -24,7 +24,7 @@ namespace ftec {
 			fif = FreeImage_GetFIFFromFilename(name.c_str());
 		//if still unkown, return failure
 		if (fif == FIF_UNKNOWN)
-			return false;
+			return vec2i(-1, -1);
 
 		//check that the plugin has reading capabilities and load the file
 		if (FreeImage_FIFSupportsReading(fif))
@@ -32,7 +32,7 @@ namespace ftec {
 
 		//if the image failed to load, return failure
 		if (!dib)
-			return false;
+			return vec2i(-1, -1);
 
 		FIBITMAP *image = FreeImage_ConvertTo32Bits(dib);
 

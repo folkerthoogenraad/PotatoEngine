@@ -6,6 +6,7 @@
 #include "potato_ui/Panel.h"
 #include "io/defer.h"
 #include "math/math.h"
+#include "serialization/Serialization.h"
 
 int main(void)
 {

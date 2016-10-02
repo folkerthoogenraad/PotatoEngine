@@ -154,6 +154,7 @@
     <ClCompile Include="src\potato_ui\Panel.cpp" />
     <ClCompile Include="src\potato_ui\PotatoUI.cpp" />
     <ClCompile Include="src\potato_ui\TextField.cpp" />
+    <ClCompile Include="src\serialization\Serialization.cpp" />
     <ClCompile Include="src_game\game\NoClipCameraEntity.cpp" />
     <ClCompile Include="src_game\game\Razura.cpp" />
     <ClCompile Include="src_game\main.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="src\resources\ResourceManager.h" />
     <ClInclude Include="src\scene\Entity.h" />
     <ClInclude Include="src\scene\Scene.h" />
+    <ClInclude Include="src\serialization\Serialization.h" />
     <ClInclude Include="src_game\game\NoClipCameraEntity.h" />
     <ClInclude Include="src_game\game\Razura.h" />
   </ItemGroup>

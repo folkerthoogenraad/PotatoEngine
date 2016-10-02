@@ -84,7 +84,7 @@ namespace ftec{
 			}
 			return *this;
 		}
-		T magnitude()
+		T magnitude() const
 		{
 			return (T)sqrt(x*x + y*y + z*z);
 		}
@@ -163,6 +163,11 @@ namespace ftec{
 		friend bool operator==(const vec3<T>& left, const vec3<T>& right)
 		{
 			return left.x == right.x && left.y == right.y && left.z == right.z;
+		}
+
+		friend bool operator<(const vec3<T>& left, const vec3<T>& right)
+		{
+			return left.x < right.x && left.y < right.y && left.z < right.z;
 		}
 
 		friend std::ostream& operator<<(std::ostream& left, const vec3<T>& right)

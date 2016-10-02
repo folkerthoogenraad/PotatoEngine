@@ -4,8 +4,9 @@
 #include "GL.h"
 
 namespace ftec {
+	//Currently this class does not work, and should be reworked
 	class RenderBuffer {
-	private: //might someday be public?
+	private:
 		GLuint m_Framebuffer;
 		std::shared_ptr<Texture> m_DepthAttachment;
 		std::shared_ptr<Texture> m_ColorAttachment;

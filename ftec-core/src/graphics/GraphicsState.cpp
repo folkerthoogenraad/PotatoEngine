@@ -52,6 +52,7 @@ namespace ftec {
 					std::stringstream name;
 					name << "u_Textures[" << i << "]";
 					int l = shader.getUniformLocation(name.str());
+					shader.setUniform(l, i);
 				}
 			}
 		}

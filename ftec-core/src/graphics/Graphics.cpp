@@ -14,10 +14,6 @@ namespace ftec {
 	std::vector<const Light *> Graphics::lights = {};
 	bool Graphics::drawing = false;
 
-	//NOO DONT DO THJIS 
-	std::shared_ptr<Mesh> mesh;
-	std::shared_ptr<Material> material;
-
 	void Graphics::begin()
 	{
 		if (drawing) {
@@ -30,32 +26,6 @@ namespace ftec {
 		cameras.clear();
 		lights.clear();
 		
-		if (!mesh) { //TODO not do this here.
-			mesh = std::make_shared<Mesh>();
-			mesh->m_Vertices = {
-				vec3f(-1,-1),
-				vec3f(1,-1),
-				vec3f(1,1),
-				vec3f(-1,1)
-			};
-			mesh->m_Normals = { vec3f(0,0,1), vec3f(0,0,1), vec3f(0,0,1), vec3f(0,0,1) };
-			mesh->m_Uvs = {
-				vec2f(0,0),
-				vec2f(1,0),
-				vec2f(1,1),
-				vec2f(0,1)
-			};
-			mesh->m_Triangles = {
-				0, 1, 2,
-				0, 2, 3
-			};
-
-			mesh->upload();
-
-			material = std::make_shared<Material>();
-
-			material->m_Shader = Engine::getResourceManager().load<Shader>("shaders/passthrough");
-		}
 	}
 
 	void Graphics::enqueueMesh(const Mesh *mesh, const Material *material, const mat4 &modelMatrix, Layer layer)
@@ -105,29 +75,14 @@ namespace ftec {
 					//TODO layer masks with ignore shadows
 					//TODO draw shadows per camera and not per global.
 					//TODO make a different render pass for this, instead of using this draw direct stuff
-					Renderer::drawDirect(*m.mesh, *m.material, Light::defaultLight(), projection, mat4::identity(), m.modelMatrix);
-
-
+					//TODO render the objects for the shadowmaps
 				}
 
 
 				l->getShadowBuffer()->unbind();
 
-#if DEBUG_GRAPHICS
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				Renderer::renderport(0, 0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight());
-
-				material->m_Texture = l->getShadowBuffer()->getDepthTexture();
-
-				Renderer::drawDirect(*mesh, *material, Light::defaultLight() , mat4::identity(), mat4::identity(), mat4::identity());
-#endif
 			}
 		}
-
-#if DEBUG_GRAPHICS
-		if (true)
-			return;
-#endif
 
 		//Draw for every camera
 		for (auto c : cameras) {
@@ -142,14 +97,17 @@ namespace ftec {
 			//TODO do this only if the camera requests this
 			glClear(GL_DEPTH_BUFFER_BIT);
 
+			GraphicsState::eyePosition = c->m_Position;
 			GraphicsState::matrixProjection = c->getProjectionMatrix();
 			GraphicsState::matrixView = c->getViewMatrix();
-			GraphicsState::matrixModel = mat4::translation(c->m_Position);
 
-			GraphicsState::eyePosition = c->m_Position;
+			GraphicsState::matrixModel = mat4::translation(c->m_Position);
 
 			//Set skybox to normal version
 			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test");
+
+			//Drawing skybox
+			
 			GraphicsState::m_Shader = Engine::getResourceManager().load<Shader>("shaders/skybox");
 			auto mesh = Engine::getResourceManager().load<Mesh>("mesh/skybox.obj");
 
@@ -159,9 +117,6 @@ namespace ftec {
 			Renderer::drawDirect(*mesh);
 
 			glClear(GL_DEPTH_BUFFER_BIT);
-
-			//Set skybox to blurred version
-			//GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test2");
 
 			GraphicsState::m_LightEnabled = true;
 
@@ -181,7 +136,15 @@ namespace ftec {
 					GraphicsState::m_Shader = m.material->m_Shader;
 
 					GraphicsState::m_Textures[0].enabled = true;
-					GraphicsState::m_Textures[0].texture = m.material->m_Texture;
+					GraphicsState::m_Textures[0].texture = m.material->m_TextureMap;
+					//TODO just give the graphicsstate a material
+					if (m.material->m_NormalMap) {
+						GraphicsState::m_Textures[1].enabled = true;
+						GraphicsState::m_Textures[1].texture = m.material->m_NormalMap;
+					}
+					else {
+						GraphicsState::m_Textures[1].enabled = false;
+					}
 
 					Renderer::drawDirect(*m.mesh);
 				}
@@ -197,16 +160,6 @@ namespace ftec {
 					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-					material->m_Texture = c->m_RenderTarget->getTexture();
-					auto oldShader = material->m_Shader;
-
-					if (c->m_PostProcessingShader)
-						material->m_Shader = c->m_PostProcessingShader;
-
-					Renderer::drawDirect(*mesh, *material, Light::defaultLight(), mat4::identity(), mat4::identity(), mat4::identity());
-				
-					if (c->m_PostProcessingShader)
-						material->m_Shader = oldShader;
 				}
 			}
 

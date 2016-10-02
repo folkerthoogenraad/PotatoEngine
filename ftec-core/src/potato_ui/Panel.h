@@ -30,7 +30,7 @@ namespace potato {
 		bool m_Pressed = false;
 
 		bool m_Focusable = false;
-		bool m_Opaque = true;
+		bool m_Opaque = false;
 
 		bool m_Focus = false;
 

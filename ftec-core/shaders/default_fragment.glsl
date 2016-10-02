@@ -1,82 +1,92 @@
 #version 150
 
 struct Light{
-	vec3 direction;
+	vec4 direction;
 	bool enabled;
-	bool shadowsEnabled;
-	mat4 shadowMatrix;
-	sampler2D shadowTexture;
 };
 
-uniform Light u_Light;
+struct Data {
+	vec2 uv;
+	vec3 position;
+	vec3 normal;
+	vec3 tangent;
+};
+
 uniform sampler2D u_Textures[8];
 uniform samplerCube u_Skybox;
 
+uniform Light u_Light;
 uniform vec3 u_EyePosition;
 
-in vec4 v_WorldPosition;
-in vec4 v_WorldNormal;
-in vec4 v_WorldLightPosition;
-
-in vec4 v_Color;
-in vec2 v_Uv;
-in float v_Lightness;
+in Data v;
 
 out vec4 FragColor;
 
+float calculateLighting(vec3 normal);
+
 void main()
 {
-	float lightness = v_Lightness;
+	vec3 eyeDirection = normalize(v.position - u_EyePosition);
 
-	if(u_Light.enabled){
-		vec4 lightDir = vec4(u_Light.direction, 0.0);
-		lightness = dot(-lightDir, normalize(v_WorldNormal));
-	}
-	
-	if(u_Light.shadowsEnabled){
-		float bias = 0.005;
+	vec3 normal = normalize(v.normal);
+	vec3 tangent = normalize(v.tangent);
+	vec3 bitangent = cross(normal, tangent);
 
-		//if this pixel is in range for the shadow map size
-		if(v_WorldLightPosition.x > 0 && v_WorldLightPosition.x < 1 && v_WorldLightPosition.y > 0 && v_WorldLightPosition.y < 1){
+	vec3 normalmapSample = texture(u_Textures[1], v.uv).xyz * 2.0 - 1.0;
 
-			//Is this pixel in the light, or is it in the darkness
-			if(texture(u_Light.shadowTexture, v_WorldLightPosition.xy).z < v_WorldLightPosition.z - bias){
+	mat3 tangentMatrix = mat3(
+		tangent.x, tangent.y, tangent.z,
+		bitangent.x, bitangent.y, bitangent.z,
+		normal.x, normal.y, normal.z
+	);
+	/*mat3 tangentMatrix = mat3(
+		tangent.x, bitangent.x, normal.x,
+		tangent.y, bitangent.y, normal.y,
+		tangent.z, bitangent.z, normal.z
+	);*/
+	/*mat3 tangentMatrix = mat3(
+		1,0,0,
+		0,0,1,
+		0,1,0
+	);*/
 
-				//Shade it, but not too much
-				lightness -= 0.4;
-			}
-		}
+	normal = tangentMatrix * normalmapSample;
 
-	}
-	if(lightness < 0.2){
-		lightness = 0.2;
-	}
 
-	
-
-	vec3 boxReflection = reflect(normalize(vec3(v_WorldPosition) - u_EyePosition), vec3(v_WorldNormal));
+	vec3 boxReflection = reflect(eyeDirection, normal);
     boxReflection = vec3(boxReflection.x, -boxReflection.yz);
-
-	vec3 boxLighting = vec3(v_WorldNormal.x, -v_WorldNormal.yz);
-
-	vec4 lightnessSample = texture(u_Skybox, boxLighting);
+	
+	float rim = dot(-eyeDirection, normal);
 
 	vec4 skyboxSample = texture(u_Skybox, boxReflection);
+	vec4 textureSample = texture(u_Textures[0], v.uv);
 
-	vec4 resultColor = v_Color * lightness;
-	resultColor.a = 1.0;
-	
-	vec4 textureSample = texture(u_Textures[0], v_Uv);
+	vec4 lightingColor = vec4(1.0, 1.0, 1.0, 1.0) * calculateLighting(normal);
+	lightingColor.a = 1.0;
 
-	FragColor = mix(textureSample, skyboxSample, 1.0) * resultColor;
+	FragColor = textureSample * lightingColor + skyboxSample *  (1.0 - max(rim, 0.0)) * 0.4 + skyboxSample * lightingColor * 0.1;
 
-	//Full chrome
-	//FragColor = texture(u_Skybox, boxLighting);
-	//Lit chrome
-	//FragColor = texture(u_Skybox, boxLighting) * resultColor;
+	vec3 lightingDir = normalize(vec3(1.0, -1.0, -1.0));
+	vec3 reflectVector = reflect(-lightingDir, normal);
 
-	//Semi chrome
-	//FragColor = mix(texture(u_Skybox, boxLighting), texture(u_Textures[0], v_Uv) * resultColor, 0.5);
-	//Semi plastic
-	//FragColor = texture(u_Textures[0], v_Uv)* resultColor;
+	float cosAngle = max(0.0, dot(reflectVector, eyeDirection));
+
+	FragColor += pow(cosAngle, 20.0) * 0.1;
+	FragColor.a = 1.0;
+}
+
+
+float calculateLighting(vec3 normal)
+{
+	float lightness = 1.0;
+
+	if(u_Light.enabled){
+		lightness = dot(-normalize(vec3(1.0, -1.0, -1.0)), normal);
+
+		if(lightness < 0.2){
+			lightness = 0.2;
+		}
+	}
+
+	return lightness;
 }

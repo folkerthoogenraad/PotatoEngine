@@ -25,8 +25,14 @@ namespace ftec {
 	}
 
 
+	bool grabbed = false;
+
 	void Razura::update()
 	{
+		if (Input::isKeyPressed(GLFW_KEY_ESCAPE)) {
+			grabbed = !grabbed;
+			Input::setCursorMode(grabbed ? CURSOR_GRABBED : CURSOR_NORMAL);//TODO make an enum out of this
+		}
 		panel.update();
 		Engine::getScene()->update();
 	}
@@ -36,19 +42,6 @@ namespace ftec {
 
 	void Razura::render()
 	{
-		graphics.resetClip();
-		graphics.drawClear();
-
-		graphics.begin();
-
-		panel.draw(graphics);
-
-		graphics.end();
-
-		rect2i b(512,0,1280/2, 720/2);
-
-		Renderer::clip(b);
-		Renderer::viewport(b);
 		Renderer::clear();
 
 		Graphics::begin();
@@ -58,6 +51,16 @@ namespace ftec {
 		Engine::getScene()->render();
 
 		Graphics::end();
+
+		graphics.resetClip();
+
+		graphics.begin();
+
+		panel.draw(graphics);
+
+		graphics.end();
+
+		
 	}
 
 	void Razura::init()
@@ -81,7 +84,6 @@ namespace ftec {
 		panel.addPanel(textfield2);
 
 		//TODO
-		Input::setCursorMode(CURSOR_GRABBED);//TODO make an enum out of this
 
 		light = std::make_shared<Light>();
 
@@ -94,33 +96,20 @@ namespace ftec {
 		
 		Engine::setScene(scene);
 
-		auto monker = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
-		auto monkey = Engine::getResourceManager().load<Mesh>("mesh/monkey.obj");
-		auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
-		auto donut = Engine::getResourceManager().load<Mesh>("mesh/donut.obj");
+		auto wood = Engine::getResourceManager().load<Texture>("textures/wood.jpg");
+		auto woodNormal = Engine::getResourceManager().load<Texture>("textures/wood_normal.jpg");
+
 		auto shader = Engine::getResourceManager().load<Shader>("shaders/default");
+		auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
+		auto ground = Engine::getResourceManager().load<Mesh>("mesh/plane.obj");
 
-		scene->addMesh(vec3f(0, 0, 0), monkey, Material(monker, shader));
-		scene->addMesh(vec3f(-4, 0, 0), donut, Material(monker, shader));
-		scene->addMesh(vec3f(4, 0, 0), sphere, Material(monker, shader));
-		/*
-		auto texture = Engine::getResourceManager().load<Texture>("textures/color_pallet.png");
-		
-		auto ground = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/ground/ground1.obj");
-		auto tree = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/environment/trees/tree1.obj");
-		auto building = Engine::getResourceManager().load<Mesh>("mesh/lowpoly/buildings/urban_building1.obj");
-		
-		scene->addMesh(vec3f(0, 0, 0), ground, Material(texture, shader));
+		Material mat(wood, shader);
+		mat.m_TextureMap = wood;
+		mat.m_NormalMap = woodNormal;
 
-		scene->addMesh(vec3f(0, 0, 2), tree, Material(texture, shader));
-		scene->addMesh(vec3f(7, 0, 1), tree, Material(texture, shader));
-		scene->addMesh(vec3f(-7, 0, 2), tree, Material(texture, shader));
+		scene->addMesh(vec3f(0, 1, 0), sphere, mat);
+		scene->addMesh(vec3f(0,0,0), ground, mat);
 
-
-		scene->addMesh(vec3f(0, 0, -6), building, Material(texture, shader));
-		scene->addMesh(vec3f(-7, 0, -6), building, Material(texture, shader));
-		scene->addMesh(vec3f(7, 0, -6), building, Material(texture, shader));
-		*/
 		scene->addEntity(std::make_shared<NoClipCameraEntity>());
 	}
 

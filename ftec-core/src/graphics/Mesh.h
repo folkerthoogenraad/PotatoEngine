@@ -12,22 +12,28 @@ namespace ftec {
 
 	class Mesh : public ManagableResource {
 	private:
-		struct Face {
-			int vertex, normal, uv;
+		struct FaceIndex {
+			int vertex = 0, normal = 0, uv = 0;
 		};
 	public:
-		GLuint m_VerticesVBO, m_UvsVBO, m_NormalsVBO, m_IndicesVBO;
+		GLuint m_VerticesVBO, m_UvsVBO, m_NormalsVBO, m_TangentsVBO, m_IndicesVBO;
 		
 		std::vector<vec3f> m_Vertices;
 		std::vector<vec3f> m_Normals;
 		std::vector<vec2f> m_Uvs;
-		std::vector<unsigned int> m_Triangles;
+		std::vector<vec3f> m_Tangents;
+
+		std::vector<FaceIndex> m_Triangles;
 	public:
 		Mesh();
 		~Mesh();
 
 		///Uploads the current data to the graphics processor
 		void upload();
+
+		void optimize();
+		void recalculateNormals();
+		void recalculateTangents();
 
 		static std::shared_ptr<Mesh> load(std::string name);
 	};

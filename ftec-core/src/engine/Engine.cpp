@@ -34,7 +34,7 @@ namespace ftec {
 			second += Time::deltaTime;
 			if (second > 1) {
 				second -= 1;
-				//LOG("FPS: " << frames);
+				LOG("FPS: " << frames);
 				frames = 0;
 			}
 
@@ -120,8 +120,8 @@ namespace ftec {
 		//glCullFace(GL_BACK);
 		
 		//glClearColor(.2f, .4f, .8f, 0.f);
-		glClearColor(1.f, 1.f, 1.f, 1.f);
-		//glClearColor(.0f, .0f, .0f, 1.f);
+		//glClearColor(1.f, 1.f, 1.f, 1.f);
+		glClearColor(.2f, .2f, .3f, 1.f);
 		//glClearColor(132.f / 255.f, 119.f / 255.f, 106.f / 255.f, 1.f);
 	}
 }

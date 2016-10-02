@@ -17,7 +17,7 @@ namespace ftec {
 		m_VAlign = FontAlign::TOP;
 		m_HAlign = FontAlign::LEFT;
 
-		m_Material.m_Texture = m_WhiteTexture;
+		m_Material.m_TextureMap = m_WhiteTexture;
 		m_Material.m_Shader = Engine::getResourceManager().load<Shader>("shaders/default2d");
 		resetClip();
 		m_Color = color32(255, 255, 255, 255);
@@ -198,9 +198,9 @@ namespace ftec {
 
 	void Graphics2D::setTexture(std::shared_ptr<Texture> texture)
 	{
-		if (texture != m_Material.m_Texture) {
+		if (texture != m_Material.m_TextureMap) {
 			flush();
-			m_Material.m_Texture = texture;
+			m_Material.m_TextureMap = texture;
 		}
 	}
 
@@ -222,7 +222,7 @@ namespace ftec {
 		GraphicsState::m_TextureEnabled = true;
 		GraphicsState::m_Shader = m_Material.m_Shader;
 		GraphicsState::m_Textures[0].enabled = true;
-		GraphicsState::m_Textures[0].texture = m_Material.m_Texture;
+		GraphicsState::m_Textures[0].texture = m_Material.m_TextureMap;
 		GraphicsState::m_Skybox = nullptr;
 
 		GraphicsState::matrixModel = mat4::identity();
