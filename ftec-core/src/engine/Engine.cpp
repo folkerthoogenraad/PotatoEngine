@@ -75,7 +75,7 @@ namespace ftec {
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		window = std::make_unique<Window>("PotatoEngine", 1280, 720, false);
+		window = std::make_unique<Window>("PotatoEngine", 1280,720, false);
 
 		LOG("Loading GLEW...");
 		//Initialize extentions

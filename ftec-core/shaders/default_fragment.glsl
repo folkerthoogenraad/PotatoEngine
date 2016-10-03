@@ -20,7 +20,7 @@ struct SurfaceOutput{
 	vec3 normal;
 
 	float smoothness;
-	float glossiness;
+	float metallicness;
 };
 
 uniform sampler2D u_Textures[8];
@@ -33,7 +33,7 @@ in Data v;
 
 out vec4 FragColor;
 
-void output(SurfaceOutput surface);
+void surfaceOutput(SurfaceOutput surface);
 
 void main()
 {
@@ -43,7 +43,7 @@ void main()
 	vec3 tangent = normalize(v.tangent);
 	vec3 bitangent = cross(normal, tangent);
 
-	vec3 normalmapSample = texture(u_Textures[1], v.uv).xyz * 2.0 - 1.0;
+	vec3 normalmapSample = texture(u_Textures[1], v.uv * 4.0).xyz * 2.0 - 1.0;
 
 	mat3 tangentMatrix = mat3(
 		tangent.x, tangent.y, tangent.z,
@@ -54,17 +54,17 @@ void main()
 	normal = tangentMatrix * normalmapSample;
 
 	SurfaceOutput surface;
-	surface.albedo = texture(u_Textures[0], v.uv).rgb;
-	surface.specular = vec3(0.5, 0.2, 0.1);
+	surface.albedo = texture(u_Textures[0], v.uv * 4.0).rgb;
+	surface.specular = vec3(1.0,1.0,1.0) * 1.0;
 	surface.normal = normal;
 
-	surface.smoothness = 0.1f;
-	surface.glossiness = 0.2f;
+	surface.smoothness = 0.5f;
+	surface.metallicness = 0.9f;
 
-	output(surface);
+	surfaceOutput(surface);
 }
 
-void output(SurfaceOutput surface)
+void surfaceOutput(SurfaceOutput surface)
 {
 	vec3 diffuseColor = vec3(1.0, 1.0, 1.0);
 	vec3 specularColor = vec3(0.0, 0.0, 0.0);
@@ -85,15 +85,15 @@ void output(SurfaceOutput surface)
 		}
 	}
 
-	if(surface.glossiness > 0.0){
+	if(surface.metallicness > 0.0){
 		vec3 boxReflection = reflect(eyeDirection, surface.normal);
 		boxReflection = vec3(boxReflection.x, -boxReflection.yz);
 		float rim = max(0.0, 1.0 - dot(-eyeDirection, surface.normal));
 
-		glossColor = texture(u_Skybox, boxReflection).rgb * rim; //TODO metalicness
+		glossColor = texture(u_Skybox, boxReflection).rgb * rim; //TODO metallicness
 	}
 
-	vec3 output = diffuseColor * surface.albedo + specularColor * surface.specular + glossColor * surface.glossiness;
+	vec3 color = diffuseColor * surface.albedo + specularColor * surface.specular + surface.albedo * glossColor * surface.metallicness;
 
-	FragColor = vec4(output, 1.0);
+	FragColor = vec4(color, 1.0);
 }

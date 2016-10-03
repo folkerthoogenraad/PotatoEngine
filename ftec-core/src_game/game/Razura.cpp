@@ -98,17 +98,20 @@ namespace ftec {
 
 		auto wood = Engine::getResourceManager().load<Texture>("textures/wood.jpg");
 		auto woodNormal = Engine::getResourceManager().load<Texture>("textures/wood_normal.jpg");
+		auto tiles = Engine::getResourceManager().load<Texture>("textures/tiles.jpg");
+		auto tilesNormal = Engine::getResourceManager().load<Texture>("textures/tiles_normal.png");
 
 		auto shader = Engine::getResourceManager().load<Shader>("shaders/default");
 		auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
 		auto ground = Engine::getResourceManager().load<Mesh>("mesh/plane.obj");
 
-		Material mat(wood, shader);
-		mat.m_TextureMap = wood;
-		mat.m_NormalMap = woodNormal;
+		Material woodMat(wood, shader);
+		Material tilesMat(tiles, shader);
+		woodMat.m_NormalMap = woodNormal;
+		tilesMat.m_NormalMap = tilesNormal;
 
-		scene->addMesh(vec3f(0, 1, 0), sphere, mat);
-		scene->addMesh(vec3f(0, 0, 0), ground, mat);
+		scene->addMesh(vec3f(0, 1, 0), sphere, woodMat);
+		scene->addMesh(vec3f(0, 0, 0), ground, tilesMat);
 
 		scene->addEntity(std::make_shared<NoClipCameraEntity>());
 	}
