@@ -68,9 +68,17 @@ namespace ftec {
 		if (m_LightEnabled) {
 			int lightEnabledLocation = shader.getUniformLocation("u_Light.enabled");
 			int lightDirectionLocation = shader.getUniformLocation("u_Light.direction");
+			int lightIntensityLocation = shader.getUniformLocation("u_Light.intensity");
+			int lightColorLocation = shader.getUniformLocation("u_Light.color");
 
 			shader.setUniform(lightEnabledLocation, m_Lights[0].enabled);
 			shader.setUniform(lightDirectionLocation, m_Lights[0].light.m_Direction);
+			shader.setUniform(lightIntensityLocation, m_Lights[0].light.m_Intensity);
+			shader.setUniform(lightColorLocation, vec3f(
+				m_Lights[0].light.m_Color.x / 255.f,
+				m_Lights[0].light.m_Color.y / 255.f,
+				m_Lights[0].light.m_Color.z / 255.f
+			));
 		}
 
 		int eyePositionLocation = shader.getUniformLocation("u_EyePosition");

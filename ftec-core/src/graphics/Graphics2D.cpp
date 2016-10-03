@@ -47,15 +47,15 @@ namespace ftec {
 		batch.color(m_Color);
 		if (fill) {
 			batch.vertex(rectangle.topleft());
-			batch.vertex(rectangle.topright());
-			batch.vertex(rectangle.bottomright());
 			batch.vertex(rectangle.bottomleft());
+			batch.vertex(rectangle.bottomright());
+			batch.vertex(rectangle.topright());
 		}
 		else {
 			drawLine(rectangle.topleft(), rectangle.topright());
-			drawLine(rectangle.topright(), rectangle.bottomright());
-			drawLine(rectangle.bottomright(), rectangle.bottomleft());
 			drawLine(rectangle.bottomleft(), rectangle.topleft());
+			drawLine(rectangle.bottomright(), rectangle.bottomleft());
+			drawLine(rectangle.topright(), rectangle.bottomright());
 		}
 	}
 
@@ -70,9 +70,9 @@ namespace ftec {
 			for (float i = 0; i < steps; i += 2) {
 				batch.vertex(center);
 
-				batch.vertex(center + vec3f(cosf(anglePerStep * (i + 0)), sinf(anglePerStep * (i + 0))) * radius);
-				batch.vertex(center + vec3f(cosf(anglePerStep * (i + 1)), sinf(anglePerStep * (i + 1))) * radius);
 				batch.vertex(center + vec3f(cosf(anglePerStep * (i + 2)), sinf(anglePerStep * (i + 2))) * radius);
+				batch.vertex(center + vec3f(cosf(anglePerStep * (i + 1)), sinf(anglePerStep * (i + 1))) * radius);
+				batch.vertex(center + vec3f(cosf(anglePerStep * (i + 0)), sinf(anglePerStep * (i + 0))) * radius);
 			}
 		}
 		else {

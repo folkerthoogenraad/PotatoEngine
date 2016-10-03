@@ -108,7 +108,7 @@ namespace ftec {
 		mat.m_NormalMap = woodNormal;
 
 		scene->addMesh(vec3f(0, 1, 0), sphere, mat);
-		scene->addMesh(vec3f(0,0,0), ground, mat);
+		scene->addMesh(vec3f(0, 0, 0), ground, mat);
 
 		scene->addEntity(std::make_shared<NoClipCameraEntity>());
 	}

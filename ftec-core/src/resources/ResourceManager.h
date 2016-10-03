@@ -6,9 +6,19 @@
 #include <typeinfo>	//for std::type_info
 
 namespace ftec {
+
+	//Empty baseclass so that resources can be stored in the same map
 	class ManagableResource
 	{
 
+	};
+
+	class ResourceFile {
+		std::string m_Folder;
+		std::map<std::string, std::string> m_Attributes;
+	public:
+		ResourceFile(const std::string &filepath);
+		~ResourceFile();
 	};
 
 	class ResourceManager {

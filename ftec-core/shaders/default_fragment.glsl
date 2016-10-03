@@ -1,7 +1,9 @@
 #version 150
 
 struct Light{
-	vec4 direction;
+	vec3 direction;
+	vec3 color;
+	float intensity;
 	bool enabled;
 };
 
@@ -10,6 +12,15 @@ struct Data {
 	vec3 position;
 	vec3 normal;
 	vec3 tangent;
+};
+
+struct SurfaceOutput{
+	vec3 albedo;
+	vec3 specular;
+	vec3 normal;
+
+	float smoothness;
+	float glossiness;
 };
 
 uniform sampler2D u_Textures[8];
@@ -22,7 +33,7 @@ in Data v;
 
 out vec4 FragColor;
 
-float calculateLighting(vec3 normal);
+void output(SurfaceOutput surface);
 
 void main()
 {
@@ -39,54 +50,50 @@ void main()
 		bitangent.x, bitangent.y, bitangent.z,
 		normal.x, normal.y, normal.z
 	);
-	/*mat3 tangentMatrix = mat3(
-		tangent.x, bitangent.x, normal.x,
-		tangent.y, bitangent.y, normal.y,
-		tangent.z, bitangent.z, normal.z
-	);*/
-	/*mat3 tangentMatrix = mat3(
-		1,0,0,
-		0,0,1,
-		0,1,0
-	);*/
 
 	normal = tangentMatrix * normalmapSample;
 
+	SurfaceOutput surface;
+	surface.albedo = texture(u_Textures[0], v.uv).rgb;
+	surface.specular = vec3(0.5, 0.2, 0.1);
+	surface.normal = normal;
 
-	vec3 boxReflection = reflect(eyeDirection, normal);
-    boxReflection = vec3(boxReflection.x, -boxReflection.yz);
-	
-	float rim = dot(-eyeDirection, normal);
+	surface.smoothness = 0.1f;
+	surface.glossiness = 0.2f;
 
-	vec4 skyboxSample = texture(u_Skybox, boxReflection);
-	vec4 textureSample = texture(u_Textures[0], v.uv);
-
-	vec4 lightingColor = vec4(1.0, 1.0, 1.0, 1.0) * calculateLighting(normal);
-	lightingColor.a = 1.0;
-
-	FragColor = textureSample * lightingColor + skyboxSample *  (1.0 - max(rim, 0.0)) * 0.4 + skyboxSample * lightingColor * 0.1;
-
-	vec3 lightingDir = normalize(vec3(1.0, -1.0, -1.0));
-	vec3 reflectVector = reflect(-lightingDir, normal);
-
-	float cosAngle = max(0.0, dot(reflectVector, eyeDirection));
-
-	FragColor += pow(cosAngle, 20.0) * 0.1;
-	FragColor.a = 1.0;
+	output(surface);
 }
 
-
-float calculateLighting(vec3 normal)
+void output(SurfaceOutput surface)
 {
-	float lightness = 1.0;
+	vec3 diffuseColor = vec3(1.0, 1.0, 1.0);
+	vec3 specularColor = vec3(0.0, 0.0, 0.0);
+	vec3 glossColor = vec3(0.0, 0.0, 0.0);
+	
+	vec3 eyeDirection = normalize(v.position - u_EyePosition);
 
 	if(u_Light.enabled){
-		lightness = dot(-normalize(vec3(1.0, -1.0, -1.0)), normal);
+		diffuseColor = u_Light.color * dot(-u_Light.direction, surface.normal) * u_Light.intensity;
+		diffuseColor = max(vec3(0.0, 0.0, 0.0), diffuseColor);
 
-		if(lightness < 0.2){
-			lightness = 0.2;
+		if(surface.smoothness != 1.0){
+			vec3 reflectVector = reflect(-u_Light.direction, surface.normal);
+
+			float cosAngle = max(0.0, dot(reflectVector, eyeDirection));
+
+			specularColor = u_Light.color * pow(cosAngle, 1.0 / (1.0 - surface.smoothness));
 		}
 	}
 
-	return lightness;
+	if(surface.glossiness > 0.0){
+		vec3 boxReflection = reflect(eyeDirection, surface.normal);
+		boxReflection = vec3(boxReflection.x, -boxReflection.yz);
+		float rim = max(0.0, 1.0 - dot(-eyeDirection, surface.normal));
+
+		glossColor = texture(u_Skybox, boxReflection).rgb * rim; //TODO metalicness
+	}
+
+	vec3 output = diffuseColor * surface.albedo + specularColor * surface.specular + glossColor * surface.glossiness;
+
+	FragColor = vec4(output, 1.0);
 }

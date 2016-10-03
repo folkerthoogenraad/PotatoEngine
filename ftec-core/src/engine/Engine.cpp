@@ -116,12 +116,12 @@ namespace ftec {
 		glAlphaFunc(GL_GREATER, 0.1f);
 		glDepthFunc(GL_LEQUAL);
 
-		//glEnable(GL_CULL_FACE);
-		//glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
 		
 		//glClearColor(.2f, .4f, .8f, 0.f);
-		//glClearColor(1.f, 1.f, 1.f, 1.f);
-		glClearColor(.2f, .2f, .3f, 1.f);
+		glClearColor(1.f, 1.f, 1.f, 1.f);
+		//glClearColor(.2f, .2f, .3f, 1.f);
 		//glClearColor(132.f / 255.f, 119.f / 255.f, 106.f / 255.f, 1.f);
 	}
 }

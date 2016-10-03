@@ -5,11 +5,6 @@ in vec3 normal;
 in vec3 tangent;
 in vec2 uv;
 
-struct Light{
-	vec4 direction;
-	bool enabled;
-};
-
 struct Data {
 	vec2 uv;
 	vec3 position;

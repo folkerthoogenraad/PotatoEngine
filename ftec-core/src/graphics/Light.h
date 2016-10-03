@@ -9,8 +9,9 @@ namespace ftec {
 	//TODO class LightWorld or something LightSpace
 	class Light {
 	public:
-		vec3f m_Direction = vec3f(-1.0,-1.0,-1.0).normalize();
-		bool m_Enabled = true; //TODO remove this enabled
+		vec3f m_Direction = vec3f(-1.0, -1.0, -1.0).normalize();
+		color32 m_Color = color32::white();
+		float m_Intensity = 1.f;
 	private:
 		bool m_ShadowsEnabled = false;
 		std::shared_ptr<RenderBuffer> m_ShadowMap;
