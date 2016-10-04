@@ -19,7 +19,7 @@ struct SurfaceOutput{
 	vec3 specular;
 	vec3 normal;
 
-	float smoothness;
+	float roughness;
 	float metallicness;
 };
 
@@ -43,7 +43,7 @@ void main()
 	vec3 tangent = normalize(v.tangent);
 	vec3 bitangent = cross(normal, tangent);
 
-	vec3 normalmapSample = texture(u_Textures[1], v.uv * 4.0).xyz * 2.0 - 1.0;
+	vec3 normalmapSample = texture(u_Textures[1], v.uv).xyz * 2.0 - 1.0;
 
 	mat3 tangentMatrix = mat3(
 		tangent.x, tangent.y, tangent.z,
@@ -54,12 +54,12 @@ void main()
 	normal = tangentMatrix * normalmapSample;
 
 	SurfaceOutput surface;
-	surface.albedo = texture(u_Textures[0], v.uv * 4.0).rgb;
+	surface.albedo = texture(u_Textures[0], v.uv).rgb;
 	surface.specular = vec3(1.0,1.0,1.0) * 1.0;
 	surface.normal = normal;
 
-	surface.smoothness = 0.5f;
-	surface.metallicness = 0.9f;
+	surface.roughness = 0.55f;
+	surface.metallicness = 0.0f;
 
 	surfaceOutput(surface);
 }
@@ -76,12 +76,12 @@ void surfaceOutput(SurfaceOutput surface)
 		diffuseColor = u_Light.color * dot(-u_Light.direction, surface.normal) * u_Light.intensity;
 		diffuseColor = max(vec3(0.0, 0.0, 0.0), diffuseColor);
 
-		if(surface.smoothness != 1.0){
+		if(surface.roughness > 0.0){
 			vec3 reflectVector = reflect(-u_Light.direction, surface.normal);
 
 			float cosAngle = max(0.0, dot(reflectVector, eyeDirection));
 
-			specularColor = u_Light.color * pow(cosAngle, 1.0 / (1.0 - surface.smoothness));
+			specularColor = u_Light.color * surface.specular * pow(cosAngle, 1.0 / (surface.roughness / 8.0)) * (1.0 - surface.roughness);
 		}
 	}
 
@@ -90,10 +90,13 @@ void surfaceOutput(SurfaceOutput surface)
 		boxReflection = vec3(boxReflection.x, -boxReflection.yz);
 		float rim = max(0.0, 1.0 - dot(-eyeDirection, surface.normal));
 
-		glossColor = texture(u_Skybox, boxReflection).rgb * rim; //TODO metallicness
+		rim += pow(surface.metallicness, 2);
+		if(rim > 1.0){rim = 1.0;}
+
+		glossColor = textureLod(u_Skybox, boxReflection, surface.roughness * 8.0).rgb * rim * surface.metallicness;
 	}
 
-	vec3 color = diffuseColor * surface.albedo + specularColor * surface.specular + surface.albedo * glossColor * surface.metallicness;
+	vec3 color = diffuseColor * surface.albedo + specularColor + glossColor;
 
 	FragColor = vec4(color, 1.0);
 }
