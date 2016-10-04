@@ -11,11 +11,6 @@ namespace ftec{
 	class Shader;
 	class Cubemap;
 
-	struct TextureSlot {
-		bool enabled = false;
-		std::shared_ptr<Texture> texture; //Should actually be boost::optional, but i dont use boost library right now
-	};
-
 	struct LightSlot {
 		bool enabled = false;
 		Light light;

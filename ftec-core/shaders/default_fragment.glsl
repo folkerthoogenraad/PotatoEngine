@@ -1,6 +1,6 @@
 #version 150
 
-struct Light{
+struct DirectionalLight{
 	vec3 direction;
 	vec3 color;
 	float intensity;
@@ -35,27 +35,31 @@ struct SurfaceOutput{
 
 uniform sampler2D u_Textures[8];
 uniform samplerCube u_Skybox;
+uniform vec3 u_EyePosition;
 
 uniform SurfaceInput u_Material;
 
-uniform Light u_Light;
-uniform vec3 u_EyePosition;
+uniform DirectionalLight u_Light;
 
 in Data v;
 
 out vec4 FragColor;
 
-void surfaceOutput(SurfaceOutput surface);
-mat3 tangentMatrix();
+void surfaceOutput(in SurfaceOutput surface);
+mat3 tangentMatrix(in vec3 normal);
 
 void main()
 {
-	vec3 eyeDirection = normalize(v.position - u_EyePosition);
-	vec3 normal = normalize(v.normal);
+	vec3 normal;
 
-	vec3 normalmapSample = texture(u_Textures[1], v.uv * u_Material.tiling).xyz * 2.0 - 1.0;
-
-	normal = normalize(mix(tangentMatrix() * normalmapSample, normal, 1.0 - u_Material.bumpiness));
+	if(u_Material.bumpiness > 0.0 && length(v.position - u_EyePosition) < 64.0f){
+		vec3 normalmapSample = texture(u_Textures[1], v.uv * u_Material.tiling * 4.0).xyz * 2.0 - 1.0;
+		normal = normalize(v.normal);
+		normal = normalize(mix(tangentMatrix(normal) * normalmapSample, normal, 1.0 - u_Material.bumpiness));
+	}
+	else{
+		normal = normalize(v.normal);
+	}
 
 	SurfaceOutput surface;
 	surface.albedo = texture(u_Textures[0], v.uv * u_Material.tiling).rgb * u_Material.albedo;
@@ -68,13 +72,16 @@ void main()
 	surfaceOutput(surface);
 }
 
-void surfaceOutput(SurfaceOutput surface)
+void surfaceOutput(in SurfaceOutput surface)
 {
 	vec3 diffuseColor = vec3(1.0, 1.0, 1.0);
 	vec3 specularColor = vec3(0.0, 0.0, 0.0);
 	vec3 glossColor = vec3(0.0, 0.0, 0.0);
 	
-	vec3 eyeDirection = normalize(v.position - u_EyePosition);
+	vec3 eyeDir = v.position - u_EyePosition;
+	float eyeDistance = length(eyeDir);
+	
+	vec3 eyeDirection = eyeDir / eyeDistance;
 
 	if(u_Light.enabled){
 		diffuseColor = u_Light.color * dot(-u_Light.direction, surface.normal) * u_Light.intensity;
@@ -92,22 +99,17 @@ void surfaceOutput(SurfaceOutput surface)
 	if(surface.metallicness > 0.0){
 		vec3 boxReflection = reflect(eyeDirection, surface.normal);
 		boxReflection = vec3(boxReflection.x, -boxReflection.yz);
-		/*float rim = max(0.0, 1.0 - dot(-eyeDirection, surface.normal));
-
-		rim += pow(surface.metallicness, 2);
-		if(rim > 1.0){rim = 1.0;}*/
 
 		glossColor = textureLod(u_Skybox, boxReflection, surface.roughness * 8.0).rgb * surface.metallicness;
 	}
 
-	vec3 color = diffuseColor * surface.albedo + specularColor + glossColor * diffuseColor;
+	vec3 color = diffuseColor * surface.albedo + specularColor + glossColor * surface.albedo * diffuseColor;
 
 	FragColor = vec4(color, 1.0);
 }
 
-mat3 tangentMatrix()
+mat3 tangentMatrix(in vec3 normal)
 {
-	vec3 normal = normalize(v.normal);
 	vec3 tangent = normalize(v.tangent);
 	vec3 bitangent = cross(normal, tangent);
 

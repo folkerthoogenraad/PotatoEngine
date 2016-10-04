@@ -44,23 +44,6 @@ namespace ftec {
 			game.render();
 			frames++;
 
-			//TODO don't render stuff like this
-			/*if (getScene())
-			getScene()->update();
-
-			//Begin the full rendering pipeline
-			Graphics::begin();
-
-			game.render();
-
-			if (getScene()) {
-			getScene()->render();
-			}
-
-			//End the rendering pipeline and draw to the screen :D
-			Graphics::end();*/
-
-
 			getWindow().swap();
 		}
 	}
@@ -75,7 +58,7 @@ namespace ftec {
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		window = std::make_unique<Window>("PotatoEngine", 1280,720, false);
+		window = std::make_unique<Window>("PotatoEngine", 1280, 720);
 
 		LOG("Loading GLEW...");
 		//Initialize extentions
