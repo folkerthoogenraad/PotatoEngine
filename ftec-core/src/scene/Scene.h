@@ -25,6 +25,7 @@ namespace ftec {
 	private:
 		std::vector<std::shared_ptr<Entity>> m_Entities;
 		std::vector<StaticGeometry> m_StaticGeometry;
+		InstanceList list;
 	public:
 		Scene();
 		virtual ~Scene() = default;
