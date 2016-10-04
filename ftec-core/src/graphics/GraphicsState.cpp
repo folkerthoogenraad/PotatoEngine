@@ -12,7 +12,6 @@ namespace ftec {
 
 	bool GraphicsState::m_LightEnabled = false;
 	bool GraphicsState::m_TextureEnabled = true;
-	std::shared_ptr<Shader> GraphicsState::m_Shader = nullptr;
 	std::shared_ptr<Cubemap> GraphicsState::m_Skybox = nullptr;
 
 	mat4 GraphicsState::matrixModel;
@@ -20,17 +19,18 @@ namespace ftec {
 	mat4 GraphicsState::matrixProjection;
 	vec3f GraphicsState::eyePosition;
 
-	TextureSlot GraphicsState::m_Textures[MAX_TEXTURES];
+	Material GraphicsState::m_Material(nullptr, nullptr);
+	//TextureSlot GraphicsState::m_Textures[MAX_TEXTURES];
 	LightSlot GraphicsState::m_Lights[MAX_LIGHTS];
 
 	void GraphicsState::prepare()
 	{
-		if (!m_Shader) {
+		if (!m_Material.m_Shader) {
 			LOG("Graphics state shader is null");
 			return;
 		}
 
-		Shader &shader = *m_Shader;
+		Shader &shader = *m_Material.m_Shader;
 
 		shader.use();
 
@@ -43,19 +43,34 @@ namespace ftec {
 		shader.setUniform(matrixProjectionLocation, matrixProjection);
 
 		if (m_TextureEnabled) {
-			for (int i = 0; i < MAX_TEXTURES; i++) {
-				//If the textures is enabled and actually exists
-				if (m_Textures[i].enabled && m_Textures[i].texture) {
-					glActiveTexture(GL_TEXTURE0 + i);
-					m_Textures[i].texture->bind();
-
-					std::stringstream name;
-					name << "u_Textures[" << i << "]";
-					int l = shader.getUniformLocation(name.str());
-					shader.setUniform(l, i);
-				}
+			//This does not have to change every frame :)
+			if (m_Material.m_TextureMap) {
+				glActiveTexture(GL_TEXTURE0);
+				m_Material.m_TextureMap->bind();
+				int l = shader.getUniformLocation("u_Textures[0]");
+				shader.setUniform(l, 0);
+			}
+			if (m_Material.m_NormalMap) {
+				glActiveTexture(GL_TEXTURE1);
+				m_Material.m_NormalMap->bind();
+				int l = shader.getUniformLocation("u_Textures[1]");
+				shader.setUniform(l, 1);
 			}
 		}
+
+		int materialAlbedoLocation = shader.getUniformLocation("u_Material.albedo");
+		int materialSpecularLocation = shader.getUniformLocation("u_Material.specular");
+		int materialTilingLocation = shader.getUniformLocation("u_Material.tiling");
+		int materialBumpinessLocation = shader.getUniformLocation("u_Material.bumpiness");
+		int materialRoughnessLocation = shader.getUniformLocation("u_Material.roughness");
+		int materialMetallicnessLocation = shader.getUniformLocation("u_Material.metallicness");
+
+		shader.setUniform(materialAlbedoLocation, m_Material.m_Albedo);
+		shader.setUniform(materialSpecularLocation, m_Material.m_Specular);
+		shader.setUniform(materialTilingLocation, m_Material.m_Tiling);
+		shader.setUniform(materialBumpinessLocation, m_Material.m_Bumpiness);
+		shader.setUniform(materialRoughnessLocation, m_Material.m_Roughness);
+		shader.setUniform(materialMetallicnessLocation, m_Material.m_Metallicness);
 
 		int skyboxLocation = shader.getUniformLocation("u_Skybox");
 		if (skyboxLocation > -1) {

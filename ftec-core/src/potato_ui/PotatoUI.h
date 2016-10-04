@@ -12,8 +12,12 @@ PotatoUI (obviously).
 
 #include "math/math.h"
 #include <string>
+#include "graphics/Graphics2D.h"
 
 namespace potato {
+
+	class Panel;
+
 	class PotatoColor {
 	public:PotatoColor() = delete; ~PotatoColor() = delete;
 	public:
@@ -35,5 +39,15 @@ namespace potato {
 	public:
 		static const std::string &getData();
 		static void setData(const std::string &);
+	};
+
+	class PotatoUI {
+	ftec::Graphics2D graphics;
+	std::shared_ptr<Panel> root;
+	public:
+		void update();
+		void render();
+
+		void setRoot(std::shared_ptr<Panel> root);
 	};
 }

@@ -1,4 +1,5 @@
 #include "PotatoUI.h"
+#include "Panel.h"
 
 namespace potato {
 	//https://www.materialpalette.com/blue-grey/grey
@@ -23,6 +24,31 @@ namespace potato {
 
 	void PotatoClipboard::setData(const std::string &input) {
 		data = input;
+	}
+
+	void PotatoUI::update()
+	{
+		if (root) {
+			root->update();
+		}
+	}
+
+	void PotatoUI::render()
+	{
+		graphics.resetClip();
+		graphics.drawClear();
+		graphics.begin();
+
+		if (root) {
+			root->draw(graphics);
+		}
+
+		graphics.end();
+	}
+
+	void PotatoUI::setRoot(std::shared_ptr<Panel> root)
+	{
+		this->root = root;
 	}
 
 }

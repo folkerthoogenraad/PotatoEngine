@@ -3,16 +3,15 @@
 #include "engine/Game.h"
 #include "graphics/Graphics2D.h"
 #include "graphics/Sprite.h"
-#include "potato_ui/Panel.h"
+#include "potato_ui/PotatoUI.h"
 
 namespace ftec {
 	class Razura : public Game{
 	private:
 		Graphics2D graphics;
-		potato::Panel panel;
-		Sprite sprite;
+		potato::PotatoUI ui;
 	public:
-		Razura();
+		Razura() = default;
 		virtual ~Razura() = default;
 
 		void update() override;

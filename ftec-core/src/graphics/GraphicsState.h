@@ -2,6 +2,7 @@
 
 #include "math/math.h"
 #include "Light.h"
+#include "Material.h"
 #include <memory>
 
 namespace ftec{
@@ -30,10 +31,11 @@ namespace ftec{
 		static bool m_LightEnabled;
 		static bool m_TextureEnabled;
 
-		static std::shared_ptr<Shader> m_Shader;
+		//static std::shared_ptr<Shader> m_Shader;
 		static std::shared_ptr<Cubemap> m_Skybox;
+		static Material m_Material;
 
-		static TextureSlot m_Textures[MAX_TEXTURES];
+		//static TextureSlot m_Textures[MAX_TEXTURES];
 		static LightSlot m_Lights[MAX_LIGHTS];
 
 		static vec3f eyePosition;//Rename, todo

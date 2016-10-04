@@ -27,6 +27,7 @@ namespace ftec {
 		float m_LineWidth =1.f;
 
 		SpriteBatch batch;
+		bool drawing3D = false;
 
 		FontAlign m_VAlign;
 		FontAlign m_HAlign;
@@ -38,6 +39,9 @@ namespace ftec {
 
 		void begin();
 		void end();
+
+		void begin3D(rect2i rectangle);
+		void end3D();
 
 		void drawRectangle(const rect2f& rectangle, bool fill);
 		void drawCircle(const vec2f &center, float radius, bool fill);

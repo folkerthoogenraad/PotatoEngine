@@ -61,7 +61,7 @@ namespace ftec {
 		for (auto l : lights) {
 
 			//Only if it has shadows enabled ofc, else it is just silly
-			if (l->isShadowsEnabled()) {
+			/*if (l->isShadowsEnabled()) {
 				l->getShadowBuffer()->bind();
 
 				Renderer::renderport(rect2i(0, 0, l->getShadowBuffer()->getWidth(), l->getShadowBuffer()->getHeight()));
@@ -81,18 +81,14 @@ namespace ftec {
 
 				l->getShadowBuffer()->unbind();
 
-			}
+			}*/
 		}
 
 		//Draw for every camera
 		for (auto c : cameras) {
 			//TODO material overwrite?
 
-			//Set the correct render target, if the camera has a custom render target
-			if (c->hasRenderTarget()) {
-				c->m_RenderTarget->bind();
-				Renderer::renderport(rect2i(0, 0, c->m_RenderTarget->getWidth(), c->m_RenderTarget->getHeight()));
-			}
+			//TODO Set the correct render target, if the camera has a custom render target
 
 			//TODO do this only if the camera requests this
 			glClear(GL_DEPTH_BUFFER_BIT);
@@ -107,8 +103,8 @@ namespace ftec {
 			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test");
 
 			//Drawing skybox
-			/*
-			GraphicsState::m_Shader = Engine::getResourceManager().load<Shader>("shaders/skybox");
+			
+			GraphicsState::m_Material = Material(nullptr, Engine::getResourceManager().load<Shader>("shaders/skybox"));
 			auto mesh = Engine::getResourceManager().load<Mesh>("mesh/skybox.obj");
 
 			GraphicsState::m_TextureEnabled = false;
@@ -116,12 +112,12 @@ namespace ftec {
 
 			Renderer::drawDirect(*mesh);
 
-			glClear(GL_DEPTH_BUFFER_BIT);*/
+			glClear(GL_DEPTH_BUFFER_BIT);
 
 			GraphicsState::m_LightEnabled = true;
 
 			GraphicsState::m_Lights[0].enabled = true;
-			GraphicsState::m_Lights[0].light.m_Direction = vec3f(0.7f, -0.4f, -0.7f).normalize();
+			GraphicsState::m_Lights[0].light = *lights.front();// .m_Direction = vec3f(0.7f, -0.4f, -0.7f).normalize();
 
 			GraphicsState::m_TextureEnabled = true;
 
@@ -133,6 +129,8 @@ namespace ftec {
 				if ((m.layer & c->m_LayerMask) != 0) {
 
 					GraphicsState::matrixModel = m.modelMatrix;
+					GraphicsState::m_Material = *m.material;
+					/*
 					GraphicsState::m_Shader = m.material->m_Shader;
 
 					GraphicsState::m_Textures[0].enabled = true;
@@ -144,22 +142,9 @@ namespace ftec {
 					}
 					else {
 						GraphicsState::m_Textures[1].enabled = false;
-					}
+					}*/
 
 					Renderer::drawDirect(*m.mesh);
-				}
-			}
-
-			//Reset the render target, if the camera has no render target any more
-			if (c->hasRenderTarget()) {
-				c->m_RenderTarget->unbind();
-
-				if (c->m_RenderToScreen) {
-					//TODO dont do it like this probably
-					Renderer::renderport(rect2i(0, 0, (int) Engine::getWindow().getWidth(), (int) Engine::getWindow().getHeight()));
-					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
 				}
 			}
 

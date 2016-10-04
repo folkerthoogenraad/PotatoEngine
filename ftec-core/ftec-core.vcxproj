@@ -153,6 +153,7 @@
     <ClCompile Include="src\potato_ui\Event.cpp" />
     <ClCompile Include="src\potato_ui\Panel.cpp" />
     <ClCompile Include="src\potato_ui\PotatoUI.cpp" />
+    <ClCompile Include="src\potato_ui\SceneView.cpp" />
     <ClCompile Include="src\potato_ui\TextField.cpp" />
     <ClCompile Include="src\serialization\Serialization.cpp" />
     <ClCompile Include="src_game\game\NoClipCameraEntity.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="src\potato_ui\Layout.h" />
     <ClInclude Include="src\potato_ui\Panel.h" />
     <ClInclude Include="src\potato_ui\PotatoUI.h" />
+    <ClInclude Include="src\potato_ui\SceneView.h" />
     <ClInclude Include="src\potato_ui\TextField.h" />
     <ClInclude Include="src\resources\ResourceManager.h" />
     <ClInclude Include="src\scene\Entity.h" />

@@ -40,8 +40,29 @@ namespace ftec {
 		}
 	}
 
+	void Graphics2D::begin3D(rect2i rectangle)
+	{
+		drawing3D = true;
+		flush();
+		Renderer::renderport(rectangle);
+
+		Graphics::begin();
+	}
+
+	void Graphics2D::end3D()
+	{
+		Graphics::end();
+		//Clear the depth values from the 3D rendering
+		glClear(GL_DEPTH_BUFFER_BIT);
+		drawing3D = false;
+		//flush();
+	}
+
 	void Graphics2D::drawRectangle(const rect2f & rectangle, bool fill)
 	{
+		if (drawing3D) {
+			LOG_ERROR("Can't draw 2D when drawing in 3D");
+		}
 		setTexture(m_WhiteTexture);
 
 		batch.color(m_Color);
@@ -61,6 +82,9 @@ namespace ftec {
 
 	void Graphics2D::drawCircle(const vec2f & center, float radius, bool fill)
 	{
+		if (drawing3D) {
+			LOG_ERROR("Can't draw 2D when drawing in 3D");
+		}
 		if (fill) {
 			setTexture(m_WhiteTexture);
 			batch.color(m_Color);
@@ -82,6 +106,9 @@ namespace ftec {
 
 	void Graphics2D::drawString(const std::string & text, const vec2f & position)
 	{
+		if (drawing3D) {
+			LOG_ERROR("Can't draw 2D when drawing in 3D");
+		}
 		vec2f start = position;
 
 		//TODO figure this out for each line, not for the complete string
@@ -122,6 +149,9 @@ namespace ftec {
 
 	void Graphics2D::drawSprite(const Sprite & sprite, const vec2f & position)
 	{
+		if (drawing3D) {
+			LOG_ERROR("Can't draw 2D when drawing in 3D");
+		}
 		setTexture(sprite.texture());
 
 		batch.color(m_Color);
@@ -141,6 +171,9 @@ namespace ftec {
 
 	void Graphics2D::drawLine(const vec2f & start, const vec2f & end)
 	{
+		if (drawing3D) {
+			LOG_ERROR("Can't draw 2D when drawing in 3D");
+		}
 		const float lw = m_LineWidth / 2.f;
 		vec2f dir = end - start;
 		float length = dir.magnitude();
@@ -167,6 +200,8 @@ namespace ftec {
 		flush();
 
 		this->m_ClippingRectangle = rectangle;
+		//Flush again to apply the clip
+		flush();
 	}
 
 	void Graphics2D::resetClip()
@@ -177,6 +212,9 @@ namespace ftec {
 		m_ClippingRectangle.y() = 0;
 		m_ClippingRectangle.width() = Engine::getWindow().getWidth();
 		m_ClippingRectangle.height() = Engine::getWindow().getHeight();
+
+		//Flush again to apply the clip
+		flush();
 	}
 
 	void Graphics2D::setColor(const color32 & color)
@@ -220,9 +258,7 @@ namespace ftec {
 		GraphicsState::m_LightEnabled = false;
 
 		GraphicsState::m_TextureEnabled = true;
-		GraphicsState::m_Shader = m_Material.m_Shader;
-		GraphicsState::m_Textures[0].enabled = true;
-		GraphicsState::m_Textures[0].texture = m_Material.m_TextureMap;
+		GraphicsState::m_Material = m_Material;
 		GraphicsState::m_Skybox = nullptr;
 
 		GraphicsState::matrixModel = mat4::identity();

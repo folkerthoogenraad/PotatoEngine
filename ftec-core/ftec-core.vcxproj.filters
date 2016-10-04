@@ -138,6 +138,9 @@
     <ClCompile Include="src\serialization\Serialization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\potato_ui\SceneView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\logger\log.h">
@@ -285,6 +288,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\serialization\Serialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\potato_ui\SceneView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
