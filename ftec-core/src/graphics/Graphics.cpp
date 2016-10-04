@@ -28,10 +28,10 @@ namespace ftec {
 		
 	}
 
-	void Graphics::enqueueMesh(const Mesh *mesh, const Material *material, const mat4 &modelMatrix, Layer layer)
+	void Graphics::enqueueMesh(const Mesh *mesh, const Material *material, const mat4 &modelMatrix, Layer layer, InstanceList *list)
 	{
 		meshes.push_back({
-			mesh, material, modelMatrix, layer
+			mesh, material, modelMatrix, layer, list
 		});
 	}
 
@@ -143,8 +143,12 @@ namespace ftec {
 					else {
 						GraphicsState::m_Textures[1].enabled = false;
 					}*/
-
-					Renderer::drawDirect(*m.mesh);
+					if (m.list) {
+						Renderer::drawDirect(*m.mesh, *m.list);
+					}
+					else {
+						Renderer::drawDirect(*m.mesh);
+					}
 				}
 			}
 

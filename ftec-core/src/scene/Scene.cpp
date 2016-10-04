@@ -8,7 +8,13 @@ namespace ftec {
 	Scene::Scene()
 		: m_Camera(60, Engine::getWindow().getWidth() / Engine::getWindow().getHeight(), 0.1f, 1000.f)
 	{
-
+		int extends = 2;
+		for (int y = -extends; y < extends; y++) {
+			for (int x = -extends; x < extends; x++) {
+				list.m_Positions.push_back(vec3f(x * 16.f, 0, y * 16.f));
+			}
+		}
+		list.upload();
 	}
 
 	void Scene::update()
@@ -29,7 +35,7 @@ namespace ftec {
 		for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {
 			StaticGeometry &geometry = *i;
 
-			Graphics::enqueueMesh(geometry.mesh.get(), &geometry.material, mat4::translation(geometry.position), LAYER_STATIC);
+			Graphics::enqueueMesh(geometry.mesh.get(), &geometry.material, mat4::translation(geometry.position), LAYER_STATIC, &list);
 		}
 
 		for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {

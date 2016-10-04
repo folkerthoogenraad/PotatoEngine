@@ -7,7 +7,12 @@ namespace ftec {
 	template<typename T>
 	struct vec2
 	{
-		T x, y;
+		union {
+			struct {
+				T x, y;
+			};
+			T v[2];
+		};
 
 		template<typename S>
 		vec2(const vec2<S> &other) : x((T)other.x), y((T)other.y) {};

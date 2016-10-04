@@ -74,7 +74,7 @@ namespace ftec {
 		
 		Engine::setScene(scene);
 
-		auto tableTexture = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
+		auto tableTexture = Engine::getResourceManager().load<Texture>("textures/table_ambient.png");
 
 		auto tiles = Engine::getResourceManager().load<Texture>("textures/tiles2_texture.png");
 		auto tilesNormal = Engine::getResourceManager().load<Texture>("textures/tiles2_normal.png");
@@ -88,11 +88,11 @@ namespace ftec {
 		auto couch = Engine::getResourceManager().load<Mesh>("mesh/couch.obj");
 
 		Material tableMat(tableTexture, shader);
-		tableMat.m_Metallicness = 0.2f;
-		tableMat.m_Albedo = vec3f(0.5, 0.5, 0.5);
-		tableMat.m_Roughness = 0.05f;
+		tableMat.m_Metallicness = 0.5f;
+		tableMat.m_Albedo = vec3f(1.0,1.0,1.0);
+		tableMat.m_Roughness = 0.5f;
 		tableMat.m_Bumpiness = 0.0f;
-		tableMat.m_Tiling = vec2f(2, 2);
+		tableMat.m_Tiling = vec2f(1, 1);
 
 		Material tilesMat(tiles, shader);
 		tilesMat.m_NormalMap = tilesNormal;

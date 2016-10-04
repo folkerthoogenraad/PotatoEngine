@@ -8,6 +8,7 @@
 #include "graphics/Material.h"
 #include "graphics/Camera.h"
 #include "graphics/Light.h"
+#include "graphics/Renderer.h"
 
 namespace ftec {
 	struct StaticGeometry {
@@ -24,6 +25,7 @@ namespace ftec {
 	private:
 		std::vector<std::shared_ptr<Entity>> m_Entities;
 		std::vector<StaticGeometry> m_StaticGeometry;
+		InstanceList list;
 	public:
 		Scene();
 		virtual ~Scene() = default;

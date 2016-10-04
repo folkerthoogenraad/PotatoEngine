@@ -8,7 +8,15 @@ namespace ftec{
 	template<typename T>
 	struct vec3
 	{
-		T x, y, z;
+		union {
+			struct {
+				T x, y, z;
+			};
+			struct {
+				T r, g, b;
+			};
+			T v[3];
+		};
 
 		template<typename S>
 		vec3(const vec3<S> &other) : x((T)other.x), y((T)other.y), z((T)other.z) {};

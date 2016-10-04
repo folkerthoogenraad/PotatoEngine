@@ -100,7 +100,7 @@ void surfaceOutput(SurfaceOutput surface)
 		glossColor = textureLod(u_Skybox, boxReflection, surface.roughness * 8.0).rgb * surface.metallicness;
 	}
 
-	vec3 color = diffuseColor * surface.albedo + specularColor + glossColor;
+	vec3 color = diffuseColor * surface.albedo + specularColor + glossColor * diffuseColor;
 
 	FragColor = vec4(color, 1.0);
 }

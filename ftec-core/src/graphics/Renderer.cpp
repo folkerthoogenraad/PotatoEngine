@@ -8,7 +8,7 @@
 
 namespace ftec {
 
-	void Renderer::drawDirect(const Mesh & mesh)
+	void setupMesh(const Mesh & mesh)
 	{
 		GraphicsState::prepare();
 
@@ -35,6 +35,13 @@ namespace ftec {
 		glVertexAttribPointer(SHADER_ATTRIBUTE_UV, 2, GL_FLOAT, false, 0, 0);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.m_IndicesVBO);
+	}
+
+	void Renderer::drawDirect(const Mesh & mesh)
+	{
+		GraphicsState::prepare();
+
+		setupMesh(mesh);
 
 		glDrawElements(
 			GL_TRIANGLES,
@@ -43,9 +50,35 @@ namespace ftec {
 			(void*)0
 		);
 
-		glDisableVertexAttribArray(SHADER_ATTRIBUTE_POSITION);
-		glDisableVertexAttribArray(SHADER_ATTRIBUTE_NORMAL);
-		glDisableVertexAttribArray(SHADER_ATTRIBUTE_UV);
+		//glDisableVertexAttribArray(SHADER_ATTRIBUTE_POSITION);
+		//glDisableVertexAttribArray(SHADER_ATTRIBUTE_NORMAL);
+		//glDisableVertexAttribArray(SHADER_ATTRIBUTE_UV);
+	}
+
+	void Renderer::drawDirect(const Mesh & mesh, const InstanceList &instances)
+	{
+		GraphicsState::prepare();
+
+		setupMesh(mesh);
+
+		glEnableVertexAttribArray(SHADER_ATTRIBUTE_INSTANCE_POSITION);
+		glBindBuffer(GL_ARRAY_BUFFER, instances.m_Vbo);
+		glVertexAttribPointer(SHADER_ATTRIBUTE_INSTANCE_POSITION, 3, GL_FLOAT, false, 0, 0);
+		glVertexAttribDivisor(SHADER_ATTRIBUTE_INSTANCE_POSITION, 1);
+
+		glDrawElementsInstanced(
+			GL_TRIANGLES,
+			(GLsizei)mesh.m_Triangles.size(),
+			GL_UNSIGNED_INT,
+			(void*)0,
+			instances.m_Positions.size()
+		);
+
+		glDisableVertexAttribArray(SHADER_ATTRIBUTE_INSTANCE_POSITION);
+
+		//glDisableVertexAttribArray(SHADER_ATTRIBUTE_POSITION);
+		//glDisableVertexAttribArray(SHADER_ATTRIBUTE_NORMAL);
+		//glDisableVertexAttribArray(SHADER_ATTRIBUTE_UV);
 	}
 
 	void Renderer::clear()
@@ -69,6 +102,28 @@ namespace ftec {
 	{
 		viewport(rectangle);
 		clip(rectangle);
+	}
+
+	InstanceList::InstanceList()
+	{
+		glGenBuffers(1, &m_Vbo);
+	}
+
+	InstanceList::~InstanceList()
+	{
+		glDeleteBuffers(1, &m_Vbo);
+	}
+
+	void InstanceList::upload()
+	{
+		if (m_Positions.size() < 1)
+			return;
+
+		glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3f) * m_Positions.size(), &m_Positions[0], GL_STATIC_DRAW); //Maybe dynamic, because instancing?
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 }

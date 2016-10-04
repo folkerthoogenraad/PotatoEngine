@@ -18,7 +18,16 @@ namespace ftec {
 	template<typename T>
 	struct vec4
 	{
-		T x, y, z, w;
+		union {
+			struct {
+				T x, y, z, w;
+			};
+			struct {
+				T r, g, b, a;
+			};
+			T v[4];
+		};
+		
 
 		template<typename S>
 		vec4(const vec4<S> &other) : x((T)other.x), y((T)other.y), z((T)other.z), w((T)other.w) {};

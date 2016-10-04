@@ -5,6 +5,9 @@ in vec3 normal;
 in vec3 tangent;
 in vec2 uv;
 
+//Instancing
+in vec3 instancePosition;
+
 struct Data {
 	vec2 uv;
 	vec3 position;
@@ -22,8 +25,8 @@ void main()
 {
 	v.normal = vec3(u_MatrixModel * vec4(normal, 0.0));
 	v.tangent = vec3(u_MatrixModel * vec4(tangent, 0.0));
-	v.position = vec3(u_MatrixModel * vec4(position, 1.0));
+	v.position = vec3(u_MatrixModel * vec4(position + instancePosition, 1.0));
 	v.uv = uv;
 	
-    gl_Position = u_MatrixProjection * u_MatrixView * vec4(v.position, 1.0);
+    gl_Position = u_MatrixProjection * u_MatrixView * (vec4(v.position, 1.0));
 }
