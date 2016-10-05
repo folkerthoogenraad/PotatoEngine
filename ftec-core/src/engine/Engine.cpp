@@ -58,7 +58,7 @@ namespace ftec {
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, false, 0);
+		window = std::make_unique<Window>("PotatoEngine", 1280, 720);
 
 		LOG("Loading GLEW...");
 		//Initialize extentions
@@ -103,8 +103,8 @@ namespace ftec {
 		glCullFace(GL_BACK);
 		
 		//glClearColor(.2f, .4f, .8f, 0.f);
-		glClearColor(1.f, 1.f, 1.f, 1.f);
-		//glClearColor(.2f, .2f, .3f, 1.f);
+		//glClearColor(1.f, 1.f, 1.f, 1.f);
+		glClearColor(.2f, .2f, .2f, 1.f);
 		//glClearColor(132.f / 255.f, 119.f / 255.f, 106.f / 255.f, 1.f);
 	}
 }

@@ -48,14 +48,26 @@ out vec4 FragColor;
 void surfaceOutput(in SurfaceOutput surface);
 mat3 tangentMatrix(in vec3 normal);
 
+vec3 rand(in vec2 co)
+{
+	return vec3(
+		sin(co.x * 200),
+		cos(co.y * 200),
+		0
+	);
+}
+
+
 void main()
 {
 	vec3 normal;
 
 	if(u_Material.bumpiness > 0.0 && length(v.position - u_EyePosition) < 64.0f){
-		vec3 normalmapSample = texture(u_Textures[1], v.uv * u_Material.tiling * 4.0).xyz * 2.0 - 1.0;
+		vec3 normalmapSample = texture(u_Textures[1], v.uv * u_Material.tiling).xyz * 2.0 - 1.0;
 		normal = normalize(v.normal);
-		normal = normalize(mix(tangentMatrix(normal) * normalmapSample, normal, 1.0 - u_Material.bumpiness));
+		mat3 tangentMat = tangentMatrix(normal);
+		normal = normalize(mix(normalize(tangentMat * normalmapSample), normal, 1.0 - u_Material.bumpiness));
+
 	}
 	else{
 		normal = normalize(v.normal);
@@ -92,18 +104,18 @@ void surfaceOutput(in SurfaceOutput surface)
 
 			float cosAngle = max(0.0, dot(reflectVector, eyeDirection));
 
-			specularColor = u_Light.color * surface.specular * pow(cosAngle, 1.0 / (surface.roughness / 8.0)) * (1.0 - surface.roughness);
+			specularColor = u_Light.color * surface.specular * pow(cosAngle, 1.0 / (surface.roughness * surface.roughness)) * (1.0 - surface.roughness);
 		}
 	}
 
 	if(surface.metallicness > 0.0){
 		vec3 boxReflection = reflect(eyeDirection, surface.normal);
 		boxReflection = vec3(boxReflection.x, -boxReflection.yz);
-
-		glossColor = textureLod(u_Skybox, boxReflection, surface.roughness * 8.0).rgb * surface.metallicness;
+		
+		glossColor = textureLod(u_Skybox, boxReflection, sqrt(surface.roughness) * 9.0).rgb * surface.metallicness;
 	}
 
-	vec3 color = diffuseColor * surface.albedo + specularColor + glossColor * surface.albedo * diffuseColor;
+	vec3 color = diffuseColor * surface.albedo + specularColor + diffuseColor * glossColor * (length(surface.albedo) + surface.metallicness) / 3.0;
 
 	FragColor = vec4(color, 1.0);
 }

@@ -66,6 +66,7 @@ namespace ftec {
 		//TODO
 
 		std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+		scene->addEntity(std::make_shared<NoClipCameraEntity>());
 		scene->m_Light.m_Intensity = 1.5;
 		scene->m_Light.m_Direction = vec3f(0.4f, -0.4f, -0.7f).normalize();
 		scene->m_Camera.m_Position.y += 1.7f;
@@ -74,21 +75,45 @@ namespace ftec {
 		
 		Engine::setScene(scene);
 
+
+		auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
+		auto whiteTexture = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
+		auto noiseNormal = Engine::getResourceManager().load<Texture>("textures/noise_normal.png");
+		auto shader = Engine::getResourceManager().load<Shader>("shaders/default");
+
+		if (false) {
+			for (int x = 0; x < 5; x++) {
+				for (int y = 0; y < 5; y++) {
+					Material mat(whiteTexture, shader);
+					mat.m_NormalMap = noiseNormal;
+					mat.m_Roughness = x * 0.2f + 0.01f;
+					mat.m_Bumpiness = 0.0f;
+					mat.m_Metallicness = y * 0.2f;
+					mat.m_Albedo = vec3f(1.0, 1.0, 1.0);
+					mat.m_Tiling = vec2f(2, 2);
+					scene->addMesh(vec3f(x * 2.5, 0, y * 2.5f), sphere, mat);
+				}
+			}
+
+			if (true)
+				return;
+		}
+
 		auto tableTexture = Engine::getResourceManager().load<Texture>("textures/table_ambient.png");
 
-		auto tiles = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
+		auto tiles = Engine::getResourceManager().load<Texture>("textures/tiles2_texture.png");
 		auto tilesNormal = Engine::getResourceManager().load<Texture>("textures/tiles2_normal.png");
 
 		auto couchTexture = Engine::getResourceManager().load<Texture>("textures/couch_texture.png");
 		auto couchNormal = Engine::getResourceManager().load<Texture>("textures/leather_normal.jpg");
 		auto couchBaseTexture = Engine::getResourceManager().load<Texture>("textures/couch_base_texture.png");
 
-		auto shader = Engine::getResourceManager().load<Shader>("shaders/default");
-		auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
 		auto table = Engine::getResourceManager().load<Mesh>("mesh/table.obj");
 		auto ground = Engine::getResourceManager().load<Mesh>("mesh/plane.obj");
 		auto couch = Engine::getResourceManager().load<Mesh>("mesh/couch.obj");
 		auto couchBase = Engine::getResourceManager().load<Mesh>("mesh/couch_base.obj");
+		auto buda = Engine::getResourceManager().load<Mesh>("mesh/monkey2.obj");
+		auto pad = Engine::getResourceManager().load<Mesh>("mesh/pad.obj");
 
 		Material tableMat(tableTexture, shader);
 		tableMat.m_Metallicness = 0.5f;
@@ -99,7 +124,7 @@ namespace ftec {
 
 		Material tilesMat(tiles, shader);
 		tilesMat.m_NormalMap = tilesNormal;
-		tilesMat.m_Roughness = 0.05f;
+		tilesMat.m_Roughness = 0.4f;
 		tilesMat.m_Specular = vec3f(0.3,0.3,0.3);
 		tilesMat.m_Metallicness = 0.2f;
 		tilesMat.m_Bumpiness = 1.0f;
@@ -120,13 +145,69 @@ namespace ftec {
 		couchBaseMat.m_Roughness = 1.0f;
 		couchBaseMat.m_Tiling = vec2f(1, 1);
 
+		Material padMat(whiteTexture, shader);
+		padMat.m_Metallicness = 0.7f;
+		padMat.m_Albedo = vec3f(0.0, 0.0, 0.0);
+		padMat.m_Specular = vec3f(0.5, 0.5, 0.5);
+		padMat.m_Roughness = 0.0f;
+		padMat.m_Bumpiness = 0.0f;
+		padMat.m_Tiling = vec2f(1, 1);
+
+		{
+			Material metalMat(whiteTexture, shader);
+			metalMat.m_Metallicness = 1.0f;
+			metalMat.m_Albedo = vec3f(0.0, 0.0, 0.0);
+			metalMat.m_Specular = vec3f(0.5, 0.5, 0.5);
+			metalMat.m_Roughness = 0.0f;
+			metalMat.m_Bumpiness = 0.0f;
+			metalMat.m_Tiling = vec2f(1, 1);
+
+			scene->addMesh(vec3f(3, 0, 2), buda, metalMat);
+			scene->addMesh(vec3f(3, 0, 2), pad, padMat);
+		}
+		{
+			Material metalMat(whiteTexture, shader);
+			metalMat.m_Metallicness = 1.0f;
+			metalMat.m_Albedo = vec3f(0.4, 0.2, 0.1);
+			metalMat.m_Specular = vec3f(0.5, 0.5, 0.5);
+			metalMat.m_Roughness = 0.0f;
+			metalMat.m_Bumpiness = 0.0f;
+			metalMat.m_Tiling = vec2f(1, 1);
+
+			scene->addMesh(vec3f(4, 0, 2), buda, metalMat);
+			scene->addMesh(vec3f(4, 0, 2), pad, padMat);
+		}
+		{
+			Material metalMat(whiteTexture, shader);
+			metalMat.m_Metallicness = 1.0f;
+			metalMat.m_Albedo = vec3f(0.5, 0.3, 0.0);
+			metalMat.m_Specular = vec3f(0.5, 0.5, 0.5);
+			metalMat.m_Roughness = 0.0f;
+			metalMat.m_Bumpiness = 0.0f;
+			metalMat.m_Tiling = vec2f(1, 1);
+
+			scene->addMesh(vec3f(5, 0, 2), buda, metalMat);
+			scene->addMesh(vec3f(5, 0, 2), pad, padMat);
+		}
+		{
+			Material metalMat(whiteTexture, shader);
+			metalMat.m_Metallicness = 1.0f;
+			metalMat.m_Albedo = vec3f(0.2, 0.2, 0.2);
+			metalMat.m_Specular = vec3f(0.5, 0.5, 0.5);
+			metalMat.m_Roughness = 0.0f;
+			metalMat.m_Bumpiness = 0.0f;
+			metalMat.m_Tiling = vec2f(1, 1);
+
+			scene->addMesh(vec3f(6, 0, 2), buda, metalMat);
+			scene->addMesh(vec3f(6, 0, 2), pad, padMat);
+		}
+
 		scene->addMesh(vec3f(1.0, 0, 0), table, tableMat);
 		scene->addMesh(vec3f(0.0, 0, 0), ground, tilesMat);
 
 		scene->addMesh(vec3f(0, 0, -0.5), couch, couchMat);
 		scene->addMesh(vec3f(0, 0, -0.5), couchBase, couchBaseMat);
 
-		scene->addEntity(std::make_shared<NoClipCameraEntity>());
 	}
 
 	void Razura::destroy()

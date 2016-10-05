@@ -277,7 +277,7 @@ namespace ftec {
 		mesh->m_Triangles = triangleInput;
 
 		mesh->optimize();
-		mesh->recalculateNormals();
+		//mesh->recalculateNormals();
 		mesh->recalculateTangents();
 		mesh->upload();
 
