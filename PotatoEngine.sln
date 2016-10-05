@@ -5,6 +5,17 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ftec-core", "ftec-core\ftec-core.vcxproj", "{220CB38F-4A82-4202-9D87-043D2D954AC0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ftec-ui", "ftec-ui\ftec-ui.vcxproj", "{3546B893-CC07-4421-8897-6CBC4F571C15}"
+	ProjectSection(ProjectDependencies) = postProject
+		{220CB38F-4A82-4202-9D87-043D2D954AC0} = {220CB38F-4A82-4202-9D87-043D2D954AC0}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ftec-testgame", "ftec-testgame\ftec-testgame.vcxproj", "{2287FCEF-23EF-4586-99F9-B556E0D31F92}"
+	ProjectSection(ProjectDependencies) = postProject
+		{220CB38F-4A82-4202-9D87-043D2D954AC0} = {220CB38F-4A82-4202-9D87-043D2D954AC0}
+		{3546B893-CC07-4421-8897-6CBC4F571C15} = {3546B893-CC07-4421-8897-6CBC4F571C15}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +32,22 @@ Global
 		{220CB38F-4A82-4202-9D87-043D2D954AC0}.Release|x64.Build.0 = Release|x64
 		{220CB38F-4A82-4202-9D87-043D2D954AC0}.Release|x86.ActiveCfg = Release|Win32
 		{220CB38F-4A82-4202-9D87-043D2D954AC0}.Release|x86.Build.0 = Release|Win32
+		{3546B893-CC07-4421-8897-6CBC4F571C15}.Debug|x64.ActiveCfg = Debug|x64
+		{3546B893-CC07-4421-8897-6CBC4F571C15}.Debug|x64.Build.0 = Debug|x64
+		{3546B893-CC07-4421-8897-6CBC4F571C15}.Debug|x86.ActiveCfg = Debug|Win32
+		{3546B893-CC07-4421-8897-6CBC4F571C15}.Debug|x86.Build.0 = Debug|Win32
+		{3546B893-CC07-4421-8897-6CBC4F571C15}.Release|x64.ActiveCfg = Release|x64
+		{3546B893-CC07-4421-8897-6CBC4F571C15}.Release|x64.Build.0 = Release|x64
+		{3546B893-CC07-4421-8897-6CBC4F571C15}.Release|x86.ActiveCfg = Release|Win32
+		{3546B893-CC07-4421-8897-6CBC4F571C15}.Release|x86.Build.0 = Release|Win32
+		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Debug|x64.ActiveCfg = Debug|x64
+		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Debug|x64.Build.0 = Debug|x64
+		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Debug|x86.ActiveCfg = Debug|Win32
+		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Debug|x86.Build.0 = Debug|Win32
+		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Release|x64.ActiveCfg = Release|x64
+		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Release|x64.Build.0 = Release|x64
+		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Release|x86.ActiveCfg = Release|Win32
+		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
