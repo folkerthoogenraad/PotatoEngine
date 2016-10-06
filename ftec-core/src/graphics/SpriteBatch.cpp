@@ -19,7 +19,7 @@ namespace ftec {
 		}
 	}
 
-	SpriteBatch::SpriteBatch()
+	SpriteBatch::SpriteBatch() : m_Drawing(false)
 	{
 		glGenBuffers(1, &m_VerticesVBO);
 		glGenBuffers(1, &m_ColorsVBO);

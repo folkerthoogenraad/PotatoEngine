@@ -12,7 +12,7 @@ namespace potato {
 		Slider();
 
 		void drawSelf(ftec::Graphics2D &graphics) override;
-		void update() override;
+		void process(Event &event) override;
 
 		float getValue() { return m_Value; }
 		void setValue(float f) { m_Value = f; }

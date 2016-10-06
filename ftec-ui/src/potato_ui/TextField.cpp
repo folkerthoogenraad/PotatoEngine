@@ -10,9 +10,9 @@ namespace potato {
 		m_Focusable = true;
 	}
 
-	void TextField::update()
+	void TextField::process(Event &event)
 	{
-		Panel::update();
+		Panel::process(event);
 
 		if (m_Focus) {
 			m_EditText.keyboardInput();

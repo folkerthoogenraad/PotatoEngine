@@ -8,7 +8,7 @@ namespace potato {
 
 	void EditText::clamp()
 	{
-		int l = length();
+		int l = (int) length();
 
 		ftec::clamp(m_CursorPosition, 0, l);
 

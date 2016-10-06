@@ -1,5 +1,6 @@
 #include "PotatoUI.h"
 #include "Panel.h"
+#include "logger/log.h"
 
 namespace potato {
 	//https://www.materialpalette.com/blue-grey/grey
@@ -26,29 +27,61 @@ namespace potato {
 		data = input;
 	}
 
+	PotatoUI::PotatoUI()
+	{
+	}
+
+	PotatoUI::~PotatoUI()
+	{
+	}
+
 	void PotatoUI::update()
 	{
-		if (root) {
-			root->update();
+		if (m_Root) {
+			Event event;
+
+			if(m_ContextMenu)
+				m_ContextMenu->process(event);
+
+			if(!event.isConsumed())
+				m_Root->process(event);
+
+			if (m_ContextMenu)
+				m_ContextMenu->update();
+			m_Root->update();
 		}
 	}
 
 	void PotatoUI::render()
 	{
-		graphics.resetClip();
-		graphics.drawClear();
-		graphics.begin();
+		m_Graphics.resetClip();
+		m_Graphics.drawClear();
+		m_Graphics.begin();
 
-		if (root) {
-			root->draw(graphics);
+		if (m_Root) {
+			m_Root->draw(m_Graphics);
+		}
+		if (m_ContextMenu) {
+			m_ContextMenu->draw(m_Graphics);
 		}
 
-		graphics.end();
+		m_Graphics.end();
 	}
 
 	void PotatoUI::setRoot(std::shared_ptr<Panel> root)
 	{
-		this->root = root;
+		m_Root = root;
+		if (m_Root) {
+			m_Root->setUI(shared_from_this());
+		}
+	}
+
+	void PotatoUI::setContextMenu(std::shared_ptr<Panel> contextMenu)
+	{
+		m_ContextMenu = contextMenu;
+		if (m_ContextMenu) {
+			m_ContextMenu->setUI(shared_from_this());
+		}
 	}
 
 }

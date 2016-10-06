@@ -21,9 +21,11 @@
   <ItemGroup>
     <ClCompile Include="src\potato_ui\Button.cpp" />
     <ClCompile Include="src\potato_ui\Checkbox.cpp" />
+    <ClCompile Include="src\potato_ui\Dropdown.cpp" />
     <ClCompile Include="src\potato_ui\EditText.cpp" />
     <ClCompile Include="src\potato_ui\Event.cpp" />
     <ClCompile Include="src\potato_ui\Label.cpp" />
+    <ClCompile Include="src\potato_ui\List.cpp" />
     <ClCompile Include="src\potato_ui\Panel.cpp" />
     <ClCompile Include="src\potato_ui\PotatoUI.cpp" />
     <ClCompile Include="src\potato_ui\SceneView.cpp" />
@@ -33,10 +35,11 @@
   <ItemGroup>
     <ClInclude Include="src\potato_ui\Button.h" />
     <ClInclude Include="src\potato_ui\Checkbox.h" />
+    <ClInclude Include="src\potato_ui\Dropdown.h" />
     <ClInclude Include="src\potato_ui\EditText.h" />
     <ClInclude Include="src\potato_ui\Event.h" />
     <ClInclude Include="src\potato_ui\Label.h" />
-    <ClInclude Include="src\potato_ui\Layout.h" />
+    <ClInclude Include="src\potato_ui\List.h" />
     <ClInclude Include="src\potato_ui\Panel.h" />
     <ClInclude Include="src\potato_ui\PotatoUI.h" />
     <ClInclude Include="src\potato_ui\SceneView.h" />

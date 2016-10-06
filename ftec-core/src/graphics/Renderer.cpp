@@ -71,7 +71,7 @@ namespace ftec {
 			(GLsizei)mesh.m_Triangles.size(),
 			GL_UNSIGNED_INT,
 			(void*)0,
-			instances.m_Positions.size()
+			(GLsizei) instances.m_Positions.size()
 		);
 
 		glDisableVertexAttribArray(SHADER_ATTRIBUTE_INSTANCE_POSITION);

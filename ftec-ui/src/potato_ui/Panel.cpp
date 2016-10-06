@@ -28,7 +28,8 @@ namespace potato {
 		}
 	}
 
-	void Panel::update()
+
+	void Panel::process(Event &event)
 	{
 		//Hovering inputs
 		{
@@ -71,7 +72,7 @@ namespace potato {
 				}
 			}
 		}
-		
+
 		//Tabbing between focus things
 		{
 			if (ftec::Input::isKeyTyped(GLFW_KEY_TAB)) {
@@ -79,7 +80,17 @@ namespace potato {
 			}
 		}
 
+		//Consume (muhuahaa) children
+		for (auto child : m_Children) {
+			if (!event.isConsumed()) {
+				child->process(event);
+			}
+		}
 
+	}
+
+	void Panel::update()
+	{
 		//Update children
 		for (auto child : m_Children) {
 			child->update();
@@ -170,6 +181,7 @@ namespace potato {
 	void Panel::addPanel(std::shared_ptr<Panel> panel)
 	{
 		panel->setParent(this);
+		panel->setUI(m_UI);
 		this->m_Children.push_back(panel);
 	}
 

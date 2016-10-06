@@ -3,36 +3,17 @@
 
 namespace potato {
 
-	enum class EventType {
-		MOUSE_PRESS,
-		MOUSE_RELEASE,
-		MOUSE_MOVE,
-		KEY_PRESS,
-		KEY_RELEASE,
-		KEY_TYPED,
-	};
-
-	class EventData {
-	public:
-		EventData() = delete;
-		virtual ~EventData() = default;
-	};
-
 	class Event {
 	private:
-		std::shared_ptr<EventData> m_Data;
-		EventType m_Type;
+		bool m_Consumed = false;
 	public:
-		Event(EventType type, std::shared_ptr<EventData> data);
+		//Creates a new event from the given input values in ftec::Input
+		Event();
 		~Event() = default;
 
-		template<typename T>
-		std::shared_ptr<T> getData()
-		{
-			return std::dynamic_pointer_cast<T>(m_Data);
-		}
+		bool isConsumed() { return m_Consumed; }
+		void consume() { m_Consumed = true; }
 
-		EventType getType() { return m_Type; }
 	};
 
 }

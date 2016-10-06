@@ -1,8 +1,9 @@
 #include "Event.h"
+#include "engine/Input.h"
 
 namespace potato {
-	Event::Event(EventType type, std::shared_ptr<EventData> data)
-		:m_Data(data), m_Type(type)
+
+	Event::Event() : m_Consumed(false)
 	{
 
 	}

@@ -30,15 +30,16 @@ namespace potato {
 		}
 	}
 
-	void Slider::update()
+	void Slider::process(Event &event)
 	{
-		Panel::update();
+		Panel::process(event);
 
 		ftec::rect2f blockBounds = getSliderBounds();
 
 		if (ftec::Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
 			if (blockBounds.contains(ftec::Input::getMousePosition())) {
 				m_SliderHold = true;
+				event.consume();//Event is now consumed (Idk whether or not we need this, but whatever)
 			}
 		}
 		if (ftec::Input::isMouseButtonReleased(GLFW_MOUSE_BUTTON_1)) {

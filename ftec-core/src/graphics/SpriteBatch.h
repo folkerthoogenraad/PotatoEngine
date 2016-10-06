@@ -46,6 +46,6 @@ namespace ftec {
 
 		bool isDrawing() { return m_Drawing; }
 
-		inline int count() { return m_Vertices.size(); }
+		inline size_t count() { return m_Vertices.size(); }
 	};
 }

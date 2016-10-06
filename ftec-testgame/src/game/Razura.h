@@ -9,7 +9,7 @@ namespace ftec {
 	class Razura : public Game{
 	private:
 		Graphics2D graphics;
-		potato::PotatoUI ui;
+		std::shared_ptr<potato::PotatoUI> ui;
 	public:
 		Razura() = default;
 		virtual ~Razura() = default;

@@ -41,13 +41,20 @@ namespace potato {
 		static void setData(const std::string &);
 	};
 
-	class PotatoUI {
-	ftec::Graphics2D graphics;
-	std::shared_ptr<Panel> root;
+	class PotatoUI;
+
+	class PotatoUI : public std::enable_shared_from_this<PotatoUI> {
+	private:
+		ftec::Graphics2D m_Graphics;
+		std::shared_ptr<Panel> m_Root;
+		std::shared_ptr<Panel> m_ContextMenu;
 	public:
+		PotatoUI();
+		~PotatoUI();
 		void update();
 		void render();
 
 		void setRoot(std::shared_ptr<Panel> root);
+		void setContextMenu(std::shared_ptr<Panel> contextMenu);
 	};
 }
