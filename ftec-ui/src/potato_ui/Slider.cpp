@@ -57,6 +57,12 @@ namespace potato {
 		}
 	}
 
+	Size Slider::getPreferredSize()
+	{
+		//TODO change these accoringly
+		return Size(128,32);
+	}
+
 	ftec::rect2f Slider::getSliderBounds()
 	{
 		const float s = SLIDER_BLOCK_SIZE;

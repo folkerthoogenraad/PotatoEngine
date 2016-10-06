@@ -71,7 +71,7 @@ namespace potato {
 		//Called each update (for animation, for everything)
 		virtual void update();
 		void process(Event &event);
-		virtual void processSelf (Event &event);
+		virtual void processSelf(Event &event);
 
 		virtual void onClick();
 		virtual void onHoverEnter();
@@ -83,7 +83,7 @@ namespace potato {
 		bool isHoveringChild() const { return m_ChildHovering; }
 		bool isHoveringSelf() const { return m_Hovering && !m_ChildHovering; }
 
-		virtual Size getPreferredSize() { return m_Bounds.size; }
+		virtual Size getPreferredSize() = 0;
 
 		bool inBounds(ftec::vec2i point);
 		bool inChildBounds(ftec::vec2i point);
@@ -93,7 +93,7 @@ namespace potato {
 		virtual void addPanel(std::shared_ptr<Panel> panel);
 
 		//TODO make these weak_ptr
-		void setParent(Panel *parent) { this->m_Parent = parent; }
+		virtual void setParent(Panel *parent) { this->m_Parent = parent; }
 		Panel *getParent() { return m_Parent; }
 
 		void setUI(std::weak_ptr<PotatoUI> ui) {this->m_UI = ui; }

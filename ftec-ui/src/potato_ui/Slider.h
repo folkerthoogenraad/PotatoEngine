@@ -20,6 +20,8 @@ namespace potato {
 		int getSteps() { return m_Steps; }
 		void setSteps(int steps) { m_Steps = steps; }
 
+		Size getPreferredSize() override;
+
 	protected:
 		ftec::rect2f getSliderBounds();
 	};

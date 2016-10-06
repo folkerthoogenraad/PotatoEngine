@@ -5,7 +5,7 @@
 namespace potato {
 	class LinearLayout : public Panel {
 	public:
-		enum class LayoutDirection {
+		enum LayoutDirection {
 			HORIZONTAL,
 			VERTICAL
 		};
@@ -15,6 +15,7 @@ namespace potato {
 		LinearLayout(LayoutDirection dir);
 
 		void addPanel(std::shared_ptr<Panel> panel) override;
+		void setParent(Panel *parent) override;
 		Size getPreferredSize() override;
 	};
 }

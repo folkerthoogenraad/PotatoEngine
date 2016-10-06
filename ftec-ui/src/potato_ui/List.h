@@ -12,6 +12,7 @@ namespace potato {
 
 		void drawSelf(ftec::Graphics2D &graphics) override;
 		void processSelf(Event &event) override;
+		Size getPreferredSize() override;
 
 		void setTextOptions(const std::vector<std::string> &cp) { m_TextOptions = cp; }
 		std::vector<std::string> &getTextOptions() { return m_TextOptions; };

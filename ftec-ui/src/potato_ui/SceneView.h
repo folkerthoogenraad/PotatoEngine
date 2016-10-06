@@ -10,5 +10,6 @@ namespace potato {
 
 		virtual void drawSelf(ftec::Graphics2D &graphics) override;
 		virtual void update() override;
+		Size getPreferredSize() override;
 	};
 }

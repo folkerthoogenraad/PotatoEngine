@@ -19,5 +19,7 @@ namespace potato {
 
 		std::string &hint() { return m_Hint; }
 		const std::string &hint() const { return m_Hint; }
+
+		Size getPreferredSize() override;
 	};
 }

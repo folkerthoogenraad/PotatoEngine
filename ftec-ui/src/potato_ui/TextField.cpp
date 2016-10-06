@@ -67,4 +67,9 @@ namespace potato {
 
 		graphics.resetClip();
 	}
+	Size TextField::getPreferredSize()
+	{
+		//TODO change these accoringly
+		return Size(128,32);
+	}
 }

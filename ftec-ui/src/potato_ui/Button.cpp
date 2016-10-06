@@ -47,4 +47,9 @@ namespace potato {
 			graphics.drawString(m_Text, m_Bounds.center());
 		}
 	}
+	Size Button::getPreferredSize()
+	{
+		//TODO change these values based on the text and stuff
+		return Size(128, 32);
+	}
 }

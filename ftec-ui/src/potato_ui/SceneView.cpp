@@ -38,4 +38,9 @@ namespace potato {
 			}
 		}
 	}
+	Size SceneView::getPreferredSize()
+	{
+		//TODO change these accordingly
+		return Size(128,72);
+	}
 }

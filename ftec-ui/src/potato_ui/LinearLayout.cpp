@@ -11,8 +11,6 @@ namespace potato {
 
 	void LinearLayout::addPanel(std::shared_ptr<Panel> panel)
 	{
-		Panel::addPanel(panel);
-
 		Size t = getPreferredSize();
 		Size pref = panel->getPreferredSize();
 
@@ -33,6 +31,13 @@ namespace potato {
 				t.width,
 				pref.height);
 		}
+
+		Panel::addPanel(panel);
+	}
+
+	void LinearLayout::setParent(Panel * parent)
+	{
+		Panel::setParent(parent);
 	}
 
 	Size LinearLayout::getPreferredSize()

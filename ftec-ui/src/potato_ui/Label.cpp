@@ -17,4 +17,8 @@ namespace potato {
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
 		graphics.drawString(m_Text, m_Bounds.centerLeft());
 	}
+	Size Label::getPreferredSize()
+	{
+		return Size(128,32);
+	}
 }

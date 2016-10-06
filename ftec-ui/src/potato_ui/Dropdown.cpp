@@ -56,4 +56,9 @@ namespace potato {
 		}
 		
 	}
+	Size Dropdown::getPreferredSize()
+	{
+		//TODO change these values accordingly
+		return Size(128,32);
+	}
 }

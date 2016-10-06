@@ -187,9 +187,9 @@ namespace potato {
 
 	void Panel::addPanel(std::shared_ptr<Panel> panel)
 	{
+		this->m_Children.push_back(panel);
 		panel->setParent(this);
 		panel->setUI(m_UI);
-		this->m_Children.push_back(panel);
 	}
 
 	

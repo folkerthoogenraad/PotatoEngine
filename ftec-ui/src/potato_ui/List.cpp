@@ -45,4 +45,9 @@ namespace potato {
 			}
 		}
 	}
+	Size List::getPreferredSize()
+	{
+		//TODO change these accoringly
+		return Size(128,128);
+	}
 }

@@ -39,4 +39,9 @@ namespace potato {
 	{
 		m_Checked = !m_Checked;
 	}
+	Size Checkbox::getPreferredSize()
+	{
+		//TODO change these values accordingly
+		return Size(128,32);
+	}
 }
