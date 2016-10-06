@@ -63,6 +63,7 @@ namespace potato {
 
 		//Called each time the panel needs to be drawn
 		virtual void draw(ftec::Graphics2D &graphics);
+		virtual void drawSelf(ftec::Graphics2D &graphics);
 
 		//Called each update (for animation, for everything)
 		virtual void update();

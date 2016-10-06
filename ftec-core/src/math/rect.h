@@ -35,6 +35,9 @@ namespace ftec {
 		vec2<T> bottomright() const { return vec2<T>(right(), bottom()); }
 
 		vec2<T> center() const { return vec2<T>(position.x + size.x / 2, position.y + size.y / 2); }
+		vec2<T> centerLeft() const { return vec2<T>(position.x, position.y + size.y / 2); }
+		vec2<T> centerRight() const { return vec2<T>(position.x + size.x, position.y + size.y / 2); }
+		
 		bool contains(vec2<T> v) { return !(v.x < left() || v.x > right() || v.y < top() || v.y > bottom()); };
 	};
 

@@ -9,7 +9,7 @@ namespace potato {
 	public:
 		Button();
 
-		void draw(ftec::Graphics2D &graphics) override;
+		void drawSelf(ftec::Graphics2D &graphics) override;
 
 		std::string &text() { return m_Text; }
 		const std::string &text() const { return m_Text; }

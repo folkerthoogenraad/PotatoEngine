@@ -8,7 +8,7 @@ namespace potato {
 		SceneView();
 		~SceneView() = default;
 
-		virtual void draw(ftec::Graphics2D &graphics) override;
+		virtual void drawSelf(ftec::Graphics2D &graphics) override;
 		virtual void update() override;
 	};
 }

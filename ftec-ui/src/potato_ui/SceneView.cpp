@@ -10,7 +10,7 @@ namespace potato {
 		m_Focusable = true;
 	}
 
-	void SceneView::draw(ftec::Graphics2D & graphics)
+	void SceneView::drawSelf(ftec::Graphics2D & graphics)
 	{
 		//Draw the scene!
 		if (ftec::Engine::getScene()) {
@@ -26,8 +26,6 @@ namespace potato {
 			graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
 			graphics.drawString("Scene missing.", m_Bounds.position + ftec::vec2i(2,2));
 		}
-
-		Panel::draw(graphics);
 	}
 
 	void SceneView::update()

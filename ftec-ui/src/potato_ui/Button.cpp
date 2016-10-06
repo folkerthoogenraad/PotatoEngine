@@ -10,7 +10,7 @@ namespace potato {
 		m_Focusable = true;
 	}
 
-	void Button::draw(ftec::Graphics2D & graphics)
+	void Button::drawSelf(ftec::Graphics2D & graphics)
 	{
 		graphics.setFont(m_Font);
 		//Don't call our super class, if we have children, we should ignore them
@@ -18,24 +18,24 @@ namespace potato {
 
 		if (m_Hovering) {
 			if (m_Pressed) {
-				graphics.setColor(PotatoColor::darkPrimary);
+				graphics.setColor(PotatoColor::primary);
 			}
 			else {
-				graphics.setColor(PotatoColor::primary);
+				graphics.setColor(PotatoColor::lightPrimary);
 			}
 		}
 		else {
-			graphics.setColor(PotatoColor::primary);
+			graphics.setColor(PotatoColor::lightPrimary);
 		}
 
 		graphics.drawRectangle(m_Bounds, true);
 
 		if (m_Focus) {
-			graphics.setColor(PotatoColor::lightPrimary);
+			graphics.setColor(PotatoColor::darkPrimary);
 			graphics.drawRectangle(m_Bounds, false);
 		}
 
-		graphics.setColor(PotatoColor::iconsText);
+		graphics.setColor(PotatoColor::primaryText);
 
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
 		graphics.setHorizontalAlign(ftec::FontAlign::CENTER);

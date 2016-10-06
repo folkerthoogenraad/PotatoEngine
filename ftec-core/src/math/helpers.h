@@ -32,10 +32,13 @@ namespace ftec {
 	}
 
 	template<typename T>
-	inline void clamp(T &value, const T &min, const T &max)
-	{
-		if (value < min) value = min;
-		if (value > max) value = max;
+	inline T clamp(const T &min, const T &max, T value)
+	{//Test the clamp
+		if (value < min) 
+			return min;
+		if (value > max)
+			return max;
+		return value;
 	}
 
 	template<typename T>
@@ -66,5 +69,33 @@ namespace ftec {
 		if (a < 0)
 			return -a;
 		return a;
+	}
+
+	template <typename T>
+	T lerp(T a, T b, T f)
+	{
+		return a + (b - a) * f;
+	}
+
+	template <typename T>
+	T invLerp(T a, T b, T v)
+	{
+		return (v - a) / (b - a);
+	}
+
+	template <typename T>
+	T round(T a)
+	{
+		return std::round(a);
+	}
+	template <typename T>
+	T floor(T a)
+	{
+		return std::floor(a);
+	}
+	template <typename T>
+	T ceil(T a)
+	{
+		return std::ceil(a);
 	}
 }

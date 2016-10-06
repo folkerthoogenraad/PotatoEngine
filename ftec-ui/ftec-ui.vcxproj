@@ -20,21 +20,27 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\potato_ui\Button.cpp" />
+    <ClCompile Include="src\potato_ui\Checkbox.cpp" />
     <ClCompile Include="src\potato_ui\EditText.cpp" />
     <ClCompile Include="src\potato_ui\Event.cpp" />
+    <ClCompile Include="src\potato_ui\Label.cpp" />
     <ClCompile Include="src\potato_ui\Panel.cpp" />
     <ClCompile Include="src\potato_ui\PotatoUI.cpp" />
     <ClCompile Include="src\potato_ui\SceneView.cpp" />
+    <ClCompile Include="src\potato_ui\Slider.cpp" />
     <ClCompile Include="src\potato_ui\TextField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\potato_ui\Button.h" />
+    <ClInclude Include="src\potato_ui\Checkbox.h" />
     <ClInclude Include="src\potato_ui\EditText.h" />
     <ClInclude Include="src\potato_ui\Event.h" />
+    <ClInclude Include="src\potato_ui\Label.h" />
     <ClInclude Include="src\potato_ui\Layout.h" />
     <ClInclude Include="src\potato_ui\Panel.h" />
     <ClInclude Include="src\potato_ui\PotatoUI.h" />
     <ClInclude Include="src\potato_ui\SceneView.h" />
+    <ClInclude Include="src\potato_ui\Slider.h" />
     <ClInclude Include="src\potato_ui\TextField.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

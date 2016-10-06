@@ -13,15 +13,18 @@ namespace potato {
 	}
 	void Panel::draw(ftec::Graphics2D & graphics)
 	{
-		//Draw self
-		if (m_Opaque) {
-			graphics.setColor(m_BackgroundColor);
-			graphics.drawRectangle(m_Bounds, true);
-		}
-
+		drawSelf(graphics);
 		//Draw children
 		for (auto child : m_Children) {
 			child->draw(graphics);
+		}
+	}
+
+	void Panel::drawSelf(ftec::Graphics2D & graphics)
+	{
+		if (m_Opaque) {
+			graphics.setColor(m_BackgroundColor);
+			graphics.drawRectangle(m_Bounds, true);
 		}
 	}
 
