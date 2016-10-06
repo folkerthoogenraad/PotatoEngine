@@ -18,6 +18,7 @@
 #include "potato_ui/Slider.h"
 #include "potato_ui/Label.h"
 #include "potato_ui/Dropdown.h"
+#include "potato_ui/LinearLayout.h"
 #include "graphics/Renderer.h"
 
 namespace ftec {
@@ -40,7 +41,7 @@ namespace ftec {
 	{
 		ui = std::make_shared<potato::PotatoUI>();
 
-		auto rootPanel = std::make_shared<potato::Panel>();
+		auto rootPanel = std::make_shared<potato::LinearLayout>(potato::LinearLayout::LayoutDirection::VERTICAL);
 
 		ui->setRoot(rootPanel);
 
@@ -76,11 +77,11 @@ namespace ftec {
 
 		rootPanel->addPanel(button);
 		rootPanel->addPanel(textfield);
+		rootPanel->addPanel(dropdown);
 		rootPanel->addPanel(textfield2);
 		rootPanel->addPanel(checkbox);
 		rootPanel->addPanel(slider);
 		rootPanel->addPanel(label);
-		rootPanel->addPanel(dropdown);
 	}
 
 	void Razura::destroy()

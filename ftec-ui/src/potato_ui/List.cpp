@@ -26,9 +26,9 @@ namespace potato {
 		}
 	}
 
-	void List::process(Event & event)
+	void List::processSelf(Event & event)
 	{
-		Panel::process(event);
+		Panel::processSelf(event);
 		
 		if (ftec::Input::isMouseButtonDown(GLFW_MOUSE_BUTTON_1)) {
 			if (isHoveringSelf()) {
@@ -37,7 +37,10 @@ namespace potato {
 			}
 			else {
 				if (auto ui = m_UI.lock()) {
+					//This calles our destructor, which is nice :')
 					ui->setContextMenu(nullptr);
+					//Now we must consume the event, else the panel will call all the children and that will break the living shit out of everything because the destructor has already been called.
+					event.consume();
 				}
 			}
 		}

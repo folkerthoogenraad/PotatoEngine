@@ -11,6 +11,9 @@ namespace ftec {
 			struct {
 				T x, y;
 			};
+			struct {
+				T width, height;
+			};
 			T v[2];
 		};
 

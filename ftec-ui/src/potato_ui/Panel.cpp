@@ -31,6 +31,21 @@ namespace potato {
 
 	void Panel::process(Event &event)
 	{
+		processSelf(event);
+
+		if (event.isConsumed())
+			return;
+
+		for (auto child : m_Children) {
+			if (!event.isConsumed()) {
+				child->process(event);
+			}
+		}
+
+	}
+
+	void Panel::processSelf(Event &event)
+	{
 		//Hovering inputs
 		{
 			bool hover = inBounds(ftec::Input::getMousePosition());
@@ -79,14 +94,6 @@ namespace potato {
 				switchFocus();
 			}
 		}
-
-		//Consume (muhuahaa) children
-		for (auto child : m_Children) {
-			if (!event.isConsumed()) {
-				child->process(event);
-			}
-		}
-
 	}
 
 	void Panel::update()

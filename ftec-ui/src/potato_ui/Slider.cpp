@@ -30,9 +30,9 @@ namespace potato {
 		}
 	}
 
-	void Slider::process(Event &event)
+	void Slider::processSelf(Event &event)
 	{
-		Panel::process(event);
+		Panel::processSelf(event);
 
 		ftec::rect2f blockBounds = getSliderBounds();
 

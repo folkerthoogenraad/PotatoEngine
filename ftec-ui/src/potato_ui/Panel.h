@@ -1,4 +1,5 @@
 #pragma once
+
 #include <memory>
 #include <vector>
 #include "math/math.h"
@@ -14,11 +15,13 @@ namespace ftec {
 namespace potato {
 
 	typedef ftec::rect2i Bounds;
+	typedef ftec::vec2i Size;
 
 	class Panel;
 	class Panel {
-	protected:
+	public:
 		Bounds m_Bounds;
+	protected:
 
 		ftec::color32 m_BackgroundColor = ftec::color32::white();
 		ftec::color32 m_ForegroundColor = ftec::color32::black();
@@ -67,7 +70,8 @@ namespace potato {
 
 		//Called each update (for animation, for everything)
 		virtual void update();
-		virtual void process(Event &event);
+		void process(Event &event);
+		virtual void processSelf (Event &event);
 
 		virtual void onClick();
 		virtual void onHoverEnter();
@@ -78,6 +82,8 @@ namespace potato {
 		bool isHovering() const { return m_Hovering; }
 		bool isHoveringChild() const { return m_ChildHovering; }
 		bool isHoveringSelf() const { return m_Hovering && !m_ChildHovering; }
+
+		virtual Size getPreferredSize() { return m_Bounds.size; }
 
 		bool inBounds(ftec::vec2i point);
 		bool inChildBounds(ftec::vec2i point);
