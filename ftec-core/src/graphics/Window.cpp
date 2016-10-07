@@ -22,8 +22,8 @@ namespace ftec {
 
 	void Window::poll()
 	{
-		glfwPollEvents();
 		m_Resized = false;
+		glfwPollEvents();
 		m_CloseRequested = glfwWindowShouldClose(m_Window) > 0; //fucking warnings
 	}
 

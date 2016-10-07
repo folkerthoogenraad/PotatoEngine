@@ -62,28 +62,24 @@ namespace ftec {
 		label->text() = "oi just a label brah";
 		slider->setSteps(10);
 
-		button->layoutparams().m_Weight = 1.0f;
-		button->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-		button->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
+		group->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
+		group->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
 
-		checkbox->layoutparams().m_Weight = 2.0f;
-		checkbox->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-		checkbox->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
+		textfield->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
+		textfield->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
 
 		auto &options = dropdown->getTextOptions();
 		options.push_back("Option 0");
 		options.push_back("Option 1");
 		options.push_back("Option 2");
 
-		rootPanel->localbounds() = rect2i(0,0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight());
-
-		rootPanel->addPanel(button);
 		rootPanel->addPanel(group);
 		rootPanel->addPanel(dropdown);
 		rootPanel->addPanel(checkbox);
 		rootPanel->addPanel(slider);
 		rootPanel->addPanel(label);
 
+		group->addPanel(button);
 		group->addPanel(textfield);
 		group->addPanel(textfield2);
 	}

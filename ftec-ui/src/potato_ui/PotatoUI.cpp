@@ -1,5 +1,6 @@
 #include "PotatoUI.h"
 #include "Panel.h"
+#include "engine/Engine.h"
 #include "logger/log.h"
 
 namespace potato {
@@ -35,10 +36,15 @@ namespace potato {
 	{
 	}
 
-	void PotatoUI::update()
+	void PotatoUI::update()	
 	{
 		if (m_Root) {
 			Event event;
+
+			if (ftec::Engine::getWindow().isResized()) {
+				m_Root->localbounds() = ftec::rect2i(0, 0, ftec::Engine::getWindow().getWidth(), ftec::Engine::getWindow().getHeight());
+				m_Root->updateLayout(); //Update the layout for this panel
+			}
 
 			if(m_ContextMenu)
 				m_ContextMenu->process(event);
@@ -48,6 +54,7 @@ namespace potato {
 
 			if (m_ContextMenu)
 				m_ContextMenu->update();
+
 			m_Root->update();
 		}
 	}
@@ -73,6 +80,8 @@ namespace potato {
 		m_Root = root;
 		if (m_Root) {
 			m_Root->setUI(shared_from_this());
+			//Give this the full panel, this happens always, at all times
+			m_Root->localbounds() = ftec::rect2i(0,0, ftec::Engine::getWindow().getWidth(), ftec::Engine::getWindow().getHeight());
 		}
 	}
 
