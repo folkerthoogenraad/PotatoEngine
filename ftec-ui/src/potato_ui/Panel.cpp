@@ -19,9 +19,10 @@ namespace potato {
 		if (m_Parent) {
 			p += m_Parent->m_LocalBounds.position;
 		}
+
 		return Bounds(
-			p.x,p.y,
-			m_LocalBounds.width(), m_LocalBounds.height()
+			p.x + m_Insets.left,p.y + m_Insets.top,
+			m_LocalBounds.width() - m_Insets.right, m_LocalBounds.height() - m_Insets.bottom
 		);
 	}
 

@@ -63,25 +63,24 @@ namespace ftec {
 		slider->setSteps(10);
 
 		group->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-		group->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
 
 		textfield->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-		textfield->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
 
 		auto &options = dropdown->getTextOptions();
 		options.push_back("Option 0");
 		options.push_back("Option 1");
 		options.push_back("Option 2");
 
-		rootPanel->addPanel(group);
+		group->addPanel(button);
+		group->addPanel(textfield);
+		group->addPanel(textfield2);
+
 		rootPanel->addPanel(dropdown);
 		rootPanel->addPanel(checkbox);
 		rootPanel->addPanel(slider);
 		rootPanel->addPanel(label);
+		rootPanel->addPanel(group);
 
-		group->addPanel(button);
-		group->addPanel(textfield);
-		group->addPanel(textfield2);
 	}
 
 	void Razura::destroy()

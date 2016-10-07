@@ -18,6 +18,15 @@ namespace potato {
 	typedef ftec::rect2i Bounds;
 	typedef ftec::vec2i Size;
 
+	struct Insets{
+		int top, right, bottom, left;
+
+		Insets();
+		Insets(int a, int b, int c, int d) : top(a), right(b), bottom(c), left(d){}
+
+		static Insets defaultInsets() { return Insets(4,4,4,4); }
+	};
+
 	class Panel;
 	class Panel {
 	public:
@@ -39,7 +48,8 @@ namespace potato {
 
 		bool m_Focus = false;
 
-		LayoutParams m_LayoutParams;
+		LayoutParams m_LayoutParams = LayoutParams();
+		Insets m_Insets = Insets::defaultInsets();
 
 		//Optional parent
 		//shared ptr from this? maybe?

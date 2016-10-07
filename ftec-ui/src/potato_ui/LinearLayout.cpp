@@ -64,6 +64,8 @@ namespace potato {
 		float sizePerWeight;
 		if (sizeLeft > 0.0f)
 			sizePerWeight = sizeLeft / totalWeight;
+		else
+			sizePerWeight = 0;
 
 		//Offset, for positioning
 		float offset = 0;
