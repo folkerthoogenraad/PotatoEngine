@@ -157,7 +157,6 @@
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\io\ioutils.cpp" />
     <ClCompile Include="src\math\Curve.cpp" />
-    <ClCompile Include="src\potato_ui\Button.cpp" />
     <ClCompile Include="src\serialization\Serialization.cpp" />
     <ClCompile Include="src\math\mat4.cpp" />
     <ClCompile Include="src\math\quaternion.cpp" />

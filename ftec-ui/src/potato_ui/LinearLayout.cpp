@@ -9,53 +9,143 @@ namespace potato {
 
 	}
 
-	void LinearLayout::addPanel(std::shared_ptr<Panel> panel)
+	void LinearLayout::updateLayout()
 	{
-		Size t = getPreferredSize();
-		Size pref = panel->getPreferredSize();
+		Size layoutSize = localbounds().size;
 
-		//If the direction is horizontal
-		if (m_Direction == LayoutDirection::HORIZONTAL) {
-			panel->bounds() = ftec::rect2i(
-				m_Bounds.x() + t.width,
-				m_Bounds.y(),
-				pref.width,
-				t.height);
+		//Available size (which we have to scale to)
+		float availableSize = m_Direction == HORIZONTAL ? layoutSize.width : layoutSize.height;
+
+		//The total weight of all elements that need weighting
+		float totalWeight = 0;
+		//Size of all elements that don't use weighting
+		float totalSize = 0;
+
+		//Find the total weights we have and all the exact measures we need.
+		for (auto child : m_Children) {
+			LayoutParams &pChild = child->layoutparams();
+
+			//Horizontal stacking and stuff
+			if (m_Direction == HORIZONTAL) {
+				//if we should match parent
+				if (pChild.m_WidthScaling == LayoutParams::MATCH_PARENT) {
+					totalWeight += ftec::max(pChild.m_Weight, 0.0f); //Negative weights will fuck this up
+				}
+				//Exact 
+				else if (pChild.m_WidthScaling == LayoutParams::EXACT) {
+					totalSize += pChild.m_Size.width;
+				}
+				//wrap content
+				else if (pChild.m_WidthScaling == LayoutParams::WRAP_CONTENT) {
+					totalSize += child->getPreferredSize().x;
+				}
+			}
+			//Vertical stacking and stuff (else case, but more readable
+			else if (m_Direction == VERTICAL){
+				//if we should match parent
+				if (pChild.m_HeightScaling == LayoutParams::MATCH_PARENT) {
+					totalWeight += pChild.m_Weight;
+				}
+				//Exact 
+				else if (pChild.m_HeightScaling == LayoutParams::EXACT) {
+					totalSize += pChild.m_Size.height;
+				}
+				//wrap content
+				else if (pChild.m_HeightScaling == LayoutParams::WRAP_CONTENT) {
+					totalSize += child->getPreferredSize().y;
+				}
+			}
 		}
+	
+		//How much size / units do we have to spare
+		float sizeLeft = availableSize - totalSize;
+		
+		//Calculate how much size we have per weight
+		float sizePerWeight;
+		if (sizeLeft > 0.0f)
+			sizePerWeight = sizeLeft / totalWeight;
 
-		//If the direction is vertical
-		else {
-			panel->bounds() = ftec::rect2i(
-				m_Bounds.x(),
-				m_Bounds.y() + t.height,
-				t.width,
-				pref.height);
+		//Offset, for positioning
+		float offset = 0;
+
+		//Set the actual sizes for all the children
+		for (auto child : m_Children) {
+			LayoutParams &pChild = child->layoutparams();
+			
+			Size s = child->getPreferredSize();
+
+			//Horizontal stacking and stuff
+			if (m_Direction == HORIZONTAL) {
+				//if we should match parent
+				if (pChild.m_WidthScaling == LayoutParams::MATCH_PARENT) {
+					s.width = sizePerWeight * pChild.m_Weight;
+				}
+				//Exact 
+				else if (pChild.m_WidthScaling == LayoutParams::EXACT) {
+					s = pChild.m_Size;
+				}
+				//Wrap content is getPreferredSize, so that is already okay
+
+				s.height = ftec::min(layoutSize.height, s.height);
+
+				if (pChild.m_HeightScaling == LayoutParams::MATCH_PARENT)
+					s.height = layoutSize.height;
+
+				child->localbounds() = Bounds(
+					offset, 0,
+					s.width, s.height
+				);
+
+				offset += s.width;
+			}
+			//Vertical stacking and stuff (else case, but more readable)
+			else if (m_Direction == VERTICAL) {
+				//if we should match parent
+				if (pChild.m_HeightScaling == LayoutParams::MATCH_PARENT) {
+					s.height = sizePerWeight * pChild.m_Weight;
+				}
+				//Exact 
+				else if (pChild.m_HeightScaling == LayoutParams::EXACT) {
+					s = pChild.m_Size;
+				}
+				//Wrap content is getPreferredSize, so that is already okay
+
+				s.width = ftec::min(layoutSize.width, s.width);
+
+				if (pChild.m_WidthScaling == LayoutParams::MATCH_PARENT)
+					s.width = layoutSize.width;
+
+				child->localbounds() = Bounds(
+					0, offset,
+					s.width, s.height
+				);
+
+				offset += s.height;
+			}
+
+			//And ofcourse, alas, the child can update its layout as well
+			child->updateLayout();
 		}
-
-		Panel::addPanel(panel);
-	}
-
-	void LinearLayout::setParent(Panel * parent)
-	{
-		Panel::setParent(parent);
 	}
 
 	Size LinearLayout::getPreferredSize()
 	{
-		Size s;
+		Size s(0,0);
 		
-		for (auto &child : m_Children)
-		{
-			s += child->getPreferredSize();
+		for (auto child : m_Children){
+			Size pref = child->getPreferredSize();
+
+			if (m_Direction == HORIZONTAL) {
+				s.x += pref.x;
+				s.y = ftec::max(s.y, pref.y);
+			}
+
+			if (m_Direction == VERTICAL) {
+				s.x = ftec::max(s.x, pref.x);
+				s.y += pref.y;
+			}
 		}
 
-		//Horizontal layout = stacking horizontally
-		if (m_Direction == LayoutDirection::HORIZONTAL) {
-			return Size(s.x, m_Bounds.size.y);
-		}
-		//Vertical layout = stacking vertically
-		else {
-			return Size(m_Bounds.size.x, s.y);
-		}
+		return s;
 	}
 }

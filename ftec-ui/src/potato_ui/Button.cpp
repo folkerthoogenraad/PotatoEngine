@@ -16,6 +16,8 @@ namespace potato {
 		//Don't call our super class, if we have children, we should ignore them
 		//Actually, we should throw an error TODO
 
+		Bounds bounds = getGlobalBounds();
+
 		if (m_Hovering) {
 			if (m_Pressed) {
 				graphics.setColor(PotatoColor::primary);
@@ -28,11 +30,11 @@ namespace potato {
 			graphics.setColor(PotatoColor::lightPrimary);
 		}
 
-		graphics.drawRectangle(m_Bounds, true);
+		graphics.drawRectangle(bounds, true);
 
 		if (m_Focus) {
 			graphics.setColor(PotatoColor::darkPrimary);
-			graphics.drawRectangle(m_Bounds, false);
+			graphics.drawRectangle(bounds, false);
 		}
 
 		graphics.setColor(PotatoColor::primaryText);
@@ -41,10 +43,10 @@ namespace potato {
 		graphics.setHorizontalAlign(ftec::FontAlign::CENTER);
 
 		if (m_Pressed) {
-			graphics.drawString(m_Text, m_Bounds.center() + ftec::vec2i(1, 1));
+			graphics.drawString(m_Text, bounds.center() + ftec::vec2i(1, 1));
 		}
 		else {
-			graphics.drawString(m_Text, m_Bounds.center());
+			graphics.drawString(m_Text, bounds.center());
 		}
 	}
 	Size Button::getPreferredSize()

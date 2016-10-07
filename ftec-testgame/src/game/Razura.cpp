@@ -19,6 +19,7 @@
 #include "potato_ui/Label.h"
 #include "potato_ui/Dropdown.h"
 #include "potato_ui/LinearLayout.h"
+#include "potato_ui/LayoutParams.h"
 #include "graphics/Renderer.h"
 
 namespace ftec {
@@ -41,10 +42,11 @@ namespace ftec {
 	{
 		ui = std::make_shared<potato::PotatoUI>();
 
-		auto rootPanel = std::make_shared<potato::LinearLayout>(potato::LinearLayout::LayoutDirection::VERTICAL);
+		auto rootPanel = std::make_shared<potato::LinearLayout>(potato::LinearLayout::VERTICAL);
 
 		ui->setRoot(rootPanel);
 
+		auto group = std::make_shared<potato::LinearLayout>(potato::LinearLayout::HORIZONTAL);
 		auto button = std::make_shared<potato::Button>();
 		auto textfield = std::make_shared<potato::TextField>();
 		auto textfield2 = std::make_shared<potato::TextField>();
@@ -60,28 +62,30 @@ namespace ftec {
 		label->text() = "oi just a label brah";
 		slider->setSteps(10);
 
+		button->layoutparams().m_Weight = 1.0f;
+		button->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
+		button->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
+
+		checkbox->layoutparams().m_Weight = 2.0f;
+		checkbox->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
+		checkbox->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
+
 		auto &options = dropdown->getTextOptions();
 		options.push_back("Option 0");
 		options.push_back("Option 1");
 		options.push_back("Option 2");
 
-		button->bounds() = rect2i(2, 2, 128 - 4, 32 - 4);
-		textfield->bounds() = rect2i(2, 32 + 2, 512 - 4, 32 - 4);
-		textfield2->bounds() = rect2i(2, 64 + 2, 512 - 4, 32 - 4);
-		checkbox->bounds() = rect2i(2, 64 + 32 + 2, 128 - 4, 32 - 4);
-		slider->bounds() = rect2i(2, 64 + 64 + 2, 128 - 4, 32 - 4);
-		label->bounds() = rect2i(130, 64 + 64 + 2, 128 - 4, 32 - 4);
-		dropdown->bounds() = rect2i(130 + 130, 2, 128 - 4, 32 - 4);
-
-		rootPanel->bounds() = rect2i(0,0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight());
+		rootPanel->localbounds() = rect2i(0,0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight());
 
 		rootPanel->addPanel(button);
-		rootPanel->addPanel(textfield);
+		rootPanel->addPanel(group);
 		rootPanel->addPanel(dropdown);
-		rootPanel->addPanel(textfield2);
 		rootPanel->addPanel(checkbox);
 		rootPanel->addPanel(slider);
 		rootPanel->addPanel(label);
+
+		group->addPanel(textfield);
+		group->addPanel(textfield2);
 	}
 
 	void Razura::destroy()

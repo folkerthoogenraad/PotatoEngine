@@ -6,6 +6,7 @@
 #include "PotatoUI.h"
 #include "logger/log.h"
 #include "Event.h"
+#include "LayoutParams.h"
 
 namespace ftec {
 	class Graphics2D;
@@ -20,7 +21,7 @@ namespace potato {
 	class Panel;
 	class Panel {
 	public:
-		Bounds m_Bounds;
+		Bounds m_LocalBounds;
 	protected:
 
 		ftec::color32 m_BackgroundColor = ftec::color32::white();
@@ -38,9 +39,11 @@ namespace potato {
 
 		bool m_Focus = false;
 
+		LayoutParams m_LayoutParams;
+
 		//Optional parent
 		//shared ptr from this? maybe?
-		Panel *m_Parent;
+		Panel *m_Parent = nullptr;
 		std::weak_ptr<PotatoUI> m_UI;
 
 		//List of children
@@ -49,20 +52,27 @@ namespace potato {
 	public:
 		Panel();
 
-		Bounds &bounds() { return m_Bounds; }
-		const Bounds &bounds() const { return m_Bounds; }
 
-		void opaque(bool op) { m_Opaque = op; }
-		bool opaque() const { return m_Opaque; }
+		void setOpaque(bool op) { m_Opaque = op; }
+		bool isOpaque() const { return m_Opaque; }
 
-		void focusable(bool f) { m_Focusable = f; }
-		bool focusable() const { return m_Focusable; }
+		void setFocusable(bool f) { m_Focusable = f; }
+		bool isFocusable() const { return m_Focusable; }
+
+		Bounds &localbounds() { return m_LocalBounds; }
+		const Bounds &localbounds() const { return m_LocalBounds; }
+
+		//TODO some chaching in this
+		Bounds getGlobalBounds();
 
 		ftec::color32 &background() { return m_BackgroundColor; }
 		const ftec::color32 &background() const { return m_BackgroundColor; }
 
 		ftec::color32 &foreground() { return m_ForegroundColor; }
 		const ftec::color32 &foreground() const { return m_ForegroundColor; }
+
+		LayoutParams &layoutparams() { return m_LayoutParams; }
+		const LayoutParams &layoutparams() const { return m_LayoutParams; }
 
 		//Called each time the panel needs to be drawn
 		virtual void draw(ftec::Graphics2D &graphics);
@@ -89,11 +99,13 @@ namespace potato {
 		bool inChildBounds(ftec::vec2i point);
 		bool inSelfBounds(ftec::vec2i point);
 
-		//For layout overriding
-		virtual void addPanel(std::shared_ptr<Panel> panel);
+		//Layout stuff
+		void requestUpdateLayout();
+		virtual void updateLayout();
 
-		//TODO make these weak_ptr
-		virtual void setParent(Panel *parent) { this->m_Parent = parent; }
+		void addPanel(std::shared_ptr<Panel> panel);
+		
+		void setParent(Panel *parent);
 		Panel *getParent() { return m_Parent; }
 
 		void setUI(std::weak_ptr<PotatoUI> ui) {this->m_UI = ui; }

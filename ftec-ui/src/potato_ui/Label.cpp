@@ -15,8 +15,9 @@ namespace potato {
 		graphics.setColor(PotatoColor::primaryText);
 		graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
-		graphics.drawString(m_Text, m_Bounds.centerLeft());
+		graphics.drawString(m_Text, getGlobalBounds().centerLeft());
 	}
+
 	Size Label::getPreferredSize()
 	{
 		return Size(128,32);

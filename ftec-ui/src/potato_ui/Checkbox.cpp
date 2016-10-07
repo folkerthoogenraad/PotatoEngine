@@ -14,24 +14,26 @@ namespace potato {
 	{
 		Panel::drawSelf(graphics);
 
+		Bounds bounds = getGlobalBounds();
+
 		//TODO center all these things
-		ftec::vec2i center = m_Bounds.center();
+		ftec::vec2i center = bounds.center();
 
 		graphics.setColor(PotatoColor::primary);
-		graphics.drawRectangle(ftec::rect2f(m_Bounds.left(), center.y - 8, 16,16), true);
+		graphics.drawRectangle(ftec::rect2f(bounds.left(), center.y - 8, 16,16), true);
 		if (m_Checked) {
 			graphics.setColor(PotatoColor::accent);
-			graphics.drawRectangle(ftec::rect2f(m_Bounds.left() + 4, center.y - 4, 8, 8), true);
+			graphics.drawRectangle(ftec::rect2f(bounds.left() + 4, center.y - 4, 8, 8), true);
 		}
 
 		graphics.setColor(PotatoColor::primaryText);
 		graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
-		graphics.drawString(m_Text, ftec::vec2f(m_Bounds.left() + 18, center.y));
+		graphics.drawString(m_Text, ftec::vec2f(bounds.left() + 18, center.y));
 
 		if (m_Focus) {
 			graphics.setColor(PotatoColor::darkPrimary);
-			graphics.drawRectangle(m_Bounds, false);
+			graphics.drawRectangle(bounds, false);
 		}
 	}
 

@@ -21,16 +21,17 @@ namespace potato {
 
 	void TextField::draw(ftec::Graphics2D & graphics)
 	{
-		graphics.setClip(m_Bounds);
+		Bounds bounds = getGlobalBounds();
+		graphics.setClip(bounds);
 
 		graphics.setFont(m_Font);
 		graphics.setColor(PotatoColor::lightPrimary);
 
-		graphics.drawRectangle(m_Bounds, true);
+		graphics.drawRectangle(bounds, true);
 
 		if (m_Focus) {
 			graphics.setColor(PotatoColor::primary);
-			graphics.drawRectangle(m_Bounds, false);
+			graphics.drawRectangle(bounds, false);
 		}
 
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
@@ -38,11 +39,11 @@ namespace potato {
 
 		if (m_EditText.length() == 0) {
 			graphics.setColor(PotatoColor::secondaryText);
-			graphics.drawString(m_Hint, ftec::vec2f(m_Bounds.x(), m_Bounds.center().y));
+			graphics.drawString(m_Hint, ftec::vec2f(bounds.x(), bounds.center().y));
 		}
 		else {
 			graphics.setColor(PotatoColor::primaryText);
-			graphics.drawString(m_EditText.m_Text, ftec::vec2f(m_Bounds.x(), m_Bounds.center().y));
+			graphics.drawString(m_EditText.m_Text, ftec::vec2f(bounds.x(), bounds.center().y));
 		}
 
 		//A bit of alpha here
@@ -53,11 +54,11 @@ namespace potato {
 
 		auto start = m_Font->measure(m_EditText.m_Text.substr(0, m_EditText.selectionStart())).x - 1;
 		auto end = m_Font->measure(m_EditText.m_Text.substr(0, m_EditText.selectionEnd())).x + 1;
-		auto center = m_Bounds.center();
+		auto center = bounds.center();
 
 		graphics.drawRectangle(
 			ftec::rect2f(
-				m_Bounds.x() + start,
+				bounds.x() + start,
 				center.y - m_Font->getSize()/2,
 				end - start,
 				m_Font->getSize()

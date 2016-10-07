@@ -12,19 +12,20 @@ namespace potato {
 
 	void SceneView::drawSelf(ftec::Graphics2D & graphics)
 	{
+		Bounds bounds = getGlobalBounds();
 		//Draw the scene!
 		if (ftec::Engine::getScene()) {
-			graphics.begin3D(m_Bounds);
+			graphics.begin3D(bounds);
 			ftec::Engine::getScene()->render();
 			graphics.end3D();
 		}
 		else {
 			graphics.setColor(ftec::color32::blue());
-			graphics.drawRectangle(m_Bounds, true);
+			graphics.drawRectangle(bounds, true);
 			graphics.setColor(ftec::color32::white());
 			graphics.setVerticalAlign(ftec::FontAlign::TOP);
 			graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
-			graphics.drawString("Scene missing.", m_Bounds.position + ftec::vec2i(2,2));
+			graphics.drawString("Scene missing.", bounds.position + ftec::vec2i(2,2));
 		}
 	}
 

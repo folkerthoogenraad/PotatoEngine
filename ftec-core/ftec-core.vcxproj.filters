@@ -54,9 +54,6 @@
     <ClCompile Include="src\math\Curve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\potato_ui\Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\serialization\Serialization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

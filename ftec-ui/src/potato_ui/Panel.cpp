@@ -11,6 +11,20 @@ namespace potato {
 	{
 		m_Font = ftec::Engine::getResourceManager().load<ftec::Font>("fonts/default14.fnt");
 	}
+
+	Bounds Panel::getGlobalBounds()
+	{
+		ftec::vec2f p = m_LocalBounds.position;
+
+		if (m_Parent) {
+			p += m_Parent->m_LocalBounds.position;
+		}
+		return Bounds(
+			p.x,p.y,
+			m_LocalBounds.width(), m_LocalBounds.height()
+		);
+	}
+
 	void Panel::draw(ftec::Graphics2D & graphics)
 	{
 		drawSelf(graphics);
@@ -24,23 +38,29 @@ namespace potato {
 	{
 		if (m_Opaque) {
 			graphics.setColor(m_BackgroundColor);
-			graphics.drawRectangle(m_Bounds, true);
+			graphics.drawRectangle(getGlobalBounds(), true);
 		}
 	}
 
 
 	void Panel::process(Event &event)
 	{
-		processSelf(event);
-
-		if (event.isConsumed())
-			return;
-
 		for (auto child : m_Children) {
 			if (!event.isConsumed()) {
 				child->process(event);
 			}
+			else {
+				//No point in looping any further
+				break;
+			}
 		}
+
+		if (event.isConsumed())
+			return;
+
+		//If the event is still not consumed by one of our children,
+		//we might be able to use it ourselfs!
+		processSelf(event);
 
 	}
 
@@ -146,7 +166,7 @@ namespace potato {
 
 		//See if we can find a next target to focus
 		for (int i = currentFocus + 1; i < m_Children.size(); i++) {
-			if (m_Children[i]->focusable()) {
+			if (m_Children[i]->isFocusable()) {
 				//if we can, we return
 				m_Children[i]->m_Focus = true;
 				return;
@@ -164,7 +184,7 @@ namespace potato {
 
 	bool Panel::inBounds(ftec::vec2i point)
 	{
-		return m_Bounds.contains(point);
+		return getGlobalBounds().contains(point);
 	}
 	bool Panel::inChildBounds(ftec::vec2i point)
 	{
@@ -185,11 +205,34 @@ namespace potato {
 		return inBounds(point) && !inChildBounds(point);
 	}
 
+	void Panel::requestUpdateLayout()
+	{
+		if (m_Parent)
+			m_Parent->requestUpdateLayout();
+		else
+			updateLayout();
+	}
+
+	void Panel::updateLayout()
+	{
+		for (auto child : m_Children) {
+			child->updateLayout();
+		}
+	}
+
 	void Panel::addPanel(std::shared_ptr<Panel> panel)
 	{
 		this->m_Children.push_back(panel);
-		panel->setParent(this);
 		panel->setUI(m_UI);
+		panel->setParent(this);
+
+		requestUpdateLayout();
+	}
+
+	void Panel::setParent(Panel * parent)
+	{
+		this->m_Parent = parent;
+		requestUpdateLayout();
 	}
 
 	

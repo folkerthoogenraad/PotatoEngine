@@ -14,6 +14,8 @@ namespace potato {
 	{
 		Panel::drawSelf(graphics);
 
+		Bounds bounds = getGlobalBounds();
+
 		graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
 		graphics.setVerticalAlign(ftec::FontAlign::TOP);
 		graphics.setColor(PotatoColor::primaryText);
@@ -21,7 +23,7 @@ namespace potato {
 		float offset = 0;
 
 		for (auto &s : m_TextOptions) {
-			graphics.drawString(s, ftec::vec2f(m_Bounds.left(), m_Bounds.top() + offset));
+			graphics.drawString(s, ftec::vec2f(bounds.left(), bounds.top() + offset));
 			offset += 16.f;
 		}
 	}
@@ -37,10 +39,11 @@ namespace potato {
 			}
 			else {
 				if (auto ui = m_UI.lock()) {
-					//This calles our destructor, which is nice :')
+					//This calles our destructor, which is nice :') /s
+					//This can break lots of things if used incorrectly.
+					//Luckally we proccess our events as last (children first)
+					//If children are processed first we must find a workaroudn for this.
 					ui->setContextMenu(nullptr);
-					//Now we must consume the event, else the panel will call all the children and that will break the living shit out of everything because the destructor has already been called.
-					event.consume();
 				}
 			}
 		}

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "vec2.h"
+#include <iostream>
+
 namespace ftec {
 	
 	template <typename T>
@@ -39,6 +41,12 @@ namespace ftec {
 		vec2<T> centerRight() const { return vec2<T>(position.x + size.x, position.y + size.y / 2); }
 		
 		bool contains(vec2<T> v) { return !(v.x < left() || v.x > right() || v.y < top() || v.y > bottom()); };
+
+
+		friend std::ostream& operator<<(std::ostream &out, const rect2<T> &r)
+		{
+			return out << "(" << r.x() << ", " << r.y() << ", " << r.width() << ", " << r.height() << ")";
+		}
 	};
 
 	typedef rect2<float> rect2f;

@@ -14,8 +14,8 @@ namespace potato {
 	public:
 		LinearLayout(LayoutDirection dir);
 
-		void addPanel(std::shared_ptr<Panel> panel) override;
-		void setParent(Panel *parent) override;
+		void updateLayout() override;
+
 		Size getPreferredSize() override;
 	};
 }

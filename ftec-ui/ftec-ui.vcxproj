@@ -41,6 +41,7 @@
     <ClInclude Include="src\potato_ui\EditText.h" />
     <ClInclude Include="src\potato_ui\Event.h" />
     <ClInclude Include="src\potato_ui\Label.h" />
+    <ClInclude Include="src\potato_ui\LayoutParams.h" />
     <ClInclude Include="src\potato_ui\LinearLayout.h" />
     <ClInclude Include="src\potato_ui\List.h" />
     <ClInclude Include="src\potato_ui\Panel.h" />
