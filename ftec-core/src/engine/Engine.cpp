@@ -99,6 +99,8 @@ namespace ftec {
 		glAlphaFunc(GL_GREATER, 0.1f);
 		glDepthFunc(GL_LEQUAL);
 
+		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		

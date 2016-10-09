@@ -42,6 +42,12 @@ namespace ftec {
 	}
 
 	template<typename T>
+	inline bool inrange(const T &min, const T &max, const T &value)
+	{
+		return value > min && value < max;
+	}
+
+	template<typename T>
 	inline const T & max(const T &a, const T &b)
 	{
 		if (a > b)

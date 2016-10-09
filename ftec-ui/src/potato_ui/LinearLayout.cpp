@@ -6,7 +6,7 @@ namespace potato {
 	LinearLayout::LinearLayout(LayoutDirection dir)
 		: m_Direction(dir)
 	{
-
+		m_Insets = { 0,0,0,0 };
 	}
 
 	void LinearLayout::updateLayout()
@@ -128,6 +128,15 @@ namespace potato {
 			//And ofcourse, alas, the child can update its layout as well
 			child->updateLayout();
 		}
+	}
+
+	void LinearLayout::addPanel(std::shared_ptr<Panel> panel)
+	{
+		this->m_Children.push_back(panel);
+		panel->setUI(m_UI);
+		panel->setParent(this);
+
+		requestUpdateLayout();
 	}
 
 	Size LinearLayout::getPreferredSize()

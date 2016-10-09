@@ -12,6 +12,9 @@ namespace ftec {
 	std::set<int> Input::pressedMouse = std::set<int>();
 	std::set<int> Input::releasedMouse = std::set<int>();
 
+	int Input::cursorMode = GLFW_CURSOR_NORMAL;
+	bool Input::disabled = false;
+
 	std::string Input::keystring = "";
 	vec2f Input::mousePosition = vec2f();
 	vec2f Input::mouseDelta = vec2f();
@@ -24,16 +27,17 @@ namespace ftec {
 
 	vec2f Input::getMouseDelta()
 	{
-		return mouseDelta;
+		return disabled ? vec2f() : mouseDelta;
 	}
 
 	vec2f Input::getScroll()
 	{
-		return scrollDelta;
+		return disabled ? vec2f() : scrollDelta;
 	}
 
 	void Input::setCursorMode(int mode)
 	{
+		cursorMode = mode;
 		Engine::getWindow().setCursorMode(mode);
 	}
 
@@ -71,7 +75,13 @@ namespace ftec {
 	{
 		vec2f newPosition(x, y);
 		mouseDelta += newPosition - mousePosition;
-		mousePosition = newPosition;
+		if (cursorMode != CURSOR_GRABBED) {
+			mousePosition = newPosition;
+		}
+		else {
+			Engine::getWindow().setMousePosition(mousePosition);
+		}
+
 	}
 
 	void Input::handleScroll(float x, float y)
@@ -98,37 +108,37 @@ namespace ftec {
 
 	bool Input::isKeyDown(int keycode)
 	{
-		return downKeys.find(keycode) != downKeys.end();
+		return !disabled && downKeys.find(keycode) != downKeys.end();
 	}
 
 	bool Input::isKeyPressed(int keycode)
 	{
-		return pressedKeys.find(keycode) != pressedKeys.end();
+		return !disabled && pressedKeys.find(keycode) != pressedKeys.end();
 	}
 
 	bool Input::isKeyReleased(int keycode)
 	{
-		return releasedKeys.find(keycode) != releasedKeys.end();
+		return !disabled && releasedKeys.find(keycode) != releasedKeys.end();
 	}
 
 	bool Input::isKeyTyped(int keycode)
 	{
-		return typedKeys.find(keycode) != typedKeys.end();
+		return !disabled && typedKeys.find(keycode) != typedKeys.end();
 	}
 
 	bool Input::isMouseButtonPressed(int keycode)
 	{
-		return pressedMouse.find(keycode) != pressedMouse.end();
+		return !disabled && pressedMouse.find(keycode) != pressedMouse.end();
 	}
 
 	bool Input::isMouseButtonDown(int keycode)
 	{
-		return downMouse.find(keycode) != downMouse.end();
+		return !disabled && downMouse.find(keycode) != downMouse.end();
 	}
 
 	bool Input::isMouseButtonReleased(int keycode)
 	{
-		return releasedMouse.find(keycode) != releasedMouse.end();
+		return !disabled && releasedMouse.find(keycode) != releasedMouse.end();
 	}
 
 	float Input::getMouseX()
@@ -141,11 +151,11 @@ namespace ftec {
 	}
 	float Input::getMouseDX()
 	{
-		return mouseDelta.x;
+		return disabled ? 0 : mouseDelta.x;
 	}
 	float Input::getMouseDY()
 	{
-		return mouseDelta.y;
+		return disabled ? 0 : mouseDelta.y;
 	}
 
 }

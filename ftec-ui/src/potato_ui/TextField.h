@@ -12,7 +12,7 @@ namespace potato {
 		TextField();
 
 		void processSelf(Event &event) override;
-		void draw(ftec::Graphics2D &graphics) override;
+		void drawSelf(ftec::Graphics2D &graphics) override;
 
 		EditText &text() { return m_EditText; }
 		const EditText &text() const { return m_EditText; }

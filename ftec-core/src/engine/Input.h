@@ -24,6 +24,9 @@ namespace ftec {
 		static vec2f mousePosition;
 		static vec2f mouseDelta;
 		static vec2f scrollDelta;
+
+		static int cursorMode;
+		static bool disabled;
 	public:
 		static bool isKeyDown(int keycode);
 		static bool isKeyPressed(int keycode);
@@ -45,6 +48,9 @@ namespace ftec {
 
 		static void setCursorMode(int mode);
 		static void reset();
+
+		static inline void setEnabled(bool e) { disabled = !e; };
+		static inline bool isEnabled() { return disabled; };
 
 		static const std::string &getKeyString() { return keystring; }
 

@@ -21,10 +21,10 @@ namespace potato {
 	struct Insets{
 		int top, right, bottom, left;
 
-		Insets();
+		Insets() = default;
 		Insets(int a, int b, int c, int d) : top(a), right(b), bottom(c), left(d){}
 
-		static Insets defaultInsets() { return Insets(4,4,4,4); }
+		static Insets defaultInsets() { return Insets(2,2,2,2); }
 	};
 
 	class Panel;
@@ -74,6 +74,7 @@ namespace potato {
 
 		//TODO some chaching in this
 		Bounds getGlobalBounds();
+		Bounds getGlobalOutline();
 
 		ftec::color32 &background() { return m_BackgroundColor; }
 		const ftec::color32 &background() const { return m_BackgroundColor; }
@@ -90,7 +91,7 @@ namespace potato {
 
 		//Called each update (for animation, for everything)
 		virtual void update();
-		void process(Event &event);
+		virtual void process(Event &event);
 		virtual void processSelf(Event &event);
 
 		virtual void onClick();
@@ -112,8 +113,6 @@ namespace potato {
 		//Layout stuff
 		void requestUpdateLayout();
 		virtual void updateLayout();
-
-		void addPanel(std::shared_ptr<Panel> panel);
 		
 		void setParent(Panel *parent);
 		Panel *getParent() { return m_Parent; }

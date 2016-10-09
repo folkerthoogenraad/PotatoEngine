@@ -5,7 +5,7 @@
 #include "PotatoUI.h"
 
 namespace potato {
-	Button::Button()
+	Button::Button(const std::string &text) : m_Text(text)
 	{
 		m_Focusable = true;
 	}

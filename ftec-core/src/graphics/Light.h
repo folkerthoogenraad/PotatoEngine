@@ -11,7 +11,9 @@ namespace ftec {
 	public:
 		vec3f m_Direction = vec3f(-1.0, -1.0, -1.0).normalize();
 		color32 m_Color = color32::white();
-		float m_Intensity = 1.f;
+
+		//Currently not working correctly with PBR ( ~ish :') )
+		float m_Intensity = 1.f; 
 	private:
 		bool m_ShadowsEnabled = false;
 		std::shared_ptr<RenderBuffer> m_ShadowMap;

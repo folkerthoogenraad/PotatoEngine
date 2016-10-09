@@ -103,7 +103,7 @@ namespace ftec {
 			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test");
 
 			//Drawing skybox
-			/*
+			
 			GraphicsState::m_Material = Material(nullptr, Engine::getResourceManager().load<Shader>("shaders/skybox"));
 			auto mesh = Engine::getResourceManager().load<Mesh>("mesh/skybox.obj");
 
@@ -112,7 +112,7 @@ namespace ftec {
 
 			Renderer::drawDirect(*mesh);
 
-			glClear(GL_DEPTH_BUFFER_BIT);*/
+			glClear(GL_DEPTH_BUFFER_BIT);
 
 			GraphicsState::m_LightEnabled = true;
 

@@ -4,9 +4,9 @@
 #include "PotatoUI.h"
 
 namespace potato {
-	Label::Label()
-	{
 
+	Label::Label(const std::string text) : m_Text(text)
+	{
 	}
 
 	void Label::drawSelf(ftec::Graphics2D & graphics)

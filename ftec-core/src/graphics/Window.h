@@ -31,7 +31,8 @@ namespace ftec {
 
 		inline float getWidth() { return (float)m_Width; }
 		inline float getHeight() { return (float)m_Height; }
-		
+
+		void setMousePosition(const vec2f &newPosition);
 		inline vec2f getMousePosition() const { return m_MousePosition; }
 		inline bool isCloseRequested() const { return m_CloseRequested; }
 		inline bool isResized() const { return m_Resized; }

@@ -14,15 +14,24 @@ namespace potato {
 
 	Bounds Panel::getGlobalBounds()
 	{
+		Bounds b = getGlobalOutline();
+		return Bounds(
+			b.x() + m_Insets.left,b.y() + m_Insets.top,
+			b.width() - m_Insets.right - m_Insets.left, b.height() - m_Insets.bottom - m_Insets.top
+		);
+	}
+
+	Bounds Panel::getGlobalOutline()
+	{
 		ftec::vec2f p = m_LocalBounds.position;
 
 		if (m_Parent) {
-			p += m_Parent->m_LocalBounds.position;
+			p += m_Parent->getGlobalBounds().position;
 		}
 
 		return Bounds(
-			p.x + m_Insets.left,p.y + m_Insets.top,
-			m_LocalBounds.width() - m_Insets.right, m_LocalBounds.height() - m_Insets.bottom
+			p.x, p.y,
+			m_LocalBounds.width(), m_LocalBounds.height()
 		);
 	}
 
@@ -221,20 +230,10 @@ namespace potato {
 		}
 	}
 
-	void Panel::addPanel(std::shared_ptr<Panel> panel)
-	{
-		this->m_Children.push_back(panel);
-		panel->setUI(m_UI);
-		panel->setParent(this);
-
-		requestUpdateLayout();
-	}
-
 	void Panel::setParent(Panel * parent)
 	{
 		this->m_Parent = parent;
 		requestUpdateLayout();
 	}
-
 	
 }

@@ -31,6 +31,7 @@
     <ClCompile Include="src\potato_ui\PotatoUI.cpp" />
     <ClCompile Include="src\potato_ui\SceneView.cpp" />
     <ClCompile Include="src\potato_ui\Slider.cpp" />
+    <ClCompile Include="src\potato_ui\TabbedPanel.cpp" />
     <ClCompile Include="src\potato_ui\TextField.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +49,7 @@
     <ClInclude Include="src\potato_ui\PotatoUI.h" />
     <ClInclude Include="src\potato_ui\SceneView.h" />
     <ClInclude Include="src\potato_ui\Slider.h" />
+    <ClInclude Include="src\potato_ui\TabbedPanel.h" />
     <ClInclude Include="src\potato_ui\TextField.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

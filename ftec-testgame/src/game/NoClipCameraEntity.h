@@ -3,6 +3,8 @@
 
 namespace ftec {
 	class NoClipCameraEntity : public Entity {
+	private:
+		bool m_MouseGrabbed = false;
 	public:
 		NoClipCameraEntity();
 		~NoClipCameraEntity();

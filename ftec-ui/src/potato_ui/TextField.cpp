@@ -19,10 +19,10 @@ namespace potato {
 		}
 	}
 
-	void TextField::draw(ftec::Graphics2D & graphics)
+	void TextField::drawSelf(ftec::Graphics2D & graphics)
 	{
+		graphics.setClip(getGlobalOutline());
 		Bounds bounds = getGlobalBounds();
-		graphics.setClip(bounds);
 
 		graphics.setFont(m_Font);
 		graphics.setColor(PotatoColor::lightPrimary);

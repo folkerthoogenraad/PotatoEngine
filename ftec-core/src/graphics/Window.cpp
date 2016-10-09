@@ -47,6 +47,12 @@ namespace ftec {
 		}
 	}
 
+	void Window::setMousePosition(const vec2f & newPosition)
+	{
+		m_MousePosition = newPosition;
+		glfwSetCursorPos(m_Window, newPosition.x, newPosition.y);
+	}
+
 
 	void Window::init()
 	{
