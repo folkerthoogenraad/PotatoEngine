@@ -54,6 +54,24 @@ namespace ftec {
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGB, GL_FLOAT, data);
 			texture->unbind();
 		}
+
+		else if (name == DEFAULT_TEXTURE_BLACK) {
+			float data[] = {
+				0,0,0
+			};
+			texture->bind();
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGB, GL_FLOAT, data);
+			texture->unbind();
+		}
+
+		else if (name == DEFAULT_TEXTURE_NORMAL) {
+			float data[] = {
+				0.5f,0.5f,1.0f
+			};
+			texture->bind();
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGB, GL_FLOAT, data);
+			texture->unbind();
+		}
 		else {
 			//Load the image using FreeImage
 

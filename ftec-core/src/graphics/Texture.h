@@ -4,6 +4,8 @@
 #include "GL.h"
 #define DEFAULT_TEXTURE_CHECKERBOARD "CHECKERBOARD"
 #define DEFAULT_TEXTURE_WHITE "WHITE"
+#define DEFAULT_TEXTURE_NORMAL "NORMAL"
+#define DEFAULT_TEXTURE_BLACK "BLACK"
 
 namespace ftec {
 	class Texture : public ManagableResource {

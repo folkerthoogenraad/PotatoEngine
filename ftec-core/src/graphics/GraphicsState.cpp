@@ -56,6 +56,18 @@ namespace ftec {
 				int l = shader.getUniformLocation("u_Textures[1]");
 				shader.setUniform(l, 1);
 			}
+			if (m_Material.m_MetallicMap) {
+				glActiveTexture(GL_TEXTURE2);
+				m_Material.m_MetallicMap->bind();
+				int l = shader.getUniformLocation("u_Textures[2]");
+				shader.setUniform(l, 2);
+			}
+			if (m_Material.m_RoughnessMap) {
+				glActiveTexture(GL_TEXTURE3);
+				m_Material.m_RoughnessMap->bind();
+				int l = shader.getUniformLocation("u_Textures[3]");
+				shader.setUniform(l, 3);
+			}
 		}
 
 		int materialAlbedoLocation = shader.getUniformLocation("u_Material.albedo");
