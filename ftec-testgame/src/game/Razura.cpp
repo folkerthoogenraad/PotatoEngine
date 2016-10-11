@@ -98,7 +98,7 @@ namespace ftec {
 
 			scene->m_Light.m_Direction = vec3f(1,-0.4f,-1).normalize();
 
-			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/monkey.obj");
+			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
 
 			for (int x = 0; x < 5; x++) {
 				for (int y = 0; y < 5; y++) {
@@ -106,8 +106,8 @@ namespace ftec {
 						Engine::getResourceManager().load<Texture>("textures/metal/metal_albedo.tif"),
 						Engine::getResourceManager().load<Shader>("shaders/default")
 					};
-					material.m_Metallicness = 1.0f;
-					material.m_Roughness = 1.0f;
+					material.m_Metallicness = x / 5.0f;
+					material.m_Roughness = y / 5.0f;
 					
 					material.m_NormalMap = Engine::getResourceManager().load<Texture>("textures/metal/metal_normal.tif");
 					material.m_RoughnessMap = Engine::getResourceManager().load<Texture>("textures/metal/metal_roughness.tif");
