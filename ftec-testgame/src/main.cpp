@@ -11,18 +11,24 @@ int main(void)
 
 	XMLDocument doc;
 
-	XMLNode body = node("body", {
+	XMLNode body = node("body", {}, {
 		text("Dit "),
-		node("b",
+		node("b", {},
 		{
 			text("is ")
 		}),
-		node("i",
+		node("i",{},
 		{
 			text("een "),
 			node("br")
 		}),
-		text("test!")
+		text("test!"),
+		node("canvas", {
+			attribute("width", "400"),
+			attribute("height", "300")
+		}, {
+			text("Value!")
+		})
 	});
 
 	doc.m_Root.addChild(body);

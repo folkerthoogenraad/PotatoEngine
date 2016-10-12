@@ -108,12 +108,18 @@ namespace ftec {
 			return node;
 		}
 
-		XMLNode node(const std::string tag, std::vector<XMLNode> nodes)
+		XMLNode node(const std::string &tag, const std::map<std::string, std::string> &attributes, const std::vector<XMLNode> &nodes)
 		{
 			XMLNode node(XMLNode::Type::NODE);
 			node.m_Tag = tag;
 			node.m_Children = nodes;
+			node.m_Attributes = attributes;
 			return node;
+		}
+
+		std::pair<std::string, std::string> attribute(const std::string & attribute, const std::string & value)
+		{
+			return std::make_pair(attribute, value);
 		}
 
 	}
