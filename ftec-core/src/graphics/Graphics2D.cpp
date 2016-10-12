@@ -138,8 +138,8 @@ namespace ftec {
 				currentPosition.y += m_Font->getSize();
 				continue;
 			}
-			if (m_Font->hasCharacter(c)) {
-				auto fch = m_Font->getCharacter(c);
+			FontCharacter fch;
+			if (m_Font->getCharacter(c, fch)) {
 				drawSprite(*fch.sprite, currentPosition);
 				currentPosition.x += fch.xadvance;
 			}

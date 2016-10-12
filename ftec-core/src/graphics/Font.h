@@ -28,7 +28,7 @@ namespace ftec {
 		float m_Size;
 	public:
 		bool hasCharacter(char input) const;
-		const FontCharacter &getCharacter(char input) const;
+		bool getCharacter(char input, FontCharacter &out) const; //TODO must be changed when there is a std::optional
 		const std::string &getName() const { return m_Name; };
 		float getSize() const { return m_Size; }
 

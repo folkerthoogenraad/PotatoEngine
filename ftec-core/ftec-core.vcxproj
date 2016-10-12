@@ -156,6 +156,7 @@
     <ClCompile Include="src\graphics\VBORenderable.cpp" />
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\io\ioutils.cpp" />
+    <ClCompile Include="src\io\XMLDocument.cpp" />
     <ClCompile Include="src\math\Curve.cpp" />
     <ClCompile Include="src\serialization\Serialization.cpp" />
     <ClCompile Include="src\math\mat4.cpp" />
@@ -193,6 +194,8 @@
     <ClInclude Include="src\graphics\Window.h" />
     <ClInclude Include="src\io\defer.h" />
     <ClInclude Include="src\io\ioutils.h" />
+    <ClInclude Include="src\io\XMLDocument.h" />
+    <ClInclude Include="src\io\XMLReader.h" />
     <ClInclude Include="src\logger\log.h" />
     <ClInclude Include="src\math\Curve.h" />
     <ClInclude Include="src\math\mat4.h" />

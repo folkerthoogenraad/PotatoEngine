@@ -58,7 +58,7 @@ namespace ftec {
 
 			auto sceneView = std::make_shared<potato::SceneView>();
 
-			sendButton->text() = "Send";
+			sendButton->text() = "Button";
 
 
 			groupInner->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
@@ -82,8 +82,8 @@ namespace ftec {
 
 			auto tabbedPanel = std::make_shared<potato::TabbedPanel>();
 
-			tabbedPanel->addTab("Chat", groupInner);
-			tabbedPanel->addTab("View", sceneView);
+			tabbedPanel->addTab("View1", groupInner);
+			tabbedPanel->addTab("View2", sceneView);
 
 			tabbedPanel->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
 			tabbedPanel->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;

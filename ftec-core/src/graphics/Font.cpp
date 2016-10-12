@@ -14,9 +14,15 @@ namespace ftec {
 		return m_Characters.find(input) != m_Characters.end();
 	}
 
-	const FontCharacter & Font::getCharacter(char input) const
+	bool Font::getCharacter(char input, FontCharacter &out) const
 	{
-		return m_Characters.find(input)->second;
+		auto i = m_Characters.find(input);
+		
+		if (i == m_Characters.end())
+			return false;
+
+		out = i->second;
+		return true;
 	}
 
 	vec2f Font::measure(const std::string &text)
@@ -32,10 +38,9 @@ namespace ftec {
 				continue;
 			}
 
-			if (hasCharacter(c)) {
-				auto ch = getCharacter(c);
-
-				currentX += ch.xadvance;
+			FontCharacter fc;
+			if (getCharacter(c, fc)) {
+				currentX += fc.xadvance;
 				rect.x = std::fmax(rect.x, currentX);
 			}
 		}
