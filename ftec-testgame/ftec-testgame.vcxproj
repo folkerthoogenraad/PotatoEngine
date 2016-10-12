@@ -141,6 +141,9 @@
     <ClInclude Include="src\game\NoClipCameraEntity.h" />
     <ClInclude Include="src\game\Razura.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="text.xml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -157,6 +157,7 @@
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\io\ioutils.cpp" />
     <ClCompile Include="src\io\XMLDocument.cpp" />
+    <ClCompile Include="src\io\XMLReader.cpp" />
     <ClCompile Include="src\math\Curve.cpp" />
     <ClCompile Include="src\serialization\Serialization.cpp" />
     <ClCompile Include="src\math\mat4.cpp" />

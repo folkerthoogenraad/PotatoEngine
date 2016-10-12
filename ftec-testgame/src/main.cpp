@@ -3,39 +3,21 @@
 #include "game/Razura.h"
 
 #include "io/XMLDocument.h"
+#include "io/XMLReader.h"
 
 int main(void)
 {
 	using namespace ftec;
 	using namespace xml;
 
-	XMLDocument doc;
+	XMLLexer lexer("text.xml");
 
-	XMLNode body = node("body", {}, {
-		text("Dit "),
-		node("b", {},
-		{
-			text("is ")
-		}),
-		node("i",{},
-		{
-			text("een "),
-			node("br")
-		}),
-		text("test!"),
-		node("canvas", {
-			attribute("width", "400"),
-			attribute("height", "300")
-		}, {
-			text("Value!")
-		})
-	});
+	XMLToken token;
 
-	doc.m_Root.addChild(body);
+	while (lexer.next(token)) {
+		LOG(token.m_Type << " " << token.m_Text);
+	}
 
-	doc.m_Root.setTag("HTML");
-
-	LOG(doc);
 	WAIT();
 	if (true)
 		return 0;
