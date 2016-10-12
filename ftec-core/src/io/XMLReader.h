@@ -1,6 +1,8 @@
 #pragma once
 
 #include <fstream>
+#include <iostream>
+
 #include "XMLDocument.h"
 
 namespace ftec {
@@ -8,26 +10,28 @@ namespace ftec {
 		class XMLToken {
 		public:
 			enum Type {
-				TEXT, OPENING, CLOSING
+				TEXT, OPENING, CLOSING, SELFCLOSING
 			}; // TODO attributes, 
 			Type m_Type;
 			std::string m_Text;
+
+			friend std::ostream &operator<<(std::ostream &stream, XMLToken& token);
 		};
 		
 		class XMLLexer {
 			std::ifstream m_Stream;
+			XMLToken m_CurrentToken;
 			char m_Current;
 		public:
 			XMLLexer(const std::string &file);
 
-			bool next(XMLToken &token);
+			XMLToken &current() { return m_CurrentToken; }
+
+			bool next();
 			bool isEOF();
 		};
 
-		class XMLReader {
-			XMLLexer m_Lexer;
-		public:
-			XMLReader(const std::string &file) : m_Lexer(file) {};
-		};
+		bool read(const std::string &file, XMLDocument &out);
+		bool read(XMLLexer &reader, XMLNode &out);
 	}
 }

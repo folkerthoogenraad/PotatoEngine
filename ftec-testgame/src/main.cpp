@@ -10,13 +10,14 @@ int main(void)
 	using namespace ftec;
 	using namespace xml;
 
-	XMLLexer lexer("text.xml");
+	XMLDocument document;
 
-	XMLToken token;
+	if (!read("text.xml", document))
+		LOG("Failed to read document");
 
-	while (lexer.next(token)) {
-		LOG(token.m_Type << " " << token.m_Text);
-	}
+
+
+	LOG(document);
 
 	WAIT();
 	if (true)

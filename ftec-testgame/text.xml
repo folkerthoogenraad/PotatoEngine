@@ -1,4 +1,13 @@
 <root>
-  <child></child>
-  <child>test 2</child>
+  <child>
+    <name>Harry potter</name>
+  </child>
+
+  <child>
+    <name>Steyn jemoeder</name>
+  </child>
+
+  <child>
+    <name>Franks moeder</name>
+  </child>
 </root>
