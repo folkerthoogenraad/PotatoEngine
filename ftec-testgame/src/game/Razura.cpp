@@ -24,6 +24,8 @@
 #include "potato_ui/SceneView.h"
 #include "graphics/Renderer.h"
 
+#include "potato_ui/UILoader.h"
+
 namespace ftec {
 
 
@@ -44,51 +46,9 @@ namespace ftec {
 		{
 			ui = std::make_shared<potato::PotatoUI>();
 
-			auto rootPanel = std::make_shared<potato::LinearLayout>(potato::LinearLayout::VERTICAL);
-
-			ui->setRoot(rootPanel);
-
-
-			auto groupInner = std::make_shared<potato::LinearLayout>(potato::LinearLayout::VERTICAL);
-
-			auto historyTextField = std::make_shared<potato::TextField>();
-			auto fieldGroup = std::make_shared<potato::LinearLayout>(potato::LinearLayout::HORIZONTAL);
-			auto messageTextField = std::make_shared<potato::TextField>();
-			auto sendButton = std::make_shared<potato::Button>();
-
-			auto sceneView = std::make_shared<potato::SceneView>();
-
-			sendButton->text() = "Button";
-
-
-			groupInner->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-			groupInner->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
-
-			fieldGroup->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-
-			historyTextField->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-			historyTextField->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
-
-			messageTextField->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-
-			sceneView->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-			sceneView->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
-
-			fieldGroup->addPanel(messageTextField);
-			fieldGroup->addPanel(sendButton);
-			groupInner->addPanel(historyTextField);
-			groupInner->addPanel(fieldGroup);
-
-
-			auto tabbedPanel = std::make_shared<potato::TabbedPanel>();
-
-			tabbedPanel->addTab("View1", groupInner);
-			tabbedPanel->addTab("View2", sceneView);
-
-			tabbedPanel->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-			tabbedPanel->layoutparams().m_HeightScaling = potato::LayoutParams::MATCH_PARENT;
-
-			rootPanel->addPanel(tabbedPanel);
+			ui->setRoot(
+				potato::UILoader::load("text.xml")
+			);
 		}
 	
 		//3D stuff

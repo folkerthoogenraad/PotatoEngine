@@ -39,7 +39,8 @@ namespace ftec {
 
 			void addChild(const XMLNode &node);
 			void addText(const std::string &text);
-			const std::vector<XMLNode> &getChildren();
+			std::vector<XMLNode> &getChildren();
+			const std::vector<XMLNode> &getChildren() const;
 
 			friend std::ostream &operator<<(std::ostream &o, const XMLNode &node);
 

@@ -7,22 +7,6 @@
 
 int main(void)
 {
-	using namespace ftec;
-	using namespace xml;
-
-	XMLDocument document;
-
-	if (!read("text.xml", document))
-		LOG("Failed to read document");
-
-
-
-	LOG(document);
-
-	WAIT();
-	if (true)
-		return 0;
-
 	ftec::Engine::create<ftec::Razura>();
 	return 0;
 }

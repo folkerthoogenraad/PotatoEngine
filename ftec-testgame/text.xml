@@ -1,13 +1,56 @@
-<root>
-  <child>
-    <name>Harry potter</name>
-  </child>
+<LinearLayout
+  width="match_parent"
+  height="match_parent"
+  orientation="vertical">
 
-  <child>
-    <name>Steyn jemoeder</name>
-  </child>
+  <LinearLayout
+    width="match_parent"
+    height="wrap_content"
+    orientation="horizontal">
+    
+    <TextField 
+      width="match_parent"
+      height="wrap_content"
+      weight="2"
+      hint="Input Text"
+      />
+  
+    <Button
+      width="match_parent"
+      height="wrap_content"
+      weight="1"
+      text="Test!"/>
+    
+  </LinearLayout>
 
-  <child>
-    <name>Franks moeder</name>
-  </child>
-</root>
+  <SceneView
+    width="match_parent"
+    height="match_parent"
+    />
+  
+  <LinearLayout
+    width="match_parent"
+    height="wrap_content"
+    orientation="horizontal">
+
+    <Checkbox
+      width="wrap_content"
+      height="wrap_content"
+      checked="true"
+      text="Whynot"/>
+    <Label
+      width="wrap_content"
+      height="wrap_content"
+      text="Test!" />
+    <Slider
+      width="wrap_content"
+      height="wrap_content"
+      steps="3"/>
+    <Button
+      width="match_parent"
+      height="match_parent"
+      text="OI press meh!" />
+    
+  </LinearLayout>
+  
+</LinearLayout>

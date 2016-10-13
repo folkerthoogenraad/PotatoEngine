@@ -95,7 +95,13 @@ namespace ftec {
 			addChild(node);
 		}
 
-		const std::vector<XMLNode>& XMLNode::getChildren()
+		std::vector<XMLNode>& XMLNode::getChildren()
+		{
+			assert(m_Type == Type::NODE);
+			return m_Children;
+		}
+
+		const std::vector<XMLNode>& XMLNode::getChildren() const
 		{
 			assert(m_Type == Type::NODE);
 			return m_Children;

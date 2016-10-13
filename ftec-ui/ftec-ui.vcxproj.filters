@@ -57,6 +57,9 @@
     <ClCompile Include="src\potato_ui\TabbedPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\potato_ui\UILoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\potato_ui\Button.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\potato_ui\TabbedPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\potato_ui\UILoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
