@@ -35,5 +35,8 @@ namespace ftec {
 		vec2f measure(const std::string&);
 
 		static std::shared_ptr<Font> load(const std::string &name);
+
+	private:
+		
 	};
 }

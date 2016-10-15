@@ -7,6 +7,10 @@
 #include "logger/log.h"
 #include "engine/Engine.h"
 
+//Freetype stuff <3
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 namespace ftec {
 
 	bool Font::hasCharacter(char input) const
@@ -48,6 +52,70 @@ namespace ftec {
 		return rect;
 	}
 
+	//TODO make this cleaner
+	struct Library {
+		FT_Library ft;
+
+		Library()
+		{
+			if (FT_Init_FreeType(&ft)) {
+				LOG_ERROR("Could not initialize freetype library");
+			}
+		}
+		~Library()
+		{
+			FT_Done_FreeType(ft);
+		}
+	};
+
+	std::shared_ptr<Font> Font::load(const std::string & name)
+	{
+		static Library lib;
+
+		FT_Face face;
+
+		if (FT_New_Face(lib.ft, name.c_str(), 0, &face)) {
+			LOG("Couldn't not open font");
+			return std::make_shared<Font>();
+		}
+
+		LOG(face->num_glyphs);
+
+		FT_Set_Pixel_Sizes(
+			face,   /* handle to face object */
+			0,      /* pixel_width           */
+			16);   /* pixel_height          */
+
+
+		FT_GlyphSlot g = face->glyph;
+		unsigned int w = 0, h = 0;
+
+		//For all our chars
+		for (int i = 32; i < 128; i++) {
+			if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
+				LOG("Coudn't load char : " << (char) i);
+				continue;
+			}
+
+			w += g->bitmap.width;
+			h = ftec::max(h, g->bitmap.rows);
+		}
+
+		std::shared_ptr<Font> font = std::make_shared<Font>();
+		std::shared_ptr<Texture> texture = std::make_shared<Texture>();
+
+		texture->bind();
+
+		//TODO load the images onto the texture and set the chars 
+		//https://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_Text_Rendering_02
+
+
+		texture->unbind();
+
+		return font;
+	}
+
+#ifdef LEGACY
 	std::shared_ptr<Font> Font::load(const std::string & name)
 	{
 		using namespace std;
@@ -184,4 +252,5 @@ namespace ftec {
 
 		return font;
 	}
+#endif
 }

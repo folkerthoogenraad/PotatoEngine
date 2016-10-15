@@ -22,11 +22,6 @@
       text="Test!"/>
     
   </LinearLayout>
-
-  <SceneView
-    width="match_parent"
-    height="match_parent"
-    />
   
   <LinearLayout
     width="match_parent"

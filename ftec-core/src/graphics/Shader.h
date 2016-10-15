@@ -23,8 +23,9 @@
 #define SHADER_DEFAULT_NAME "DEFAULT_SHADER"
 
 namespace ftec {
+
 	class Shader : public ManagableResource {
-	private:
+	protected:
 		GLuint m_Program;
 	public:
 		Shader(const std::string &vertexSource, const std::string &fragmentShader);
@@ -44,5 +45,8 @@ namespace ftec {
 		void setUniform(int location, int i);
 
 		static std::shared_ptr<Shader> load(const std::string &name);
+	protected:
+		virtual void init();
+
 	};
 }

@@ -9,7 +9,7 @@
 namespace potato {
 	Panel::Panel()
 	{
-		m_Font = ftec::Engine::getResourceManager().load<ftec::Font>("fonts/default14.fnt");
+		m_Font = ftec::Engine::getResourceManager().load<ftec::Font>("fonts/Ubuntu.ttf");
 	}
 
 	Bounds Panel::getGlobalBounds()

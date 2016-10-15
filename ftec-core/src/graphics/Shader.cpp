@@ -74,6 +74,8 @@ namespace ftec {
 		};
 		checkLinkError(m_Program);
 
+		init();
+
 		glDetachShader(m_Program, vertexShader);
 		glDetachShader(m_Program, fragmentShader);
 		glDeleteShader(vertexShader);
@@ -141,5 +143,9 @@ namespace ftec {
 		auto fragmentSource = IOUtils::fileToString(name + "_fragment.glsl");
 
 		return std::make_shared<Shader>(vertexSource, fragmentSource);
+	}
+
+	void Shader::init()
+	{
 	}
 }

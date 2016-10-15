@@ -12,7 +12,8 @@ namespace ftec {
 	Graphics2D::Graphics2D()
 	{
 		m_WhiteTexture = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
-		m_Font = Engine::getResourceManager().load<Font>("fonts/default14.fnt");
+		//m_Font = Engine::getResourceManager().load<Font>("fonts/default14.fnt");
+		m_Font = Engine::getResourceManager().load<Font>("fonts/Ubuntu.ttf");
 
 		m_VAlign = FontAlign::TOP;
 		m_HAlign = FontAlign::LEFT;
