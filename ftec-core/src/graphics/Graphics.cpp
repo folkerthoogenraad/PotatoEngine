@@ -27,8 +27,8 @@ namespace ftec {
 		lights.clear();
 		
 	}
-
-	void Graphics::enqueueMesh(const Mesh *mesh, const Material *material, const mat4 &modelMatrix, Layer layer, InstanceList *list)
+	//TODO constness and stuff
+	void Graphics::enqueueMesh(const Mesh *mesh, std::shared_ptr<Material> material, const mat4 &modelMatrix, Layer layer, InstanceList *list)
 	{
 		meshes.push_back({
 			mesh, material, modelMatrix, layer, list
@@ -103,23 +103,18 @@ namespace ftec {
 			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test");
 
 			//Drawing skybox
-			
-			GraphicsState::m_Material = Material(nullptr, Engine::getResourceManager().load<Shader>("shaders/skybox"));
+			GraphicsState::m_Lights[0].enabled = false; //Idk man
+			GraphicsState::m_Material = std::make_shared<PBRMaterial>(nullptr, Engine::getResourceManager().load<Shader>("shaders/skybox"));
 			auto mesh = Engine::getResourceManager().load<Mesh>("mesh/skybox.obj");
 
-			GraphicsState::m_TextureEnabled = false;
-			GraphicsState::m_LightEnabled = false;
 
 			Renderer::drawDirect(*mesh);
 
 			glClear(GL_DEPTH_BUFFER_BIT);
 
-			GraphicsState::m_LightEnabled = true;
-
 			GraphicsState::m_Lights[0].enabled = true;
 			GraphicsState::m_Lights[0].light = *lights.front();// .m_Direction = vec3f(0.7f, -0.4f, -0.7f).normalize();
 
-			GraphicsState::m_TextureEnabled = true;
 
 			for (auto m : meshes) {
 				//TODO material sorting
@@ -129,7 +124,7 @@ namespace ftec {
 				if ((m.layer & c->m_LayerMask) != 0) {
 
 					GraphicsState::matrixModel = m.modelMatrix;
-					GraphicsState::m_Material = *m.material;
+					GraphicsState::m_Material = m.material;
 					/*
 					GraphicsState::m_Shader = m.material->m_Shader;
 

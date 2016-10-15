@@ -4,9 +4,22 @@
 #include "Texture.h"
 
 namespace ftec {
-	struct Material {
 
-		std::shared_ptr<Shader> m_Shader;
+	struct Material {
+	public:
+		virtual void prepare() = 0;
+	};
+	
+	struct Material2D : public Material {
+		
+		std::shared_ptr<Shader> m_Shader; //This should be automatic
+		std::shared_ptr<Texture> m_TextureMap;
+
+		void prepare();
+	};
+
+	struct PBRMaterial : public Material {
+		std::shared_ptr<Shader> m_Shader;//This should be automatic
 
 		std::shared_ptr<Texture> m_TextureMap;
 		std::shared_ptr<Texture> m_NormalMap;
@@ -23,17 +36,9 @@ namespace ftec {
 		float m_Roughness = 1.0f;
 		float m_Metallicness = 0.0f;
 		
-		Material() : m_TextureMap(0), m_Shader(0){};
-		Material(std::shared_ptr<Texture> texture, std::shared_ptr<Shader> shader) : m_TextureMap(texture), m_Shader(shader){}
+		PBRMaterial() : m_TextureMap(0), m_Shader(0){};
+		PBRMaterial(std::shared_ptr<Texture> texture, std::shared_ptr<Shader> shader) : m_TextureMap(texture), m_Shader(shader){}
 
-		bool operator==(const Material &right) {
-			return m_TextureMap == right.m_TextureMap && m_Shader == right.m_Shader;
-		}
-		bool operator!=(const Material &right) {
-			return !(*this == right);
-		}
-
-		//Releases the two resources so that they can get cleaned up
-		void release();
+		void prepare();
 	};
 }

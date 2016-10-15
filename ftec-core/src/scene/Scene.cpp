@@ -29,7 +29,7 @@ namespace ftec {
 		for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {
 			StaticGeometry &geometry = *i;
 
-			Graphics::enqueueMesh(geometry.mesh.get(), &geometry.material, mat4::translation(geometry.position), LAYER_STATIC);
+			Graphics::enqueueMesh(geometry.mesh.get(), geometry.material, mat4::translation(geometry.position), LAYER_STATIC);
 		}
 
 		for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {
@@ -47,7 +47,7 @@ namespace ftec {
 		//TODO
 	}
 
-	void Scene::addMesh(const vec3f & position, std::shared_ptr<Mesh> mesh, const Material &material)
+	void Scene::addMesh(const vec3f & position, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material)
 	{
 		StaticGeometry s;
 		s.mesh = mesh;

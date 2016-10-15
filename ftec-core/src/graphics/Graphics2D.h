@@ -20,7 +20,7 @@ namespace ftec {
 		std::shared_ptr<Font> m_Font;
 
 		//This has the current shader and the current texture.
-		Material m_Material;
+		std::shared_ptr<Material2D> m_Material;
 
 		rect2i m_ClippingRectangle;
 		color32 m_Color;
@@ -69,7 +69,7 @@ namespace ftec {
 		//Returns the current clipping area, as set by clip
 		inline const rect2i &getClip() { return m_ClippingRectangle; }
 		inline const color32 &getColor() { return m_Color; }
-		inline std::shared_ptr<Shader> getShader() { return m_Material.m_Shader; }
+		inline std::shared_ptr<Shader> getShader() { return m_Material->m_Shader; } //TODO see implementation of setShader
 
 	protected:
 		void setTexture(std::shared_ptr<Texture> texture);

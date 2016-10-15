@@ -17,8 +17,10 @@ namespace ftec {
 		m_VAlign = FontAlign::TOP;
 		m_HAlign = FontAlign::LEFT;
 
-		m_Material.m_TextureMap = m_WhiteTexture;
-		m_Material.m_Shader = Engine::getResourceManager().load<Shader>("shaders/default2d");
+		m_Material = std::make_shared<Material2D>();
+
+		m_Material->m_TextureMap = m_WhiteTexture;
+		m_Material->m_Shader = Engine::getResourceManager().load<Shader>("shaders/default2d");
 		resetClip();
 		m_Color = color32(255, 255, 255, 255);
 	}
@@ -26,7 +28,6 @@ namespace ftec {
 	Graphics2D::~Graphics2D()
 	{
 		end();
-		//LOG("Graphics2D drawcalls:" << calls);
 	}
 
 	void Graphics2D::begin() {
@@ -38,6 +39,7 @@ namespace ftec {
 			flush();
 			batch.end();
 		}
+		calls = 0;
 	}
 
 	void Graphics2D::begin3D(rect2i rectangle)
@@ -226,19 +228,21 @@ namespace ftec {
 		this->m_Color = color;
 	}
 
+	//This should be removed. This cannot be happening (probably? )
+	//There should be a custom Shader2D class, and maybe if this takes shared_ptr to Shader2D it can change it up
 	void Graphics2D::setShader(std::shared_ptr<Shader> shader)
 	{
-		if (shader != m_Material.m_Shader) {
+		if (shader != m_Material->m_Shader) {
 			flush();
-			m_Material.m_Shader = shader;
+			m_Material->m_Shader = shader;
 		}
 	}
 
 	void Graphics2D::setTexture(std::shared_ptr<Texture> texture)
 	{
-		if (texture != m_Material.m_TextureMap) {
+		if (texture != m_Material->m_TextureMap) {
 			flush();
-			m_Material.m_TextureMap = texture;
+			m_Material->m_TextureMap = texture;
 		}
 	}
 
@@ -255,9 +259,6 @@ namespace ftec {
 		calls++;
 
 		//Disable lighting
-		GraphicsState::m_LightEnabled = false;
-
-		GraphicsState::m_TextureEnabled = true;
 		GraphicsState::m_Material = m_Material;
 		GraphicsState::m_Skybox = nullptr;
 
