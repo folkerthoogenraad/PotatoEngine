@@ -92,7 +92,7 @@ namespace ftec {
 
 		//For all our chars
 		for (int i = 32; i < 128; i++) {
-			if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
+			if (FT_Load_Char(face, i, FT_LOAD_DEFAULT)) {
 				LOG("Coudn't load char : " << (char) i);
 				continue;
 			}
@@ -101,17 +101,60 @@ namespace ftec {
 			h = ftec::max(h, g->bitmap.rows);
 		}
 
+		w = 1024;
+		h = 16;
+
 		std::shared_ptr<Font> font = std::make_shared<Font>();
 		std::shared_ptr<Texture> texture = std::make_shared<Texture>();
 
+		font->m_Size = 16;
+		font->m_Name = "Loadedfont";
+
 		texture->bind();
+
+		//Set the alignment
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, w, h, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
+		texture->m_Width = w;
+		texture->m_Height = h;
 
 		//TODO load the images onto the texture and set the chars 
 		//https://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_Text_Rendering_02
+		
+		int x = 0;
 
+		//For all our chars
+		for (int i = 32; i < 128; i++) {
+			FT_Load_Char(face, i, FT_LOAD_RENDER);
+
+			glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, g->bitmap.width, g->bitmap.rows,
+				GL_RED, GL_UNSIGNED_BYTE, g->bitmap.buffer);
+
+			char c = (char)i;
+
+			FontCharacter ch;
+			rect2f rect( //TODO correct the rows here
+				x, 0, g->bitmap.width, g->bitmap.rows
+			);
+
+			ch.sprite = std::make_shared<Sprite>(texture, rect);
+			ch.character = c;
+
+			//TODO update font metrics
+
+			ch.xadvance = g->advance.x >> 6;
+			ch.yadvance = g->advance.y >> 6;
+			ch.top = g->bitmap_top;
+			ch.left = g->bitmap_left;
+
+			x += g->bitmap.width;
+
+			//TODO this should not be a map probably
+			font->m_Characters.insert(std::make_pair(c, ch));
+		}
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
 		texture->unbind();
-
 		return font;
 	}
 

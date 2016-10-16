@@ -7,13 +7,14 @@ namespace ftec {
 		:m_TextureID(0)
 	{
 		glGenTextures(1, &m_TextureID);
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
@@ -67,6 +68,8 @@ namespace ftec {
 			};
 			texture->bind();
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_RGB, GL_FLOAT, data);
+			texture->m_Width = 2;
+			texture->m_Height = 2;
 			texture->unbind();
 		}
 		else if (name == DEFAULT_TEXTURE_WHITE) {
@@ -75,6 +78,8 @@ namespace ftec {
 			};
 			texture->bind();
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGB, GL_FLOAT, data);
+			texture->m_Width = 1;
+			texture->m_Height = 1;
 			texture->unbind();
 		}
 
@@ -84,6 +89,8 @@ namespace ftec {
 			};
 			texture->bind();
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGB, GL_FLOAT, data);
+			texture->m_Width = 1;
+			texture->m_Height = 1;
 			texture->unbind();
 		}
 
@@ -93,6 +100,8 @@ namespace ftec {
 			};
 			texture->bind();
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGB, GL_FLOAT, data);
+			texture->m_Width = 1;
+			texture->m_Height = 1;
 			texture->unbind();
 		}
 		else {

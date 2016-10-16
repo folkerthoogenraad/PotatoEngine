@@ -9,5 +9,5 @@ out vec4 FragColor;
 
 void main()
 {
-	FragColor = texture(u_Textures[0], v_Uv) * v_Color;
+	FragColor = vec4(1.0,1.0, 1.0,texture(u_Textures[0], v_Uv).r) * v_Color;
 }

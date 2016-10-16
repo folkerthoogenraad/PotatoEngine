@@ -8,6 +8,7 @@
 int main(void)
 {
 	ftec::Engine::create<ftec::Razura>();
+	WAIT();
 	return 0;
 }
 

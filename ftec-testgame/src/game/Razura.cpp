@@ -48,6 +48,7 @@ namespace ftec {
 
 			ui->setRoot(
 				potato::UILoader::load("text.xml")
+				//std::make_shared<potato::Label>("ABCDEFGHIJKLMNOP")
 			);
 		}
 	

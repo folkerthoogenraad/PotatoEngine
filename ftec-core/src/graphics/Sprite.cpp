@@ -1,6 +1,7 @@
 #include "Sprite.h"
 
 #include "Texture.h"
+#include "logger/log.h"
 
 namespace ftec {
 	Sprite::Sprite(std::shared_ptr<Texture> texture)
@@ -28,6 +29,6 @@ namespace ftec {
 		m_LocalBounds.x() = 0;
 		m_LocalBounds.y() = 0;
 		m_LocalBounds.width() = m_TextureRectangle.width();
-		m_LocalBounds.height() = m_TextureRectangle.height();;
+		m_LocalBounds.height() = m_TextureRectangle.height();
 	}
 }

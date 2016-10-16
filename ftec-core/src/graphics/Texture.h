@@ -35,5 +35,7 @@ namespace ftec {
 		inline GLuint id() const { return m_TextureID; }
 
 		static std::shared_ptr<Texture> load(const std::string &name);
+
+		friend class Font;//TODO make this better
 	};
 }

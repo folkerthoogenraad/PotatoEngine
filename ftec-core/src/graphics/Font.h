@@ -9,7 +9,12 @@ namespace ftec {
 	struct FontCharacter {
 	public:
 		char character;
+
 		int xadvance = 0;
+		int yadvance = 0;
+		int left = 0;
+		int top = 0;
+
 		std::shared_ptr<Sprite> sprite = nullptr;
 	};
 

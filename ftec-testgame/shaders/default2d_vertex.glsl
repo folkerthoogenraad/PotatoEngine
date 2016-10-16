@@ -14,7 +14,6 @@ out vec4 v_Color;
 void main()
 {
 	v_Uv = uv;
-	v_Uv.y = 1 - v_Uv.y;
 	v_Color = color;
 
 	gl_Position = u_MatrixProjection * u_MatrixView * u_MatrixModel * vec4(position, 1.0);

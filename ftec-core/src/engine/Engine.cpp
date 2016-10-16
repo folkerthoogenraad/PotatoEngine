@@ -93,10 +93,10 @@ namespace ftec {
 	static void initGL() {
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.1f);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_SCISSOR_TEST);
-		glAlphaFunc(GL_GREATER, 0.1f);
 		glDepthFunc(GL_LEQUAL);
 
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
