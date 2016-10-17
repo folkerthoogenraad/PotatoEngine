@@ -125,7 +125,15 @@ namespace ftec {
 
 		//For all our chars
 		for (int i = 32; i < 128; i++) {
-			FT_Load_Char(face, i, FT_LOAD_RENDER);
+			//FT_Load_Char(face, i, FT_LOAD_RENDER);
+
+			int glyph_index = FT_Get_Char_Index(face, i);
+			FT_Load_Glyph(
+				face,          /* handle to face object */
+				glyph_index,   /* glyph index           */
+				FT_LOAD_DEFAULT);  /* load flags, see below */
+			FT_Render_Glyph(face->glyph,   /* glyph slot  */
+				FT_RENDER_MODE_NORMAL); /* render mode */
 
 			glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, g->bitmap.width, g->bitmap.rows,
 				GL_RED, GL_UNSIGNED_BYTE, g->bitmap.buffer);
