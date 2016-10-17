@@ -144,7 +144,7 @@ namespace ftec {
 			FontCharacter fch;
 			if (m_Font->getCharacter(c, fch)) {
 				//TODO make this 12 into something gotten from the font itself (or some shit, i dont know)
-				drawSprite(*fch.sprite, currentPosition + vec2f(fch.left, -fch.top + 12));
+				drawSprite(*fch.sprite, currentPosition + vec2f(fch.left, -fch.top + m_Font->getSize() - 2));
 				currentPosition.x += fch.xadvance;
 
 				//Is this needed?
