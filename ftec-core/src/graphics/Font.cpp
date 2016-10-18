@@ -31,14 +31,14 @@ namespace ftec {
 
 	vec2f Font::measure(const std::string &text)
 	{
-		vec2f rect(0, m_Size);
+		vec2f rect(0, m_Size); //TODO fix this height stuff
 
 		float currentX = 0;
 
 		for (char c : text) {
 			if (c == '\n') {
 				currentX = 0;
-				rect.y += m_Size;
+				rect.y += m_Size; //TODO fix this multiline stuff
 				continue;
 			}
 
@@ -101,6 +101,7 @@ namespace ftec {
 			h = ftec::max(h, g->bitmap.rows);
 		}
 
+		//TODO make this generated
 		w = 1024;
 		h = 16;
 
@@ -154,6 +155,8 @@ namespace ftec {
 			ch.yadvance = g->advance.y >> 6;
 			ch.top = g->bitmap_top;
 			ch.left = g->bitmap_left;
+			ch.width = g->bitmap.width;
+			ch.height = g->bitmap.rows;
 
 			x += g->bitmap.width;
 

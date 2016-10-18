@@ -15,6 +15,9 @@ namespace ftec {
 		int left = 0;
 		int top = 0;
 
+		int width;
+		int height;
+
 		std::shared_ptr<Sprite> sprite = nullptr;
 	};
 
