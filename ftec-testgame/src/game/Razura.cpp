@@ -25,6 +25,7 @@
 #include "graphics/Renderer.h"
 
 #include "potato_ui/UILoader.h"
+#include "Canvas.h"
 
 namespace ftec {
 
@@ -47,8 +48,8 @@ namespace ftec {
 			ui = std::make_shared<potato::PotatoUI>();
 
 			ui->setRoot(
-				potato::UILoader::load("text.xml")
-				//std::make_shared<potato::Label>("ABCDEFGHIJKLMNOP")
+				//potato::UILoader::load("text.xml")
+				std::make_shared<Canvas>()
 			);
 		}
 	

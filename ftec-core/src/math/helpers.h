@@ -77,6 +77,16 @@ namespace ftec {
 		return a;
 	}
 
+	template<typename T>
+	inline T sign(const T &a)
+	{
+		if (a < 0)
+			return -1;
+		if (a > 0)
+			return 1;
+		return 0;
+	}
+
 	template <typename T>
 	T lerp(T a, T b, T f)
 	{

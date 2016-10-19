@@ -88,7 +88,9 @@ namespace ftec {
 		if (drawing3D) {
 			LOG_ERROR("Can't draw 2D when drawing in 3D");
 		}
-		if (fill) {
+
+		drawArc(center, radius, fill, 0, PI * 2);
+		/*if (fill) {
 			setTexture(m_WhiteTexture);
 			batch.color(m_Color);
 
@@ -104,6 +106,39 @@ namespace ftec {
 		}
 		else {
 			//TODO
+		}*/
+	}
+
+	void Graphics2D::drawArc(const vec2f & center, float radius, bool fill, float startAngle, float angleLength)
+	{
+		if (drawing3D) {
+			LOG_ERROR("Can't draw 2D when drawing in 3D");
+		}
+
+		setTexture(m_WhiteTexture);
+		batch.color(m_Color);
+
+		const float steps = 16; //TODO make this dependend on the angleLimit
+		const float anglePerStep = angleLength / steps;
+
+		if (fill) {
+			
+			for (float i = 0; i < steps; i += 2) {
+
+				batch.vertex(center);
+
+				batch.vertex(center + vec3f(cosf(startAngle + anglePerStep * (i + 2)), sinf(startAngle + anglePerStep * (i + 2))) * radius);
+				batch.vertex(center + vec3f(cosf(startAngle + anglePerStep * (i + 1)), sinf(startAngle + anglePerStep * (i + 1))) * radius);
+				batch.vertex(center + vec3f(cosf(startAngle + anglePerStep * (i + 0)), sinf(startAngle + anglePerStep * (i + 0))) * radius);
+			}
+		}
+		else {
+			for (float i = 0; i < steps; ++i) {
+				drawLine(
+					vec2f(center + vec2f(cosf(startAngle + anglePerStep * (i + 1)), sinf(startAngle + anglePerStep * (i + 1))) * radius),
+					vec2f(center + vec2f(cosf(startAngle + anglePerStep * (i + 0)), sinf(startAngle + anglePerStep * (i + 0))) * radius)
+				);
+			}
 		}
 	}
 

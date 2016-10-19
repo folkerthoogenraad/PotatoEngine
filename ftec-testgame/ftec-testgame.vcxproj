@@ -133,13 +133,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\game\Canvas.cpp" />
     <ClCompile Include="src\game\NoClipCameraEntity.cpp" />
     <ClCompile Include="src\game\Razura.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\math\StairAlgorithm.cpp" />
+    <ClCompile Include="src\math\StairArc.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game\Canvas.h" />
     <ClInclude Include="src\game\NoClipCameraEntity.h" />
     <ClInclude Include="src\game\Razura.h" />
+    <ClInclude Include="src\math\StairAlgorithm.h" />
+    <ClInclude Include="src\math\StairArc.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="text.xml">

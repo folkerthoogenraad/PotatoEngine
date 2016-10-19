@@ -92,6 +92,16 @@ namespace ftec {
 			return left.x * right.x + left.y * right.y;
 		}
 
+		static T cross(const vec2<T>&left, const vec2<T>&right)
+		{
+			return left.x*right.y - left.y*right.x;
+		}
+
+		static vec2<T> perp(const vec2<T>&left)
+		{
+			return vec2<T>(left.y, -left.x);
+		}
+
 		friend vec2<T>operator+(const vec2<T>& left, const vec2<T>& right)
 		{
 			return vec2(left.x + right.x, left.y + right.y);

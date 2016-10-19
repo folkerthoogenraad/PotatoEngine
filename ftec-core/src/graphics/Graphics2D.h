@@ -45,6 +45,7 @@ namespace ftec {
 
 		void drawRectangle(const rect2f& rectangle, bool fill);
 		void drawCircle(const vec2f &center, float radius, bool fill);
+		void drawArc(const vec2f &center, float radius, bool fill, float startAngle, float angleLength);
 
 		void drawString(const std::string &text, const vec2f &position);
 		void drawSprite(const Sprite &sprite, const vec2f &position);
