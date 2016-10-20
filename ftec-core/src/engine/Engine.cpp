@@ -34,7 +34,7 @@ namespace ftec {
 			second += Time::deltaTime;
 			if (second > 1) {
 				second -= 1;
-				//LOG("FPS: " << frames);
+				LOG("FPS: " << frames);
 				frames = 0;
 			}
 
