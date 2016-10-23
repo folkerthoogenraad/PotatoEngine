@@ -56,6 +56,8 @@ namespace potato {
 		Panel *m_Parent = nullptr;
 		std::weak_ptr<PotatoUI> m_UI;
 
+		std::string m_ID = "";
+
 		//List of children
 		std::vector<std::shared_ptr<Panel>> m_Children;
 	
@@ -84,6 +86,9 @@ namespace potato {
 
 		LayoutParams &layoutparams() { return m_LayoutParams; }
 		const LayoutParams &layoutparams() const { return m_LayoutParams; }
+
+		inline const std::string &getID() const { return m_ID; }
+		inline void setID(std::string s) { m_ID = std::move(s); }
 
 		//Called each time the panel needs to be drawn
 		virtual void draw(ftec::Graphics2D &graphics);
@@ -120,5 +125,18 @@ namespace potato {
 		void setUI(std::weak_ptr<PotatoUI> ui) {this->m_UI = ui; }
 		std::weak_ptr<PotatoUI> getUI() { return this->m_UI; }
 
+		template <typename T>
+		std::shared_ptr<T> findPanelById(const std::string &id) {
+
+			for (auto p : m_Children) {
+				if (p->getID() == id)
+					return p;
+				auto c = p->findPanelById(id);
+				if (c)
+					return c;
+			}
+
+			return nullptr;
+		}
 	};
 }

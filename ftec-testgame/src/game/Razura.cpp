@@ -48,8 +48,8 @@ namespace ftec {
 			ui = std::make_shared<potato::PotatoUI>();
 
 			ui->setRoot(
-				//potato::UILoader::load("text.xml")
-				std::make_shared<Canvas>()
+				potato::UILoader::load("text.xml")
+				//std::make_shared<Canvas>()
 			);
 		}
 	
