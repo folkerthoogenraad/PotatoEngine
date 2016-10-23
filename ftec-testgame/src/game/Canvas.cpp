@@ -6,6 +6,8 @@
 
 #include "math/StairAlgorithm.h"
 
+#include <sstream>
+
 namespace ftec {
 
 	static StairAlgorithm alg;
@@ -26,6 +28,8 @@ namespace ftec {
 	void drawStairAlgorithm(Graphics2D &graphics, StairAlgorithm &alg)
 	{
 		for (int i = 1; i < alg.m_Vertices.size(); ++i) {
+			graphics.setColor(color32::black());
+
 			vec2f previousEnd = alg.m_Vertices[i - 1].m_Position;
 
 			if (!alg.isFirst(i - 1)) {
@@ -35,6 +39,23 @@ namespace ftec {
 				StairArc arc = alg.getArc(i);
 				graphics.drawLine(previousEnd, arc.getArcStart());
 				drawStairArc(graphics, arc);
+
+				if (Input::isKeyDown(GLFW_KEY_SPACE)) {
+					graphics.setColor(color32::blue());
+					graphics.drawRectangle(rect2f(
+						arc.getArcStart().x - 4,
+						arc.getArcStart().y - 4, 8, 8
+					), true);
+					graphics.drawRectangle(rect2f(
+						arc.getArcEnd().x - 4,
+						arc.getArcEnd().y - 4, 8, 8
+					), true);
+					graphics.setColor(color32::green());
+					graphics.drawRectangle(rect2f(
+						arc.getOrigin().x - 4,
+						arc.getOrigin().y - 4, 8, 8
+					), true);
+				}
 			}
 			else {
 				graphics.drawLine(previousEnd, alg.m_Vertices[i].m_Position);
@@ -75,6 +96,26 @@ namespace ftec {
 			alg.m_Vertices.clear();
 		}
 
+		if (Input::isKeyPressed(GLFW_KEY_ENTER)) {
+			for (int i = 1; i + 1 < alg.m_Vertices.size(); ++i) {
+				auto &previous = alg.m_Vertices[i - 1];
+				auto &current = alg.m_Vertices[i];
+				auto &next = alg.m_Vertices[i + 1];
+
+				float pDistance = (current.m_Position - previous.m_Position).magnitude();
+				float nDistance = (next.m_Position - current.m_Position).magnitude();
+
+				if (!alg.isFirst(i - 1)) {
+					pDistance /= 2;
+				}
+				if (!alg.isLast(i + 1)) {
+					nDistance /= 2;
+				}
+
+				current.m_Range = min(pDistance, nDistance);
+			}
+		}
+
 		if (Input::getScroll().y != 0 && alg.m_Vertices.size() > 0) {
 			alg.m_Vertices[getClosestIndex()].m_Range += Input::getScroll().y * 5;
 		}
@@ -87,6 +128,7 @@ namespace ftec {
 		potato::Bounds bounds = getGlobalBounds();
 
 		graphics.setColor(color32::black());
+
 		graphics.setLineWidth(4);
 		
 		//drawStairAlgorithm(graphics, alg);
@@ -99,20 +141,32 @@ namespace ftec {
 				graphics.drawLine(p1, p2);
 				graphics.drawLine(p1, p1 + vec2f::perp(p2 - p1));
 			}
+		}
+		graphics.drawString("Left mouse to add points\nMiddle mouse to move point\nRight mouse to clear curve\nSpace to show handles\nScroll to increase distance for hovering point\nPress enter to auto calculate distances", bounds.topleft() + vec2i(2,2));
+
+		std::stringstream ss;
+		ss << "Point count: " << alg.m_Vertices.size();
+		graphics.drawString(ss.str(), bounds.topleft() + vec2i(256,2));
+
+		graphics.setColor(color32::black());
+		graphics.setLineWidth(6);
 
 
-			graphics.setColor(color32::dkgray());
-			for (auto &v : alg.m_Vertices) {
-				graphics.drawCircle(v.m_Position, 8, false);
-			}
+		graphics.setColor(color32::red());
+		for (auto &v : alg.m_Vertices) {
+			graphics.drawRectangle(rect2f(
+				v.m_Position.x - 4, v.m_Position.y - 4,
+				8, 8
+			), true);
 		}
 
+		/*
 		graphics.setColor(color32::green());
 		vec2f r = alg.getPosition(z * alg.getLength());
 		graphics.drawRectangle(rect2f(
 			r.x - 8, r.y - 8,
 			16, 16
-		), true);
+		), true);*/
 	}
 
 }
