@@ -88,12 +88,23 @@ namespace ftec {
 
 		graphics.setColor(color32::black());
 		graphics.setLineWidth(4);
+		
+		//drawStairAlgorithm(graphics, alg);
+		if (!Input::isKeyDown(GLFW_KEY_SPACE)) {
+			float length = alg.getLength();
+			for (float f = 0; f < length; f += 16) {
+				vec2f p1 = alg.getPosition(f);
+				vec2f p2 = alg.getPosition(f + 16);
 
-		drawStairAlgorithm(graphics, alg);
+				graphics.drawLine(p1, p2);
+				graphics.drawLine(p1, p1 + vec2f::perp(p2 - p1));
+			}
 
-		graphics.setColor(color32::dkgray());
-		for (auto &v : alg.m_Vertices) {
-			graphics.drawCircle(v.m_Position, 8, false);
+
+			graphics.setColor(color32::dkgray());
+			for (auto &v : alg.m_Vertices) {
+				graphics.drawCircle(v.m_Position, 8, false);
+			}
 		}
 
 		graphics.setColor(color32::green());

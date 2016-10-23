@@ -34,7 +34,7 @@ namespace ftec {
 			second += Time::deltaTime;
 			if (second > 1) {
 				second -= 1;
-				//LOG("FPS: " << frames);
+				LOG("FPS: " << frames);
 				frames = 0;
 			}
 
@@ -58,7 +58,7 @@ namespace ftec {
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		window = std::make_unique<Window>("PotatoEngine", 1280, 720);
+		window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, false);
 
 		LOG("Loading GLEW...");
 		//Initialize extentions
