@@ -87,12 +87,12 @@ namespace ftec {
 			return closest;
 		};
 		if (Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
-			StairVertex vert {
+			StairVertex vert{
 				Input::getMousePosition(),
 				d
 			};
 			alg.m_Vertices.push_back(vert);
-			
+
 		}
 
 		if (alg.m_Vertices.size() > 0 && Input::isMouseButtonDown(GLFW_MOUSE_BUTTON_3)) {
@@ -135,11 +135,11 @@ namespace ftec {
 		potato::Bounds bounds = getGlobalBounds();
 
 		graphics.setColor(color32::black());
-		graphics.drawString("Left mouse to add points\nMiddle mouse to move point\nRight mouse to clear curve\nSpace to show handles\nScroll to increase distance for hovering point\nPress enter to auto calculate distances", bounds.topleft() + vec2i(2,2));
+		graphics.drawString("Left mouse to add points\nMiddle mouse to move point\nRight mouse to clear curve\nSpace to show handles\nScroll to increase distance for hovering point\nPress enter to auto calculate distances", bounds.topleft() + vec2i(2, 2));
 
 		std::stringstream ss;
 		ss << "Point count: " << alg.m_Vertices.size();
-		graphics.drawString(ss.str(), bounds.topleft() + vec2i(256,2));
+		graphics.drawString(ss.str(), bounds.topleft() + vec2i(256, 2));
 
 		graphics.setColor(color32::black());
 		graphics.setLineWidth(6);
@@ -158,8 +158,8 @@ namespace ftec {
 		graphics.setColor(color32::green());
 		vec2f r = alg.getPosition(z * alg.getLength());
 		graphics.drawRectangle(rect2f(
-			r.x - 8, r.y - 8,
-			16, 16
+		r.x - 8, r.y - 8,
+		16, 16
 		), true);*/
 	}
 
