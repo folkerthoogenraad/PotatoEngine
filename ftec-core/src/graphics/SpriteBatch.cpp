@@ -19,7 +19,7 @@ namespace ftec {
 		}
 	}
 
-	SpriteBatch::SpriteBatch() : m_Drawing(false)
+	SpriteBatch::SpriteBatch() : m_Drawing(false), m_VBOSize(0)
 	{
 		glGenBuffers(1, &m_VerticesVBO);
 		glGenBuffers(1, &m_ColorsVBO);
@@ -60,7 +60,9 @@ namespace ftec {
 		//We don't have to draw if we don't have to draw <3
 		if (m_Vertices.size() <= 0)
 			return;
-		
+
+		bool resize = m_Vertices.size() > m_VBOSize;
+
 		//TODO the actual drawing
 		//TODO assert that the actual sizes are the same
 
@@ -70,19 +72,35 @@ namespace ftec {
 
 		//Vertices
 		glBindBuffer(GL_ARRAY_BUFFER, m_VerticesVBO);
-		glBufferData(GL_ARRAY_BUFFER, m_Vertices.size() * sizeof(vec3f), (void*)&m_Vertices[0], GL_DYNAMIC_DRAW);
+
+		if (resize) {
+			glBufferData(GL_ARRAY_BUFFER, m_Vertices.size() * sizeof(vec3f), (void*)&m_Vertices[0], GL_DYNAMIC_DRAW);
+		}
+		else {
+			glBufferSubData(GL_ARRAY_BUFFER, 0, m_Vertices.size() * sizeof(vec3f), (void*)&m_Vertices[0]);
+		}
 		glEnableVertexAttribArray(SHADER_ATTRIBUTE_POSITION);
 		glVertexAttribPointer(SHADER_ATTRIBUTE_POSITION, 3, GL_FLOAT, false, 0, 0);
 
 		//UVs
 		glBindBuffer(GL_ARRAY_BUFFER, m_UvsVBO);
-		glBufferData(GL_ARRAY_BUFFER, m_Uvs.size() * sizeof(vec2f), (void*)&m_Uvs[0], GL_DYNAMIC_DRAW);
+		if (resize) {
+			glBufferData(GL_ARRAY_BUFFER, m_Uvs.size() * sizeof(vec2f), (void*)&m_Uvs[0], GL_DYNAMIC_DRAW);
+		}
+		else {
+			glBufferSubData(GL_ARRAY_BUFFER, 0, m_Uvs.size() * sizeof(vec2f), (void*)&m_Uvs[0]);
+		}
 		glEnableVertexAttribArray(SHADER_ATTRIBUTE_UV);
 		glVertexAttribPointer(SHADER_ATTRIBUTE_UV, 2, GL_FLOAT, false, 0, 0);
 
 		//Colors
 		glBindBuffer(GL_ARRAY_BUFFER, m_ColorsVBO);
-		glBufferData(GL_ARRAY_BUFFER, m_Colors.size() * sizeof(color32), (void*) &m_Colors[0], GL_DYNAMIC_DRAW);
+		if (resize) {
+			glBufferData(GL_ARRAY_BUFFER, m_Colors.size() * sizeof(color32), (void*)&m_Colors[0], GL_DYNAMIC_DRAW);
+		}
+		else {
+			glBufferSubData(GL_ARRAY_BUFFER, 0, m_Colors.size() * sizeof(color32), (void*)&m_Colors[0]);
+		}
 		glEnableVertexAttribArray(SHADER_ATTRIBUTE_COLOR);
 		glVertexAttribPointer(SHADER_ATTRIBUTE_COLOR, 4, GL_UNSIGNED_BYTE, true, 0, 0);
 		

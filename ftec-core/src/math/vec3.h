@@ -20,7 +20,8 @@ namespace ftec{
 
 		template<typename S>
 		vec3(const vec3<S> &other) : x((T)other.x), y((T)other.y), z((T)other.z) {};
-		vec3(T x = 0, T y = 0, T z = 0) : x(x), y(y), z(z) {};
+		
+		explicit vec3(T x = 0, T y = 0, T z = 0) : x(x), y(y), z(z) {};
 		vec3(vec2<T> v) : x(v.x), y(v.y), z(0) {};
 
 		vec3<T>& add(const vec3<T>& other)
@@ -59,7 +60,6 @@ namespace ftec{
 			z += other;
 			return *this;
 		}
-
 		vec3<T>& subtract(T other)
 		{
 			x -= other;
@@ -110,38 +110,38 @@ namespace ftec{
 			return left.x * right.x + left.y * right.y + left.z * right.z;
 		}
 
-		friend vec3<T>operator+(const vec3<T>& left, const vec3<T>& right)
+		vec3<T> operator+(const vec3<T>& right) const
 		{
-			return vec3(left.x + right.x, left.y + right.y, left.z + right.z);
+			return vec3(x + right.x, y + right.y, z + right.z);
 		}
-		friend vec3<T>operator-(const vec3<T>& left, const vec3<T>& right)
+		vec3<T> operator-(const vec3<T>& right) const
 		{
-			return vec3(left.x - right.x, left.y - right.y, left.z - right.z);
+			return vec3(x - right.x, y - right.y, z - right.z);
 		}
-		friend vec3<T>operator*(const vec3<T>& left, const vec3<T>& right)
+		vec3<T> operator*(const vec3<T>& right) const
 		{
-			return vec3(left.x * right.x, left.y * right.y, left.z * right.z);
+			return vec3(x * right.x, y * right.y, z * right.z);
 		}
-		friend vec3<T>operator/(const vec3<T>& left, const vec3<T>& right)
+		vec3<T> operator/(const vec3<T>& right) const
 		{
-			return vec3(left.x / right.x, left.y / right.y, left.z / right.z);
+			return vec3(x / right.x, y / right.y, z / right.z);
 		}
 
-		friend vec3<T>operator+(const vec3<T>& left, T right)
+		vec3<T> operator+(T right) const
 		{
-			return vec3(left.x + right, left.y + right, left.z + right);
+			return vec3(x + right, y + right, z + right);
 		}
-		friend vec3<T>operator-(const vec3<T>& left, T right)
+		vec3<T> operator-(T right) const
 		{
-			return vec3(left.x - right, left.y - right, left.z - right);
+			return vec3(x - right, y - right, z - right);
 		}
-		friend vec3<T>operator*(const vec3<T>& left, T right)
+		vec3<T> operator*(T right) const
 		{
-			return vec3(left.x * right, left.y * right, left.z * right);
+			return vec3(x * right, y * right, z * right);
 		}
-		friend vec3<T>operator/(const vec3<T>& left, T right)
+		vec3<T> operator/(T right) const
 		{
-			return vec3(left.x / right, left.y / right, left.z / right);
+			return vec3(x / right, y / right, z / right);
 		}
 
 		vec3<T>& operator+=(const vec3<T>& right)
@@ -161,6 +161,40 @@ namespace ftec{
 			return divide(right);
 		}
 
+		vec3<T>& operator+=(T right)
+		{
+			return add(right);
+		}
+		vec3<T>& operator-=(T right)
+		{
+			return subtract(right);
+		}
+		vec3<T>& operator*=(T right)
+		{
+			return multiply(right);
+		}
+		vec3<T>& operator/=(T right)
+		{
+			return divide(right);
+		}
+
+		friend vec3<T> operator+(T left, const vec3<T>& right)
+		{
+			return vec3(left + right.x, left + right.y, left + right.z);
+		}
+		friend vec3<T> operator-(T left, const vec3<T>& right)
+		{
+			return vec3(left - right.x, left - right.y, left - right.z);
+		}
+		friend vec3<T> operator*(T left, const vec3<T>& right)
+		{
+			return vec3(left * right.x, left * right.y, left * right.z);
+		}
+		friend vec3<T> operator/(T left, const vec3<T>& right)
+		{
+			return vec3(left / right.x, left / right.y, left / right.z);
+		}
+
 		friend vec3<T>operator-(const vec3<T>& left)
 		{
 			return vec3<T>(-left.x, -left.y, -left.z);
@@ -172,12 +206,10 @@ namespace ftec{
 		{
 			return left.x == right.x && left.y == right.y && left.z == right.z;
 		}
-
 		friend bool operator<(const vec3<T>& left, const vec3<T>& right)
 		{
 			return left.x < right.x && left.y < right.y && left.z < right.z;
 		}
-
 		friend std::ostream& operator<<(std::ostream& left, const vec3<T>& right)
 		{
 			return left << "(" << right.x << ", " << right.y << ", " << right.z << ")";

@@ -31,7 +31,7 @@ namespace ftec {
 
 		template<typename S>
 		vec4(const vec4<S> &other) : x((T)other.x), y((T)other.y), z((T)other.z), w((T)other.w) {};
-		vec4(T x = 0, T y = 0, T z = 0, T w = 0) : x(x), y(y), z(z), w(w) {};
+		explicit vec4(T x = 0, T y = 0, T z = 0, T w = 0) : x(x), y(y), z(z), w(w) {};
 
 		vec4<T>& add(const vec4<T>& other)
 		{
@@ -74,7 +74,6 @@ namespace ftec {
 			w += other;
 			return *this;
 		}
-
 		vec4<T>& subtract(T other)
 		{
 			x -= other;
@@ -115,6 +114,7 @@ namespace ftec {
 		{
 			return (T)sqrt(x*x + y*y + z*z + w*w);
 		}
+		
 		static T dot(const vec4<T>&left, const vec4<T>&right)
 		{
 			return left.x * right.x + left.y * right.y + left.z * right.z + left.w * right.w;

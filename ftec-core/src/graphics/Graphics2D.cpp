@@ -127,9 +127,9 @@ namespace ftec {
 
 				batch.vertex(center);
 
-				batch.vertex(center + vec3f(cosf(startAngle + anglePerStep * (i + 2)), sinf(startAngle + anglePerStep * (i + 2))) * radius);
-				batch.vertex(center + vec3f(cosf(startAngle + anglePerStep * (i + 1)), sinf(startAngle + anglePerStep * (i + 1))) * radius);
-				batch.vertex(center + vec3f(cosf(startAngle + anglePerStep * (i + 0)), sinf(startAngle + anglePerStep * (i + 0))) * radius);
+				batch.vertex(center + vec2f(cosf(startAngle + anglePerStep * (i + 2)), sinf(startAngle + anglePerStep * (i + 2))) * radius);
+				batch.vertex(center + vec2f(cosf(startAngle + anglePerStep * (i + 1)), sinf(startAngle + anglePerStep * (i + 1))) * radius);
+				batch.vertex(center + vec2f(cosf(startAngle + anglePerStep * (i + 0)), sinf(startAngle + anglePerStep * (i + 0))) * radius);
 			}
 		}
 		else {

@@ -20,7 +20,7 @@ namespace ftec {
 		template<typename S>
 		vec2(const vec2<S> &other) : x((T)other.x), y((T)other.y) {};
 
-		vec2(T x = 0, T y = 0) : x(x), y(y) {};
+		explicit vec2(T x = 0, T y = 0) : x(x), y(y) {};
 
 		vec2<T>& add(const vec2<T>& other)
 		{
@@ -53,7 +53,6 @@ namespace ftec {
 			y += other;
 			return *this;
 		}
-
 		vec2<T>& subtract(T other)
 		{
 			x -= other;
@@ -91,49 +90,47 @@ namespace ftec {
 		{
 			return left.x * right.x + left.y * right.y;
 		}
-
 		static T cross(const vec2<T>&left, const vec2<T>&right)
 		{
 			return left.x*right.y - left.y*right.x;
 		}
-
 		static vec2<T> perp(const vec2<T>&left)
 		{
 			return vec2<T>(left.y, -left.x);
 		}
 
-		friend vec2<T>operator+(const vec2<T>& left, const vec2<T>& right)
+		vec2<T> operator+(const vec2<T>& right) const
 		{
-			return vec2(left.x + right.x, left.y + right.y);
+			return vec2(x + right.x, y + right.y);
 		}
-		friend vec2<T>operator-(const vec2<T>& left, const vec2<T>& right)
+		vec2<T> operator-(const vec2<T>& right) const
 		{
-			return vec2(left.x - right.x, left.y - right.y);
+			return vec2(x - right.x, y - right.y);
 		}
-		friend vec2<T>operator*(const vec2<T>& left, const vec2<T>& right)
+		vec2<T> operator*(const vec2<T>& right) const
 		{
-			return vec2(left.x * right.x, left.y * right.y);
+			return vec2(x * right.x, y * right.y);
 		}
-		friend vec2<T>operator/(const vec2<T>& left, const vec2<T>& right)
+		vec2<T> operator/(const vec2<T>& right) const
 		{
-			return vec2(left.x / right.x, left.y / right.y);
+			return vec2(x / right.x, y / right.y);
 		}
 
-		friend vec2<T>operator+(const vec2<T>& left, T right)
+		vec2<T> operator+(T right) const
 		{
-			return vec2(left.x + right, left.y + right);
+			return vec2(x + right, y + right);
 		}
-		friend vec2<T>operator-(const vec2<T>& left, T right)
+		vec2<T> operator-(T right) const
 		{
-			return vec2(left.x - right, left.y - right);
+			return vec2(x - right, y - right);
 		}
-		friend vec2<T>operator*(const vec2<T>& left, T right)
+		vec2<T> operator*(T right) const
 		{
-			return vec2(left.x * right, left.y * right);
+			return vec2(x * right, y * right);
 		}
-		friend vec2<T>operator/(const vec2<T>& left, T right)
+		vec2<T> operator/(T right) const
 		{
-			return vec2(left.x / right, left.y / right);
+			return vec2(x / right, y / right);
 		}
 
 		vec2<T>& operator+=(const vec2<T>& right)
@@ -170,24 +167,40 @@ namespace ftec {
 			return divide(right);
 		}
 
+		friend vec2<T> operator+(T left, const vec2<T> right)
+		{
+			return vec2(left + right.x, left + right.y);
+		}
+		friend vec2<T> operator-(T left, const vec2<T> right)
+		{
+			return vec2(left - right.x, left - right.y);
+		}
+		friend vec2<T> operator*(T left, const vec2<T> right)
+		{
+			return vec2(left * right.x, left * right.y);
+		}
+		friend vec2<T> operator/(T left, const vec2<T> right)
+		{
+			return vec2(left / right.x, left / right.y);
+		}
+
 		friend vec2<T>operator-(const vec2<T>& left)
 		{
 			return vec2<T>(-left.x, -left.y);
 		}
-
+		
 		static const int COMPONENTS = 2;
 
 		friend bool operator==(const vec2<T>& left, const vec2<T>& right)
 		{
 			return left.x == right.x && left.y == right.y;
 		}
-
 		friend std::ostream& operator<<(std::ostream& left, const vec2<T>& right)
 		{
 			return left << "(" << right.x << ", " << right.y << ")";
 		}
-
-	};
+	
+};
 
 	typedef vec2<float> vec2f;
 	typedef vec2<int> vec2i;

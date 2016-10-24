@@ -64,8 +64,15 @@ namespace ftec {
 		}
 	}
 
+	Canvas::Canvas()
+	{
+		m_Focusable = true;
+	}
+
 	void Canvas::update()
 	{
+		if (!m_Focus)
+			return;
 		auto getClosestIndex = [&]() -> int{
 			int closest = 0;
 			float distance = (alg.m_Vertices.front().m_Position - Input::getMousePosition()).magnitude();
@@ -139,11 +146,11 @@ namespace ftec {
 
 		drawStairAlgorithm(graphics, alg);
 
-		graphics.setColor(color32::red());
+		graphics.setColor(color32(97,99,60,255));
 		for (auto &v : alg.m_Vertices) {
 			graphics.drawRectangle(rect2f(
-				v.m_Position.x - 4, v.m_Position.y - 4,
-				8, 8
+				v.m_Position.x - 6, v.m_Position.y - 6,
+				12, 12
 			), true);
 		}
 

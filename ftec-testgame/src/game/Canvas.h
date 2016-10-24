@@ -5,6 +5,9 @@
 namespace ftec {
 
 	class Canvas : public potato::Panel{
+	public:
+		Canvas();
+
 		void update() override;
 		void drawSelf(Graphics2D &graphics) override;
 

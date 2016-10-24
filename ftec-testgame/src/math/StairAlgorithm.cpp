@@ -45,7 +45,7 @@ namespace ftec {
 	vec2f StairAlgorithm::getPosition(float distance)
 	{
 		if (m_Vertices.size() == 0)
-			return 0;
+			return vec2f(0, 0);
 		else if (m_Vertices.size() == 1 || distance <= 0) 
 			return m_Vertices[0].m_Position;
 		else if (m_Vertices.size() == 2) {
@@ -70,7 +70,7 @@ namespace ftec {
 			vec2f dir = current.m_Position - previous.m_Position;
 			float or = dir.magnitude();
 			float straightLength = dir.magnitude();
-
+			
 			float curveLength = 0;
 
 			//The first has no curve

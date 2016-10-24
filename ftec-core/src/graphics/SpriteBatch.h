@@ -29,6 +29,7 @@ namespace ftec {
 
 		GLuint m_VerticesVBO, m_UvsVBO, m_ColorsVBO;
 		unsigned int m_Size;
+		unsigned int m_VBOSize;
 
 		std::vector<vec3f> m_Vertices;
 		std::vector<vec2f> m_Uvs;
