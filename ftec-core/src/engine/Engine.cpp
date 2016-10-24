@@ -8,6 +8,7 @@ namespace ftec {
 	std::shared_ptr<Scene> Engine::currentScene = nullptr;
 	std::unique_ptr<Window> Engine::window = nullptr;
 	std::unique_ptr<ResourceManager> Engine::manager = nullptr;
+	PotatoQueue<std::function<void()>> Engine::queue;
 
 	static void initGL();
 	
@@ -39,6 +40,10 @@ namespace ftec {
 			}
 
 			previousTime = currentTime;
+
+			while (!queue.empty()) {
+				queue.pop_back()();
+			}
 
 			game.update();
 			game.render();

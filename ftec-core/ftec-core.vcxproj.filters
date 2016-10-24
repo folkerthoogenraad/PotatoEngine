@@ -245,6 +245,9 @@
     <ClInclude Include="src\io\XMLDocument.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\threading\PotatoQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default_vertex.glsl" />

@@ -38,12 +38,14 @@ namespace potato {
 
 	void PotatoUI::update()	
 	{
+		std::lock_guard<std::mutex> lock(m_Mutex);
+
 		if (m_Root) {
-			Event event;
+			Event event(shared_from_this());
 
 			if (ftec::Engine::getWindow().isResized()) {
 				m_Root->localbounds() = ftec::rect2i(0, 0, ftec::Engine::getWindow().getWidth(), ftec::Engine::getWindow().getHeight());
-				m_Root->updateLayout(); //Update the layout for this panel
+				m_Root->updateLayout();
 			}
 
 			if(m_ContextMenu)
@@ -61,6 +63,8 @@ namespace potato {
 
 	void PotatoUI::render()
 	{
+		std::lock_guard<std::mutex> lock(m_Mutex);
+
 		m_Graphics.resetClip();
 		m_Graphics.drawClear();
 		m_Graphics.begin();
@@ -77,6 +81,8 @@ namespace potato {
 
 	void PotatoUI::setRoot(std::shared_ptr<Panel> root)
 	{
+		std::lock_guard<std::mutex> lock(m_Mutex);
+
 		m_Root = root;
 		if (m_Root) {
 			m_Root->setUI(shared_from_this());
@@ -88,6 +94,8 @@ namespace potato {
 
 	void PotatoUI::setContextMenu(std::shared_ptr<Panel> contextMenu)
 	{
+		std::lock_guard<std::mutex> lock(m_Mutex);
+
 		m_ContextMenu = contextMenu;
 		if (m_ContextMenu) {
 			m_ContextMenu->setUI(shared_from_this());

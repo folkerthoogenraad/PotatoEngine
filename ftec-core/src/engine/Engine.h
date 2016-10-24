@@ -16,6 +16,9 @@
 #include "Time.h"
 #include "graphics/Graphics.h"
 #include "Game.h"
+#include "threading/PotatoQueue.h"
+
+#include <functional>
 
 namespace ftec {
 
@@ -25,6 +28,8 @@ namespace ftec {
 		static std::shared_ptr<Scene> currentScene;
 		static std::unique_ptr<ResourceManager> manager;
 		static std::unique_ptr<Window> window;
+
+		static PotatoQueue<std::function<void()>> queue;
 
 		static void loop(Game &game);
 	public:
@@ -39,6 +44,10 @@ namespace ftec {
 
 		static inline ResourceManager& getResourceManager() { 
 			return *manager;
+		}
+
+		static inline void runOnGraphicsThread(const std::function<void()> &f) {
+			queue.push_back(f);
 		}
 
 		template<typename T>

@@ -211,6 +211,7 @@
     <ClInclude Include="src\scene\Entity.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\serialization\Serialization.h" />
+    <ClInclude Include="src\threading\PotatoQueue.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default2d_fragment.glsl" />
