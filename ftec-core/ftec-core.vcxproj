@@ -158,6 +158,7 @@
     <ClCompile Include="src\io\ioutils.cpp" />
     <ClCompile Include="src\io\XMLDocument.cpp" />
     <ClCompile Include="src\io\XMLReader.cpp" />
+    <ClCompile Include="src\lua\LuaAPI.cpp" />
     <ClCompile Include="src\math\Curve.cpp" />
     <ClCompile Include="src\serialization\Serialization.cpp" />
     <ClCompile Include="src\math\mat4.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="src\io\XMLDocument.h" />
     <ClInclude Include="src\io\XMLReader.h" />
     <ClInclude Include="src\logger\log.h" />
+    <ClInclude Include="src\lua\LuaAPI.h" />
     <ClInclude Include="src\math\Curve.h" />
     <ClInclude Include="src\math\mat4.h" />
     <ClInclude Include="src\math\math.h" />

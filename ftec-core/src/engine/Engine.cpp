@@ -4,6 +4,7 @@
 #include "graphics/Graphics.h"
 
 #include "lua.hpp"
+#include "lua/LuaAPI.h" //For lua api binding
 
 namespace ftec {
 
@@ -112,6 +113,7 @@ namespace ftec {
 			lua_pop(L, 1);
 		}
 
+		//TODO make this into a seperate functnion and stuff
 		int width, height;
 		bool fullscreen;
 		std::string boot;
@@ -144,9 +146,12 @@ namespace ftec {
 		updateFunction = lua_tostring(L, -5);
 		lua_pop(L, 5);
 
-		callback(L);
-
 		init(width, height ,fullscreen);
+
+		//Bind the lua api
+		lua::bind(L);
+
+		callback(L);
 
 		error =
 			luaL_loadstring(L, ("require '" + boot + "'").c_str()) ||
