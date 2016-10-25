@@ -146,6 +146,13 @@ namespace ftec {
 		updateFunction = lua_tostring(L, -5);
 		lua_pop(L, 5);
 
+		//Destroy the lua VM
+		lua_close(L);
+		
+		//And recreate it for the runtime stuff
+		L = luaL_newstate();
+		luaL_openlibs(L);
+
 		init(width, height ,fullscreen);
 
 		//Bind the lua api

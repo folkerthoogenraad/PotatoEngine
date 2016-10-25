@@ -21,7 +21,7 @@ namespace ftec {
 			arc.getRadius(),
 			false,
 			arc.getStartAngle(),
-			arc.getAngle() * arc.getSide()
+			arc.getAngle()// *arc.getSide()
 		);
 	}
 
