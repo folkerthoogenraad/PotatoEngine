@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ftec-core", "ftec-core\ftec-core.vcxproj", "{220CB38F-4A82-4202-9D87-043D2D954AC0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{729799E9-B664-49C5-AF6A-342F7CB588AD} = {729799E9-B664-49C5-AF6A-342F7CB588AD}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ftec-ui", "ftec-ui\ftec-ui.vcxproj", "{3546B893-CC07-4421-8897-6CBC4F571C15}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -14,7 +17,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ftec-testgame", "ftec-testg
 	ProjectSection(ProjectDependencies) = postProject
 		{220CB38F-4A82-4202-9D87-043D2D954AC0} = {220CB38F-4A82-4202-9D87-043D2D954AC0}
 		{3546B893-CC07-4421-8897-6CBC4F571C15} = {3546B893-CC07-4421-8897-6CBC4F571C15}
+		{729799E9-B664-49C5-AF6A-342F7CB588AD} = {729799E9-B664-49C5-AF6A-342F7CB588AD}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "lua\lua.vcxproj", "{729799E9-B664-49C5-AF6A-342F7CB588AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +54,14 @@ Global
 		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Release|x64.Build.0 = Release|x64
 		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Release|x86.ActiveCfg = Release|Win32
 		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Release|x86.Build.0 = Release|Win32
+		{729799E9-B664-49C5-AF6A-342F7CB588AD}.Debug|x64.ActiveCfg = Debug|x64
+		{729799E9-B664-49C5-AF6A-342F7CB588AD}.Debug|x64.Build.0 = Debug|x64
+		{729799E9-B664-49C5-AF6A-342F7CB588AD}.Debug|x86.ActiveCfg = Debug|Win32
+		{729799E9-B664-49C5-AF6A-342F7CB588AD}.Debug|x86.Build.0 = Debug|Win32
+		{729799E9-B664-49C5-AF6A-342F7CB588AD}.Release|x64.ActiveCfg = Release|x64
+		{729799E9-B664-49C5-AF6A-342F7CB588AD}.Release|x64.Build.0 = Release|x64
+		{729799E9-B664-49C5-AF6A-342F7CB588AD}.Release|x86.ActiveCfg = Release|Win32
+		{729799E9-B664-49C5-AF6A-342F7CB588AD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

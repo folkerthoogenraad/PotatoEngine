@@ -20,6 +20,8 @@
 
 #include <functional>
 
+struct lua_State;
+
 namespace ftec {
 
 	class Engine {
@@ -28,12 +30,13 @@ namespace ftec {
 		static std::shared_ptr<Scene> currentScene;
 		static std::unique_ptr<ResourceManager> manager;
 		static std::unique_ptr<Window> window;
+		static lua_State *L;
 
 		static PotatoQueue<std::function<void()>> queue;
 
-		static void loop(Game &game);
+		static void loop(std::function<void()>);
 	public:
-		static void init();
+		static void init(int width, int height, bool fullscreen);
 		static void destroy();
 
 	public:
@@ -53,14 +56,17 @@ namespace ftec {
 		template<typename T>
 		static void create()
 		{
-			init();
+			init(1280, 720, false);
 
 			//Scope because game destructor must be called before destroy is called (for resource reasons)
 			{
 				T game;
 				game.init();
 
-				loop(game);
+				loop([&game](){
+					game.update();
+					game.render();
+				});
 
 				game.destroy();
 			}
@@ -68,5 +74,7 @@ namespace ftec {
 			destroy();
 			
 		}
+
+		static void create_lua(std::string config, std::function<void(lua_State*)>);
 	};
 }

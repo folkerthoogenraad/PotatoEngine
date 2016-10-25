@@ -3,16 +3,19 @@
 #include "Input.h"
 #include "graphics/Graphics.h"
 
+#include "lua.hpp"
+
 namespace ftec {
 
 	std::shared_ptr<Scene> Engine::currentScene = nullptr;
 	std::unique_ptr<Window> Engine::window = nullptr;
 	std::unique_ptr<ResourceManager> Engine::manager = nullptr;
 	PotatoQueue<std::function<void()>> Engine::queue;
+	lua_State *Engine::L;
 
 	static void initGL();
 	
-	void Engine::loop(Game & game)
+	void Engine::loop(std::function<void()> update)
 	{
 		double previousTime = glfwGetTime();
 		double second = 0;
@@ -45,15 +48,15 @@ namespace ftec {
 				queue.pop_back()();
 			}
 
-			game.update();
-			game.render();
+			update();
+
 			frames++;
 
 			getWindow().swap();
 		}
 	}
 
-	void Engine::init()
+	void Engine::init(int width, int height, bool fullscreen)
 	{
 		LOG("Loading GLFW...");
 		//Initialize GLFW
@@ -63,7 +66,7 @@ namespace ftec {
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, true, 4);
+		window = std::make_unique<Window>("PotatoEngine", width, height, fullscreen, true, 4);
 
 		LOG("Loading GLEW...");
 		//Initialize extentions
@@ -93,6 +96,77 @@ namespace ftec {
 		manager.reset();
 		FreeImage_DeInitialise();
 		glfwTerminate();
+	}
+
+	void Engine::create_lua(std::string config, std::function<void(lua_State*)> callback)
+	{
+		L = luaL_newstate();
+		luaL_openlibs(L);
+
+		int error =
+			luaL_loadstring(L, ("require '" + config + "'").c_str()) ||
+			lua_pcall(L, 0, 0, 0);
+
+		if (error) {
+			LOG_ERROR(lua_tostring(L, -1));
+			lua_pop(L, 1);
+		}
+
+		int width, height;
+		bool fullscreen;
+		std::string boot;
+		std::string updateFunction;
+
+		lua_getglobal(L, "update_function");
+		if (!lua_isstring(L, -1))
+			LOG("update_function should be a string");
+
+		lua_getglobal(L, "boot_script");
+		if (!lua_isstring(L, -1))
+			LOG("boot_script should be a string");
+
+		lua_getglobal(L, "width");
+		if (!lua_isnumber(L, -1))
+			LOG("width should be a int");
+
+		lua_getglobal(L, "height");
+		if (!lua_isnumber(L, -1))
+			LOG("height should be a int");
+
+		lua_getglobal(L, "fullscreen");
+		if (!lua_isboolean(L, -1))
+			LOG("fullscreen should be a boolean");
+
+		fullscreen = lua_toboolean(L, -1);
+		height = lua_tonumber(L, -2);
+		width = lua_tonumber(L, -3);
+		boot = lua_tostring(L, -4);
+		updateFunction = lua_tostring(L, -5);
+		lua_pop(L, 5);
+
+		callback(L);
+
+		init(width, height ,fullscreen);
+
+		error =
+			luaL_loadstring(L, ("require '" + boot + "'").c_str()) ||
+			lua_pcall(L, 0, 0, 0);
+
+		if (error) {
+			LOG_ERROR(lua_tostring(L, -1));
+			lua_pop(L, 1);
+		}
+
+		loop([&updateFunction]() {
+			lua_getglobal(L, updateFunction.c_str());
+			if (!lua_isfunction(L, -1))
+				LOG("update function not a function");
+
+			lua_pcall(L, 0, 0, 0);
+		});
+		
+
+		destroy();
 	}
 
 	static void initGL() {
