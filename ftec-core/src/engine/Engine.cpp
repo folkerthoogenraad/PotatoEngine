@@ -169,11 +169,12 @@ namespace ftec {
 			lua_pop(L, 1);
 		}
 
-		loop([&updateFunction]() {
-			lua_getglobal(L, updateFunction.c_str());
-			if (!lua_isfunction(L, -1))
-				LOG("update function not a function");
+		lua_getglobal(L, updateFunction.c_str());
 
+		if (!lua_isfunction(L, -1))
+			LOG("update function not a function");
+
+		loop([&updateFunction]() {
 			lua_pcall(L, 0, 0, 0);
 		});
 		
