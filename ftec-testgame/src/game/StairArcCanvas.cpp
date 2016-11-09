@@ -1,4 +1,5 @@
-#include "Canvas.h"
+#include "StairArcCanvas.h"
+
 #include "graphics/Graphics2D.h"
 #include "engine/Time.h"
 #include "engine/Input.h"
@@ -10,6 +11,7 @@
 
 namespace ftec {
 
+	//Yea, who cares anyway
 	static StairAlgorithm alg;
 	static float d = 64;
 	static float z = 0;
@@ -64,16 +66,16 @@ namespace ftec {
 		}
 	}
 
-	Canvas::Canvas()
+	StairArcCanvas::StairArcCanvas()
 	{
 		m_Focusable = true;
 	}
 
-	void Canvas::update()
+	void StairArcCanvas::update()
 	{
 		if (!m_Focus)
 			return;
-		auto getClosestIndex = [&]() -> int{
+		auto getClosestIndex = [&]() -> int {
 			int closest = 0;
 			float distance = (alg.m_Vertices.front().m_Position - Input::getMousePosition()).magnitude();
 
@@ -130,7 +132,7 @@ namespace ftec {
 		z = Time::sinTime / 2 + 0.5f;
 	}
 
-	void Canvas::drawSelf(Graphics2D & graphics)
+	void StairArcCanvas::drawSelf(Graphics2D & graphics)
 	{
 		potato::Bounds bounds = getGlobalBounds();
 
@@ -146,7 +148,7 @@ namespace ftec {
 
 		drawStairAlgorithm(graphics, alg);
 
-		graphics.setColor(color32(97,99,60,255));
+		graphics.setColor(color32(97, 99, 60, 255));
 		for (auto &v : alg.m_Vertices) {
 			graphics.drawRectangle(rect2f(
 				v.m_Position.x - 6, v.m_Position.y - 6,

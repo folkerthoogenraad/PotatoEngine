@@ -198,7 +198,10 @@
     <ClInclude Include="src\io\XMLDocument.h" />
     <ClInclude Include="src\io\XMLReader.h" />
     <ClInclude Include="src\logger\log.h" />
+    <ClInclude Include="src\math\circle.h" />
+    <ClInclude Include="src\math\collision.h" />
     <ClInclude Include="src\math\Curve.h" />
+    <ClInclude Include="src\math\line.h" />
     <ClInclude Include="src\math\mat4.h" />
     <ClInclude Include="src\math\math.h" />
     <ClInclude Include="src\math\quaternion.h" />

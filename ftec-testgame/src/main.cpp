@@ -5,9 +5,12 @@
 #include "io/XMLDocument.h"
 #include "io/XMLReader.h"
 
+#include "math/collision.h"
+
 int main(void)
 {
 	ftec::Engine::create<ftec::Razura>();
+
 	WAIT();
 	return 0;
 }

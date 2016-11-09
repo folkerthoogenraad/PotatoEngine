@@ -133,19 +133,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\game\Canvas.cpp" />
     <ClCompile Include="src\game\NoClipCameraEntity.cpp" />
     <ClCompile Include="src\game\Razura.cpp" />
+    <ClCompile Include="src\game\StairArcCanvas.cpp" />
+    <ClCompile Include="src\game\VonoroiCanvas.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\math\StairAlgorithm.cpp" />
     <ClCompile Include="src\math\StairArc.cpp" />
+    <ClCompile Include="src\math\Vonoroi.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\game\Canvas.h" />
     <ClInclude Include="src\game\NoClipCameraEntity.h" />
     <ClInclude Include="src\game\Razura.h" />
+    <ClInclude Include="src\game\StairArcCanvas.h" />
+    <ClInclude Include="src\game\VonoroiCanvas.h" />
     <ClInclude Include="src\math\StairAlgorithm.h" />
     <ClInclude Include="src\math\StairArc.h" />
+    <ClInclude Include="src\math\Vonoroi.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="text.xml">

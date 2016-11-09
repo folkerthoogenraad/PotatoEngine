@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\potato_ui\Button.cpp" />
+    <ClCompile Include="src\potato_ui\Canvas.cpp" />
     <ClCompile Include="src\potato_ui\Checkbox.cpp" />
     <ClCompile Include="src\potato_ui\Dropdown.cpp" />
     <ClCompile Include="src\potato_ui\EditText.cpp" />
@@ -37,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\potato_ui\Button.h" />
+    <ClInclude Include="src\potato_ui\Canvas.h" />
     <ClInclude Include="src\potato_ui\Checkbox.h" />
     <ClInclude Include="src\potato_ui\ContextMenu.h" />
     <ClInclude Include="src\potato_ui\Dropdown.h" />
