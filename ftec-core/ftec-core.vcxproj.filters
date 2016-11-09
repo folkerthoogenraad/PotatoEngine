@@ -257,6 +257,9 @@
     <ClInclude Include="src\math\line.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\triangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default_vertex.glsl" />
