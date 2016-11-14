@@ -1,6 +1,7 @@
 #pragma once
 #include "math/rect.h"
-#include "math/vec4.h"
+#include "math/line.h"
+#include "math/circle.h"
 
 #include "SpriteBatch.h"
 
@@ -24,7 +25,9 @@ namespace ftec {
 
 		rect2i m_ClippingRectangle;
 		color32 m_Color;
-		float m_LineWidth =1.f;
+		float m_LineWidth = 1.f;
+		float m_PointSize = 2.f;
+		int m_CirclePrecision = 64;
 
 		SpriteBatch batch;
 		bool drawing3D = false;
@@ -45,11 +48,14 @@ namespace ftec {
 
 		void drawRectangle(const rect2f& rectangle, bool fill);
 		void drawCircle(const vec2f &center, float radius, bool fill);
+		void drawCircle(const circlef &circle, bool fill);
 		void drawArc(const vec2f &center, float radius, bool fill, float startAngle, float angleLength);
 
 		void drawString(const std::string &text, const vec2f &position);
 		void drawSprite(const Sprite &sprite, const vec2f &position);
 		void drawLine(const vec2f &start, const vec2f &end);
+		void drawLine(const line2f &line);
+		void drawPoint(const vec2f &point);
 
 		void drawClear();
 
@@ -60,6 +66,8 @@ namespace ftec {
 		void setShader(std::shared_ptr<Shader> shader);
 
 		void setLineWidth(float width) { m_LineWidth = width; };
+		void setPointSize(float size) { m_PointSize = size; };
+		void setCirclePrecision(int subs) { m_CirclePrecision = subs; };
 
 		//Font stuff
 		void setVerticalAlign(FontAlign alignment) { m_VAlign = alignment; };

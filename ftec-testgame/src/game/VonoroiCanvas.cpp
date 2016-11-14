@@ -1,22 +1,19 @@
 #include "VonoroiCanvas.h"
 
-#include "math/Vonoroi.h"
+#include "math/Delaunay.h"
+#include "math/triangle.h"
 #include "engine/Input.h"
 
 namespace ftec {
 
-	static Vonoroi von({});
+	static Delaunay del = Delaunay();
+	static std::vector<vec2f> points {};
+
 	static void recreate()
 	{
-		std::vector<vec2f> points;
-		for (int i = 0; i < 500; i++) {
-			points.push_back(vec2f(
-				100 + rand() % 400,
-				100 + rand() % 300
-			));
+		if (points.size() > 0) {
+			del.triangulate(points);
 		}
-
-		von = Vonoroi(std::move(points));
 	}
 
 
@@ -27,28 +24,61 @@ namespace ftec {
 
 	void VonoroiCanvas::update()
 	{
-		if (Input::isKeyPressed(GLFW_KEY_SPACE)) {
+		if (Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_2)) {
+			points.clear();
+			recreate();
+		}
+		if (Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
+			points.push_back(Input::getMousePosition());
 			recreate();
 		}
 	}
 
 	void VonoroiCanvas::drawSelf(Graphics2D & graphics)
 	{
+
+		//Orange
+		//graphics.setColor(color32(255, 99, 60, 255));
+
+		//Background
+		//graphics.setColor(color32(240, 240, 240, 255));
+
+		//Green
+		//graphics.setColor(color32(97, 99, 60, 255));
+
+		//Blue
+		//graphics.setColor(color32(97, 99, 255, 255));
+
+		graphics.setColor(color32(240, 240, 240, 255));
+
+		graphics.drawRectangle(this->getGlobalBounds(), true);
+
+
+		graphics.setColor(color32(97, 99, 60, 255)); 
+		graphics.setPointSize(10);
+		
+		for (int i = 0; i < del.getPointCount(); i++) {
+			graphics.drawPoint(del.getPoint(i));
+		}
+
+
 		graphics.setColor(color32(144, 140, 90, 255));
 		graphics.setLineWidth(1);
 
-		for (int i = 0; i < von.getPointCount() - 1; i++) {
+		LOG(del.getTriangleCount());
 
-			graphics.drawLine(von.getPoint(i), von.getPoint(i + 1));
-		}
+		for (int i = 0; i < del.getTriangleCount(); i++) {
+			graphics.setColor(color32(144, 140, 90, 255));
+			auto triangle = del.getTriangle(i);
 
-		graphics.setColor(color32(97, 99, 60, 255));
-		for (int i = 0; i < von.getPointCount(); i++) {
+			graphics.drawLine(triangle.edgeab());
+			graphics.drawLine(triangle.edgebc());
+			graphics.drawLine(triangle.edgeca());
 
-			graphics.drawRectangle(rect2f(
-				von.getPoint(i).x - 6, von.getPoint(i).y - 6,
-				12, 12
-			), true);
+			graphics.setColor(color32(97, 99, 255, 255));
+			graphics.setCirclePrecision(64);
+			if(Input::isKeyDown(GLFW_KEY_LEFT_SHIFT))
+				graphics.drawCircle(triangle.circumcircle(), false);
 		}
 	}
 }

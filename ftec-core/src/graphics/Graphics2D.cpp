@@ -109,6 +109,11 @@ namespace ftec {
 		}*/
 	}
 
+	void Graphics2D::drawCircle(const circlef & circle, bool fill)
+	{
+		drawCircle(circle.center, circle.radius, fill);
+	}
+
 	void Graphics2D::drawArc(const vec2f & center, float radius, bool fill, float startAngle, float angleLength)
 	{
 		if (drawing3D) {
@@ -118,7 +123,7 @@ namespace ftec {
 		setTexture(m_WhiteTexture);
 		batch.color(m_Color);
 
-		const float steps = 16; //TODO make this dependend on the angleLimit
+		const float steps = m_CirclePrecision; //TODO make this dependend on the angleLimit
 		const float anglePerStep = angleLength / steps;
 
 		if (fill) {
@@ -228,6 +233,21 @@ namespace ftec {
 		batch.vertex(start - normal * lw);
 		batch.vertex(end - normal * lw);
 		batch.vertex(end + normal * lw);
+	}
+
+	void Graphics2D::drawLine(const line2f & line)
+	{
+		drawLine(line.a, line.b);
+	}
+
+	void Graphics2D::drawPoint(const vec2f & point)
+	{
+		drawRectangle(rect2f(
+			point.x - m_PointSize / 2.0f,
+			point.y - m_PointSize / 2.0f,
+			m_PointSize,
+			m_PointSize
+		), true);
 	}
 
 	void Graphics2D::drawClear()

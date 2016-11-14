@@ -36,7 +36,10 @@
     <ClCompile Include="src\game\VonoroiCanvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\Vonoroi.cpp">
+    <ClCompile Include="src\math\Voronoi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Delaunay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,7 +62,10 @@
     <ClInclude Include="src\game\VonoroiCanvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\Vonoroi.h">
+    <ClInclude Include="src\math\Voronoi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Delaunay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
