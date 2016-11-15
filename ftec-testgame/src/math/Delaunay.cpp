@@ -1,7 +1,7 @@
 #include "Delaunay.h"
 
 #include <algorithm>
-#include <set>
+#include <map>
 
 #include "math/collision.h"
 #include "logger/log.h"
@@ -22,16 +22,6 @@ namespace ftec {
 
 		m_Vertices = points;
 
-		sort(m_Vertices.begin(), m_Vertices.end(), 
-			[](const vec2f &a, const vec2f &b) -> bool {
-			if (a.x > b.x)
-				return true;
-			if (a.x == b.x)
-				return a.y > b.y;
-			else
-				return false;
-		});
-
 		vec2f minPosition = m_Vertices.front();
 		vec2f maxPosition = minPosition;
 
@@ -43,12 +33,18 @@ namespace ftec {
 			maxPosition.y = max(v.y, maxPosition.y);
 		}
 
+		{
+			vec2f delta = maxPosition - minPosition;
+			m_BoundingBox = rect2f(minPosition.x, minPosition.y, delta.x, delta.y);
+		}
+
+		//Hacky fix for edge cases
+		//Doesn't always work, need to find a way to get this to always work
 		float m = (maxPosition - minPosition).magnitude();
-		minPosition -= m;
-		maxPosition += m;
+		minPosition -= 10 * m;
+		maxPosition += 10 * m;
 
 		vec2f delta = maxPosition - minPosition;
-
 
 		m_Vertices.push_back(minPosition);
 		m_Vertices.push_back(minPosition + vec2f(delta.x * 2, 0));
@@ -65,7 +61,7 @@ namespace ftec {
 			std::vector<TriangleRef> badTriangles;
 
 			//Resulting polygon
-			std::vector<EdgeRef> polygon;
+			std::map<EdgeRef, int> polygon;
 
 			//Find all bad triangles
 			for (auto &t : m_Triangles) {
@@ -74,17 +70,18 @@ namespace ftec {
 					m_Vertices[t.b],
 					m_Vertices[t.c]
 				);
-				if(contains(tr.circumcircle(), v)){
+				if (contains(tr.circumcircle(), v)) {
 					badTriangles.push_back(t);
 
-					polygon.push_back({ t.a, t.b });
-					polygon.push_back({ t.b, t.c });
-					polygon.push_back({ t.c, t.a });
+					//If the int is > 1, its a shared edge
+					polygon[{ t.a, t.b }]++;
+					polygon[{ t.b, t.c }]++;
+					polygon[{ t.c, t.a }]++;
 				}
 			}
 
 			//Remove the badTriangles
-			m_Triangles.erase(std::remove_if(m_Triangles.begin(), m_Triangles.end(), 
+			m_Triangles.erase(std::remove_if(m_Triangles.begin(), m_Triangles.end(),
 				[&badTriangles](TriangleRef &t) {
 				for (auto &tr : badTriangles) {
 					if (tr == t)
@@ -93,33 +90,12 @@ namespace ftec {
 				return false;
 			}), m_Triangles.end());
 
-
-			//Shared edges
-			std::vector<EdgeRef> badEdges;
-			for (auto i = polygon.begin(); i != polygon.end(); ++i) {
-				for (auto j = polygon.begin(); j != polygon.end(); ++j) {
-					if (i == j) continue;
-					if (*i == *j) {
-						badEdges.push_back(*i);
-						badEdges.push_back(*j);
-					}
-				}
-			}
-
-			//Remove the badEdges
-			polygon.erase(std::remove_if(polygon.begin(), polygon.end(),
-				[&badEdges](EdgeRef &t) {
-				for (auto &tr : badEdges) {
-					if (tr == t)
-						return true;
-				}
-				return false;
-			}), polygon.end());
-
 			for (auto &e : polygon) {
-				m_Triangles.push_back({
-					e.a, e.b, i
-				});
+				if (e.second == 1) {
+					m_Triangles.push_back({
+						e.first.a, e.first.b, i
+					});
+				}
 			}
 		}
 
@@ -132,7 +108,7 @@ namespace ftec {
 			m_Vertices.pop_back();
 
 	}
-	triangle2f Delaunay::getTriangle(int index)
+	triangle2f Delaunay::getTriangle(int index) const
 	{
 		TriangleRef ref = getTriangleRef(index);
 

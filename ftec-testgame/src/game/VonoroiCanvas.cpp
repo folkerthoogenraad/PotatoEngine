@@ -1,18 +1,21 @@
 #include "VonoroiCanvas.h"
 
+#include "math/Voronoi.h"
 #include "math/Delaunay.h"
 #include "math/triangle.h"
 #include "engine/Input.h"
 
 namespace ftec {
 
-	static Delaunay del = Delaunay();
+	static Voronoi voronoi;
 	static std::vector<vec2f> points {};
 
 	static void recreate()
 	{
 		if (points.size() > 0) {
+			Delaunay del;
 			del.triangulate(points);
+			voronoi.create(del);
 		}
 	}
 
@@ -30,6 +33,10 @@ namespace ftec {
 		}
 		if (Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
 			points.push_back(Input::getMousePosition());
+			recreate();
+		}
+		if (Input::isMouseButtonDown(GLFW_MOUSE_BUTTON_1)) {
+			points.back() = Input::getMousePosition();
 			recreate();
 		}
 		if (Input::isKeyTyped(GLFW_KEY_ENTER)) {
@@ -74,30 +81,31 @@ namespace ftec {
 
 		graphics.drawRectangle(this->getGlobalBounds(), true);
 
+		graphics.setColor(color32(220, 220, 220, 255));
+		graphics.drawRectangle(voronoi.getBoundingBox(), true);
 
-		graphics.setColor(color32(97, 99, 60, 255)); 
+
 		graphics.setPointSize(10);
 		
-		for (int i = 0; i < del.getPointCount(); i++) {
-			graphics.drawPoint(del.getPoint(i));
-		}
+		for (int i = 0; i < voronoi.getPointCount(); i++) {
+			graphics.setColor(color32(97, 99, 60, 255));
+			graphics.drawPoint(voronoi.getPoint(i));
 
-
-		graphics.setColor(color32(144, 140, 90, 255));
-		graphics.setLineWidth(1);
-
-		for (int i = 0; i < del.getTriangleCount(); i++) {
 			graphics.setColor(color32(144, 140, 90, 255));
-			auto triangle = del.getTriangle(i);
-
-			graphics.drawLine(triangle.edgeab());
-			graphics.drawLine(triangle.edgebc());
-			graphics.drawLine(triangle.edgeca());
-
-			graphics.setColor(color32(97, 99, 255, 255));
-			graphics.setCirclePrecision(64);
-			if(Input::isKeyDown(GLFW_KEY_LEFT_SHIFT))
-				graphics.drawCircle(triangle.circumcircle(), false);
+			graphics.setLineWidth(1);
+			
+			const auto &v = voronoi.getNeighbours(i);
+			for (int j : v) {
+				line2f line(
+					voronoi.getPoint(i),
+					voronoi.getPoint(j)
+				);
+				graphics.drawLine(line);
+				//graphics.drawLine(line.normal());
+			}
 		}
+
+
+
 	}
 }

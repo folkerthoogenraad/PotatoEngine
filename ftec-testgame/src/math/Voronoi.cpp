@@ -1,10 +1,30 @@
 #include "Voronoi.h"
+#include "Delaunay.h"
 
 namespace ftec {
-	Voronoi::Voronoi(std::vector<vec2f> points)
-		: m_Points(std::move(points))
+
+	Voronoi::Voronoi(const Delaunay & delaunay)
 	{
+		create(delaunay);
+	}
+
+	void Voronoi::create(const Delaunay & delaunay)
+	{
+		//TODO less memory copying
+		m_Points = delaunay.getPoints();
+		m_Edges.clear();
 		m_Edges.resize(m_Points.size());
+
+
+		for (int i = 0; i < delaunay.getTriangleCount(); ++i) {
+			const TriangleRef &ref = delaunay.getTriangleRef(i);
+
+			addNeighbour(ref.a, ref.b);
+			addNeighbour(ref.b, ref.c);
+			addNeighbour(ref.c, ref.a);
+		}
+
+		m_BoundingBox = delaunay.getBoundingBox();
 	}
 
 	const vec2f & ftec::Voronoi::getPoint(int index) const
@@ -17,7 +37,7 @@ namespace ftec {
 		return m_Points.size();
 	}
 
-	const std::set<int>& Voronoi::getNeighbours(int index)
+	const std::set<int>& Voronoi::getNeighbours(int index) const
 	{
 		return m_Edges.at(index);
 	}

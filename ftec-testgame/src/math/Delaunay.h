@@ -27,18 +27,22 @@ namespace ftec {
 		std::vector<vec2f> m_Vertices;
 
 		std::vector<TriangleRef> m_Triangles;
+
+		rect2f m_BoundingBox;
 	public:
 		Delaunay() {}
 		Delaunay(std::vector<vec2f> points);
 
 		void triangulate(std::vector<vec2f> points);
 
-		int getPointCount() { return m_Vertices.size(); };
-		const vec2f &getPoint(int index) { return m_Vertices[index]; }
+		int getPointCount() const { return m_Vertices.size(); };
+		const vec2f &getPoint(int index) const { return m_Vertices[index]; }
+		const std::vector<vec2f> &getPoints() const { return m_Vertices; }
 
-		int getTriangleCount() { return m_Triangles.size(); }
-		TriangleRef getTriangleRef(int index) { return m_Triangles[index]; }
-		triangle2f getTriangle(int index);
+		int getTriangleCount() const { return m_Triangles.size(); }
+		const TriangleRef &getTriangleRef(int index) const { return m_Triangles[index]; }
+		triangle2f getTriangle(int index) const;
 
+		const rect2f &getBoundingBox() const { return m_BoundingBox; }
 	};
 }
