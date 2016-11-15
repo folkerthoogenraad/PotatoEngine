@@ -22,6 +22,16 @@ namespace ftec {
 
 		m_Vertices = points;
 
+		sort(m_Vertices.begin(), m_Vertices.end(), 
+			[](const vec2f &a, const vec2f &b) -> bool {
+			if (a.x > b.x)
+				return true;
+			if (a.x == b.x)
+				return a.y > b.y;
+			else
+				return false;
+		});
+
 		vec2f minPosition = m_Vertices.front();
 		vec2f maxPosition = minPosition;
 

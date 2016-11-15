@@ -32,6 +32,27 @@ namespace ftec {
 			points.push_back(Input::getMousePosition());
 			recreate();
 		}
+		if (Input::isKeyTyped(GLFW_KEY_ENTER)) {
+			points.clear();
+			for (int i = 0; i < 50; i++) {
+				points.push_back(vec2f(
+					rand() % 512 + 256,
+					rand() % 512 + 128
+				));
+			}
+			recreate();
+		}
+		if (Input::isKeyTyped(GLFW_KEY_C)) {
+			points.clear();
+			for (int x = 0; x < 18; x++) {
+				for (int y = 0; y < 10; y++) {
+					points.push_back(vec2f(
+						x * 64 + 64, y * 64 + 64
+					));
+				}
+			}
+			recreate();
+		}
 	}
 
 	void VonoroiCanvas::drawSelf(Graphics2D & graphics)
@@ -64,8 +85,6 @@ namespace ftec {
 
 		graphics.setColor(color32(144, 140, 90, 255));
 		graphics.setLineWidth(1);
-
-		LOG(del.getTriangleCount());
 
 		for (int i = 0; i < del.getTriangleCount(); i++) {
 			graphics.setColor(color32(144, 140, 90, 255));
