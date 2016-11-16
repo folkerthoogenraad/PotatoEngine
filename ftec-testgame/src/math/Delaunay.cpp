@@ -20,17 +20,17 @@ namespace ftec {
 
 		m_Triangles.clear();
 
-		m_Vertices = points;
-
-		vec2f minPosition = m_Vertices.front();
+		vec2f minPosition = points.front();
 		vec2f maxPosition = minPosition;
 
-		for (auto & v : m_Vertices) {
+		for (auto & v : points) {
 			minPosition.x = min(v.x, minPosition.x);
 			minPosition.y = min(v.y, minPosition.y);
 
 			maxPosition.x = max(v.x, maxPosition.x);
 			maxPosition.y = max(v.y, maxPosition.y);
+
+			m_Vertices.push_back({ v, false });
 		}
 
 		{
@@ -46,9 +46,9 @@ namespace ftec {
 
 		vec2f delta = maxPosition - minPosition;
 
-		m_Vertices.push_back(minPosition);
-		m_Vertices.push_back(minPosition + vec2f(delta.x * 2, 0));
-		m_Vertices.push_back(minPosition + vec2f(0, delta.y * 2));
+		m_Vertices.push_back({ minPosition, false });
+		m_Vertices.push_back({ minPosition + vec2f(delta.x * 2, 0) });
+		m_Vertices.push_back({ minPosition + vec2f(0, delta.y * 2) });
 
 		TriangleRef superTriangle = { (int)m_Vertices.size() - 1, (int)m_Vertices.size() - 2, (int)m_Vertices.size() - 3 };
 
@@ -56,7 +56,7 @@ namespace ftec {
 		m_Triangles.push_back(superTriangle);
 
 		for (int i = 0; i < m_Vertices.size() - 3; i++) { //Ignore the last few vertices
-			const vec2f &v = m_Vertices[i];
+			const vec2f &v = m_Vertices[i].m_Vertex;
 
 			std::vector<TriangleRef> badTriangles;
 
@@ -66,9 +66,9 @@ namespace ftec {
 			//Find all bad triangles
 			for (auto &t : m_Triangles) {
 				triangle2f tr = triangle2f(
-					m_Vertices[t.a],
-					m_Vertices[t.b],
-					m_Vertices[t.c]
+					m_Vertices[t.a].m_Vertex,
+					m_Vertices[t.b].m_Vertex,
+					m_Vertices[t.c].m_Vertex
 				);
 				if (contains(tr.circumcircle(), v)) {
 					badTriangles.push_back(t);
@@ -96,6 +96,17 @@ namespace ftec {
 						e.first.a, e.first.b, i
 					});
 				}
+			}
+		}
+
+		//Should be one loop, this and the remove_if
+
+		//Count all the connected hull triangles
+		for (auto &t : m_Triangles) {
+			if(superTriangle.contains(t.a) || superTriangle.contains(t.b) || superTriangle.contains(t.c)){
+				m_Vertices[t.a].m_Hull = true;
+				m_Vertices[t.b].m_Hull = true;
+				m_Vertices[t.c].m_Hull = true;
 			}
 		}
 

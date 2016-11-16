@@ -4,6 +4,8 @@
 #include "vec3.h"
 #include "vec4.h"
 #include "Curve.h"
+#include <vector>
+#include <algorithm>
 
 namespace ftec {
 
@@ -113,5 +115,16 @@ namespace ftec {
 	T ceil(T a)
 	{
 		return std::ceil(a);
+	}
+
+	template <typename T>
+	void polarSort(std::vector<vec2<T>> &v, const vec2<T> center)
+	{
+		std::sort(v.begin(), v.end(),
+			[&center](const vec2<T> &a, const vec2<T> &b) {
+			vec2<T> aa = (a - center).normalize();
+			vec2<T> bb = (b - center).normalize();
+			return atan2(aa.y, aa.x) < atan2(bb.y, bb.x);
+		});
 	}
 }

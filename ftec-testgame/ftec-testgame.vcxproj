@@ -149,6 +149,7 @@
     <ClInclude Include="src\game\StairArcCanvas.h" />
     <ClInclude Include="src\game\VonoroiCanvas.h" />
     <ClInclude Include="src\math\Delaunay.h" />
+    <ClInclude Include="src\math\lego2.h" />
     <ClInclude Include="src\math\StairAlgorithm.h" />
     <ClInclude Include="src\math\StairArc.h" />
     <ClInclude Include="src\math\Voronoi.h" />

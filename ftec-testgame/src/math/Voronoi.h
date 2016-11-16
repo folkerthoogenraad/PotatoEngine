@@ -5,16 +5,18 @@
 #include <map>
 #include "math/vec2.h"
 #include "math/rect.h"
+#include "Delaunay.h"
+#include "lego2.h"
 
 namespace ftec {
-	class Delaunay;
 
 	class Voronoi {
-		std::vector<vec2f> m_Points;
+		std::vector<ConvexVertex> m_Points;
+	public:
+		std::vector<lego2f> m_Legos;
 
 		//The edge indices
 		std::vector<std::set<int>> m_Edges;
-
 
 		//Bounding box
 		rect2f m_BoundingBox;
@@ -26,6 +28,10 @@ namespace ftec {
 
 		const vec2f &getPoint(int index) const;
 		int getPointCount() const;
+		const lego2f &getLego(int index) const;
+
+
+		bool isOnHull(int index) const { return m_Points[index].m_Hull; }
 
 		const std::set<int> &getNeighbours(int index) const;
 		const rect2f &getBoundingBox() const { return m_BoundingBox; }

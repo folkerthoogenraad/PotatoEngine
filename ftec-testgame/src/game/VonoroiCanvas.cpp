@@ -4,6 +4,11 @@
 #include "math/Delaunay.h"
 #include "math/triangle.h"
 #include "engine/Input.h"
+#include "engine/Time.h"
+#include "engine/Engine.h"
+
+#include "math/lego2.h"
+
 
 namespace ftec {
 
@@ -35,16 +40,16 @@ namespace ftec {
 			points.push_back(Input::getMousePosition());
 			recreate();
 		}
-		if (Input::isMouseButtonDown(GLFW_MOUSE_BUTTON_1)) {
+		if (Input::isMouseButtonDown(GLFW_MOUSE_BUTTON_3)) {
 			points.back() = Input::getMousePosition();
 			recreate();
 		}
 		if (Input::isKeyTyped(GLFW_KEY_ENTER)) {
 			points.clear();
-			for (int i = 0; i < 50; i++) {
+			for (int i = 0; i < 200; i++) {
 				points.push_back(vec2f(
-					rand() % 512 + 256,
-					rand() % 512 + 128
+					rand() % (int)(Engine::getWindow().getWidth() - 32) + 16,
+					rand() % (int)(Engine::getWindow().getHeight() - 32) + 16
 				));
 			}
 			recreate();
@@ -77,32 +82,63 @@ namespace ftec {
 		//Blue
 		//graphics.setColor(color32(97, 99, 255, 255));
 
+		graphics.setPointType(Graphics2D::PointType::CIRCLE);
+		graphics.setPointSize(10);
+
 		graphics.setColor(color32(240, 240, 240, 255));
 
 		graphics.drawRectangle(this->getGlobalBounds(), true);
+		
 
 		graphics.setColor(color32(220, 220, 220, 255));
 		graphics.drawRectangle(voronoi.getBoundingBox(), true);
 
-
-		graphics.setPointSize(10);
-		
 		for (int i = 0; i < voronoi.getPointCount(); i++) {
+
+			auto &l = voronoi.getLego(i);
+
+			if (l.m_Vertices.size() > 1) {
+				graphics.setLineWidth(2);
+				graphics.setColor(color32(97, 99, 255, 255));
+				for (int li = 1; li < l.m_Vertices.size(); ++li) {
+					graphics.drawLine(l.m_Vertices[li - 1], l.m_Vertices[li]);
+				}
+				graphics.drawLine(l.m_Vertices.front(), l.m_Vertices.back());
+			}
+
+			if (!Input::isKeyDown(GLFW_KEY_Z))
+				continue;
+
+			if (Input::isKeyDown(GLFW_KEY_SPACE)) {
+				graphics.setColor(color32(144, 140, 90, 255));
+				graphics.setLineWidth(1);
+
+				const auto &v = voronoi.getNeighbours(i);
+
+				for (int j : v) {
+					line2f line(
+						voronoi.getPoint(i),
+						voronoi.getPoint(j)
+					);
+					graphics.drawLine(line);
+				}
+			}
+
+
 			graphics.setColor(color32(97, 99, 60, 255));
+
+			//if(voronoi.isOnHull(i))
+			//	graphics.setColor(color32(255, 99, 60, 255));
+
 			graphics.drawPoint(voronoi.getPoint(i));
 
-			graphics.setColor(color32(144, 140, 90, 255));
-			graphics.setLineWidth(1);
-			
-			const auto &v = voronoi.getNeighbours(i);
-			for (int j : v) {
-				line2f line(
-					voronoi.getPoint(i),
-					voronoi.getPoint(j)
-				);
-				graphics.drawLine(line);
-				//graphics.drawLine(line.normal());
+			for (auto v : l.m_Vertices)
+			{
+				graphics.setColor(color32(255, 99, 255, 255));
+				graphics.drawPoint(v);
 			}
+
+
 		}
 
 

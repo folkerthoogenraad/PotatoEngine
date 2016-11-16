@@ -242,12 +242,18 @@ namespace ftec {
 
 	void Graphics2D::drawPoint(const vec2f & point)
 	{
-		drawRectangle(rect2f(
-			point.x - m_PointSize / 2.0f,
-			point.y - m_PointSize / 2.0f,
-			m_PointSize,
-			m_PointSize
-		), true);
+		if (m_PointType == PointType::CIRCLE) {
+			drawCircle(point,m_PointSize / 2.0f, true);
+		}
+		else {
+			drawRectangle(rect2f(
+				point.x - m_PointSize / 2.0f,
+				point.y - m_PointSize / 2.0f,
+				m_PointSize,
+				m_PointSize
+			), true);
+		}
+		
 	}
 
 	void Graphics2D::drawClear()

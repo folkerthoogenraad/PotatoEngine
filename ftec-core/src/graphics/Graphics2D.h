@@ -15,6 +15,10 @@ namespace ftec {
 	enum class FontAlign;
 
 	class Graphics2D {
+	public:
+		enum class PointType {
+			RECTANGLE, CIRCLE
+		};
 	protected:
 		//White texture for white shading (thanks obama)
 		std::shared_ptr<Texture> m_WhiteTexture;
@@ -27,6 +31,7 @@ namespace ftec {
 		color32 m_Color;
 		float m_LineWidth = 1.f;
 		float m_PointSize = 2.f;
+		PointType m_PointType = PointType::RECTANGLE;
 		int m_CirclePrecision = 64;
 
 		SpriteBatch batch;
@@ -35,7 +40,7 @@ namespace ftec {
 		FontAlign m_VAlign;
 		FontAlign m_HAlign;
 	public:
-		int calls = 0;
+		int calls = 0;//TODO is this needed?
 	public:
 		Graphics2D();
 		~Graphics2D();
@@ -65,8 +70,9 @@ namespace ftec {
 		void setColor(const color32 &color);
 		void setShader(std::shared_ptr<Shader> shader);
 
-		void setLineWidth(float width) { m_LineWidth = width; };
-		void setPointSize(float size) { m_PointSize = size; };
+		void setLineWidth(float width) { m_LineWidth = width; }
+		void setPointSize(float size) { m_PointSize = size; }
+		void setPointType(PointType type) { m_PointType = type; }
 		void setCirclePrecision(int subs) { m_CirclePrecision = subs; };
 
 		//Font stuff

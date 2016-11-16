@@ -68,6 +68,9 @@
     <ClInclude Include="src\math\Delaunay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\lego2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="text.xml" />

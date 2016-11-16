@@ -22,9 +22,13 @@ namespace ftec {
 		bool operator==(const EdgeRef &other) const;
 		bool operator<(const EdgeRef &other) const;
 	};
+	struct ConvexVertex {
+		vec2f m_Vertex;
+		bool m_Hull;
+	};
 
 	class Delaunay {
-		std::vector<vec2f> m_Vertices;
+		std::vector<ConvexVertex> m_Vertices;
 
 		std::vector<TriangleRef> m_Triangles;
 
@@ -36,8 +40,8 @@ namespace ftec {
 		void triangulate(std::vector<vec2f> points);
 
 		int getPointCount() const { return m_Vertices.size(); };
-		const vec2f &getPoint(int index) const { return m_Vertices[index]; }
-		const std::vector<vec2f> &getPoints() const { return m_Vertices; }
+		const vec2f &getPoint(int index) const { return m_Vertices[index].m_Vertex; }
+		const std::vector<ConvexVertex> &getVertices() const { return m_Vertices; }
 
 		int getTriangleCount() const { return m_Triangles.size(); }
 		const TriangleRef &getTriangleRef(int index) const { return m_Triangles[index]; }

@@ -34,12 +34,37 @@ namespace ftec {
 
 		line2<T> normal() const
 		{
-			return line2<T>(center(), center() + perp());
+			vec2<T> p = perp();
+			return line2<T>(center(), center() + p);
+		}
+
+		//The distance from point to line in line units
+		T distanceFrom(const vec2<T> p)
+		{
+			return vec2<T>::dot(p - a, perp());
 		}
 
 		T length() const
 		{
 			return distance(a, b);
+		}
+
+		line2<T> clone()
+		{
+			return line2<T>(*this);
+		}
+
+		line2<T> flipped()
+		{
+			return clone().flip();
+		}
+
+		line2<T> &flip()
+		{
+			auto aa= a;
+			a = b;
+			b = aa;
+			return *this;
 		}
 	};
 
