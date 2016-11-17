@@ -3,8 +3,10 @@
 #include <algorithm>
 #include <map>
 
-#include "math/collision.h"
 #include "logger/log.h"
+
+#include "math/helpers.h"
+#include "math/collision.h"
 
 namespace ftec {
 
@@ -129,26 +131,26 @@ namespace ftec {
 			getPoint(ref.c));
 	}
 
-	bool TriangleRef::operator==(const TriangleRef & other) const
+	bool Delaunay::TriangleRef::operator==(const Delaunay::TriangleRef & other) const
 	{
 		//TODO order
 		return a == other.a && b == other.b && c == other.c;
 	}
 
-	bool TriangleRef::contains(int i)
+	bool Delaunay::TriangleRef::contains(int i)
 	{
 		return a == i || b == i || c == i;
 	}
-	EdgeRef::EdgeRef(int a, int b)
+	Delaunay::EdgeRef::EdgeRef(int a, int b)
 		: a(min(a,b)), b(max(a,b)) //Sort this shit
 	{ }
 
-	bool EdgeRef::contains(int i)
+	bool Delaunay::EdgeRef::contains(int i)
 	{
 		return a == i || b == i;
 	}
 
-	bool EdgeRef::operator==(const EdgeRef & other) const
+	bool Delaunay::EdgeRef::operator==(const Delaunay::EdgeRef & other) const
 	{
 		if (a == other.a && b == other.b)
 			return true;
@@ -156,7 +158,7 @@ namespace ftec {
 			return true;
 		return false;
 	}
-	bool EdgeRef::operator<(const EdgeRef & other) const
+	bool Delaunay::EdgeRef::operator<(const Delaunay::EdgeRef & other) const
 	{
 		if (a < other.a)
 			return true;

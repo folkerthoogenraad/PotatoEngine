@@ -1,7 +1,7 @@
 #pragma once
 
-#include "vec2.h"
 #include "collision.h"
+#include "vec2.h"
 
 namespace ftec {
 

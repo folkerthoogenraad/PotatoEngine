@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math/line.h"
-#include "math/vec2.h"
+#include "math/collision.h"
+#include "math/helpers.h"
 #include <set>
 
 namespace ftec {
@@ -11,65 +11,50 @@ namespace ftec {
 		vec2<T> m_Center;
 	public:
 		//Make these private and make use of constructor?
-		std::vector<line2<T>> m_Edges;
+
+		//The vertices generated
 		std::vector<vec2<T>> m_Vertices;
 
 		//Recalculates the vertices
-		void create()
+		void create(std::vector<line2<T>> edges)
 		{
-			setCenter(m_Center);
+			//Flip the edges, if needed
+			for (line2<T> &edge : edges) {
+				if (edge.distanceFrom(m_Center) < 0) {
+					edge.flip();
+				}
+			}
 
-			std::set<vec2<T>> vertices;
-#if 0
+			//This might not be needed
 			std::vector<vec2<T>> vertices;
-#endif
+			vertices.reserve(edges.size() * edges.size());
+			
 			m_Vertices.clear();
 
 			//Generate ALL the possible points :')
-			for (auto i = m_Edges.begin(); i != m_Edges.end(); ++i) {
-				for (auto j = m_Edges.begin(); j != m_Edges.end(); ++j) {
+			for (auto i = edges.begin(); i != edges.end(); ++i) {
+				for (auto j = edges.begin(); j != edges.end(); ++j) {
 					if (i == j)
 						continue;
 					
 					if (intersects(*i, *j)) {
-						vertices.insert({
-							intersection(*i, *j)
-						});
-#if 0
 						vertices.push_back(intersection(*i, *j));
-#endif
 					}
 				}
 			}
 
 			//Filter all the stupid edges
-
-			for (auto &e : m_Edges) {
-				for (auto i = vertices.begin(); i != vertices.end();) {
-					//Yes, rounding errors are THIS bad
-					//Should be fixed
-					if (e.distanceFrom(*i) < -0.05) {
-						 i =vertices.erase(i);
-					}
-					else {
-						++i;
-					}
-				}
-			}
-
-			
-#if 0
 			vertices.erase(std::remove_if(vertices.begin(), vertices.end(), 
-				[this](const vec2<T> v) {
-				for (auto &e : m_Edges) {
-					return e.distanceFrom(v) < -0.05;
+				[&edges](const vec2<T> v) {
+				for (auto &e : edges) {
+					if (e.distanceFrom(v) < -0.05)
+						return true;
 				}
+				return false;
 			}), vertices.end());
-#endif
-			
-			for (auto &v : vertices) {
-				m_Vertices.push_back(v);
-			}
+
+			//TODO fix that this is not needed
+			m_Vertices = vertices;
 
 			polarSort(m_Vertices, m_Center);
 		}
@@ -78,11 +63,6 @@ namespace ftec {
 		void setCenter(vec2<T> center) 
 		{
 			m_Center = center;
-			for (line2<T> &edge : m_Edges) {
-				if (edge.distanceFrom(center) < 0) {
-					edge.flip();
-				}
-			}
 		}
 		const vec2<T> &getCenter() { return m_Center; }
 	};

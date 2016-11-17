@@ -20,7 +20,7 @@ namespace ftec {
 
 
 		for (int i = 0; i < delaunay.getTriangleCount(); ++i) {
-			const TriangleRef &ref = delaunay.getTriangleRef(i);
+			const Delaunay::TriangleRef &ref = delaunay.getTriangleRef(i);
 
 			addNeighbour(ref.a, ref.b);
 			addNeighbour(ref.b, ref.c);
@@ -36,22 +36,23 @@ namespace ftec {
 
 			lego.setCenter(m_Points[i].m_Vertex);
 
+			std::vector<line2f> edges;
 
 			const auto &ns = this->getNeighbours(i);
 
 			for (auto &n : ns) {
-				lego.m_Edges.push_back(
+				edges.push_back(
 					line2f(m_Points[i].m_Vertex,
 					m_Points[n].m_Vertex).normal()
 				);
 			}
 
-			lego.m_Edges.push_back({ m_BoundingBox.topleft(), m_BoundingBox.topright() });
-			lego.m_Edges.push_back({ m_BoundingBox.topright(), m_BoundingBox.bottomright() });
-			lego.m_Edges.push_back({ m_BoundingBox.bottomright(), m_BoundingBox.bottomleft() });
-			lego.m_Edges.push_back({ m_BoundingBox.bottomleft(), m_BoundingBox.topleft() });
+			edges.push_back({ m_BoundingBox.topleft(), m_BoundingBox.topright() });
+			edges.push_back({ m_BoundingBox.topright(), m_BoundingBox.bottomright() });
+			edges.push_back({ m_BoundingBox.bottomright(), m_BoundingBox.bottomleft() });
+			edges.push_back({ m_BoundingBox.bottomleft(), m_BoundingBox.topleft() });
 
-			lego.create();
+			lego.create(std::move(edges));
 
 			m_Legos.push_back(lego);
 		}

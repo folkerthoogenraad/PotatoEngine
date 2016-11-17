@@ -2,7 +2,7 @@
 
 #include "math/Voronoi.h"
 #include "math/Delaunay.h"
-#include "math/triangle.h"
+#include "math/triangle2.h"
 #include "engine/Input.h"
 #include "engine/Time.h"
 #include "engine/Engine.h"

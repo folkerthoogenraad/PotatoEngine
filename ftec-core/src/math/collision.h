@@ -1,8 +1,8 @@
 #pragma once
 
-#include "math.h"
+#include "vec2.h"
+#include "line2.h"
 #include "circle.h"
-#include "line.h"
 
 namespace ftec {
 

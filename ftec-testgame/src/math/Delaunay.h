@@ -1,33 +1,37 @@
 #pragma once
 
 #include <vector>
-#include "math/math.h"
-#include "math/triangle.h"
+#include "math/triangle2.h"
+#include "math/rect.h"
 
 namespace ftec {
 
-	struct TriangleRef {
-		int a, b, c;
-		
-		bool contains(int i);
-		bool operator==(const TriangleRef &other) const;
-	};
-	struct EdgeRef {
-		int a, b;
-
-	public:
-		EdgeRef(int a, int b);
-
-		bool contains(int i);
-		bool operator==(const EdgeRef &other) const;
-		bool operator<(const EdgeRef &other) const;
-	};
+	//Imo, this is very stupid and it looks dull
 	struct ConvexVertex {
 		vec2f m_Vertex;
 		bool m_Hull;
 	};
 
 	class Delaunay {
+	public:
+		struct TriangleRef {
+			int a, b, c;
+
+			bool contains(int i);
+			bool operator==(const TriangleRef &other) const;
+		};
+		struct EdgeRef {
+			int a, b;
+
+		public:
+			EdgeRef(int a, int b);
+
+			bool contains(int i);
+			bool operator==(const EdgeRef &other) const;
+			bool operator<(const EdgeRef &other) const;
+		};
+
+	private:
 		std::vector<ConvexVertex> m_Vertices;
 
 		std::vector<TriangleRef> m_Triangles;

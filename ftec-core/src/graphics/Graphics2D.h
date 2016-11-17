@@ -1,6 +1,6 @@
 #pragma once
+#include "math/line2.h"
 #include "math/rect.h"
-#include "math/line.h"
 #include "math/circle.h"
 
 #include "SpriteBatch.h"

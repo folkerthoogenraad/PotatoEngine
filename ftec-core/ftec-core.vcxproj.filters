@@ -254,10 +254,19 @@
     <ClInclude Include="src\math\circle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\line.h">
+    <ClInclude Include="src\math\line2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\triangle.h">
+    <ClInclude Include="src\math\triangle2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\triangle3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\line3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
