@@ -35,9 +35,13 @@ namespace ftec {
 			m_Vertices.push_back({ v, false });
 		}
 
+		//TODO for the bounding super triangle, i should use a better bounding triangle
+		//if the bounding box is very slim, the triangle wont caputure all the points and the thing will fail
+		//This is a know issue, should be fixed very very soon (~ish)
+
 		{
 			vec2f delta = maxPosition - minPosition;
-			m_BoundingBox = rect2f(minPosition.x, minPosition.y, delta.x, delta.y);
+			m_BoundingBox = rectf(minPosition.x, minPosition.y, delta.x, delta.y);
 		}
 
 		//Hacky fix for edge cases

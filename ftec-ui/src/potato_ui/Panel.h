@@ -15,7 +15,7 @@ namespace ftec {
 
 namespace potato {
 
-	typedef ftec::rect2i Bounds;
+	typedef ftec::recti Bounds;
 	typedef ftec::vec2i Size;
 
 	struct Insets{

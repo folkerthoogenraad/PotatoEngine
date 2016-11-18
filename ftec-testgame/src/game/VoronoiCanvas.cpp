@@ -1,4 +1,4 @@
-#include "VonoroiCanvas.h"
+#include "VoronoiCanvas.h"
 
 #include "math/Voronoi.h"
 #include "math/Delaunay.h"
@@ -25,12 +25,12 @@ namespace ftec {
 	}
 
 
-	VonoroiCanvas::VonoroiCanvas()
+	VoronoiCanvas::VoronoiCanvas()
 	{
 		recreate();
 	}
 
-	void VonoroiCanvas::update()
+	void VoronoiCanvas::update()
 	{
 		if (Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_2)) {
 			points.clear();
@@ -67,7 +67,7 @@ namespace ftec {
 		}
 	}
 
-	void VonoroiCanvas::drawSelf(Graphics2D & graphics)
+	void VoronoiCanvas::drawSelf(Graphics2D & graphics)
 	{
 
 		//Orange

@@ -25,7 +25,8 @@
 #include "graphics/Renderer.h"
 
 #include "potato_ui/UILoader.h"
-#include "VonoroiCanvas.h"
+#include "VoronoiCanvas.h"
+#include "Voronoi3DEntity.h"
 
 namespace ftec {
 
@@ -49,7 +50,8 @@ namespace ftec {
 
 			ui->setRoot(
 				//potato::UILoader::load("text.xml")
-				std::make_shared<VonoroiCanvas>()
+				//std::make_shared<VoronoiCanvas>()
+				std::make_shared<potato::SceneView>()
 			);
 		}
 	
@@ -58,6 +60,7 @@ namespace ftec {
 			std::shared_ptr<Scene> scene = std::make_shared<Scene>();
 			Engine::setScene(scene);
 
+#if 0
 			scene->m_Light.m_Direction = vec3f(1,-0.4f,-1).normalize();
 
 			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
@@ -80,8 +83,9 @@ namespace ftec {
 					scene->addMesh(vec3f(x * 2.5, 0, y * 2.5), sphere, material);
 				}
 			}
+#endif
 
-			
+			scene->addEntity(std::make_shared<Voronoi3DEntity>());
 			scene->addEntity(std::make_shared<NoClipCameraEntity>());
 		}
 	}

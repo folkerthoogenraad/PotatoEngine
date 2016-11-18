@@ -106,12 +106,16 @@ namespace ftec {
 
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+		//Reenable for performance reasons, disabled now for other reasons
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_BACK);
 		
 		//glClearColor(.2f, .4f, .8f, 0.f);
-		glClearColor(1.f, 1.f, 1.f, 1.f);
+		//glClearColor(1.f, 1.f, 1.f, 1.f);
 		//glClearColor(.2f, .2f, .2f, 1.f);
+		glClearColor(.0f, .0f, .0f, 1.f);
 		//glClearColor(132.f / 255.f, 119.f / 255.f, 106.f / 255.f, 1.f);
 	}
 }

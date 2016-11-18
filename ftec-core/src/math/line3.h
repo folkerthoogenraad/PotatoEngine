@@ -53,6 +53,15 @@ namespace ftec {
 			return line3<T>(*this);
 		}
 
+		line3<T> &flip()
+		{
+			T temp = a;
+			a = b;
+			b = temp;
+
+			return *this;
+		}
+
 	};
 
 	typedef line3<float> line3f;

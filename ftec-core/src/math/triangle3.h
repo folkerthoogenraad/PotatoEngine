@@ -1,7 +1,7 @@
 #pragma once
 
 #include "collision.h"
-
+#include "line3.h"
 #include "vec3.h"
 
 namespace ftec {
@@ -46,9 +46,24 @@ namespace ftec {
 			);
 		}
 
+		triangle3<T> &flip() {
+			std::swap(a, b);
+			return *this;
+		}
+
 		line3<T> edgeab() const { return line3<T>(a, b); }
 		line3<T> edgebc() const { return line3<T>(b, c); }
 		line3<T> edgeca() const { return line3<T>(c, a); }
+
+		template <typename T>
+		static triangle3<T> unitTriangle()
+		{
+			return triangle3<T>(
+				vec3<T>(-0.5f, 0, -1.f / 3.f*sqrt(0.75)),
+				vec3<T>(0.5f, 0, -1.f / 3.f*sqrt(0.75)),
+				vec3<T>(0, 0, 2.f/3.f*sqrt(0.75))
+				);
+		}
 	};
 
 	typedef triangle3<float> triangle3f;

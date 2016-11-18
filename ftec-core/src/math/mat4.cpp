@@ -1,10 +1,11 @@
 #include "mat4.h"
+#include "mat3.h"
 
 namespace ftec{
 
 	mat4::mat4()
 	{
-		memset(elements, 0, sizeof(elements));
+		std::fill(elements.begin(), elements.end(), 0);
 		elements[0 + 0 * 4] = 1;
 		elements[1 + 1 * 4] = 1;
 		elements[2 + 2 * 4] = 1;
@@ -34,7 +35,7 @@ namespace ftec{
 			}
 		}
 
-		memcpy(elements, m.elements, sizeof(elements));
+		elements = m.elements;
 
 		return *this;
 	}
@@ -269,6 +270,40 @@ namespace ftec{
 		result.elements[3 + 3 * 4] = 1;
 
 		return result;
+	}
+
+	float mat4::determinant() const
+	{
+		//[a b c d]
+		//[e f g h]
+		//[i j k l]
+		//[m n o p]
+		mat3 sub1 = mat3({
+			f,g,h,
+			j,k,l,
+			n,o,p
+		});
+		mat3 sub2 = mat3({
+			g,h,e,
+			k,l,i,
+			o,p,m
+		});
+		mat3 sub3 = mat3({
+			h,e,f,
+			l,i,j,
+			p,m,n
+		});
+		mat3 sub4 = mat3({
+			e,f,g,
+			i,j,k,
+			m,n,o
+		});
+
+		return
+			a * sub1.determinant()
+			- b * sub2.determinant()
+			+ c * sub3.determinant()
+			- d * sub4.determinant();
 	}
 
 	//TODO look at the resulting matrix, see if it looks a bit correctish

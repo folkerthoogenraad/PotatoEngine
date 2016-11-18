@@ -6,13 +6,14 @@
 namespace ftec {
 	
 	template <typename T>
-	struct rect2 {
-		rect2() = default;
+	struct rect {
+		rect() = default;
 		
 		template<typename S>
-		rect2(const rect2<S> r) : position(r.position), size(r.size) {};
-		rect2(T x, T y, T w, T h) : position(x,y), size(w,h) {};
+		rect(const rect<S> r) : position(r.position), size(r.size) {};
+		rect(T x, T y, T w, T h) : position(x,y), size(w,h) {};
 
+		//TODO change to MIN and MAX position (possibly?)
 		vec2<T> position;
 		vec2<T> size;
 
@@ -43,13 +44,13 @@ namespace ftec {
 		bool contains(vec2<T> v) { return !(v.x < left() || v.x > right() || v.y < top() || v.y > bottom()); };
 
 
-		friend std::ostream& operator<<(std::ostream &out, const rect2<T> &r)
+		friend std::ostream& operator<<(std::ostream &out, const rect<T> &r)
 		{
 			return out << "(" << r.x() << ", " << r.y() << ", " << r.width() << ", " << r.height() << ")";
 		}
 	};
 
-	typedef rect2<float> rect2f;
-	typedef rect2<int> rect2i;
-	typedef rect2<double> rect2d;
+	typedef rect<float> rectf;
+	typedef rect<int> recti;
+	typedef rect<double> rectd;
 }

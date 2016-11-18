@@ -14,6 +14,8 @@ namespace ftec {
 			return GL_LINES;
 		case Primitive::QUADS:
 			return GL_QUADS;
+		case Primitive::POINTS:
+			return GL_POINTS;
 		default:
 			return GL_TRIANGLES;
 		}

@@ -14,7 +14,8 @@ namespace ftec {
 	enum class Primitive {
 		LINES,
 		QUADS,
-		TRIANGLES
+		TRIANGLES,
+		POINTS
 	};
 
 	class SpriteBatch {

@@ -44,16 +44,16 @@ namespace ftec {
 
 				if (Input::isKeyDown(GLFW_KEY_SPACE)) {
 					graphics.setColor(color32::blue());
-					graphics.drawRectangle(rect2f(
+					graphics.drawRectangle(rectf(
 						arc.getArcStart().x - 4,
 						arc.getArcStart().y - 4, 8, 8
 					), true);
-					graphics.drawRectangle(rect2f(
+					graphics.drawRectangle(rectf(
 						arc.getArcEnd().x - 4,
 						arc.getArcEnd().y - 4, 8, 8
 					), true);
 					graphics.setColor(color32::green());
-					graphics.drawRectangle(rect2f(
+					graphics.drawRectangle(rectf(
 						arc.getOrigin().x - 4,
 						arc.getOrigin().y - 4, 8, 8
 					), true);
@@ -150,7 +150,7 @@ namespace ftec {
 
 		graphics.setColor(color32(97, 99, 60, 255));
 		for (auto &v : alg.m_Vertices) {
-			graphics.drawRectangle(rect2f(
+			graphics.drawRectangle(rectf(
 				v.m_Position.x - 6, v.m_Position.y - 6,
 				12, 12
 			), true);
@@ -159,7 +159,7 @@ namespace ftec {
 		/*
 		graphics.setColor(color32::green());
 		vec2f r = alg.getPosition(z * alg.getLength());
-		graphics.drawRectangle(rect2f(
+		graphics.drawRectangle(rectf(
 		r.x - 8, r.y - 8,
 		16, 16
 		), true);*/

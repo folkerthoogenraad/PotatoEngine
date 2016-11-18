@@ -1,5 +1,7 @@
 #pragma once
 
+#include "vec3.h"
+
 namespace ftec {
 
 	template<typename T>

@@ -36,7 +36,7 @@ namespace potato {
 		Panel::processSelf(event);
 		Bounds bounds = getGlobalBounds();
 
-		ftec::rect2f blockBounds = getSliderBounds();
+		ftec::rectf blockBounds = getSliderBounds();
 
 		if (ftec::Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
 			if (blockBounds.contains(ftec::Input::getMousePosition())) {
@@ -65,7 +65,7 @@ namespace potato {
 		return Size(128,32);
 	}
 
-	ftec::rect2f Slider::getSliderBounds()
+	ftec::rectf Slider::getSliderBounds()
 	{
 		const float s = SLIDER_BLOCK_SIZE;
 		const float hs = SLIDER_BLOCK_SIZE / 2;
@@ -74,6 +74,6 @@ namespace potato {
 		ftec::vec2f center = bounds.center();
 		ftec::vec2f position = ftec::vec2f(ftec::lerp((float)bounds.left() + hs, (float)bounds.right() - hs, m_Value), center.y);
 
-		return ftec::rect2f(position.x - hs, position.y - hs, s, s);
+		return ftec::rectf(position.x - hs, position.y - hs, s, s);
 	}
 }

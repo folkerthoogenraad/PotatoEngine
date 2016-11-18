@@ -43,7 +43,7 @@ namespace ftec {
 		calls = 0;
 	}
 
-	void Graphics2D::begin3D(rect2i rectangle)
+	void Graphics2D::begin3D(recti rectangle)
 	{
 		drawing3D = true;
 		flush();
@@ -61,7 +61,7 @@ namespace ftec {
 		//flush();
 	}
 
-	void Graphics2D::drawRectangle(const rect2f & rectangle, bool fill)
+	void Graphics2D::drawRectangle(const rectf & rectangle, bool fill)
 	{
 		if (drawing3D) {
 			LOG_ERROR("Can't draw 2D when drawing in 3D");
@@ -246,7 +246,7 @@ namespace ftec {
 			drawCircle(point,m_PointSize / 2.0f, true);
 		}
 		else {
-			drawRectangle(rect2f(
+			drawRectangle(rectf(
 				point.x - m_PointSize / 2.0f,
 				point.y - m_PointSize / 2.0f,
 				m_PointSize,
@@ -263,7 +263,7 @@ namespace ftec {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void Graphics2D::setClip(const rect2i &rectangle)
+	void Graphics2D::setClip(const recti &rectangle)
 	{
 		flush();
 
@@ -315,7 +315,7 @@ namespace ftec {
 	void Graphics2D::flush()
 	{
 		//Is Graphics2D responseable for this?
-		Renderer::viewport(rect2i(0, 0, (int)Engine::getWindow().getWidth(), (int)Engine::getWindow().getHeight()));
+		Renderer::viewport(recti(0, 0, (int)Engine::getWindow().getWidth(), (int)Engine::getWindow().getHeight()));
 		Renderer::clip(this->m_ClippingRectangle);
 
 		if (batch.count() <= 0) {

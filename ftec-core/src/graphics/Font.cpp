@@ -142,7 +142,7 @@ namespace ftec {
 			char c = (char)i;
 
 			FontCharacter ch;
-			rect2f rect( //TODO correct the rows here
+			rectf rect( //TODO correct the rows here
 				x, 0, g->bitmap.width, g->bitmap.rows
 			);
 
@@ -221,7 +221,7 @@ namespace ftec {
 				auto wv = parseValue();
 				auto hv = parseValue();
 
-				rect2f rect = rect2f(
+				rectf rect = rectf(
 					(float)stoi(get<2>(xv)),
 					(float)stoi(get<2>(yv)),
 					(float)stoi(get<2>(wv)),

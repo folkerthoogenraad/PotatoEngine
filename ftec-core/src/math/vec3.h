@@ -92,9 +92,13 @@ namespace ftec{
 			}
 			return *this;
 		}
-		T magnitude() const
+		inline T magnitude() const
 		{
-			return (T)sqrt(x*x + y*y + z*z);
+			return (T)sqrt(sqrmagnitude());
+		}
+		inline T sqrmagnitude() const
+		{
+			return (T)x*x + y*y + z*z;
 		}
 
 		static vec3<T>cross(const vec3<T>&left, const vec3<T>&right)

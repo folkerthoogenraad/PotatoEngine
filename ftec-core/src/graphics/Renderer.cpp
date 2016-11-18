@@ -86,19 +86,19 @@ namespace ftec {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void Renderer::clip(const rect2i &rectangle)
+	void Renderer::clip(const recti &rectangle)
 	{
 		//Both viewport and clip have 0,0 in the bottom left
 		glScissor(rectangle.x(), Engine::getWindow().getHeight() - rectangle.y() - rectangle.height(), rectangle.width(), rectangle.height());
 	}
 	
-	void Renderer::viewport(const rect2i &rectangle)
+	void Renderer::viewport(const recti &rectangle)
 	{
 		//Both viewport and clip have 0,0 in the bottom left
 		glViewport(rectangle.x(), Engine::getWindow().getHeight() - rectangle.y() - rectangle.height(), rectangle.width(), rectangle.height());
 	}
 
-	void Renderer::renderport(const rect2i &rectangle)
+	void Renderer::renderport(const recti &rectangle)
 	{
 		viewport(rectangle);
 		clip(rectangle);

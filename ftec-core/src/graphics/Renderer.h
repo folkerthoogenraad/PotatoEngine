@@ -21,12 +21,12 @@ namespace ftec {
 		static void drawDirect(const Mesh &mesh, const InstanceList &list);
 
 		//Sets the clipping plane
-		static void clip(const rect2i &rectangle);
+		static void clip(const recti &rectangle);
 		//Sets the viewport
-		static void viewport(const rect2i &rectangle);
+		static void viewport(const recti &rectangle);
 
 		//Sets both the viewport and the clipping plane
-		static void renderport(const rect2i &rectangle);
+		static void renderport(const recti &rectangle);
 
 		static void clear();
 	};

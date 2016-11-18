@@ -117,6 +117,9 @@
     <ClCompile Include="src\io\XMLReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\math\mat3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\logger\log.h">
@@ -267,6 +270,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\line3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\tetrahedron.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\mat3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

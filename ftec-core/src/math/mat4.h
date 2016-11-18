@@ -3,15 +3,28 @@
 #include "math.h"
 #include <math.h>
 #include <cstring>
+#include <array>
 
 
 namespace ftec {
 
 	struct mat4
 	{
-		float elements[4 * 4];
+		union {
+			std::array<float, 4*4> elements;
+			struct {
+				float a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p;
+			};
+
+			//[a b c d]
+			//[e f g h]
+			//[i j k l]
+			//[m n o p]
+
+		};
 
 		mat4();
+		mat4(std::array<float, 4 * 4> elements) : elements(elements) {}
 
 		mat4& multiply(const mat4& other);
 
@@ -31,6 +44,11 @@ namespace ftec {
 		static mat4 rotationX(float angle);
 		static mat4 rotationY(float angle);
 		static mat4 rotationZ(float angle);
+
+		float determinant() const;
+
+		inline float &el(int collumn, int row) { return elements[collumn + row * 4]; }
+		inline float el(int collumn, int row) const { return elements[collumn + row * 4]; }
 
 		//operators
 		friend mat4 operator*(mat4 left, const mat4& right);

@@ -36,7 +36,7 @@ namespace ftec {
 
 		std::vector<TriangleRef> m_Triangles;
 
-		rect2f m_BoundingBox;
+		rectf m_BoundingBox;
 	public:
 		Delaunay() {}
 		Delaunay(std::vector<vec2f> points);
@@ -51,6 +51,6 @@ namespace ftec {
 		const TriangleRef &getTriangleRef(int index) const { return m_Triangles[index]; }
 		triangle2f getTriangle(int index) const;
 
-		const rect2f &getBoundingBox() const { return m_BoundingBox; }
+		const rectf &getBoundingBox() const { return m_BoundingBox; }
 	};
 }

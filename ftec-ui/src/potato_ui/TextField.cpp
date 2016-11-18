@@ -57,7 +57,7 @@ namespace potato {
 		auto center = bounds.center();
 
 		graphics.drawRectangle(
-			ftec::rect2f(
+			ftec::rectf(
 				bounds.x() + start,
 				center.y - m_Font->getSize()/2,
 				end - start,

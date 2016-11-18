@@ -44,7 +44,7 @@ namespace potato {
 			Event event(shared_from_this());
 
 			if (ftec::Engine::getWindow().isResized()) {
-				m_Root->localbounds() = ftec::rect2i(0, 0, ftec::Engine::getWindow().getWidth(), ftec::Engine::getWindow().getHeight());
+				m_Root->localbounds() = ftec::recti(0, 0, ftec::Engine::getWindow().getWidth(), ftec::Engine::getWindow().getHeight());
 				m_Root->updateLayout();
 			}
 
@@ -87,7 +87,7 @@ namespace potato {
 		if (m_Root) {
 			m_Root->setUI(shared_from_this());
 			//Give this the full panel, this happens always, at all times
-			m_Root->localbounds() = ftec::rect2i(0, 0, ftec::Engine::getWindow().getWidth(), ftec::Engine::getWindow().getHeight());
+			m_Root->localbounds() = ftec::recti(0, 0, ftec::Engine::getWindow().getWidth(), ftec::Engine::getWindow().getHeight());
 			m_Root->updateLayout();
 		}
 	}

@@ -4,10 +4,19 @@
 #include "line2.h"
 #include "circle.h"
 
+#include "sphere.h"
+#include "vec3.h"
+
 namespace ftec {
 
 	template<typename T>
 	T distance(const vec2<T> &a, const vec2<T> &b)
+	{
+		return (b - a).magnitude();
+	}
+
+	template<typename T>
+	T distance(const vec3<T> &a, const vec3<T> &b)
 	{
 		return (b - a).magnitude();
 	}
@@ -41,6 +50,11 @@ namespace ftec {
 
 	template<typename T>
 	bool contains(const circle<T> &c, const vec2<T> &point) {
+		return distance(c.center, point) <= c.radius;
+	}
+
+	template<typename T>
+	bool contains(const sphere<T> &c, const vec3<T> &point) {
 		return distance(c.center, point) <= c.radius;
 	}
 

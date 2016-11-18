@@ -14,6 +14,14 @@ namespace ftec {
 	std::vector<const Light *> Graphics::lights = {};
 	bool Graphics::drawing = false;
 
+
+	std::unique_ptr<SpriteBatch> Graphics::renderer;
+	std::shared_ptr<Material2D> Graphics::pointMaterial;
+	std::vector<Graphics::ColorType<line3f>> Graphics::lines;
+	std::vector<Graphics::ColorType<vec3f>> Graphics::points;
+	std::vector<Graphics::ColorType<spheref>> Graphics::spheres;
+	std::vector<Graphics::ColorType<triangle3f>> Graphics::triangles;
+
 	void Graphics::begin()
 	{
 		if (drawing) {
@@ -22,9 +30,22 @@ namespace ftec {
 		}
 		drawing = true;
 
+		if (!renderer) {
+			renderer = std::make_unique<SpriteBatch>();
+		}
+		if (!pointMaterial) {
+			pointMaterial = std::make_shared<Material2D>();
+			pointMaterial->m_TextureMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
+			pointMaterial->m_Shader = Engine::getResourceManager().load<Shader>("shaders/default2d");
+		}
+
 		meshes.clear();
 		cameras.clear();
 		lights.clear();
+		lines.clear();
+		points.clear();
+		triangles.clear();
+		spheres.clear();
 		
 	}
 	//TODO constness and stuff
@@ -33,6 +54,26 @@ namespace ftec {
 		meshes.push_back({
 			mesh, material, modelMatrix, layer, list
 		});
+	}
+
+	void Graphics::enqueueLine(const line3f & line, const color32 &color)
+	{
+		lines.push_back({line, color });
+	}
+
+	void Graphics::enqueuePoint(const vec3f & point, const color32 &color)
+	{
+		points.push_back({point, color });
+	}
+
+	void Graphics::enqueueTriangle(const triangle3f & triangle, const color32 &color)
+	{
+		triangles.push_back({ triangle, color });
+	}
+
+	void Graphics::enqueueSphere(const spheref & sphere, const color32 & color)
+	{
+		spheres.push_back({ sphere, color });
 	}
 
 	void Graphics::enqueueCamera(const Camera *camera)
@@ -64,7 +105,7 @@ namespace ftec {
 			/*if (l->isShadowsEnabled()) {
 				l->getShadowBuffer()->bind();
 
-				Renderer::renderport(rect2i(0, 0, l->getShadowBuffer()->getWidth(), l->getShadowBuffer()->getHeight()));
+				Renderer::renderport(recti(0, 0, l->getShadowBuffer()->getWidth(), l->getShadowBuffer()->getHeight()));
 
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -97,10 +138,10 @@ namespace ftec {
 			GraphicsState::matrixProjection = c->getProjectionMatrix();
 			GraphicsState::matrixView = c->getViewMatrix();
 
-			GraphicsState::matrixModel = mat4::translation(c->m_Position);
-
-			//Set skybox to normal version
+			//Set skybox to normal version //This should obviously not be here
 			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test");
+			/*
+			GraphicsState::matrixModel = mat4::translation(c->m_Position);
 
 			//Drawing skybox
 			GraphicsState::m_Lights[0].enabled = false; //Idk man
@@ -110,7 +151,7 @@ namespace ftec {
 
 			Renderer::drawDirect(*mesh);
 
-			glClear(GL_DEPTH_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT);*/
 
 			GraphicsState::m_Lights[0].enabled = true;
 			GraphicsState::m_Lights[0].light = *lights.front();// .m_Direction = vec3f(0.7f, -0.4f, -0.7f).normalize();
@@ -146,7 +187,46 @@ namespace ftec {
 					}
 				}
 			}
+			
+			GraphicsState::m_Material = pointMaterial;
+			GraphicsState::m_Skybox = nullptr;
+			GraphicsState::matrixModel = mat4::identity();
 
+			glPointSize(5);
+			glLineWidth(1);
+
+			renderer->begin(Primitive::POINTS);
+			renderer->color(color32::white());
+			for (auto &p : points) {
+				renderer->color(p.color);
+				renderer->vertex(p.mesh);
+			}
+			renderer->end();
+
+			renderer->begin(Primitive::LINES);
+			renderer->color(color32::white());
+			for (auto &l : lines) {
+				renderer->color(l.color);
+				renderer->vertex(l.mesh.a);
+				renderer->vertex(l.mesh.b);
+			}
+			renderer->end();
+
+			renderer->begin(Primitive::TRIANGLES);
+			for (auto &t : triangles) {
+				renderer->color(t.color);
+				renderer->vertex(t.mesh.a);
+				renderer->vertex(t.mesh.b);
+				renderer->vertex(t.mesh.c);
+			}
+			renderer->end();
+
+			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
+
+			for (auto &s : spheres) {
+				GraphicsState::matrixModel = mat4::translation(s.mesh.center) * mat4::scale(vec3f(s.mesh.radius, s.mesh.radius, s.mesh.radius));
+				Renderer::drawDirect(*sphere);
+			}
 		}
 
 	}

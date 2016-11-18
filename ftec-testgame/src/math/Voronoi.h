@@ -19,7 +19,7 @@ namespace ftec {
 		std::vector<std::set<int>> m_Edges;
 
 		//Bounding box
-		rect2f m_BoundingBox;
+		rectf m_BoundingBox;
 	public:
 		Voronoi() {};
 		Voronoi(const Delaunay &delaunay);
@@ -34,7 +34,7 @@ namespace ftec {
 		bool isOnHull(int index) const { return m_Points[index].m_Hull; }
 
 		const std::set<int> &getNeighbours(int index) const;
-		const rect2f &getBoundingBox() const { return m_BoundingBox; }
+		const rectf &getBoundingBox() const { return m_BoundingBox; }
 	
 	public:
 		void addNeighbour(int from, int to);

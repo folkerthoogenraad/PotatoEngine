@@ -192,7 +192,9 @@ namespace ftec {
 		inline static color32 red() { return color32(255, 0, 0, 255); }
 		inline static color32 green() { return color32(0, 255, 0, 255); }
 		inline static color32 blue() { return color32(0, 0, 255, 255); }
-		inline static color32 black() { return color32(0,0,0,255); }
+		inline static color32 black() { return color32(0, 0, 0, 255); }
+		inline static color32 yellow() { return color32(255, 255, 0, 255); }
+		inline static color32 cyan() { return color32(0, 255, 255, 255); }
 
 
 		inline static color32 dkgray() { return color32(50, 50, 50, 255); }

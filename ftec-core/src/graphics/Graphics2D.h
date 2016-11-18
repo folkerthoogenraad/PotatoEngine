@@ -27,7 +27,7 @@ namespace ftec {
 		//This has the current shader and the current texture.
 		std::shared_ptr<Material2D> m_Material;
 
-		rect2i m_ClippingRectangle;
+		recti m_ClippingRectangle;
 		color32 m_Color;
 		float m_LineWidth = 1.f;
 		float m_PointSize = 2.f;
@@ -48,10 +48,10 @@ namespace ftec {
 		void begin();
 		void end();
 
-		void begin3D(rect2i rectangle);
+		void begin3D(recti rectangle);
 		void end3D();
 
-		void drawRectangle(const rect2f& rectangle, bool fill);
+		void drawRectangle(const rectf& rectangle, bool fill);
 		void drawCircle(const vec2f &center, float radius, bool fill);
 		void drawCircle(const circlef &circle, bool fill);
 		void drawArc(const vec2f &center, float radius, bool fill, float startAngle, float angleLength);
@@ -65,7 +65,7 @@ namespace ftec {
 		void drawClear();
 
 		//Set stuff
-		void setClip(const rect2i &rectangle);
+		void setClip(const recti &rectangle);
 		void resetClip();
 		void setColor(const color32 &color);
 		void setShader(std::shared_ptr<Shader> shader);
@@ -82,7 +82,7 @@ namespace ftec {
 		
 
 		//Returns the current clipping area, as set by clip
-		inline const rect2i &getClip() { return m_ClippingRectangle; }
+		inline const recti &getClip() { return m_ClippingRectangle; }
 		inline const color32 &getColor() { return m_Color; }
 		inline std::shared_ptr<Shader> getShader() { return m_Material->m_Shader; } //TODO see implementation of setShader
 

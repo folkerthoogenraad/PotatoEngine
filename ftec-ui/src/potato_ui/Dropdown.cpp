@@ -32,7 +32,7 @@ namespace potato {
 		}
 
 		graphics.setColor(PotatoColor::primary);
-		graphics.drawRectangle(ftec::rect2f(
+		graphics.drawRectangle(ftec::rectf(
 			bounds.centerRight().x - 18,
 			bounds.centerRight().y - 8,
 			16,16
@@ -49,7 +49,7 @@ namespace potato {
 				auto list = std::make_shared<List>();
 				list->setTextOptions(m_TextOptions);
 
-				list->localbounds() = ftec::rect2i(bounds.left(), bounds.bottom(), bounds.width(), 64);
+				list->localbounds() = ftec::recti(bounds.left(), bounds.bottom(), bounds.width(), 64);
 
 				ui->setContextMenu(list);
 			}

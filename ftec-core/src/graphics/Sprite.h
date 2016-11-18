@@ -11,22 +11,22 @@ namespace ftec {
 		std::shared_ptr<Texture> m_Texture;
 		
 		//This is where stuff gets weird. This needs some explaining
-		rect2f m_LocalBounds;
+		rectf m_LocalBounds;
 
-		rect2f m_TextureRectangle;
-		rect2f m_UVRectangle;
+		rectf m_TextureRectangle;
+		rectf m_UVRectangle;
 	public:
 		Sprite(std::shared_ptr<Texture> texture);
-		Sprite(std::shared_ptr<Texture> texture, const rect2f &rectangle);
+		Sprite(std::shared_ptr<Texture> texture, const rectf &rectangle);
 		~Sprite() = default;
 
 		//Returns the uv rectangle
-		rect2f &uvs() { return m_UVRectangle; };
-		const rect2f &uvs() const { return m_UVRectangle; };
+		rectf &uvs() { return m_UVRectangle; };
+		const rectf &uvs() const { return m_UVRectangle; };
 
 		//Returns the bounds
-		rect2f &bounds() { return m_LocalBounds; };
-		const rect2f &bounds() const { return m_LocalBounds; };
+		rectf &bounds() { return m_LocalBounds; };
+		const rectf &bounds() const { return m_LocalBounds; };
 
 		//Returns the bounds
 		std::shared_ptr<Texture> &texture() { return m_Texture; };

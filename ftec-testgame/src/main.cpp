@@ -6,6 +6,7 @@
 #include "io/XMLReader.h"
 
 #include "math/collision.h"
+#include "math/mat3.h"
 
 int main(void)
 {

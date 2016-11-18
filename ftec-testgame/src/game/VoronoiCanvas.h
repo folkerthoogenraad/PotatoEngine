@@ -4,9 +4,9 @@
 
 namespace ftec {
 
-	class VonoroiCanvas : public potato::Canvas {
+	class VoronoiCanvas : public potato::Canvas {
 	public:
-		VonoroiCanvas();
+		VoronoiCanvas();
 
 		void update() override;
 		void drawSelf(Graphics2D &graphics) override;
