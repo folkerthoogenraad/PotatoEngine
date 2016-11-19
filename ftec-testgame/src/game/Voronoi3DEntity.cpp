@@ -1,4 +1,4 @@
-#include "Voronoi3DEntity.h"'
+#include "Voronoi3DEntity.h"
 
 #include "graphics/Graphics.h"
 #include "engine/Input.h"

@@ -27,11 +27,13 @@ namespace ftec {
 		m_Vertices.push_back(superTetrahedron.c);
 		m_Vertices.push_back(superTetrahedron.d);
 
-		m_Tetrahedrons.push_back({
+		TetrahedronRef superTetrahedronRef = {
 			(int)m_Vertices.size() - 1 ,
 			(int)m_Vertices.size() - 2 ,
 			(int)m_Vertices.size() - 3 ,
-			(int)m_Vertices.size() - 4 });
+			(int)m_Vertices.size() - 4 };
+
+		m_Tetrahedrons.push_back(superTetrahedronRef);
 	
 		for (int i = 0; i < m_Vertices.size() - 4; i++) { //Ignore the last few vertices
 			const vec3f &v = m_Vertices[i];
@@ -80,6 +82,14 @@ namespace ftec {
 				}
 			}
 		}
+	
+		m_Tetrahedrons.erase(std::remove_if(m_Tetrahedrons.begin(), m_Tetrahedrons.end(),
+			[&superTetrahedronRef](TetrahedronRef &t) {
+			return superTetrahedronRef.contains(t.a) || superTetrahedronRef.contains(t.b) || superTetrahedronRef.contains(t.c) || superTetrahedronRef.contains(t.d);
+		}), m_Tetrahedrons.end());
+
+		for (int i = 0; i < 4; i++)
+			m_Vertices.pop_back();
 	}
 
 	bool Delaunay3D::TetrahedronRef::contains(int i)
