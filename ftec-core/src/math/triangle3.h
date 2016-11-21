@@ -38,6 +38,27 @@ namespace ftec {
 				);
 		}
 
+		triangle3<T> &translate(vec3<T> v)
+		{
+			a += v;
+			b += v;
+			c += v;
+
+			return *this;
+		}
+
+		//The normal is NOT normalized
+		vec3<T> normal() 
+		{
+			return vec3<T>::cross(b - a, c - a);
+		}
+
+		//The distance is in abstract triangle units
+		T distanceFrom(vec3<T> point)
+		{
+			return vec3<T>::dot(normal(), point - a);
+		}
+
 		bool isValid()
 		{
 			return intersects(

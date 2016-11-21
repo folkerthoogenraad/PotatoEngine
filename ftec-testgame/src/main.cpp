@@ -8,6 +8,8 @@
 #include "math/collision.h"
 #include "math/mat3.h"
 
+#include "math/DelaunayVertex.h"
+
 int main(void)
 {
 	ftec::Engine::create<ftec::Razura>();

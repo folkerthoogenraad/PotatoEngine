@@ -1,6 +1,8 @@
 #pragma once
 
 #include "vec2.h"
+#include "circle.h"
+#include "collision.h"
 #include <iostream>
 
 namespace ftec {
@@ -41,6 +43,8 @@ namespace ftec {
 		vec2<T> centerLeft() const { return vec2<T>(position.x, position.y + size.y / 2); }
 		vec2<T> centerRight() const { return vec2<T>(position.x + size.x, position.y + size.y / 2); }
 		
+		circle<T> boundingCircle() const { return circle<T>(center(), distance(center(), bottomright())); }
+
 		bool contains(vec2<T> v) { return !(v.x < left() || v.x > right() || v.y < top() || v.y > bottom()); };
 
 

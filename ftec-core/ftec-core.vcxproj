@@ -208,6 +208,7 @@
     <ClInclude Include="src\math\mat3.h" />
     <ClInclude Include="src\math\mat4.h" />
     <ClInclude Include="src\math\math.h" />
+    <ClInclude Include="src\math\plane.h" />
     <ClInclude Include="src\math\quaternion.h" />
     <ClInclude Include="src\math\rect.h" />
     <ClInclude Include="src\math\helpers.h" />

@@ -19,6 +19,29 @@ namespace ftec {
 		{
 			return a == v || b == v || c == v;
 		}
+		
+		vec2<T> center()
+		{
+			return (a + b + c) / 3;
+		}
+
+		triangle2<T> &orient()
+		{
+			//Normals pointing outwards
+			//Flip b and c if the winding is reversed
+			if (edgeab().distanceFrom(c) > 0) {
+				vec2<T> t = b;
+				b = c;
+				c = t;
+			}
+
+			return *this;
+		}
+
+		triangle2<T> clone()
+		{
+			return triangle2<T>(*this);
+		}
 
 		vec2<T> circumcenter()
 		{

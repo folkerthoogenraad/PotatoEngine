@@ -20,7 +20,7 @@ namespace ftec {
 
 
 		for (int i = 0; i < delaunay.getTriangleCount(); ++i) {
-			const Delaunay::TriangleRef &ref = delaunay.getTriangleRef(i);
+			const TriangleRef &ref = delaunay.getTriangleRef(i);
 
 			addNeighbour(ref.a, ref.b);
 			addNeighbour(ref.b, ref.c);

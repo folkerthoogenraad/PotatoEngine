@@ -49,6 +49,14 @@ namespace ftec {
 			return distance(a, b);
 		}
 
+		line2<T> &translate(vec2f v)
+		{
+			a += v;
+			b += v;
+
+			return *this;
+		}
+
 		line2<T> clone()
 		{
 			return line2<T>(*this);

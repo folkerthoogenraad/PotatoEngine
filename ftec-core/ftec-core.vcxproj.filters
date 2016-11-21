@@ -281,6 +281,9 @@
     <ClInclude Include="src\math\box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default_vertex.glsl" />

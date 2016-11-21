@@ -32,7 +32,7 @@ namespace ftec {
 			maxPosition.x = max(v.x, maxPosition.x);
 			maxPosition.y = max(v.y, maxPosition.y);
 
-			m_Vertices.push_back({ v, false });
+			m_Vertices.push_back({ v, false, false });
 		}
 
 		//TODO for the bounding super triangle, i should use a better bounding triangle
@@ -44,19 +44,15 @@ namespace ftec {
 			m_BoundingBox = rectf(minPosition.x, minPosition.y, delta.x, delta.y);
 		}
 
-		//Hacky fix for edge cases
-		//Doesn't always work, need to find a way to get this to always work
-		float m = (maxPosition - minPosition).magnitude();
-		minPosition -= 10 * m;
-		maxPosition += 10 * m;
-
 		vec2f delta = maxPosition - minPosition;
 
-		m_Vertices.push_back({ minPosition, false });
-		m_Vertices.push_back({ minPosition + vec2f(delta.x * 2, 0) });
-		m_Vertices.push_back({ minPosition + vec2f(0, delta.y * 2) });
+		circlef c = m_BoundingBox.boundingCircle();
 
-		TriangleRef superTriangle = { (int)m_Vertices.size() - 1, (int)m_Vertices.size() - 2, (int)m_Vertices.size() - 3 };
+		m_Vertices.push_back({ c.center + vec2f(0, 2) * c.radius, true, true });
+		m_Vertices.push_back({ c.center + vec2f(-2, -1) * c.radius, true, true });
+		m_Vertices.push_back({ c.center + vec2f(2, -1) * c.radius, true, true });
+
+		TriangleRef superTriangle((int)m_Vertices.size() - 1, (int)m_Vertices.size() - 2, (int)m_Vertices.size() - 3);
 
 		//bowyer watson super triangle
 		m_Triangles.push_back(superTriangle);
@@ -71,19 +67,59 @@ namespace ftec {
 
 			//Find all bad triangles
 			for (auto &t : m_Triangles) {
-				triangle2f tr = triangle2f(
-					m_Vertices[t.a].m_Vertex,
-					m_Vertices[t.b].m_Vertex,
-					m_Vertices[t.c].m_Vertex
-				);
-				if (contains(tr.circumcircle(), v)) {
+				//Triangles
+				triangle2f triangle = triangle2f(m_Vertices[t.a].m_Vertex, m_Vertices[t.b].m_Vertex, m_Vertices[t.c].m_Vertex);
+				triangle2f oriented = triangle.clone().orient();
+
+				//Function to add the triangle, it happens in 4 different scenarios.
+				auto addTriangle = [&t, &polygon, &badTriangles]() {
+					//If the int is > 1, its a shared edge
 					badTriangles.push_back(t);
 
-					//If the int is > 1, its a shared edge
 					polygon[{ t.a, t.b }]++;
 					polygon[{ t.b, t.c }]++;
 					polygon[{ t.c, t.a }]++;
+				};
+
+				//a b c are in order, super triangle are the last 3 vertices
+				//We need to count the triangle shares, because the 3 triangle vertices should lie infinitly far away
+				//So in order to simulate it, we must do some line detections, instead of the normal stuff
+				int sharedSuperCount = 0;
+				{
+					if (superTriangle.contains(t.c))
+						sharedSuperCount += 1;
+					if (superTriangle.contains(t.b))
+						sharedSuperCount += 1;
+					if (superTriangle.contains(t.a))
+						sharedSuperCount += 1;
 				}
+
+				//If all verts are at super triangle -> always pass
+				if (sharedSuperCount == 3)
+					addTriangle();
+
+				//If two are at super triangle -> pass when behind line
+				else if (sharedSuperCount == 2 && oriented.edgebc().translate(triangle.b - triangle.a).distanceFrom(v) >= 0) {
+					addTriangle();
+				}
+
+				//If one is at super triangle -> pass when behind line
+				else if (sharedSuperCount == 1) {
+					line2f ab = triangle.edgeab();
+					if (ab.distanceFrom(triangle.c) > 0) {
+						ab.flip();
+					}
+
+					if (ab.distanceFrom(v) <= 0) {
+						addTriangle();
+					}
+				}
+
+				//Check this last
+				else if (contains(triangle.circumcircle(), v)) {
+					addTriangle();
+				}
+			
 			}
 
 			//Remove the badTriangles
@@ -116,6 +152,7 @@ namespace ftec {
 			}
 		}
 
+		
 		m_Triangles.erase(std::remove_if(m_Triangles.begin(), m_Triangles.end(),
 			[&superTriangle](TriangleRef &t) {
 			return superTriangle.contains(t.a) || superTriangle.contains(t.b) || superTriangle.contains(t.c);
@@ -135,39 +172,5 @@ namespace ftec {
 			getPoint(ref.c));
 	}
 
-	bool Delaunay::TriangleRef::operator==(const Delaunay::TriangleRef & other) const
-	{
-		//TODO order
-		return a == other.a && b == other.b && c == other.c;
-	}
-
-	bool Delaunay::TriangleRef::contains(int i)
-	{
-		return a == i || b == i || c == i;
-	}
-	Delaunay::EdgeRef::EdgeRef(int a, int b)
-		: a(min(a,b)), b(max(a,b)) //Sort this shit
-	{ }
-
-	bool Delaunay::EdgeRef::contains(int i)
-	{
-		return a == i || b == i;
-	}
-
-	bool Delaunay::EdgeRef::operator==(const Delaunay::EdgeRef & other) const
-	{
-		if (a == other.a && b == other.b)
-			return true;
-		if (a == other.b && b == other.a)
-			return true;
-		return false;
-	}
-	bool Delaunay::EdgeRef::operator<(const Delaunay::EdgeRef & other) const
-	{
-		if (a < other.a)
-			return true;
-		if (a == other.a)
-			return b < other.b;
-		return false;
-	}
+	
 }

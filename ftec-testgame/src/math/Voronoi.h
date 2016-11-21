@@ -11,7 +11,7 @@
 namespace ftec {
 
 	class Voronoi {
-		std::vector<ConvexVertex> m_Points;
+		std::vector<DelaunayVertex<vec2f>> m_Points;
 	public:
 		std::vector<lego2f> m_Legos;
 

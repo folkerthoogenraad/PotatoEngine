@@ -73,11 +73,32 @@ namespace ftec {
 				m * d );
 		}
 
-		//TODO check the winding of these triangles, they should at least be the same
+		tetrahedron<T> &orient()
+		{
+			//NOT SURE IF THIS WORKS?
+			if (trianglebdc().distanceFrom(a) > 0) {
+				vec3<T> t = b;
+				b = c;
+				c = t;
+			}
+
+			return *this;
+		}
+
+		tetrahedron<T> clone()
+		{
+			return tetrahedron<T>(*this);
+		}
+
+		vec3<T> center()
+		{
+			return (a + b + c + d) / 4;
+		}
+
 		triangle3<T> triangleabc() const { return triangle3<T>(a, b, c); }
-		triangle3<T> triangleabd() const { return triangle3<T>(a, b, d); }
-		triangle3<T> triangledbc() const { return triangle3<T>(d, b, c); }
+		triangle3<T> triangleadb() const { return triangle3<T>(a, d, b); }
 		triangle3<T> triangleacd() const { return triangle3<T>(a, c, d); }
+		triangle3<T> trianglebdc() const { return triangle3<T>(b, d, c); }
 	
 		static tetrahedron<T> unitTetrahedron()
 		{
@@ -86,10 +107,10 @@ namespace ftec {
 			float h = sqrt( 1 - (2 * w) * (2 * w) ) / 3.f;
 
 			return tetrahedron<T>(
-				vec3<T>(-0.5f, -h, -w),
-				vec3<T>(0.5f, -h, -w),
-				vec3<T>(0, -h, 2.f * w),
-				vec3<T>(0, 2 * h, 0)
+				vec3<T>(0, -h, 2.f * w),	//A
+				vec3<T>(-0.5f, -h, -w),		//B
+				vec3<T>(0.5f, -h, -w),		//C
+				vec3<T>(0, 2 * h, 0)		//D
 				);
 		}
 	};
