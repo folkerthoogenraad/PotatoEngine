@@ -58,9 +58,10 @@ namespace ftec {
 	
 		//Loop through all the vertices
 		for (int i = 0; i < m_Vertices.size() - 4; i++) { //Ignore the last 4, because they are already processed by the super tetrahedron
-			if (i % 100 == 0)
-				LOG("Delaunay : " << i);
-			
+			if (i % 100 == 0 && i != 0) {
+				LOG("Delaunay is at " << i << "/" << m_Vertices.size());
+			}
+
 			const vec3f &v = m_Vertices[i].m_Vertex;
 
 			std::vector<TetrahedronRef> badTetrahedrons;
@@ -124,13 +125,15 @@ namespace ftec {
 				else if (sharedSuperCount == 2) {
 					vec3f normal = vec3f::cross(tr.b - tr.a, tr.d - tr.c);
 
-					//Flip if needed
-					if (vec3f::dot(normal, tr.c - tr.a) < 0)
-						normal = -normal;
+					if (normal.magnitude() > 0) {
+						//Flip if needed
+						if (vec3f::dot(normal, tr.c - tr.a) < 0)
+							normal = -normal;
 
-					//Add if its in the direction of the super triangle
-					if (vec3f::dot(normal, v - tr.a) >= 0)
-						addTetrahedron();
+						//Add if its in the direction of the super triangle
+						if (vec3f::dot(normal, v - tr.a) >= 0)
+							addTetrahedron();
+					}
 
 				}
 
@@ -189,13 +192,13 @@ namespace ftec {
 			}
 		}
 		
-		/*m_Tetrahedrons.erase(std::remove_if(m_Tetrahedrons.begin(), m_Tetrahedrons.end(),
+		m_Tetrahedrons.erase(std::remove_if(m_Tetrahedrons.begin(), m_Tetrahedrons.end(),
 			[&superTetrahedronRef](TetrahedronRef &t) {
 			return superTetrahedronRef.contains(t.a) || superTetrahedronRef.contains(t.b) || superTetrahedronRef.contains(t.c) || superTetrahedronRef.contains(t.d);
 		}), m_Tetrahedrons.end());
 
 		for (int i = 0; i < 4; i++)
-			m_Vertices.pop_back();*/
+			m_Vertices.pop_back();
 	}
 
 

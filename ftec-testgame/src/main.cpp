@@ -10,8 +10,15 @@
 
 #include "math/DelaunayVertex.h"
 
+#include "math/triangle3.h"
+#include "math/plane.h"
+#include "math/lego3.h"
+#include "math/Delaunay3D.h"
+
 int main(void)
 {
+	using namespace ftec;
+
 	ftec::Engine::create<ftec::Razura>();
 
 	WAIT();

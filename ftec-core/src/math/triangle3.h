@@ -1,6 +1,5 @@
 #pragma once
 
-#include "collision.h"
 #include "line3.h"
 #include "vec3.h"
 
@@ -16,12 +15,7 @@ namespace ftec {
 		triangle3(const vec3<T> &a, const vec3<T> &b, const vec3<T> &c)
 			: a(a), b(b), c(c) {}
 
-		bool hasVertex(vec3<T> v)
-		{
-			return a == v || b == v || c == v;
-		}
-
-		vec3<T> circumcenter()
+		/*vec3<T> circumcenter()
 		{
 			return intersection(
 				line3<T>(b, a).normal(),
@@ -36,7 +30,7 @@ namespace ftec {
 				center,
 				distance(a, center)
 				);
-		}
+		}*/
 
 		triangle3<T> &translate(vec3<T> v)
 		{
@@ -48,7 +42,7 @@ namespace ftec {
 		}
 
 		//The normal is NOT normalized
-		vec3<T> normal() 
+		vec3<T> normal() const
 		{
 			return vec3<T>::cross(b - a, c - a);
 		}
@@ -57,14 +51,6 @@ namespace ftec {
 		T distanceFrom(vec3<T> point)
 		{
 			return vec3<T>::dot(normal(), point - a);
-		}
-
-		bool isValid()
-		{
-			return intersects(
-				line3<T>(b, a),
-				line3<T>(b, c)
-			);
 		}
 
 		triangle3<T> &flip() {

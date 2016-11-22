@@ -47,8 +47,10 @@ namespace ftec {
 		//TODO lots of checks to validate the data given in the stuff here
 		//TODO use buffer subdata, probably not useful in most cases here though
 
-		if (vertices.size() == 0 || normals.size() == 0 || uvs.size() == 0 || indices.size() == 0)
+		if (vertices.size() == 0 || normals.size() == 0 || uvs.size() == 0 || indices.size() == 0) {
+			LOG("Can't upload mesh.");
 			return;//Its not gonna work now is it
+		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_VerticesVBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3f) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
@@ -119,7 +121,6 @@ namespace ftec {
 			if (normals[i].count > 0) {
 				m_Normals[i] = normals[i].value.normalize();
 			}
-
 		}
 	}
 

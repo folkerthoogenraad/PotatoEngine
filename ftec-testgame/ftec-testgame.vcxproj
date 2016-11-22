@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\game\NoClipCameraEntity.cpp" />
+    <ClCompile Include="src\game\PointCloudEntity.cpp" />
     <ClCompile Include="src\game\Razura.cpp" />
     <ClCompile Include="src\game\StairArcCanvas.cpp" />
     <ClCompile Include="src\game\VoronoiCanvas.cpp" />
@@ -145,9 +146,11 @@
     <ClCompile Include="src\math\StairAlgorithm.cpp" />
     <ClCompile Include="src\math\StairArc.cpp" />
     <ClCompile Include="src\math\Voronoi.cpp" />
+    <ClCompile Include="src\math\Voronoi3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\NoClipCameraEntity.h" />
+    <ClInclude Include="src\game\PointCloudEntity.h" />
     <ClInclude Include="src\game\Razura.h" />
     <ClInclude Include="src\game\StairArcCanvas.h" />
     <ClInclude Include="src\game\VoronoiCanvas.h" />
@@ -160,6 +163,7 @@
     <ClInclude Include="src\math\StairAlgorithm.h" />
     <ClInclude Include="src\math\StairArc.h" />
     <ClInclude Include="src\math\Voronoi.h" />
+    <ClInclude Include="src\math\Voronoi3D.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="text.xml">

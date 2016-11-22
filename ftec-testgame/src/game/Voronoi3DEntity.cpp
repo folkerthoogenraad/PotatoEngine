@@ -2,13 +2,19 @@
 
 #include "graphics/Graphics.h"
 #include "engine/Input.h"
+#include "engine/Engine.h"
 #include "engine/Time.h"
 
 #include "math/helpers.h"
 
 #include "math/tetrahedron.h"
 #include "math/Delaunay3D.h"
+#include "math/Voronoi3D.h"
 #include "logger/log.h"
+
+#include "graphics/Shader.h"
+#include "graphics/Texture.h"
+#include "PointCloudEntity.h"
 
 namespace ftec {
 
@@ -42,13 +48,18 @@ namespace ftec {
 	}
 
 	//TODO make these not static and stuff, whatever
-
-	static Delaunay3D del;
+	static Voronoi3D voronoi;
 
 	void Voronoi3DEntity::create()
 	{
+		Delaunay3D delaunay;
 
-		del.triangulate(m_Points);
+		delaunay.triangulate(m_Points);
+		voronoi.create(delaunay);
+
+		for (const auto &l : voronoi.getLegos()) {
+			Engine::getScene()->addEntity(std::make_shared<PointCloudEntity>(l.m_Vertices));
+		}
 
 	}
 
@@ -66,7 +77,7 @@ namespace ftec {
 		if (Input::isKeyTyped(GLFW_KEY_SPACE)) {
 			m_Points.clear();
 
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 10; i++) {
 				vec3f a = vec3f(
 					randf(-1, 1),
 					randf(-1, 1),
@@ -125,6 +136,7 @@ namespace ftec {
 
 			create();
 		}
+	
 	}
 
 
@@ -141,7 +153,18 @@ namespace ftec {
 			);
 		}
 
-		for (auto &p : m_Points) {
+		for (auto &l : voronoi.getLegos()) {
+			for (auto &v : l.m_Vertices) {
+				Graphics::enqueuePoint(v, color32::green());
+			}
+		}
+
+		for (int i = 0; i < voronoi.getDelaunay().getPointCount(); i++) {
+			glPointSize(5.f);
+			Graphics::enqueuePoint(voronoi.getDelaunay().getPoint(i), color32::red());
+		}
+
+		/*for (auto &p : m_Points) {
 			Graphics::enqueuePoint(p, color32::red());
 		}
 
@@ -149,21 +172,7 @@ namespace ftec {
 			TriangleRef ref = del.getHullTriangleRef(i);
 
 			Graphics::enqueueTriangle(triangle3f(del.getPoint(ref.a), del.getPoint(ref.b), del.getPoint(ref.c)));
-		}
-
-		if (Input::isKeyDown(GLFW_KEY_G)) {
-			for (int i = 0; i < del.getTetraHedronCount(); ++i) {
-				TetrahedronRef tetrahedronRef = del.getTetraHedronRef(i);
-				tetrahedronf tetrahedron(
-					del.getPoint(tetrahedronRef.a),
-					del.getPoint(tetrahedronRef.b),
-					del.getPoint(tetrahedronRef.c),
-					del.getPoint(tetrahedronRef.d)
-				);
-
-				drawTetrahedron(tetrahedron);
-			}
-		}
+		}*/
 
 
 	}

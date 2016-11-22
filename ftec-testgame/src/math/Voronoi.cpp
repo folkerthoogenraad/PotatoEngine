@@ -51,7 +51,7 @@ namespace ftec {
 			edges.push_back({ m_BoundingBox.topright(), m_BoundingBox.bottomright() });
 			edges.push_back({ m_BoundingBox.bottomright(), m_BoundingBox.bottomleft() });
 			edges.push_back({ m_BoundingBox.bottomleft(), m_BoundingBox.topleft() });
-
+			
 			lego.create(std::move(edges));
 
 			m_Legos.push_back(lego);

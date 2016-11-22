@@ -26,7 +26,7 @@ namespace ftec {
 		const TetrahedronRef &getTetraHedronRef(int index) const { return m_Tetrahedrons[index]; }
 
 		int getHullTriangleCount() const { return m_HullTriangles.size(); }
-		TriangleRef getHullTriangleRef(int index) const { return m_HullTriangles[index]; }
+		const TriangleRef &getHullTriangleRef(int index) const { return m_HullTriangles[index]; }
 
 		const boxf &getBoundingBox() const { return m_BoundingBox; }
 	};

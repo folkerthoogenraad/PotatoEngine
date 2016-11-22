@@ -1,8 +1,10 @@
 #pragma once
 
-#include "math/collision.h"
-#include "math/helpers.h"
-#include <set>
+#include "math/vec3.h"
+#include "math/plane.h"
+
+#include "logger/log.h"
+#include <vector>
 
 namespace ftec {
 
@@ -10,61 +12,74 @@ namespace ftec {
 	class lego3 {
 		vec3<T> m_Center;
 	public:
-		//Make these private and make use of constructor?
-
 		//The vertices generated
-		std::vector<vec2<T>> m_Vertices;
+		std::vector<vec3<T>> m_Vertices;
 
 		//Recalculates the vertices
-		void create(std::vector<line2<T>> edges)
+		void create(std::vector<plane<T>> planes)
 		{
-			//Flip the edges, if needed
-			for (line2<T> &edge : edges) {
-				if (edge.distanceFrom(m_Center) < 0) {
-					edge.flip();
-				}
-			}
-
-			//This might not be needed
-			std::vector<vec2<T>> vertices;
-			vertices.reserve(edges.size() * edges.size());
-
 			m_Vertices.clear();
 
-			//Generate ALL the possible points :')
-			for (auto i = edges.begin(); i != edges.end(); ++i) {
-				for (auto j = edges.begin(); j != edges.end(); ++j) {
+			//Generate all the possible points
+			for (auto i = planes.begin(); i != planes.end(); i++) {
+				for (auto j = i; j != planes.end(); j++) {
 					if (i == j)
 						continue;
 
-					if (intersects(*i, *j)) {
-						vertices.push_back(intersection(*i, *j));
+					vec3<T> lineDirection = vec3<T>::cross(i->direction, j->direction);
+
+					if (lineDirection.sqrmagnitude() == 0)
+						continue;
+
+					for (auto k = j; k != planes.end(); k++) {
+						if (k == i || k == j)
+							continue;
+
+						float denominator = vec3<T>::dot(lineDirection, k->direction);
+
+						if (denominator == 0)
+							continue;
+
+						vec3<T> result = (
+							vec3<T>::cross(j->direction, k->direction) * i->offset +
+							vec3<T>::cross(k->direction, i->direction) * j->offset +
+							vec3<T>::cross(i->direction, j->direction) * k->offset
+							) / denominator;
+
+						LOG("Intersection! " << result);
+
+						m_Vertices.push_back(std::move(result));
 					}
 				}
 			}
+		
+			if (m_Vertices.size() == 0)
+				return;
 
-			//Filter all the stupid edges
-			vertices.erase(std::remove_if(vertices.begin(), vertices.end(),
-				[&edges](const vec2<T> v) {
-				for (auto &e : edges) {
-					if (e.distanceFrom(v) < -0.05)
-						return true;
+			//Corretly orient the planes inside
+			for (auto &p : planes) {
+				if (p.distanceFrom(m_Center) < 0) {
+					p.flip();
 				}
-				return false;
-			}), vertices.end());
 
-			//TODO fix that this is not needed
-			m_Vertices = vertices;
+				LOG("Center distance << " << p.distanceFrom(m_Center));
+				
+				m_Vertices.erase(std::remove_if(m_Vertices.begin(), m_Vertices.end(),
+					[&p](vec3f &v) -> bool {
 
-			polarSort(m_Vertices, m_Center);
+					LOG("Vertex distance << " << p.distanceFrom(v));
+					return p.distanceFrom(v) < -0.05;
+				}), m_Vertices.end());
+			}
 		}
 
+
 		//Makes sure all the lines face the point
-		void setCenter(vec2<T> center)
+		void setCenter(vec3<T> center)
 		{
 			m_Center = center;
 		}
-		const vec2<T> &getCenter() { return m_Center; }
+		const vec3<T> &getCenter() { return m_Center; }
 	};
 
 	typedef lego3<float> lego3f;

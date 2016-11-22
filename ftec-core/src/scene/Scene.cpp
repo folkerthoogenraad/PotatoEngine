@@ -13,10 +13,14 @@ namespace ftec {
 
 	void Scene::update()
 	{
+		for (int i = 0; i < m_Entities.size(); ++i) {
+			m_Entities[i]->update();
+		}
+		/*
 		for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {
 			auto obj = *i;
 			obj->update();
-		}
+		}*/
 	}
 	void Scene::render()
 	{

@@ -92,6 +92,10 @@ namespace ftec{
 			}
 			return *this;
 		}
+		vec3<T> normalized()
+		{
+			return vec3<T>(*this).normalize();
+		}
 		inline T magnitude() const
 		{
 			return (T)sqrt(sqrmagnitude());

@@ -101,7 +101,7 @@ void surfaceOutput(in SurfaceOutput surface)
 
 	vec3 color = mix(diffuseColor * surface.albedo + specularColor * surface.albedo, glossColor * surface.albedo, gloss);
 
-	//color = vec3(1.0,1.0,1.0) * gloss;
+	//color = vec3(1.0,1.0,1.0) * gloss
 
 	FragColor = vec4(color, 1.0);
 }

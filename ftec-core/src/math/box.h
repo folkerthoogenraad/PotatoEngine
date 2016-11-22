@@ -13,10 +13,13 @@ namespace ftec {
 		box() {}
 		box(vec3<T> mn, vec3<T> mx) : min(mn), max(mx) {}
 
-		sphere<T> boundingSphere() {
+		vec3<T> center() const { return (min + max) / 2; }
+		vec3<T> delta() const { return max - center(); }
+
+		sphere<T> boundingSphere() const {
 			return sphere<T>(
 				(min + max) / 2.0f,
-				(max - min).magnitude() / 2.0f
+				(max - min).magnitude() / 2
 				);
 		}
 	};
