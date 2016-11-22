@@ -21,6 +21,7 @@ namespace ftec {
 
 		int getPointCount() const { return m_Vertices.size(); };
 		const vec3f &getPoint(int index) const { return m_Vertices[index].m_Vertex; }
+		bool isHull(int index) const { return m_Vertices[index].m_Hull; }
 
 		int getTetraHedronCount() const { return m_Tetrahedrons.size(); }
 		const TetrahedronRef &getTetraHedronRef(int index) const { return m_Tetrahedrons[index]; }

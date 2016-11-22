@@ -72,7 +72,7 @@ namespace ftec {
 
 	void PointCloudEntity::update()
 	{
-		if (Input::isKeyPressed(GLFW_KEY_SPACE) && m_Time != 0) {
+		if ((Input::isKeyPressed(GLFW_KEY_SPACE) || Input::isKeyPressed(GLFW_KEY_R)) && m_Time != 0) {
 			m_Render = false;
 		}
 		m_Time += Time::deltaTime;

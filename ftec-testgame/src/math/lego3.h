@@ -44,11 +44,9 @@ namespace ftec {
 							vec3<T>::cross(j->direction, k->direction) * i->offset +
 							vec3<T>::cross(k->direction, i->direction) * j->offset +
 							vec3<T>::cross(i->direction, j->direction) * k->offset
-							) / denominator;
+							);
 
-						LOG("Intersection! " << result);
-
-						m_Vertices.push_back(std::move(result));
+						m_Vertices.push_back(std::move(result / denominator));
 					}
 				}
 			}
@@ -57,20 +55,16 @@ namespace ftec {
 				return;
 
 			//Corretly orient the planes inside
-			for (auto &p : planes) {
+			/*for (auto &p : planes) {
 				if (p.distanceFrom(m_Center) < 0) {
 					p.flip();
 				}
-
-				LOG("Center distance << " << p.distanceFrom(m_Center));
 				
 				m_Vertices.erase(std::remove_if(m_Vertices.begin(), m_Vertices.end(),
 					[&p](vec3f &v) -> bool {
-
-					LOG("Vertex distance << " << p.distanceFrom(v));
 					return p.distanceFrom(v) < -0.05;
 				}), m_Vertices.end());
-			}
+			}*/
 		}
 
 
