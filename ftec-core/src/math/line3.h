@@ -1,4 +1,5 @@
 #pragma once
+
 #include "vec3.h"
 
 namespace ftec {
@@ -43,9 +44,14 @@ namespace ftec {
 			return vec3<T>::dot(p - a, perp());
 		}
 
-		T length() const
+		T sqrmagnitude() const
 		{
-			return distance(a, b);
+			return (b - a).sqrmagnitude();
+		}
+
+		T magnitude() const
+		{
+			return (b - a).magnitude();
 		}
 
 		line3<T> clone()

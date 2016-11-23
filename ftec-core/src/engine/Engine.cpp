@@ -1,7 +1,25 @@
+#define FREEIMAGE_LIB
+
+#include "FreeImage.h"
+
 #include "Engine.h"
 #include "Time.h"
 #include "Input.h"
 #include "graphics/Graphics.h"
+
+
+#include "logger/log.h"
+
+#include "graphics/Window.h"
+#include "scene/Scene.h"
+#include "resources/ResourceManager.h"
+
+#include "Input.h"
+#include "Time.h"
+#include "graphics/Graphics.h"
+#include "Game.h"
+
+#include "threading/PotatoQueue.h"
 
 namespace ftec {
 
@@ -109,8 +127,8 @@ namespace ftec {
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		//Reenable for performance reasons, disabled now for other reasons
-		//glEnable(GL_CULL_FACE);
-		//glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
 		
 		//glClearColor(.2f, .4f, .8f, 0.f);
 		//glClearColor(1.f, 1.f, 1.f, 1.f);

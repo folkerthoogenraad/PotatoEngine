@@ -26,27 +26,24 @@ namespace ftec {
 					if (i == j)
 						continue;
 
-					vec3<T> lineDirection = vec3<T>::cross(i->direction, j->direction);
+					line3f line = i->intersection(*j);
 
-					if (lineDirection.sqrmagnitude() == 0)
+					if (line.sqrmagnitude() == 0)
+						continue;
+
+					if (line.a.x != line.a.x)
 						continue;
 
 					for (auto k = j; k != planes.end(); k++) {
 						if (k == i || k == j)
 							continue;
 
-						float denominator = vec3<T>::dot(lineDirection, k->direction);
+						vec3<T> result = k->intersection(line);
 
-						if (denominator == 0)
+						if (result.x != result.x)
 							continue;
 
-						vec3<T> result = (
-							vec3<T>::cross(j->direction, k->direction) * i->offset +
-							vec3<T>::cross(k->direction, i->direction) * j->offset +
-							vec3<T>::cross(i->direction, j->direction) * k->offset
-							);
-
-						m_Vertices.push_back(std::move(result / denominator));
+						m_Vertices.push_back(std::move(result));
 					}
 				}
 			}
@@ -55,25 +52,24 @@ namespace ftec {
 				return;
 
 			//Corretly orient the planes inside
-			/*for (auto &p : planes) {
+			for (auto &p : planes) {
 				if (p.distanceFrom(m_Center) < 0) {
 					p.flip();
 				}
 				
 				m_Vertices.erase(std::remove_if(m_Vertices.begin(), m_Vertices.end(),
 					[&p](vec3f &v) -> bool {
-					return p.distanceFrom(v) < -0.05;
+					return p.distanceFrom(v) < -0.001; //Small rounding error fix?
 				}), m_Vertices.end());
-			}*/
+			}
 		}
 
 
-		//Makes sure all the lines face the point
 		void setCenter(vec3<T> center)
 		{
 			m_Center = center;
 		}
-		const vec3<T> &getCenter() { return m_Center; }
+		const vec3<T> &getCenter() const { return m_Center; }
 	};
 
 	typedef lego3<float> lego3f;

@@ -1,5 +1,6 @@
 #include "PotatoUI.h"
 #include "Panel.h"
+#include "graphics/Window.h"
 #include "engine/Engine.h"
 #include "logger/log.h"
 

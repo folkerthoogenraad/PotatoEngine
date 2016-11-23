@@ -6,6 +6,7 @@
 #include "engine/Input.h"
 #include "engine/Time.h"
 #include "engine/Engine.h"
+#include "graphics/Window.h"
 
 #include "math/lego2.h"
 

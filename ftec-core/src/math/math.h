@@ -16,6 +16,9 @@ Every mathematical sturct or class should have (if applicable)
 Most arguments should be const &, unless you want to modify the result.
 All functions return a reference to themselves, unless they either clone, or calculate a new result
 
+NOTE: Every structure that has a distance calculation should have a magnitude calculation (for converting the results
+into world space coordinates)
+
 The name should be:							Examples:
 <name>[dimensions]							line2, line3, plane, triangle3
 

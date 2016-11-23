@@ -1,8 +1,7 @@
 #pragma once
 
-#include "math.h"
+#include "math.h"	//TODO make sure this is NEVER used again
 #include <math.h>
-#include <cstring>
 #include <array>
 
 

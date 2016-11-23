@@ -1,9 +1,11 @@
 #pragma once
 
 #include "vec3.h"
-#include "sphere.h"
 
 namespace ftec {
+
+	template<typename T>
+	struct sphere;
 
 	template<typename T>
 	struct box {

@@ -1,5 +1,10 @@
 #include "Delaunay3D.h"
+
+#include "math/sphere.h"
+#include "math/triangle3.h"
+#include "math/mat4.h"
 #include "math/tetrahedron.h"
+
 #include "logger/log.h"
 #include <map>
 
@@ -36,7 +41,7 @@ namespace ftec {
 		spheref bSphere = m_BoundingBox.boundingSphere();
 
 		//Make a tetrahedron around the bounding sphere (which is about ~6 per unit)
-		tetrahedronf superTetrahedron = tetrahedronf::unitTetrahedron().multiplied(
+		tetrahedronf superTetrahedron = tetrahedronf::unitTetrahedron().transform(
 			mat4::translation(bSphere.center) * mat4::scale(vec3f(bSphere.radius * 6, bSphere.radius * 6, bSphere.radius * 6))
 		);
 

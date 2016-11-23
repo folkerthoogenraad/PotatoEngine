@@ -1,23 +1,33 @@
 #include "PointCloudEntity.h"
+
 #include "graphics/Mesh.h"
 #include "graphics/Material.h"
 #include "graphics/Texture.h"
 #include "graphics/Shader.h"
+#include "graphics/Graphics.h"
+
 #include "engine/Engine.h"
+#include "engine/Time.h"
+#include "engine/Input.h"
 
 #include "math/Delaunay3D.h"
 #include "math/triangle3.h"
 
 namespace ftec {
 
-	PointCloudEntity::PointCloudEntity(std::vector<vec3f> points) : m_Points(std::move(points))
+	PointCloudEntity::PointCloudEntity(const lego3f &lego) : m_Points(lego.m_Vertices)
 	{
 		Delaunay3D del;
 
 		del.triangulate(m_Points);
 
+		m_Render = true;
+		m_Time = 0;
+
+		m_Direction = del.getBoundingBox().center();
+
 		m_Mesh = std::make_unique<Mesh>();
-		vec3f center = del.getBoundingBox().center();
+		center = lego.getCenter(); // del.getBoundingBox().center();// lego.getCenter();
 
 		for (int i = 0; i < del.getHullTriangleCount(); i++) {
 			const TriangleRef &tr = del.getHullTriangleRef(i);
@@ -66,29 +76,25 @@ namespace ftec {
 		m_Material->m_NormalMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
 		m_Material->m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
 		m_Material->m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
-
-		m_Time = 0;
 	}
 
 	void PointCloudEntity::update()
 	{
-		if ((Input::isKeyPressed(GLFW_KEY_SPACE) || Input::isKeyPressed(GLFW_KEY_R)) && m_Time != 0) {
+		if ((Input::isKeyTyped(GLFW_KEY_SPACE) || Input::isKeyTyped(GLFW_KEY_R) || Input::isKeyTyped(GLFW_KEY_ENTER)) && m_Time != 0) {
 			m_Render = false;
 		}
-		m_Time += Time::deltaTime;
+		m_Time = 1;// Time::deltaTime;
 
-		m_Position = vec3f(
-			(float)sin(m_Time * 1.8) * 1.1f * 3,
-			(float)cos(m_Time * 1.1) * 1.8f * 3,
-			(float)sin(m_Time * 1.4) * 1.4f * 3
-		);
+		m_Position = m_Direction * (sin(m_Time) + 1);
+
 
 	}
 
 	void PointCloudEntity::render()
 	{
 		if (m_Render) {
-			Graphics::enqueueMesh(m_Mesh.get(), m_Material);// , mat4::translation(this->m_Position) * mat4::rotationY(m_Time * 20.f));
+			Graphics::enqueuePoint(center + this->m_Position, color32::red());
+			Graphics::enqueueMesh(m_Mesh.get(), m_Material, mat4::translation(this->m_Position));
 		}
 	}
 }

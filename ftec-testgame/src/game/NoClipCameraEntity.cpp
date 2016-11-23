@@ -5,6 +5,9 @@
 #include "engine/Input.h"
 #include "math/vec3.h"
 
+#include "graphics/Camera.h"
+#include "scene/Scene.h"
+
 namespace ftec {
 	NoClipCameraEntity::NoClipCameraEntity() : m_MouseGrabbed(false)
 	{ }

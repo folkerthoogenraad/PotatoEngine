@@ -223,6 +223,20 @@ namespace ftec{
 			return left << "(" << right.x << ", " << right.y << ", " << right.z << ")";
 		}
 
+		static vec3<T> nan()
+		{
+			T n = sqrt(-1);
+			return vec3<T>(n,n,n);
+		}
+		static vec3<T> zero()
+		{
+			return vec3<T>(0, 0, 0);
+		}
+		static vec3<T> one()
+		{
+			return vec3<T>(1, 1, 1);
+		}
+
 	};
 	
 	typedef vec3<float> vec3f;

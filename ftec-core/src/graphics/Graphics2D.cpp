@@ -1,11 +1,14 @@
 #include "Graphics2D.h"
 #include "Renderer.h"
 #include "GraphicsState.h"
+#include "Graphics.h"
+#include "Window.h"
 
 #include "Texture.h"
 #include "Sprite.h"
 #include "engine/Engine.h"
 #include "Font.h"
+#include "logger/log.h"
 
 namespace ftec {
 

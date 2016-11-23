@@ -5,6 +5,8 @@
 #include "engine/Engine.h"
 #include "engine/Time.h"
 
+#include "scene/Scene.h"
+
 #include "math/helpers.h"
 
 #include "math/tetrahedron.h"
@@ -58,7 +60,7 @@ namespace ftec {
 		voronoi.create(delaunay);
 
 		for (const auto &l : voronoi.getLegos()) {
-			Engine::getScene()->addEntity(std::make_shared<PointCloudEntity>(l.m_Vertices));
+			Engine::getScene()->addEntity(std::make_shared<PointCloudEntity>(l));
 		}
 
 	}
@@ -73,6 +75,7 @@ namespace ftec {
 		if (Input::isKeyTyped(GLFW_KEY_ENTER)) {
 			create();
 		}
+
 
 		if (Input::isKeyTyped(GLFW_KEY_SPACE)) {
 			m_Points.clear();
@@ -153,7 +156,7 @@ namespace ftec {
 			);
 		}
 
-		for (auto &l : voronoi.getLegos()) {
+		/*for (auto &l : voronoi.getLegos()) {
 			for (auto &v : l.m_Vertices) {
 				Graphics::enqueuePoint(v, color32::green());
 			}
@@ -164,7 +167,7 @@ namespace ftec {
 			Graphics::enqueuePoint(voronoi.getDelaunay().getPoint(i), color32::red());
 		}
 
-		/*for (auto &p : m_Points) {
+		for (auto &p : m_Points) {
 			Graphics::enqueuePoint(p, color32::red());
 		}
 

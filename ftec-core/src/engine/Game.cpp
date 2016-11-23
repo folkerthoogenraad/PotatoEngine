@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Engine.h"
+#include "graphics/Window.h"
 
 namespace ftec {
 	Game::Game()

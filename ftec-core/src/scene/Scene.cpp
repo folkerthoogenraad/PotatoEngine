@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "graphics/Window.h"
 #include "engine/Engine.h"
 #include "engine/Time.h"
 #include "graphics/Graphics.h"

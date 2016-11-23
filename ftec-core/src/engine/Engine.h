@@ -1,26 +1,17 @@
 #pragma once
 
-#include "graphics/GL.h"
+#include "graphics/GL.h" //Figure out whether or not this is needed
 
-#define FREEIMAGE_LIB
-
-#include "FreeImage.h"
-#include "logger/log.h"
-
-#include <memory>
-#include "graphics/Window.h"
-#include "scene/Scene.h"
-#include "resources/ResourceManager.h"
-
-#include "Input.h"
-#include "Time.h"
-#include "graphics/Graphics.h"
-#include "Game.h"
 #include "threading/PotatoQueue.h"
-
+#include <memory>
 #include <functional>
 
 namespace ftec {
+
+	class Scene;
+	class ResourceManager;
+	class Window;
+	class Game;
 
 	class Engine {
 	private:

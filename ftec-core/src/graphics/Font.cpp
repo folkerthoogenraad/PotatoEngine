@@ -6,6 +6,8 @@
 
 #include "logger/log.h"
 #include "engine/Engine.h"
+#include "graphics/Texture.h"
+#include "math/helpers.h"
 
 //Freetype stuff <3
 #include <ft2build.h>

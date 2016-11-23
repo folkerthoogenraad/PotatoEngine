@@ -1,11 +1,15 @@
 #pragma once
 
 #include "vec3.h"
-#include "sphere.h"
-#include "mat4.h"
-#include "triangle3.h"
 
 namespace ftec {
+
+
+	template<typename T>
+	struct sphere;
+
+	template<typename T>
+	struct triangle3;
 
 	template<typename T>
 	struct tetrahedron {
@@ -64,7 +68,7 @@ namespace ftec {
 				);
 		}
 
-		tetrahedron<T> multiplied(mat4 m) const
+		tetrahedron<T> transform(const mat4 &m) const
 		{
 			return tetrahedron<T>(
 				m * a,

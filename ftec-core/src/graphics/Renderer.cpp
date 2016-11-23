@@ -4,6 +4,7 @@
 #include "logger/log.h"
 #include "scene/Scene.h"
 #include "engine/Engine.h"
+#include "Window.h"
 #include "GraphicsState.h"
 
 namespace ftec {

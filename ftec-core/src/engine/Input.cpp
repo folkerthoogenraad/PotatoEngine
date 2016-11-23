@@ -1,5 +1,6 @@
 #include "Input.h"
 #include "Engine.h"
+#include "graphics/Window.h"
 
 namespace ftec {
 
