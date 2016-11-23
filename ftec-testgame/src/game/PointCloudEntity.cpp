@@ -86,8 +86,6 @@ namespace ftec {
 			m_Render = false;
 		}
 
-		//vec4<T> tween(vec4<T> a, vec4<T> b, T f, const curves::Base &curve = curves::Linear())
-
 		if (Input::isKeyDown(GLFW_KEY_N)) {
 			m_Time += Time::deltaTime * 4;
 		}
