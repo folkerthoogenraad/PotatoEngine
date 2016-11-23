@@ -6,6 +6,8 @@
 #include "logger/log.h"
 #include <vector>
 
+#include "math/epsilon.h"
+
 namespace ftec {
 
 	template <typename T>
@@ -59,7 +61,7 @@ namespace ftec {
 				
 				m_Vertices.erase(std::remove_if(m_Vertices.begin(), m_Vertices.end(),
 					[&p](vec3f &v) -> bool {
-					return p.distanceFrom(v) < -0.001; //Small rounding error fix?
+					return p.distanceFrom(v) < -EPSILON; //Small rounding error fix?
 				}), m_Vertices.end());
 			}
 		}

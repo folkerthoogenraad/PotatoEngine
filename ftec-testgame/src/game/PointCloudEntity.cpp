@@ -22,9 +22,11 @@ namespace ftec {
 		del.triangulate(m_Points);
 
 		m_Render = true;
-		m_Time = 0;
+		m_Time = -1;
 
 		m_Direction = del.getBoundingBox().center();
+
+		speed = (rand() % 16);
 
 		m_Mesh = std::make_unique<Mesh>();
 		center = lego.getCenter(); // del.getBoundingBox().center();// lego.getCenter();
@@ -80,21 +82,43 @@ namespace ftec {
 
 	void PointCloudEntity::update()
 	{
-		if ((Input::isKeyTyped(GLFW_KEY_SPACE) || Input::isKeyTyped(GLFW_KEY_R) || Input::isKeyTyped(GLFW_KEY_ENTER)) && m_Time != 0) {
+		if ((Input::isKeyTyped(GLFW_KEY_SPACE) || Input::isKeyTyped(GLFW_KEY_R) || Input::isKeyTyped(GLFW_KEY_E) || Input::isKeyTyped(GLFW_KEY_ENTER)) && m_Time != -1) {
 			m_Render = false;
 		}
-		m_Time = 1;// Time::deltaTime;
 
-		m_Position = m_Direction * (sin(m_Time) + 1);
+		//vec4<T> tween(vec4<T> a, vec4<T> b, T f, const curves::Base &curve = curves::Linear())
 
+		if (Input::isKeyDown(GLFW_KEY_N)) {
+			m_Time += Time::deltaTime * 4;
+		}
+		else {
+			m_Time -= Time::deltaTime * 4;
+		}
 
+		if (Input::isKeyTyped(GLFW_KEY_UP)) {
+			away += 0.25f;
+		}if(Input::isKeyTyped(GLFW_KEY_DOWN)) {
+			away -= 0.25f;
+		}
+
+		m_Time = clamp(0.f, 1.f, m_Time);
+
+		amount = tween(0.f, away, m_Time, curves::CubicBezier());
+
+		m_Position = m_Direction * amount;
+
+		if (m_Time < EPSILON * 4)
+			m_Position = vec3f(0, 0, 0);
 	}
 
 	void PointCloudEntity::render()
 	{
 		if (m_Render) {
-			Graphics::enqueuePoint(center + this->m_Position, color32::red());
-			Graphics::enqueueMesh(m_Mesh.get(), m_Material, mat4::translation(this->m_Position));
+			mat4 model = mat4::translation(this->m_Position + center);
+
+			mat4 rotation = mat4::translation(-center);// mat4::rotationY(amount * 37) * mat4::rotationX(amount * 27) * mat4::translation(-center);
+
+			Graphics::enqueueMesh(m_Mesh.get(), m_Material, model * rotation);// * 
 		}
 	}
 }

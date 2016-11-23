@@ -7,6 +7,8 @@
 
 #include "logger/log.h"
 #include <map>
+#include "math/epsilon.h"
+
 
 namespace ftec {
 
@@ -121,7 +123,7 @@ namespace ftec {
 					bdc.translate(tr.a - tr.b);
 
 					//If its behind the current plane
-					if (bdc.distanceFrom(v) >= 0) {
+					if (bdc.distanceFrom(v) >= EPSILON) {
 						addTetrahedron();
 					}
 				}
@@ -136,7 +138,7 @@ namespace ftec {
 							normal = -normal;
 
 						//Add if its in the direction of the super triangle
-						if (vec3f::dot(normal, v - tr.a) >= 0)
+						if (vec3f::dot(normal, v - tr.a) >= EPSILON)
 							addTetrahedron();
 					}
 
@@ -150,7 +152,7 @@ namespace ftec {
 						abc.flip();
 
 					//If its behind the current plane
-					if (abc.distanceFrom(v) <= 0) {
+					if (abc.distanceFrom(v) <= -EPSILON) {
 						addTetrahedron();
 					}
 				}

@@ -16,10 +16,13 @@ namespace ftec {
 		std::shared_ptr<PBRMaterial> m_Material;
 		std::unique_ptr<Mesh> m_Mesh;
 		vec3f m_Direction;
-		vec3f center;
 		float m_Time;
-
 		bool m_Render;
+
+		vec3f center;
+		float speed;
+		float amount;
+		float away = 0.25f;
 	public:
 		PointCloudEntity(const lego3f &);
 		~PointCloudEntity() = default;

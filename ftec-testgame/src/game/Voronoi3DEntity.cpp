@@ -80,7 +80,7 @@ namespace ftec {
 		if (Input::isKeyTyped(GLFW_KEY_SPACE)) {
 			m_Points.clear();
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 20; i++) {
 				vec3f a = vec3f(
 					randf(-1, 1),
 					randf(-1, 1),
