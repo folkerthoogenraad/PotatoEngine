@@ -23,11 +23,28 @@ namespace ftec {
 		mat3();
 		mat3(std::array<T, 3 * 3> elements) : elements(elements) {}
 
+		mat3<T> &translate(T x, T y);
+		mat3<T> &scale(T x, T y);
+		mat3<T> &rotate(T x);
+
+		mat3<T> &multiply(const mat3<T> &m);
+		mat3<T> multiplied();
+
+		mat3<T> &transpose();
+		mat3<T> transposed();
+
+		mat3<T> &inverse();
+		mat3<T> inversed();
+
+		mat3<T> clone();
+
 		T determinant();
 
 		inline T &el(int column, int row) { return elements[column + row * 3]; }
 		inline T el(int column, int row) const { return elements[column + row * 3]; }
-
-		friend std::ostream& operator<<(std::ostream& left, const mat3& right);
 	};
+
+	typedef mat3<float> mat3f;
+	typedef mat3<double> mat3d;
+	typedef mat3<int> mat3i;
 }

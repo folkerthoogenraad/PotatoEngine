@@ -13,6 +13,70 @@ namespace ftec {
 		elements[2 + 2 * 3] = (T)1;
 	}
 
+	template<typename T>
+	mat3<T>& mat3<T>::translate(T x, T y)
+	{
+		for (int row = 0; row < 3; row++) {
+			int i = row * 3;
+			elements[i + 2] = elements[i] * x + elements[i + 1] * y + elements[i + 2];
+		}
+		return *this;
+	}
+
+	template<typename T>
+	mat3<T>& mat3<T>::scale(T x, T y)
+	{
+		return *this;
+	}
+
+	template<typename T>
+	mat3<T>& mat3<T>::rotate(T x)
+	{
+		return *this;
+	}
+
+	template<typename T>
+	mat3<T>& mat3<T>::multiply(const mat3<T>& m)
+	{
+		return *this;
+	}
+
+	template<typename T>
+	mat3<T>& mat3<T>::transpose()
+	{
+		return *this;
+	}
+
+	template<typename T>
+	mat3<T>& mat3<T>::inverse()
+	{
+		return *this;
+	}
+
+	template<typename T>
+	mat3<T> mat3<T>::multiplied()
+	{
+		return mat3<T>();
+	}
+
+	template<typename T>
+	mat3<T> mat3<T>::transposed()
+	{
+		return mat3<T>();
+	}
+
+	template<typename T>
+	mat3<T> mat3<T>::inversed()
+	{
+		return mat3<T>();
+	}
+
+	template<typename T>
+	mat3<T> mat3<T>::clone()
+	{
+		return mat3<T>(*this);
+	}
+
 	template <typename T>
 	T mat3<T>::determinant()
 	{
