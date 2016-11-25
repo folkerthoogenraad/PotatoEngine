@@ -5,6 +5,9 @@
 namespace ftec {
 
 	template<typename T>
+	struct mat3;
+
+	template<typename T>
 	struct circle {
 		vec2<T> center;
 		T radius;
@@ -12,6 +15,40 @@ namespace ftec {
 		circle() {}
 		circle(const vec2<T> &c, T radius)
 			: center(c), radius(radius) {}
+
+		circle<T> &transform(const mat3<T> m)
+		{
+			//TODO PLS PLS
+
+			return *this;
+		}
+		circle<T> transformed() const 
+		{
+			return clone().transform(m);
+		}
+
+		circle<T> &flip()
+		{
+			radius = -radius;
+			return *this;
+		}
+		circle<T> flipped() const
+		{
+			return clone().flip();
+		}
+
+		circle<T> &orient()
+		{
+			radius = abs(radius);
+			return *this;
+		}
+		circle<T> oriented() const
+		{
+			return clone().orient();
+		}
+
+		T magnitude() const { return radius; }
+		circle<T> clone() const { return circle<T>(*this); }
 	};
 
 	typedef circle<float> circlef;

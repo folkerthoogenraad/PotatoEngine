@@ -12,6 +12,9 @@ namespace ftec {
 	struct triangle3;
 
 	template<typename T>
+	struct mat4;
+
+	template<typename T>
 	struct tetrahedron {
 		vec3<T> a;
 		vec3<T> b;
@@ -27,35 +30,35 @@ namespace ftec {
 			//http://mathworld.wolfram.com/Circumsphere.html
 			//Don't even bother
 
-			float aa = mat4f({
+			T aa = mat4<T>({
 				a.x, a.y, a.z, 1,
 				b.x, b.y, b.z, 1,
 				c.x, c.y, c.z, 1,
 				d.x, d.y, d.z, 1
 			}).determinant();
 
-			float dx = mat4f({
+			T dx = mat4<T>({
 				a.sqrmagnitude(), a.y, a.z, 1,
 				b.sqrmagnitude(), b.y, b.z, 1,
 				c.sqrmagnitude(), c.y, c.z, 1,
 				d.sqrmagnitude(), d.y, d.z, 1
 			}).determinant();
 
-			float dy = -mat4f({
+			T dy = -mat4<T>({
 				a.sqrmagnitude(), a.x, a.z, 1,
 				b.sqrmagnitude(), b.x, b.z, 1,
 				c.sqrmagnitude(), c.x, c.z, 1,
 				d.sqrmagnitude(), d.x, d.z, 1
 			}).determinant();
 
-			float dz = mat4f({
+			T dz = mat4<T>({
 				a.sqrmagnitude(), a.x, a.y, 1,
 				b.sqrmagnitude(), b.x, b.y, 1,
 				c.sqrmagnitude(), c.x, c.y, 1,
 				d.sqrmagnitude(), d.x, d.y, 1
 			}).determinant();
 
-			float cc = mat4f({
+			T cc = mat4<T>({
 				a.sqrmagnitude(), a.x, a.y, a.z,
 				b.sqrmagnitude(), b.x, b.y, b.z,
 				c.sqrmagnitude(), c.x, c.y, c.z,
@@ -63,23 +66,27 @@ namespace ftec {
 			}).determinant();
 
 			return sphere<T>(
-				vec3f(dx / (2 * aa), dy / (2 * aa), dz / (2 * aa)),
+				vec3<T>(dx / (2 * aa), dy / (2 * aa), dz / (2 * aa)),
 				sqrt(dx * dx + dy * dy + dz * dz - 4 * aa * cc) / (2.0f * abs(aa))
 				);
 		}
-
-		tetrahedron<T> transform(const mat4f &m) const
+		
+		tetrahedron<T> &transform(const mat4<T> &m)
 		{
-			return tetrahedron<T>(
-				m * a,
-				m * b,
-				m * c,
-				m * d );
+			a = m * a;
+			b = m * b;
+			c = m * c;
+			d = m * d;
+			return *this;
+		}
+		tetrahedron<T> transformed(const mat4<T> &m) const
+		{
+			return clone().transform(m);
 		}
 
+		//Orients all the normals outside
 		tetrahedron<T> &orient()
 		{
-			//NOT SURE IF THIS WORKS?
 			if (trianglebdc().distanceFrom(a) > 0) {
 				vec3<T> t = b;
 				b = c;
@@ -88,7 +95,19 @@ namespace ftec {
 
 			return *this;
 		}
-
+		
+		tetrahedron<T> &flip()
+		{
+			vec3<T> t = b;
+			b = c;
+			c = t;
+			return *this;
+		}
+		tetrahedron<T> flipped() const 
+		{
+			return clone().flip();
+		}
+		
 		tetrahedron<T> clone()
 		{
 			return tetrahedron<T>(*this);

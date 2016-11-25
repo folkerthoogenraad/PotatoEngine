@@ -140,13 +140,11 @@
     <ClCompile Include="src\game\VoronoiCanvas.cpp" />
     <ClCompile Include="src\game\Voronoi3DEntity.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\math\Delaunay.cpp" />
-    <ClCompile Include="src\math\Delaunay3D.cpp" />
     <ClCompile Include="src\math\DelaunayVertex.cpp" />
     <ClCompile Include="src\math\StairAlgorithm.cpp" />
     <ClCompile Include="src\math\StairArc.cpp" />
-    <ClCompile Include="src\math\Voronoi.cpp" />
-    <ClCompile Include="src\math\Voronoi3D.cpp" />
+    <ClCompile Include="src\math\Voronoi2.cpp" />
+    <ClCompile Include="src\math\Voronoi3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\NoClipCameraEntity.h" />
@@ -155,15 +153,15 @@
     <ClInclude Include="src\game\StairArcCanvas.h" />
     <ClInclude Include="src\game\VoronoiCanvas.h" />
     <ClInclude Include="src\game\Voronoi3DEntity.h" />
-    <ClInclude Include="src\math\Delaunay.h" />
-    <ClInclude Include="src\math\Delaunay3D.h" />
+    <ClInclude Include="src\math\Delaunay2.h" />
+    <ClInclude Include="src\math\Delaunay3.h" />
     <ClInclude Include="src\math\DelaunayVertex.h" />
     <ClInclude Include="src\math\lego2.h" />
     <ClInclude Include="src\math\lego3.h" />
     <ClInclude Include="src\math\StairAlgorithm.h" />
     <ClInclude Include="src\math\StairArc.h" />
-    <ClInclude Include="src\math\Voronoi.h" />
-    <ClInclude Include="src\math\Voronoi3D.h" />
+    <ClInclude Include="src\math\Voronoi2.h" />
+    <ClInclude Include="src\math\Voronoi3.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="text.xml">

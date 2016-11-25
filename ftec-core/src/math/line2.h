@@ -2,6 +2,8 @@
 
 #include "vec2.h"
 
+//TODO refactor this thing
+
 namespace ftec {
 	template<typename T>
 	struct line2 {

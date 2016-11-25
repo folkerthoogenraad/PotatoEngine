@@ -1,5 +1,4 @@
-#include "Voronoi.h"
-#include "Delaunay.h"
+#include "Voronoi2.h"
 
 #include "math/line2.h"
 
@@ -7,12 +6,15 @@
 
 namespace ftec {
 
-	Voronoi::Voronoi(const Delaunay & delaunay)
+	template <typename T>
+	Voronoi2<T>::Voronoi2(const Delaunay2<T> &delaunay)
 	{
 		create(delaunay);
 	}
 
-	void Voronoi::create(const Delaunay & delaunay)
+
+	template <typename T>
+	void Voronoi2<T>::create(const Delaunay2<T> & delaunay)
 	{
 		//TODO less memory copying
 		m_Points = delaunay.getVertices();
@@ -30,21 +32,21 @@ namespace ftec {
 		}
 
 		m_BoundingBox = delaunay.getBoundingBox();
-		m_BoundingBox.position -= vec2f(1, 1);
-		m_BoundingBox.size += vec2f(2, 2);
+		m_BoundingBox.position -= vec2<T>(1, 1);
+		m_BoundingBox.size += vec2<T>(2, 2);
 
 		for (int i = 0; i < m_Points.size(); ++i) {
-			lego2f lego;
+			lego2<T> lego;
 
 			lego.setCenter(m_Points[i].m_Vertex);
 
-			std::vector<line2f> edges;
+			std::vector<line2<T>> edges;
 
 			const auto &ns = this->getNeighbours(i);
 
 			for (auto &n : ns) {
 				edges.push_back(
-					line2f(m_Points[i].m_Vertex,
+					line2<T>(m_Points[i].m_Vertex,
 					m_Points[n].m_Vertex).normal()
 				);
 			}
@@ -62,30 +64,40 @@ namespace ftec {
 		
 	}
 
-	const vec2f & ftec::Voronoi::getPoint(int index) const
+	template <typename T>
+	const vec2<T> & ftec::Voronoi2<T>::getPoint(int index) const
 	{
 		return m_Points[index].m_Vertex;
 	}
 
-	int Voronoi::getPointCount() const
+	template <typename T>
+	int Voronoi2<T>::getPointCount() const
 	{
 		return m_Points.size();
 	}
 
-	const lego2f & Voronoi::getLego(int index) const
+	template <typename T>
+	const lego2<T> & Voronoi2<T>::getLego(int index) const
 	{
 		return m_Legos[index];
 	}
 
-	const std::set<int>& Voronoi::getNeighbours(int index) const
+	template <typename T>
+	const std::set<int>& Voronoi2<T>::getNeighbours(int index) const
 	{
 		return m_Edges.at(index);
 	}
 
-	void Voronoi::addNeighbour(int from, int to)
+	template <typename T>
+	void Voronoi2<T>::addNeighbour(int from, int to)
 	{
 		m_Edges[from].insert(to);
 		m_Edges[to].insert(from);
 	}
 
+
+	//Tell the compiler to pretty pretty please compile this 
+	template struct Voronoi2<float>;
+	template struct Voronoi2<int>;
+	template struct Voronoi2<double>;
 }

@@ -33,19 +33,10 @@
     <ClCompile Include="src\game\StairArcCanvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\Voronoi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\Delaunay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\Voronoi3DEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\game\VoronoiCanvas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\Delaunay3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\math\DelaunayVertex.cpp">
@@ -54,7 +45,10 @@
     <ClCompile Include="src\game\PointCloudEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\Voronoi3D.cpp">
+    <ClCompile Include="src\math\Voronoi2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Voronoi3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,12 +68,6 @@
     <ClInclude Include="src\game\StairArcCanvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\Voronoi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\Delaunay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\lego2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,9 +75,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\game\VoronoiCanvas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\Delaunay3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\lego3.h">
@@ -101,7 +86,16 @@
     <ClInclude Include="src\game\PointCloudEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\Voronoi3D.h">
+    <ClInclude Include="src\math\Delaunay3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Delaunay2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Voronoi2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Voronoi3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

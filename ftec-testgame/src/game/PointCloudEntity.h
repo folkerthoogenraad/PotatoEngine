@@ -12,19 +12,19 @@ namespace ftec {
 	class Mesh;
 
 	class PointCloudEntity : public Entity {
-		std::vector<vec3f> m_Points;
+		std::vector<vec3d> m_Points;
 		std::shared_ptr<PBRMaterial> m_Material;
 		std::unique_ptr<Mesh> m_Mesh;
-		vec3f m_Direction;
+		vec3d m_Direction;
 		float m_Time;
 		bool m_Render;
 
-		vec3f center;
+		vec3d center;
 		float speed;
 		float amount;
 		float away = 0.25f;
 	public:
-		PointCloudEntity(const lego3f &);
+		PointCloudEntity(const lego3d &);
 		~PointCloudEntity() = default;
 		void update() override;
 		void render() override;

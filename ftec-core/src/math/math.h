@@ -140,6 +140,8 @@ normalize()
 normalized()
 flip()
 flipped()
+orient()
+oriented()
 
 magnitude()
 length()
@@ -148,5 +150,6 @@ distance(vec[dim])							Calculates the distance to the given point (in local co
 project(vec[dim])							Projects point onto plane (and returns the direction)
 
 center()
+extends()
 
 */

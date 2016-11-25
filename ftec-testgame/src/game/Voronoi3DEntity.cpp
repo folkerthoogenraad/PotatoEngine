@@ -11,8 +11,8 @@
 #include "math/mat4.h"
 
 #include "math/tetrahedron.h"
-#include "math/Delaunay3D.h"
-#include "math/Voronoi3D.h"
+#include "math/Delaunay3.h"
+#include "math/Voronoi3.h"
 #include "logger/log.h"
 
 #include "graphics/Shader.h"
@@ -51,11 +51,11 @@ namespace ftec {
 	}
 
 	//TODO make these not static and stuff, whatever
-	static Voronoi3D voronoi;
+	static Voronoi3d voronoi;
 
 	void Voronoi3DEntity::create()
 	{
-		Delaunay3D delaunay;
+		Delaunay3d delaunay;
 
 		delaunay.triangulate(m_Points);
 		voronoi.create(delaunay);
@@ -81,8 +81,8 @@ namespace ftec {
 		if (Input::isKeyTyped(GLFW_KEY_SPACE)) {
 			m_Points.clear();
 
-			for (int i = 0; i < 20; i++) {
-				vec3f a = vec3f(
+			for (int i = 0; i < 500; i++) {
+				vec3d a = vec3d(
 					randf(-1, 1),
 					randf(-1, 1),
 					randf(-1, 1)
@@ -102,7 +102,7 @@ namespace ftec {
 
 			m_Points.clear();
 
-			auto t = tetrahedronf::unitTetrahedron();
+			auto t = tetrahedrond::unitTetrahedron();
 
 			m_Points.push_back(t.a);
 
@@ -113,7 +113,7 @@ namespace ftec {
 			if (r >= 3)
 				m_Points.push_back(t.d);
 			if (r >= 4)
-				m_Points.push_back(vec3f(0,0));
+				m_Points.push_back(vec3d(0,0));
 
 			r++;
 

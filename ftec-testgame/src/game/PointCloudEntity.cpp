@@ -10,7 +10,7 @@
 #include "engine/Time.h"
 #include "engine/Input.h"
 
-#include "math/Delaunay3D.h"
+#include "math/Delaunay3.h"
 #include "math/triangle3.h"
 
 #include "math/Curve.h"
@@ -18,9 +18,9 @@
 
 namespace ftec {
 
-	PointCloudEntity::PointCloudEntity(const lego3f &lego) : m_Points(lego.m_Vertices)
+	PointCloudEntity::PointCloudEntity(const lego3d &lego) : m_Points(lego.m_Vertices)
 	{
-		Delaunay3D del;
+		Delaunay3d del;
 
 		del.triangulate(m_Points);
 

@@ -162,7 +162,6 @@
     <ClCompile Include="src\math\mat3.cpp" />
     <ClCompile Include="src\math\mat4.cpp" />
     <ClCompile Include="src\serialization\Serialization.cpp" />
-    <ClCompile Include="src\math\quaternion.cpp" />
     <ClCompile Include="src\resources\ResourceManager.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
   </ItemGroup>

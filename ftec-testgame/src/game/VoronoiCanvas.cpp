@@ -1,7 +1,7 @@
 #include "VoronoiCanvas.h"
 
-#include "math/Voronoi.h"
-#include "math/Delaunay.h"
+#include "math/Voronoi2.h"
+#include "math/Delaunay2.h"
 #include "math/triangle2.h"
 #include "engine/Input.h"
 #include "engine/Time.h"
@@ -13,13 +13,13 @@
 
 namespace ftec {
 
-	static Voronoi voronoi;
+	static Voronoi2f voronoi;
 	static std::vector<vec2f> points {};
 
 	static void recreate()
 	{
 		if (points.size() > 0) {
-			Delaunay del;
+			Delaunay2f del;
 			del.triangulate(points);
 			voronoi.create(del);
 		}

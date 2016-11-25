@@ -6,6 +6,8 @@ namespace ftec {
 
 	template<typename T>
 	struct sphere;
+	template<typename T>
+	struct mat4;
 
 	template<typename T>
 	struct box {
@@ -16,7 +18,33 @@ namespace ftec {
 		box(vec3<T> mn, vec3<T> mx) : min(mn), max(mx) {}
 
 		vec3<T> center() const { return (min + max) / 2; }
-		vec3<T> delta() const { return max - center(); }
+		vec3<T> extends() const { return max - center(); }
+
+		T magnitude() const { return extends().magnitude(); }
+
+		box<T> &transform(const mat4<T> &m)
+		{
+			min = m * min;
+			max = m * max;
+			return *this;
+		}
+		box<T> transformed(const mat4<T> &m) const
+		{
+			return clone().transform(m);
+		}
+
+		box<T> &flip()
+		{
+			vec3<T> t = max;
+			max = min;
+			min = t;
+
+			return *this;
+		}
+		box<T> flipped() const
+		{
+			return clone().flip();
+		}
 
 		box<T> clone() const { return box<T>(*this); }
 		sphere<T> boudingsphere() const {

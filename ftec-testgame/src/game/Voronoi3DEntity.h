@@ -6,7 +6,7 @@
 namespace ftec {
 	class Voronoi3DEntity : public Entity {
 	private:
-		std::vector<vec3f> m_Points;
+		std::vector<vec3d> m_Points;
 		void create();
 	public:
 		Voronoi3DEntity();

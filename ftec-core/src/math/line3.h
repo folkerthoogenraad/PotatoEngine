@@ -16,7 +16,6 @@ namespace ftec {
 		{
 			return b - a;
 		}
-
 		vec3<T> perp() const
 		{
 			return vec3<T>::perp(direction());
@@ -26,7 +25,6 @@ namespace ftec {
 		{
 			return a;
 		}
-
 		vec3<T> center() const
 		{
 			return (a + b) / 2.0f;
@@ -48,7 +46,6 @@ namespace ftec {
 		{
 			return (b - a).sqrmagnitude();
 		}
-
 		T magnitude() const
 		{
 			return (b - a).magnitude();
@@ -67,7 +64,10 @@ namespace ftec {
 
 			return *this;
 		}
-
+		line3<T> flipped() const
+		{
+			return clone().flip();
+		}
 	};
 
 	typedef line3<float> line3f;
