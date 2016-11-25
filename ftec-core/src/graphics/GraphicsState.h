@@ -30,9 +30,9 @@ namespace ftec{
 
 		static vec3f eyePosition;//Rename, todo
 
-		static mat4 matrixModel;
-		static mat4 matrixView;
-		static mat4 matrixProjection;
+		static mat4f matrixModel;
+		static mat4f matrixView;
+		static mat4f matrixProjection;
 	public:
 		GraphicsState() = delete;
 		~GraphicsState() = delete;

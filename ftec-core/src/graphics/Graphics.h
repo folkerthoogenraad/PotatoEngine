@@ -6,12 +6,13 @@
 #include "Renderer.h"
 #include "Light.h"
 
-//TODO mat4 to mat4f, mat4i, mat4d
+//TODO mat4f to mat4f, mat4fi, mat4fd
 #include "math/mat4.h"
 #include "math/vec3.h"
 #include "math/line3.h"
 #include "math/triangle3.h"
 #include "math/sphere.h"
+#include "math/vec4.h"
 
 #include "SpriteBatch.h"
 #include <memory>
@@ -24,11 +25,11 @@ namespace ftec {
 
 	private:
 		struct EnqueuedMesh {
-			/*EnqueuedMesh(const Mesh *m, const Material *mat, const mat4 &model, Layer layer, InstanceList *list)
+			/*EnqueuedMesh(const Mesh *m, const Material *mat, const mat4f &model, Layer layer, InstanceList *list)
 				:mesh(m), material(mat), modelMatrix(model), layer(layer), list(list){};*/
 			const Mesh *mesh;
 			std::shared_ptr<Material> material;
-			mat4 modelMatrix;
+			mat4f modelMatrix;
 			Layer layer;
 			InstanceList *list;
 		};
@@ -58,7 +59,7 @@ namespace ftec {
 		static void begin();
 
 		//Enqueues the mesh for rendering
-		static void enqueueMesh(const Mesh *mesh, std::shared_ptr<Material> material, const mat4 &modelMatrix = mat4::identity(), Layer layer = LAYER_ALL, InstanceList* list = nullptr);
+		static void enqueueMesh(const Mesh *mesh, std::shared_ptr<Material> material, const mat4f &modelMatrix = mat4f::identity(), Layer layer = LAYER_ALL, InstanceList* list = nullptr);
 
 		//Enqueues the mesh for rendering
 		static void enqueueLine(const line3f &line, const color32 &color = color32::white());

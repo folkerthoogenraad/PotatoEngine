@@ -5,8 +5,11 @@
 
 #include "logger/log.h"
 
-#include "math/helpers.h"
+#include "math/math.h"
 #include "math/collision.h"
+
+#include "math/line2.h"
+#include "math/circle.h"
 
 namespace ftec {
 

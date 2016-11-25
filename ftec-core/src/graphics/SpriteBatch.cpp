@@ -125,6 +125,11 @@ namespace ftec {
 		m_Size++;
 	}
 
+	void SpriteBatch::vertex(const vec2f & position)
+	{
+		vertex(vec3f(position));
+	}
+
 	void SpriteBatch::color(const color32 & color)
 	{
 		m_Color = color;

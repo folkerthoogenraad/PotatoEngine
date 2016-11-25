@@ -23,10 +23,10 @@ namespace ftec {
 		const vec3f &getPoint(int index) const { return m_Vertices[index].m_Vertex; }
 		bool isHull(int index) const { return m_Vertices[index].m_Hull; }
 
-		int getTetraHedronCount() const { return m_Tetrahedrons.size(); }
+		int getTetraHedronCount() const { return (int) m_Tetrahedrons.size(); }
 		const TetrahedronRef &getTetraHedronRef(int index) const { return m_Tetrahedrons[index]; }
 
-		int getHullTriangleCount() const { return m_HullTriangles.size(); }
+		int getHullTriangleCount() const { return (int) m_HullTriangles.size(); }
 		const TriangleRef &getHullTriangleRef(int index) const { return m_HullTriangles[index]; }
 
 		const boxf &getBoundingBox() const { return m_BoundingBox; }

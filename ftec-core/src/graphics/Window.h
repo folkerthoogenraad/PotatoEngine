@@ -3,7 +3,8 @@
 #include "GL.h"
 
 #include <string>
-#include "math/math.h"
+
+#include "math/vec2.h"
 
 namespace ftec {
 	class Window {

@@ -1,16 +1,18 @@
 #pragma once
+
 #include <iostream>
 #include <array>
 
 namespace ftec {
 
+	template<typename T>
 	struct mat3
 	{
 		union {
-			std::array<float, 3 * 3> elements;
+			std::array<T, 3 * 3> elements;
 
 			struct {
-				float a, b, c, d, e, f, g, h, i;
+				T a, b, c, d, e, f, g, h, i;
 			};
 		};
 
@@ -19,12 +21,12 @@ namespace ftec {
 		//[ 7 8 9 ]
 
 		mat3();
-		mat3(std::array<float, 3 * 3> elements) : elements(elements) {}
+		mat3(std::array<T, 3 * 3> elements) : elements(elements) {}
 
-		float determinant();
+		T determinant();
 
-		inline float &el(int column, int row) { return elements[column + row * 3]; }
-		inline float el(int column, int row) const { return elements[column + row * 3]; }
+		inline T &el(int column, int row) { return elements[column + row * 3]; }
+		inline T el(int column, int row) const { return elements[column + row * 3]; }
 
 		friend std::ostream& operator<<(std::ostream& left, const mat3& right);
 	};

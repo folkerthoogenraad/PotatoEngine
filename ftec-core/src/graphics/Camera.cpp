@@ -7,14 +7,14 @@ namespace ftec {
 		
 	}
 
-	mat4 ftec::Camera::getProjectionMatrix() const
+	mat4f ftec::Camera::getProjectionMatrix() const
 	{
-		return mat4::perspective(m_Fov, m_AspectRatio, m_Near, m_Far);// *mat4::translation(vec3(0, 0, 1));
+		return mat4f::perspective(m_Fov, m_AspectRatio, m_Near, m_Far);// *mat4f::translation(vec3(0, 0, 1));
 	}
 
-	mat4 ftec::Camera::getViewMatrix() const
+	mat4f ftec::Camera::getViewMatrix() const
 	{
-		return mat4::rotationX(m_Pitch) * mat4::rotationY(m_Yaw) * mat4::translation(-m_Position);// *mat4::rotationX(m_Pitch);// *mat4::rotation(m_Pitch, vec3(1, 0, 0));// ;
+		return mat4f::rotationX(m_Pitch) * mat4f::rotationY(m_Yaw) * mat4f::translation(-m_Position);// *mat4f::rotationX(m_Pitch);// *mat4f::rotation(m_Pitch, vec3(1, 0, 0));// ;
 	}
 	bool Camera::operator==(const Camera & other)
 	{

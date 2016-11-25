@@ -7,7 +7,8 @@
 
 #include "scene/Scene.h"
 
-#include "math/helpers.h"
+#include "math/math.h"
+#include "math/mat4.h"
 
 #include "math/tetrahedron.h"
 #include "math/Delaunay3D.h"
@@ -122,7 +123,7 @@ namespace ftec {
 		if (Input::isKeyTyped(GLFW_KEY_E)) {
 			m_Points.clear();
 
-			mat4 mat = mat4::identity();// mat4::rotationY(30) * mat4::scale(vec3f(1.f, 1.f, 2.0f));
+			mat4f mat = mat4f::identity();// mat4f::rotationY(30) * mat4f::scale(vec3f(1.f, 1.f, 2.0f));
 
 			for (int x = -1; x < 2; x+= 2) {
 				for (int y = -1; y < 2; y += 2) {

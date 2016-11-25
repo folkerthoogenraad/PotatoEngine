@@ -2,16 +2,12 @@
 
 #include "vec3.h"
 
-#include "logger/log.h"
-
 namespace ftec {
 
 	template <typename T>
 	struct triangle3;
-
 	template <typename T>
 	struct line3;
-
 	template <typename T>
 	struct plane;
 
@@ -22,7 +18,7 @@ namespace ftec {
 		T offset;
 
 		plane() {}
-		plane(const triangle3<T> &triangle)
+		explicit plane(const triangle3<T> &triangle)
 		{
 			direction = triangle.normal();
 			offset = -vec3<T>::dot(triangle.a, direction);
@@ -70,6 +66,7 @@ namespace ftec {
 			return clone().normalize();
 		}
 
+#if 0
 		//Intersects two planes. IfV the planes are perpendicular, the line has a length of 0
 		line3<T> intersection(const plane<T> &other) const
 		{
@@ -100,6 +97,7 @@ namespace ftec {
 			return line.a + lineDir * result;
 		}
 
+#endif
 		T magnitude() const { return direction.magnitude(); }
 
 		vec3<T> project(const vec3<T> &p) const

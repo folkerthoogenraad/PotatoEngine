@@ -27,8 +27,8 @@ namespace ftec {
 		Camera(float fov, float aspect, float near, float far);
 		~Camera() = default;
 
-		mat4 getProjectionMatrix() const;
-		mat4 getViewMatrix() const;
+		mat4f getProjectionMatrix() const;
+		mat4f getViewMatrix() const;
 
 		inline bool hasRenderTarget() const { return m_RenderTarget != 0; };
 

@@ -12,9 +12,9 @@ namespace ftec {
 
 	std::shared_ptr<Cubemap> GraphicsState::m_Skybox = nullptr;
 
-	mat4 GraphicsState::matrixModel;
-	mat4 GraphicsState::matrixView;
-	mat4 GraphicsState::matrixProjection;
+	mat4f GraphicsState::matrixModel;
+	mat4f GraphicsState::matrixView;
+	mat4f GraphicsState::matrixProjection;
 	vec3f GraphicsState::eyePosition;
 
 	std::shared_ptr<Material> GraphicsState::m_Material(nullptr);

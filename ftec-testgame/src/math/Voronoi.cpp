@@ -1,6 +1,8 @@
 #include "Voronoi.h"
 #include "Delaunay.h"
 
+#include "math/line2.h"
+
 #include "logger/log.h"
 
 namespace ftec {

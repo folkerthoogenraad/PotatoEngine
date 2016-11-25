@@ -5,8 +5,8 @@
 
 namespace potato {
 
-	const float TAB_HEIGHT = 32;
-	const float TAB_WIDTH = 128;
+	const int TAB_HEIGHT = 32;
+	const int TAB_WIDTH = 128;
 
 	TabbedPanel::TabbedPanel(const std::vector<std::pair<std::string, std::shared_ptr<Panel>>> &tabs) : m_SelectedTab(0)
 	{

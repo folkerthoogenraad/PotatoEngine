@@ -27,35 +27,35 @@ namespace ftec {
 			//http://mathworld.wolfram.com/Circumsphere.html
 			//Don't even bother
 
-			float aa = mat4({
+			float aa = mat4f({
 				a.x, a.y, a.z, 1,
 				b.x, b.y, b.z, 1,
 				c.x, c.y, c.z, 1,
 				d.x, d.y, d.z, 1
 			}).determinant();
 
-			float dx = mat4({
+			float dx = mat4f({
 				a.sqrmagnitude(), a.y, a.z, 1,
 				b.sqrmagnitude(), b.y, b.z, 1,
 				c.sqrmagnitude(), c.y, c.z, 1,
 				d.sqrmagnitude(), d.y, d.z, 1
 			}).determinant();
 
-			float dy = -mat4({
+			float dy = -mat4f({
 				a.sqrmagnitude(), a.x, a.z, 1,
 				b.sqrmagnitude(), b.x, b.z, 1,
 				c.sqrmagnitude(), c.x, c.z, 1,
 				d.sqrmagnitude(), d.x, d.z, 1
 			}).determinant();
 
-			float dz = mat4({
+			float dz = mat4f({
 				a.sqrmagnitude(), a.x, a.y, 1,
 				b.sqrmagnitude(), b.x, b.y, 1,
 				c.sqrmagnitude(), c.x, c.y, 1,
 				d.sqrmagnitude(), d.x, d.y, 1
 			}).determinant();
 
-			float cc = mat4({
+			float cc = mat4f({
 				a.sqrmagnitude(), a.x, a.y, a.z,
 				b.sqrmagnitude(), b.x, b.y, b.z,
 				c.sqrmagnitude(), c.x, c.y, c.z,
@@ -68,7 +68,7 @@ namespace ftec {
 				);
 		}
 
-		tetrahedron<T> transform(const mat4 &m) const
+		tetrahedron<T> transform(const mat4f &m) const
 		{
 			return tetrahedron<T>(
 				m * a,
@@ -106,14 +106,15 @@ namespace ftec {
 	
 		static tetrahedron<T> unitTetrahedron()
 		{
-			//See trigonometry for this one :)
-			float w = sqrt(0.75) / 3.f;
-			float h = sqrt( 1 - (2 * w) * (2 * w) ) / 3.f;
+			//TODO im not sure how this should play out honestly.
+			//This is a template so you can't just do this easily
+			T w = (T) (sqrt(0.75) / 3.0);
+			T h = (T) (sqrt( 1 - (2 * w) * (2 * w) ) / 3.0);
 
 			return tetrahedron<T>(
 				vec3<T>(0, -h, 2.f * w),	//A
-				vec3<T>(-0.5f, -h, -w),		//B
-				vec3<T>(0.5f, -h, -w),		//C
+				vec3<T>(-0.5, -h, -w),		//B
+				vec3<T>(0.5, -h, -w),		//C
 				vec3<T>(0, 2 * h, 0)		//D
 				);
 		}

@@ -80,7 +80,7 @@ namespace potato {
 			if (m_Direction == HORIZONTAL) {
 				//if we should match parent
 				if (pChild.m_WidthScaling == LayoutParams::MATCH_PARENT) {
-					s.width = sizePerWeight * pChild.m_Weight;
+					s.width = (int) (sizePerWeight * pChild.m_Weight);
 				}
 				//Exact 
 				else if (pChild.m_WidthScaling == LayoutParams::EXACT) {
@@ -104,7 +104,7 @@ namespace potato {
 			else if (m_Direction == VERTICAL) {
 				//if we should match parent
 				if (pChild.m_HeightScaling == LayoutParams::MATCH_PARENT) {
-					s.height = sizePerWeight * pChild.m_Weight;
+					s.height = (int) (sizePerWeight * pChild.m_Weight);
 				}
 				//Exact 
 				else if (pChild.m_HeightScaling == LayoutParams::EXACT) {

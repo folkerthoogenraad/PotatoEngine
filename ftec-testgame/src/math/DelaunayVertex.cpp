@@ -1,6 +1,7 @@
 #include "DelaunayVertex.h"
 
-#include "math/helpers.h"
+#include <array>
+#include "math/math.h"
 
 namespace ftec {
 

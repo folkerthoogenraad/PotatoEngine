@@ -1,9 +1,9 @@
 #pragma once
 
-#include <iostream>
-#include "vec2.h"
-
 namespace ftec{
+
+	template<typename T>
+	struct vec2;
 
 	template<typename T>
 	struct vec3
@@ -22,7 +22,7 @@ namespace ftec{
 		vec3(const vec3<S> &other) : x((T)other.x), y((T)other.y), z((T)other.z) {};
 		
 		explicit vec3(T x = 0, T y = 0, T z = 0) : x(x), y(y), z(z) {};
-		vec3(vec2<T> v) : x(v.x), y(v.y), z(0) {};
+		explicit vec3(vec2<T> v) : x(v.x), y(v.y), z(0) {};
 
 		vec3<T>& add(const vec3<T>& other)
 		{
@@ -92,7 +92,7 @@ namespace ftec{
 			}
 			return *this;
 		}
-		vec3<T> normalized()
+		vec3<T> normalized()const
 		{
 			return vec3<T>(*this).normalize();
 		}
@@ -218,16 +218,7 @@ namespace ftec{
 		{
 			return left.x < right.x && left.y < right.y && left.z < right.z;
 		}
-		friend std::ostream& operator<<(std::ostream& left, const vec3<T>& right)
-		{
-			return left << "(" << right.x << ", " << right.y << ", " << right.z << ")";
-		}
 
-		static vec3<T> nan()
-		{
-			T n = sqrt(-1);
-			return vec3<T>(n,n,n);
-		}
 		static vec3<T> zero()
 		{
 			return vec3<T>(0, 0, 0);

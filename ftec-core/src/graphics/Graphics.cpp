@@ -49,7 +49,7 @@ namespace ftec {
 		
 	}
 	//TODO constness and stuff
-	void Graphics::enqueueMesh(const Mesh *mesh, std::shared_ptr<Material> material, const mat4 &modelMatrix, Layer layer, InstanceList *list)
+	void Graphics::enqueueMesh(const Mesh *mesh, std::shared_ptr<Material> material, const mat4f &modelMatrix, Layer layer, InstanceList *list)
 	{
 		meshes.push_back({
 			mesh, material, modelMatrix, layer, list
@@ -109,7 +109,7 @@ namespace ftec {
 
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-				mat4 projection =  l->getShadowMatrix();
+				mat4f projection =  l->getShadowMatrix();
 
 				for (auto m : meshes) {
 
@@ -141,7 +141,7 @@ namespace ftec {
 			//Set skybox to normal version //This should obviously not be here
 			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test");
 			
-			GraphicsState::matrixModel = mat4::translation(c->m_Position);
+			GraphicsState::matrixModel = mat4f::translation(c->m_Position);
 
 			//Drawing skybox
 			GraphicsState::m_Lights[0].enabled = false; //Idk man
@@ -190,7 +190,7 @@ namespace ftec {
 			
 			GraphicsState::m_Material = pointMaterial;
 			GraphicsState::m_Skybox = nullptr;
-			GraphicsState::matrixModel = mat4::identity();
+			GraphicsState::matrixModel = mat4f::identity();
 
 			glPointSize(5);
 			glLineWidth(1);
@@ -224,7 +224,7 @@ namespace ftec {
 			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
 
 			for (auto &s : spheres) {
-				GraphicsState::matrixModel = mat4::translation(s.mesh.center) * mat4::scale(vec3f(s.mesh.radius, s.mesh.radius, s.mesh.radius));
+				GraphicsState::matrixModel = mat4f::translation(s.mesh.center) * mat4f::scale(vec3f(s.mesh.radius, s.mesh.radius, s.mesh.radius));
 				Renderer::drawDirect(*sphere);
 			}
 		}

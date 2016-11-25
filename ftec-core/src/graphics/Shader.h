@@ -2,7 +2,11 @@
 
 #include "resources/ResourceManager.h"
 #include "GL.h"
-#include "math/math.h"
+
+#include "math/mat4.h"
+#include "math/vec2.h"
+#include "math/vec3.h"
+#include "math/vec4.h"
 
 #define SHADER_ATTRIBUTE_POSITION 0
 #define SHADER_ATTRIBUTE_NORMAL 1
@@ -37,7 +41,7 @@ namespace ftec {
 		int getUniformLocation(const std::string &uniform);
 		int getAttributeLocation(const std::string &attribute);
 
-		void setUniform(int location, const mat4 &m);
+		void setUniform(int location, const mat4<float> &m);
 		void setUniform(int location, const vec2f &v);
 		void setUniform(int location, const vec3f &v);
 		void setUniform(int location, const vec4f &v);

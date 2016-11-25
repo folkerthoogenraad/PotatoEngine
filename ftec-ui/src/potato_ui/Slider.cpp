@@ -1,5 +1,5 @@
 #include "Slider.h"
-#include "math/helpers.h"
+#include "math/math.h"
 #include "engine/Input.h"
 #include "graphics/Graphics2D.h"
 #include "logger/log.h"

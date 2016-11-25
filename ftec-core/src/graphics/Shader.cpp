@@ -107,7 +107,7 @@ namespace ftec {
 		return glGetAttribLocation(m_Program, attribute.c_str());
 	}
 
-	void Shader::setUniform(int location, const mat4 &m)
+	void Shader::setUniform(int location, const mat4<float> &m)
 	{
 		glUniformMatrix4fv(location, 1, GL_TRUE, &m.elements[0]);
 	}

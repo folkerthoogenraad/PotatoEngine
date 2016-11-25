@@ -1,7 +1,11 @@
 #pragma once
 
 #include "RenderBuffer.h"
-#include "math/math.h"
+
+//TODO remove these if possible
+#include "math/vec4.h"
+#include "math/vec3.h"
+#include "math/mat4.h"
 
 #define SHADOW_RESOLUTION 1024
 
@@ -25,7 +29,7 @@ namespace ftec {
 
 		inline bool isShadowsEnabled() const { return m_ShadowsEnabled; };
 		inline std::shared_ptr<RenderBuffer> getShadowBuffer() const { return m_ShadowMap; };
-		mat4 getShadowMatrix(const vec3f &position = vec3f()) const;
+		mat4f getShadowMatrix(const vec3f &position = vec3f()) const;
 
 		//This is too stupid and should not even exist
 		static inline Light defaultLight() { return Light(); };

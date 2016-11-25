@@ -1,9 +1,11 @@
 #pragma once
 
-#include "line3.h"
 #include "vec3.h"
 
 namespace ftec {
+
+	template <typename T>
+	struct line3;
 
 	template<typename T>
 	struct triangle3 {
@@ -14,23 +16,6 @@ namespace ftec {
 		triangle3() {}
 		triangle3(const vec3<T> &a, const vec3<T> &b, const vec3<T> &c)
 			: a(a), b(b), c(c) {}
-
-		/*vec3<T> circumcenter()
-		{
-			return intersection(
-				line3<T>(b, a).normal(),
-				line3<T>(b, c).normal()
-			);
-		}
-
-		circle<T> circumcircle()
-		{
-			auto center = circumcenter();
-			return circle<T>(
-				center,
-				distance(a, center)
-				);
-		}*/
 
 		triangle3<T> &translate(vec3<T> v)
 		{

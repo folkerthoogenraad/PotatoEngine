@@ -18,9 +18,10 @@ namespace ftec {
 		vec3<T> center() const { return (min + max) / 2; }
 		vec3<T> delta() const { return max - center(); }
 
-		sphere<T> boundingSphere() const {
+		box<T> clone() const { return box<T>(*this); }
+		sphere<T> boudingsphere() const {
 			return sphere<T>(
-				(min + max) / 2.0f,
+				(min + max) / 2,
 				(max - min).magnitude() / 2
 				);
 		}

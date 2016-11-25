@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "math/helpers.h"
+#include "math/math.h"
 
 namespace potato {
 

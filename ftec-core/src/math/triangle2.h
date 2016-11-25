@@ -1,6 +1,7 @@
 #pragma once
 
-#include "collision.h"
+#include "collision.h" //TODO not need this
+
 #include "vec2.h"
 
 namespace ftec {
@@ -45,10 +46,10 @@ namespace ftec {
 
 		vec2<T> circumcenter()
 		{
-			return intersection(
+			return intersect(
 				line2<T>(b, a).normal(),
 				line2<T>(b, c).normal()
-			);
+			).result;
 		}
 
 		circle<T> circumcircle()

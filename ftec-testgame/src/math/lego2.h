@@ -1,7 +1,8 @@
 #pragma once
 
 #include "math/collision.h"
-#include "math/helpers.h"
+#include "math/sorting.h"
+
 #include <set>
 
 namespace ftec {
@@ -37,8 +38,8 @@ namespace ftec {
 					if (i == j)
 						continue;
 					
-					if (intersects(*i, *j)) {
-						vertices.push_back(intersection(*i, *j));
+					if (auto res = intersect(*i, *j)) {
+						vertices.push_back(res.result);
 					}
 				}
 			}
@@ -56,7 +57,7 @@ namespace ftec {
 			//TODO fix that this is not needed
 			m_Vertices = vertices;
 
-			polarSort(m_Vertices, m_Center);
+			polarsort(m_Vertices, m_Center);
 		}
 
 		//Makes sure all the lines face the point

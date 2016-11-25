@@ -1,5 +1,7 @@
 #include "StairArc.h"
 
+#include "math/math.h"
+
 namespace ftec {
 	
 	StairArc::StairArc(vec2f a, vec2f b, vec2f c, float distance)

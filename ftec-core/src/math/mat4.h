@@ -1,18 +1,31 @@
 #pragma once
 
-#include "math.h"	//TODO make sure this is NEVER used again
-#include <math.h>
 #include <array>
 
+//TODO remove this dependency
+
+//Huge TODO : optimize this
+//The translations, as well as most of the scale and rotations can be done inplace
+//No need for expensive full matrix matrix multiplcaiotn
+
+//Also, the two matrix classes are the only two with a cpp file attached to them
+//Maybe i should do this with more classes, I don't know
 
 namespace ftec {
 
+
+	template <typename T>
+	struct vec3;
+	template <typename T>
+	struct vec4;
+
+	template <typename T>
 	struct mat4
 	{
 		union {
-			std::array<float, 4*4> elements;
+			std::array<T, 4 * 4> elements;
 			struct {
-				float a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p;
+				T a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p;
 			};
 
 			//[a b c d]
@@ -23,40 +36,41 @@ namespace ftec {
 		};
 
 		mat4();
-		mat4(std::array<float, 4 * 4> elements) : elements(elements) {}
+		mat4(std::array<T, 4 * 4> elements) : elements(elements) {}
 
-		mat4& multiply(const mat4& other);
+		mat4<T>& multiply(const mat4& other);
 
-		vec4f multiply(const vec4f& other) const;
-		vec3f multiply(const vec3f& other) const;
+		vec4<T> multiply(const vec4<T>& other) const;
+		vec3<T> multiply(const vec3<T>& other) const;
 
-		static mat4 identity();
-		static mat4 orthographic(float l, float r, float b, float t, float n, float f);
-		static mat4 perspective(float fov, float asp, float near, float far);
-		static mat4 lookAt(const vec3f &eye, const vec3f &center, const vec3f &up = vec3f(0, 1, 0));
-		static mat4 fromForward(const vec3f &forward, const vec3f &up);
+		static mat4<T> identity();
+		static mat4<T> orthographic(T l, T r, T b, T t, T n, T f);
+		static mat4<T> perspective(T fov, T asp, T near, T far);
+		static mat4<T> lookAt(const vec3<T> &eye, const vec3<T> &center, const vec3<T> &up = vec3<T>(0, 1, 0));
+		static mat4<T> fromForward(const vec3<T> &forward, const vec3<T> &up);
 
-		static mat4 translation(const vec3f& translation);
-		static mat4 rotation(float angle, const vec3f& axis);
-		static mat4 scale(const vec3f& scale);
+		static mat4<T> translation(const vec3<T>& translation);
+		static mat4<T> rotation(T angle, const vec3<T>& axis);
+		static mat4<T> scale(const vec3<T>& scale);
 
-		static mat4 rotationX(float angle);
-		static mat4 rotationY(float angle);
-		static mat4 rotationZ(float angle);
+		static mat4<T> rotationX(T angle);
+		static mat4<T> rotationY(T angle);
+		static mat4<T> rotationZ(T angle);
 
-		float determinant() const;
+		T determinant() const;
 
-		inline float &el(int collumn, int row) { return elements[collumn + row * 4]; }
-		inline float el(int collumn, int row) const { return elements[collumn + row * 4]; }
+		inline T &el(int collumn, int row) { return elements[collumn + row * 4]; }
+		inline T el(int collumn, int row) const { return elements[collumn + row * 4]; }
 
 		//operators
-		friend mat4 operator*(mat4 left, const mat4& right);
-		mat4 operator*=(const mat4& right);
+		mat4<T> operator*(const mat4<T>& right);
+		mat4<T> operator*=(const mat4<T>& right);
 
-		friend vec4f operator*(const mat4 &left, const vec4f& right);
-		friend vec3f operator*(const mat4 &left, const vec3f& right);
-
-		friend std::ostream& operator<<(std::ostream& left, const mat4& right);
-
+		vec4<T> operator*(const vec4<T>& right) const;
+		vec3<T> operator*(const vec3<T>& right) const;
 	};
+
+	typedef mat4<float> mat4f;
+	typedef mat4<double> mat4d;
+	typedef mat4<int> mat4i;
 }

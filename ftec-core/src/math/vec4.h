@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 namespace ftec {
 
 	//Forward declare for the typedefs
@@ -181,11 +179,6 @@ namespace ftec {
 		friend bool operator==(const vec4<T>& left, const vec4<T>& right)
 		{
 			return left.x == right.x && left.y == right.y && left.z == right.z && left.w == right.w;
-		}
-
-		friend std::ostream& operator<<(std::ostream& left, const vec4<T>& right)
-		{
-			return left << "(" << right.x << ", " << right.y << ", " << right.z << ", " << right.w << ")";
 		}
 
 		inline static color32 white() { return color32(255, 255, 255, 255); }

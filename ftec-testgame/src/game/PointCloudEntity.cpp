@@ -13,6 +13,9 @@
 #include "math/Delaunay3D.h"
 #include "math/triangle3.h"
 
+#include "math/Curve.h"
+#include "math/math.h"
+
 namespace ftec {
 
 	PointCloudEntity::PointCloudEntity(const lego3f &lego) : m_Points(lego.m_Vertices)
@@ -29,7 +32,7 @@ namespace ftec {
 		speed = (rand() % 16);
 
 		m_Mesh = std::make_unique<Mesh>();
-		center = lego.getCenter(); // del.getBoundingBox().center();// lego.getCenter();
+		center = lego.getCenter();
 
 		for (int i = 0; i < del.getHullTriangleCount(); i++) {
 			const TriangleRef &tr = del.getHullTriangleRef(i);
@@ -112,9 +115,9 @@ namespace ftec {
 	void PointCloudEntity::render()
 	{
 		if (m_Render) {
-			mat4 model = mat4::translation(this->m_Position + center);
+			mat4f model = mat4f::translation(this->m_Position + center);
 
-			mat4 rotation = mat4::translation(-center);// mat4::rotationY(amount * 37) * mat4::rotationX(amount * 27) * mat4::translation(-center);
+			mat4f rotation = mat4f::translation(-center);// mat4f::rotationY(amount * 37) * mat4f::rotationX(amount * 27) * mat4f::translation(-center);
 
 			Graphics::enqueueMesh(m_Mesh.get(), m_Material, model * rotation);// * 
 		}

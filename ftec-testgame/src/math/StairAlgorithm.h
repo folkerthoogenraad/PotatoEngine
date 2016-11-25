@@ -1,7 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "math/math.h"
+
+#include "math/vec2.h"
 
 namespace ftec {
 

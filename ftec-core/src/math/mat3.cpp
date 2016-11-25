@@ -3,15 +3,18 @@
 
 
 namespace ftec {
-	mat3::mat3()
+
+	template <typename T>
+	mat3<T>::mat3()
 	{
-		std::fill(elements.begin(), elements.end(), 0);
-		elements[0 + 0 * 3] = 1;
-		elements[1 + 1 * 3] = 1;
-		elements[2 + 2 * 3] = 1;
+		std::fill(elements.begin(), elements.end(), (T)0);
+		elements[0 + 0 * 3] = (T)1;
+		elements[1 + 1 * 3] = (T)1;
+		elements[2 + 2 * 3] = (T)1;
 	}
 
-	float mat3::determinant()
+	template <typename T>
+	T mat3<T>::determinant()
 	{
 		//[a b c]
 		//[d e f]
@@ -27,18 +30,8 @@ namespace ftec {
 			a * f * h;	//afh
 	}
 
-	std::ostream & ftec::operator<<(std::ostream & left, const mat3 & right)
-	{
-		for (int row = 0; row < 3; ++row) {
-			left << "[";
-			for (int column = 0; column < 3; ++column) {
-				left << right.el(column, row);// [column + row * 3];
-				if (column != 2)
-					left << ", ";
-			}
-			left << "]" << std::endl;
-		}
-
-		return left;
-	}
+	//Tyvm compiler for compiling this
+	template struct mat3<float>;
+	template struct mat3<int>;
+	template struct mat3<double>;
 }

@@ -15,18 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\math\mat4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\vec2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\vec3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\vec4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\math\quaternion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -120,6 +108,9 @@
     <ClCompile Include="src\math\mat3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\math\mat4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\logger\log.h">
@@ -174,9 +165,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\Curve.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\serialization\Serialization.h">
@@ -285,6 +273,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\epsilon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\sorting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\collisionresult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

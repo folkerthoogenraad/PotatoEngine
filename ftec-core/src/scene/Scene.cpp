@@ -34,7 +34,7 @@ namespace ftec {
 		for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {
 			StaticGeometry &geometry = *i;
 
-			Graphics::enqueueMesh(geometry.mesh.get(), geometry.material, mat4::translation(geometry.position), LAYER_STATIC);
+			Graphics::enqueueMesh(geometry.mesh.get(), geometry.material, mat4f::translation(geometry.position), LAYER_STATIC);
 		}
 
 		for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {

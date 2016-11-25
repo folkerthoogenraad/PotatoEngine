@@ -2,6 +2,7 @@
 #include "Delaunay3D.h"
 
 #include "math/line3.h"
+#include "math/plane.h"
 
 namespace ftec {
 	Voronoi3D::Voronoi3D()

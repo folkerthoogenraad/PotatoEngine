@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math/math.h"
+#include "math/vec2.h"
 #include <array>
 
 namespace ftec {

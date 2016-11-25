@@ -1,6 +1,6 @@
 #include "Curve.h"
 
-#include "helpers.h"
+#include "math.h"
 
 namespace ftec {
 	float ftec::curves::CubicBezier::interpolate(float x) const

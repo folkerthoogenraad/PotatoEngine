@@ -1,33 +1,39 @@
 #include "mat4.h"
 #include "mat3.h"
 
-namespace ftec{
+#include "vec3.h"
+#include "vec4.h"
 
-	mat4::mat4()
+namespace ftec {
+
+	template <typename T>
+	mat4<T>::mat4()
 	{
-		std::fill(elements.begin(), elements.end(), 0);
-		elements[0 + 0 * 4] = 1;
-		elements[1 + 1 * 4] = 1;
-		elements[2 + 2 * 4] = 1;
-		elements[3 + 3 * 4] = 1;
+		std::fill(elements.begin(), elements.end(), (T)0);
+		elements[0 + 0 * 4] = (T)1;
+		elements[1 + 1 * 4] = (T)1;
+		elements[2 + 2 * 4] = (T)1;
+		elements[3 + 3 * 4] = (T)1;
 	}
 
-	mat4 mat4::identity()
+	template <typename T>
+	mat4<T> mat4<T>::identity()
 	{
-		return mat4();
+		return mat4<T>();
 	}
 
-	mat4& mat4::multiply(const mat4& other)
+	template <typename T>
+	mat4<T>& mat4<T>::multiply(const mat4<T>& other)
 	{
 		//TODO look at this code
-		float sum;
-		mat4 m;
+		T sum;
+		mat4<T> m;
 
-		for (int y = 0; y < 4; ++y){
-			for (int x = 0; x < 4; ++x){
+		for (int y = 0; y < 4; ++y) {
+			for (int x = 0; x < 4; ++x) {
 
 				sum = 0;
-				for (int e = 0; e < 4; ++e){
+				for (int e = 0; e < 4; ++e) {
 					sum += elements[e + y * 4] * other.elements[x + e * 4];
 				}
 				//is this possible without temp?
@@ -40,9 +46,10 @@ namespace ftec{
 		return *this;
 	}
 
-	vec4f mat4::multiply(const vec4f & other) const
+	template <typename T>
+	vec4<T> mat4<T>::multiply(const vec4<T> & other) const
 	{
-		return vec4f(
+		return vec4<T>(
 			other.x * elements[0 + 0 * 4] + other.y * elements[1 + 0 * 4] + other.z * elements[2 + 0 * 4] + other.w * elements[3 + 0 * 4],
 			other.x * elements[0 + 1 * 4] + other.y * elements[1 + 1 * 4] + other.z * elements[2 + 1 * 4] + other.w * elements[3 + 1 * 4],
 			other.x * elements[0 + 2 * 4] + other.y * elements[1 + 2 * 4] + other.z * elements[2 + 2 * 4] + other.w * elements[3 + 2 * 4],
@@ -50,54 +57,44 @@ namespace ftec{
 		);
 	}
 
-	vec3f mat4::multiply(const vec3f & other) const
+	template <typename T>
+	vec3<T> mat4<T>::multiply(const vec3<T> & other) const
 	{
-		return vec3f(
+		return vec3<T>(
 			other.x * elements[0 + 0 * 4] + other.y * elements[1 + 0 * 4] + other.z * elements[2 + 0 * 4] + elements[3 + 0 * 4],
 			other.x * elements[0 + 1 * 4] + other.y * elements[1 + 1 * 4] + other.z * elements[2 + 1 * 4] + elements[3 + 1 * 4],
 			other.x * elements[0 + 2 * 4] + other.y * elements[1 + 2 * 4] + other.z * elements[2 + 2 * 4] + elements[3 + 2 * 4]
 		);
 	}
 
-	mat4 operator*(mat4 left, const mat4& right)
+	template<typename T>
+	mat4<T> mat4<T>::operator*(const mat4<T>& right)
 	{
-		return left.multiply(right);
+		return mat4<T>(*this).multiply(right);
 	}
 
-	vec4f operator*(const mat4 &left, const vec4f & right)
-	{
-		return left.multiply(right);
-	}
-
-	vec3f operator*(const mat4 &left, const vec3f & right)
-	{
-		return left.multiply(right);
-	}
-
-	mat4 mat4::operator*=(const mat4& right)
+	template <typename T>
+	mat4<T> mat4<T>::operator*=(const mat4<T>& right)
 	{
 		return multiply(right);
 	}
 
-
-	std::ostream& operator<<(std::ostream& left, const mat4& right)
+	template<typename T>
+	vec4<T> mat4<T>::operator*(const vec4<T> & right) const
 	{
-		for (int row = 0; row < 4; ++row){
-			left << "[";
-			for (int column = 0; column < 4; ++column){
-				left << right.elements[column + row * 4];
-				if (column != 3)
-					left << ", ";
-			}
-			left << "]" << std::endl;
-		}
-
-		return left;
+		return multiply(right);
 	}
 
-	mat4 mat4::translation(const vec3f& translation)
+	template<typename T>
+	vec3<T> mat4<T>::operator*(const vec3<T> & right) const
 	{
-		mat4 result;
+		return multiply(right);
+	}
+
+	template <typename T>
+	mat4<T> mat4<T>::translation(const vec3<T>& translation)
+	{
+		mat4<T> result;
 
 		result.elements[3 + 0 * 4] = translation.x;
 		result.elements[3 + 1 * 4] = translation.y;
@@ -106,18 +103,19 @@ namespace ftec{
 		return result;
 	}
 
-	mat4 mat4::rotation(float angle, const vec3f& axis)
+	template <typename T>
+	mat4<T> mat4<T>::rotation(T angle, const vec3<T>& axis)
 	{
-		mat4 result;
+		mat4<T> result;
 
-		float r = angle * (3.141592654f / 180.f);
-		float c = cos(r);
-		float s = sin(r);
-		float omc = 1 - c;
+		T r = angle * (3.141592654f / 180.f);
+		T c = cos(r);
+		T s = sin(r);
+		T omc = 1 - c;
 
-		float x = axis.x;
-		float y = axis.y;
-		float z = axis.z;
+		T x = axis.x;
+		T y = axis.y;
+		T z = axis.z;
 
 		result.elements[0 + 0 * 4] = x * omc + c;
 		result.elements[1 + 0 * 4] = y * x * omc + z * s;
@@ -134,9 +132,10 @@ namespace ftec{
 		return result;
 	}
 
-	mat4 mat4::scale(const vec3f& scale)
+	template <typename T>
+	mat4<T> mat4<T>::scale(const vec3<T>& scale)
 	{
-		mat4 result;
+		mat4<T> result;
 
 		result.elements[0 + 0 * 4] = scale.x;
 		result.elements[1 + 1 * 4] = scale.y;
@@ -145,34 +144,36 @@ namespace ftec{
 		return result;
 	}
 
-	mat4 mat4::rotationX(float angle)
+	template <typename T>
+	mat4<T> mat4<T>::rotationX(T angle)
 	{
-		mat4 result;
+		mat4<T> result;
 
-		float r = angle * (3.141592654f / 180.f);
-		float s = sin(r);
-		float c = cos(r);
+		T r = (T) angle * (3.141592654 / 180.0);
+		T s = sin(r);
+		T c = cos(r);
 
-		result.elements[0 + 0 * 4] = 1;
-		
+		result.elements[0 + 0 * 4] = (T)1;
+
 		result.elements[1 + 1 * 4] = c;
 		result.elements[2 + 1 * 4] = -s;
 
 		result.elements[1 + 2 * 4] = s;
 		result.elements[2 + 2 * 4] = c;
 
-		result.elements[3 + 3 * 4] = 1;
+		result.elements[3 + 3 * 4] = (T) 1;
 
 		return result;
 	}
 
-	mat4 mat4::rotationY(float angle)
+	template <typename T>
+	mat4<T> mat4<T>::rotationY(T angle)
 	{
-		mat4 result;
+		mat4<T> result;
 
-		float r = angle * (3.141592654f / 180.f);
-		float s = sin(r);
-		float c = cos(r);
+		T r = angle * (3.141592654f / 180.f);
+		T s = sin(r);
+		T c = cos(r);
 
 		result.elements[1 + 1 * 4] = 1;
 
@@ -186,13 +187,14 @@ namespace ftec{
 		return result;
 	}
 
-	mat4 mat4::rotationZ(float angle)
+	template <typename T>
+	mat4<T> mat4<T>::rotationZ(T angle)
 	{
-		mat4 result;
+		mat4<T> result;
 
-		float r = angle * (3.141592654f / 180.f);
-		float s = sin(r);
-		float c = cos(r);
+		T r = angle * (3.141592654f / 180.f);
+		T s = sin(r);
+		T c = cos(r);
 
 		result.elements[0 + 0 * 4] = c;
 		result.elements[1 + 0 * 4] = -s;
@@ -205,9 +207,10 @@ namespace ftec{
 		return result;
 	}
 
-	mat4 mat4::orthographic(float l, float r, float b, float t, float n, float f)
+	template <typename T>
+	mat4<T> mat4<T>::orthographic(T l, T r, T b, T t, T n, T f)
 	{
-		mat4 result;
+		mat4<T> result;
 
 		result.elements[0 + 0 * 4] = 2.0f / (r - l);
 		result.elements[1 + 1 * 4] = 2.0f / (t - b);
@@ -220,15 +223,16 @@ namespace ftec{
 		return result;
 	}
 
-	mat4 mat4::perspective(float fov, float asp, float near, float far)
+	template <typename T>
+	mat4<T> mat4<T>::perspective(T fov, T asp, T near, T far)
 	{
-		mat4 result;
+		mat4<T> result;
 
-		float q = 1.0f / tan(0.5f * fov * (3.141592653f / 180.f));
-		float a = q / asp;
+		T q = 1.0f / tan(0.5f * fov * (3.141592653f / 180.f));
+		T a = q / asp;
 
-		float b = (near + far) / (near - far);
-		float c = (2 * near * far) / (near - far);
+		T b = (near + far) / (near - far);
+		T c = (2 * near * far) / (near - far);
 
 		result.elements[0 + 0 * 4] = a;
 		result.elements[1 + 1 * 4] = q;
@@ -241,28 +245,29 @@ namespace ftec{
 		return result;
 	}
 
-	mat4 mat4::lookAt(const vec3f & eye, const vec3f & center, const vec3f & up)
+	template <typename T>
+	mat4<T> mat4<T>::lookAt(const vec3<T> & eye, const vec3<T> & center, const vec3<T> & up)
 	{
-		mat4 result;
+		mat4<T> result;
 
-		vec3f zaxis = (center - eye).normalize();
-		vec3f xaxis = vec3f::cross(up, zaxis).normalize();
-		vec3f yaxis = vec3f::cross(zaxis, xaxis);
+		vec3<T> zaxis = (center - eye).normalize();
+		vec3<T> xaxis = vec3<T>::cross(up, zaxis).normalize();
+		vec3<T> yaxis = vec3<T>::cross(zaxis, xaxis);
 
 		result.elements[0 + 0 * 4] = xaxis.x;
 		result.elements[1 + 0 * 4] = xaxis.y;
 		result.elements[2 + 0 * 4] = xaxis.z;
-		result.elements[3 + 0 * 4] = -vec3f::dot(xaxis, eye);
+		result.elements[3 + 0 * 4] = -vec3<T>::dot(xaxis, eye);
 
 		result.elements[0 + 1 * 4] = yaxis.x;
 		result.elements[1 + 1 * 4] = yaxis.y;
 		result.elements[2 + 1 * 4] = yaxis.z;
-		result.elements[3 + 1 * 4] = -vec3f::dot(yaxis, eye);
+		result.elements[3 + 1 * 4] = -vec3<T>::dot(yaxis, eye);
 
 		result.elements[0 + 2 * 4] = zaxis.x;
 		result.elements[1 + 2 * 4] = zaxis.y;
 		result.elements[2 + 2 * 4] = zaxis.z;
-		result.elements[3 + 2 * 4] = -vec3f::dot(zaxis, eye);
+		result.elements[3 + 2 * 4] = -vec3<T>::dot(zaxis, eye);
 
 		result.elements[0 + 3 * 4] = 0;
 		result.elements[1 + 3 * 4] = 0;
@@ -272,28 +277,29 @@ namespace ftec{
 		return result;
 	}
 
-	float mat4::determinant() const
+	template <typename T>
+	T mat4<T>::determinant() const
 	{
 		//[a b c d]
 		//[e f g h]
 		//[i j k l]
 		//[m n o p]
-		mat3 sub1 = mat3({
+		mat3<T> sub1 = mat3<T>({
 			f,g,h,
 			j,k,l,
 			n,o,p
 		});
-		mat3 sub2 = mat3({
+		mat3<T> sub2 = mat3<T>({
 			g,h,e,
 			k,l,i,
 			o,p,m
 		});
-		mat3 sub3 = mat3({
+		mat3<T> sub3 = mat3<T>({
 			h,e,f,
 			l,i,j,
 			p,m,n
 		});
-		mat3 sub4 = mat3({
+		mat3<T> sub4 = mat3<T>({
 			e,f,g,
 			i,j,k,
 			m,n,o
@@ -306,14 +312,15 @@ namespace ftec{
 			- d * sub4.determinant();
 	}
 
-	//TODO look at the resulting matrix, see if it looks a bit correctish
-	mat4 mat4::fromForward(const vec3f & forward, const vec3f & up)
-	{
-		vec3f zaxis = forward;
-		vec3f xaxis = vec3f::cross(up, zaxis);
-		vec3f yaxis = vec3f::cross(zaxis, xaxis);
 
-		mat4 result;
+	template <typename T>
+	mat4<T> mat4<T>::fromForward(const vec3<T> & forward, const vec3<T> & up)
+	{
+		vec3<T> zaxis = forward;
+		vec3<T> xaxis = vec3<T>::cross(up, zaxis);
+		vec3<T> yaxis = vec3<T>::cross(zaxis, xaxis);
+
+		mat4<T> result;
 
 		result.elements[0 + 0 * 4] = xaxis.x;
 		result.elements[1 + 0 * 4] = xaxis.y;
@@ -330,4 +337,8 @@ namespace ftec{
 		return result;
 	}
 
+	//Tell the compiler to pretty pretty please compile this 
+	template struct mat4<float>;
+	template struct mat4<int>;
+	template struct mat4<double>;
 }

@@ -1,12 +1,15 @@
 #pragma once
 
 #include "math/vec3.h"
+#include "math/line3.h"
 #include "math/plane.h"
 
-#include "logger/log.h"
-#include <vector>
-
 #include "math/epsilon.h"
+#include "math/collision.h"
+
+
+#include <vector>
+#include <algorithm>
 
 namespace ftec {
 
@@ -28,24 +31,21 @@ namespace ftec {
 					if (i == j)
 						continue;
 
-					line3f line = i->intersection(*j);
+					auto line = intersect(*i, *j);
 
-					if (line.sqrmagnitude() == 0)
-						continue;
-
-					if (line.a.x != line.a.x)
+					if (!line)
 						continue;
 
 					for (auto k = j; k != planes.end(); k++) {
 						if (k == i || k == j)
 							continue;
 
-						vec3<T> result = k->intersection(line);
+						auto point = intersect(*k, *line);
 
-						if (result.x != result.x)
+						if (!point)
 							continue;
 
-						m_Vertices.push_back(std::move(result));
+						m_Vertices.push_back(std::move(point.result));
 					}
 				}
 			}
@@ -60,7 +60,7 @@ namespace ftec {
 				}
 				
 				m_Vertices.erase(std::remove_if(m_Vertices.begin(), m_Vertices.end(),
-					[&p](vec3f &v) -> bool {
+					[&p](vec3<T> &v) -> bool {
 					return p.distanceFrom(v) < -EPSILON; //Small rounding error fix?
 				}), m_Vertices.end());
 			}

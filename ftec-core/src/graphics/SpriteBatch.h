@@ -1,10 +1,14 @@
 #pragma once
 
 #include "VBORenderable.h"
+
 #include "math/vec3.h"
-#include <memory>
+#include "math/vec4.h"
+
 #include "Material.h"
 #include "Camera.h"
+
+#include <memory>
 #include <vector>
 
 typedef unsigned int GLuint;
@@ -43,6 +47,7 @@ namespace ftec {
 		void end();
 
 		void vertex(const vec3f &position);
+		void vertex(const vec2f &position);
 		void color(const color32 &color);
 		void uv(const vec2f &uv);
 

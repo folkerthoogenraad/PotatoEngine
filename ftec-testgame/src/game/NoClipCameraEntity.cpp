@@ -1,8 +1,12 @@
-#include "NoClipCameraEntity.h"
 #include "logger/log.h"
+
+#include "NoClipCameraEntity.h"
+
 #include "engine/Engine.h"
 #include "engine/Time.h"
 #include "engine/Input.h"
+
+#include "math/mat4.h" //Why was this already included?
 #include "math/vec3.h"
 
 #include "graphics/Camera.h"
@@ -46,7 +50,7 @@ namespace ftec {
 				motion.x += 1;
 			}
 
-			mat4 transform = mat4::rotation(cam.m_Yaw, vec3f(0, 1, 0));
+			mat4f transform = mat4f::rotation(cam.m_Yaw, vec3f(0, 1, 0));
 			motion = transform * motion;
 
 			motion.y = 0;

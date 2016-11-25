@@ -281,8 +281,8 @@ namespace ftec {
 
 		m_ClippingRectangle.x() = 0;
 		m_ClippingRectangle.y() = 0;
-		m_ClippingRectangle.width() = Engine::getWindow().getWidth();
-		m_ClippingRectangle.height() = Engine::getWindow().getHeight();
+		m_ClippingRectangle.width() = (int) Engine::getWindow().getWidth();
+		m_ClippingRectangle.height() = (int) Engine::getWindow().getHeight();
 
 		//Flush again to apply the clip
 		flush();
@@ -331,9 +331,9 @@ namespace ftec {
 		GraphicsState::m_Material = m_Material;
 		GraphicsState::m_Skybox = nullptr;
 
-		GraphicsState::matrixModel = mat4::identity();
-		GraphicsState::matrixView = mat4::identity();
-		GraphicsState::matrixProjection = mat4::orthographic(0,Engine::getWindow().getWidth(), Engine::getWindow().getHeight(), 0, -100, 100);
+		GraphicsState::matrixModel = mat4f::identity();
+		GraphicsState::matrixView = mat4f::identity();
+		GraphicsState::matrixProjection = mat4f::orthographic(0,Engine::getWindow().getWidth(), Engine::getWindow().getHeight(), 0, -100, 100);
 
 		batch.end();
 		batch.begin(Primitive::QUADS);

@@ -7,7 +7,10 @@
 
 #include "logger/log.h"
 #include <map>
+
 #include "math/epsilon.h"
+#include "math/math.h"
+#include "math/collision.h"
 
 
 namespace ftec {
@@ -40,11 +43,11 @@ namespace ftec {
 		m_HullTriangles.clear();
 
 		m_BoundingBox = boxf(mn, mx);
-		spheref bSphere = m_BoundingBox.boundingSphere();
+		spheref bSphere = m_BoundingBox.boudingsphere();
 
 		//Make a tetrahedron around the bounding sphere (which is about ~6 per unit)
 		tetrahedronf superTetrahedron = tetrahedronf::unitTetrahedron().transform(
-			mat4::translation(bSphere.center) * mat4::scale(vec3f(bSphere.radius * 6, bSphere.radius * 6, bSphere.radius * 6))
+			mat4f::translation(bSphere.center) * mat4f::scale(vec3f(bSphere.radius * 6, bSphere.radius * 6, bSphere.radius * 6))
 		);
 
 		//Push the tetrahedron vertices

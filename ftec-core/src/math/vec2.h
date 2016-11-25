@@ -1,8 +1,5 @@
 #pragma once
 
-#include <iostream>
-#include <array>
-
 namespace ftec {
 
 	template<typename T>
@@ -15,7 +12,7 @@ namespace ftec {
 			struct {
 				T width, height;
 			};
-			std::array<T, 2> v;
+			T v[2];
 		};
 
 		template<typename S>
@@ -195,10 +192,6 @@ namespace ftec {
 		friend bool operator==(const vec2<T>& left, const vec2<T>& right)
 		{
 			return left.x == right.x && left.y == right.y;
-		}
-		friend std::ostream& operator<<(std::ostream& left, const vec2<T>& right)
-		{
-			return left << "(" << right.x << ", " << right.y << ")";
 		}
 
 		friend bool operator <(const vec2<T>& left, const vec2<T>& right)
