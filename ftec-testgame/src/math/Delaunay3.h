@@ -11,6 +11,7 @@
 #include "math/tetrahedron.h"
 
 #include "DelaunayVertex.h"
+#include "logger/log.h"
 
 #include <map>
 #include <vector>
@@ -24,6 +25,10 @@ namespace ftec {
 		std::vector<TetrahedronRef> m_Tetrahedrons;
 		std::vector<TriangleRef> m_HullTriangles;
 
+	public: //TODO not public
+		bool m_Valid;
+		vec3<T> m_Center;
+
 		box<T> m_BoundingBox;
 	public:
 		Delaunay3() {}
@@ -33,7 +38,14 @@ namespace ftec {
 		{
 			m_Vertices.clear();
 
+			if (points.size() == 0)
+				return;
+
 			vec3<T> mn, mx;
+			m_Center = vec3<T>();
+
+			mn = points[0];
+			mx = points[0];
 
 			//Find the bounding box
 			for (auto &p : points) {
@@ -45,8 +57,12 @@ namespace ftec {
 				mx.y = max(p.y, mx.y);
 				mx.z = max(p.z, mx.z);
 
+				m_Center += p;
+
 				m_Vertices.push_back({ std::move(p), false, false });
 			}
+
+			m_Center /= points.size();
 
 			m_Tetrahedrons.clear();
 			m_HullTriangles.clear();
@@ -55,8 +71,13 @@ namespace ftec {
 			sphere<T> bSphere = m_BoundingBox.boudingsphere();
 
 			//Make a tetrahedron around the bounding sphere (which is about ~6 per unit)
-			tetrahedron<T> superTetrahedron = tetrahedron<T>::unitTetrahedron().transform(
-				mat4<T>::translation(bSphere.center) * mat4<T>::scale(vec3<T>(bSphere.radius * 6, bSphere.radius * 6, bSphere.radius * 6))
+			tetrahedron<T> superTetrahedron = tetrahedron<T>(
+				vec3<T>(0, -1, 1),
+				vec3<T>(-1, -1, -1),
+				vec3<T>(1, -1, -1),
+				vec3<T>(0, 1, 0)
+				).transform(
+				mat4<T>::translation(bSphere.center) * mat4<T>::scale(vec3<T>(bSphere.radius * 10, bSphere.radius * 10, bSphere.radius * 10))
 			);
 
 			//Push the tetrahedron vertices
@@ -131,7 +152,7 @@ namespace ftec {
 						bdc.translate(tr.a - tr.b);
 
 						//If its behind the current plane
-						if (bdc.distanceFrom(v) >= EPSILON) {
+						if (bdc.distanceFrom(v) > -EPSILON) { //Favour epsilon deletion
 							addTetrahedron();
 						}
 					}
@@ -139,17 +160,15 @@ namespace ftec {
 					//Create plane from two lines
 					else if (sharedSuperCount == 2) {
 						vec3<T> normal = vec3<T>::cross(tr.b - tr.a, tr.d - tr.c);
-
-						if (normal.magnitude() > 0) {
+						if (normal.sqrmagnitude() > 0) {
 							//Flip if needed
 							if (vec3<T>::dot(normal, tr.c - tr.a) < 0)
 								normal = -normal;
 
 							//Add if its in the direction of the super triangle
-							if (vec3<T>::dot(normal, v - tr.a) >= EPSILON)
+							if (vec3<T>::dot(normal, v - tr.a) > EPSILON)
 								addTetrahedron();
 						}
-
 					}
 
 					//Use the abc triangle
@@ -160,9 +179,10 @@ namespace ftec {
 							abc.flip();
 
 						//If its behind the current plane
-						if (abc.distanceFrom(v) <= -EPSILON) {
+						if (abc.distanceFrom(v) < EPSILON) { // Favour the already existing
 							addTetrahedron();
 						}
+						
 					}
 
 					//Check if the circumsphere contains this
@@ -170,7 +190,6 @@ namespace ftec {
 						addTetrahedron();
 					}
 				}
-
 				//Remove all the bad tetrahedra
 				m_Tetrahedrons.erase(std::remove_if(m_Tetrahedrons.begin(), m_Tetrahedrons.end(),
 					[&badTetrahedrons](TetrahedronRef &t) {
@@ -206,7 +225,6 @@ namespace ftec {
 					m_HullTriangles.push_back({ t.a, t.b, t.c });
 				}
 			}
-
 			m_Tetrahedrons.erase(std::remove_if(m_Tetrahedrons.begin(), m_Tetrahedrons.end(),
 				[&superTetrahedronRef](TetrahedronRef &t) {
 				return superTetrahedronRef.contains(t.a) || superTetrahedronRef.contains(t.b) || superTetrahedronRef.contains(t.c) || superTetrahedronRef.contains(t.d);
@@ -214,6 +232,48 @@ namespace ftec {
 
 			for (int i = 0; i < 4; i++)
 				m_Vertices.pop_back();
+
+#if 0
+			m_Valid = true;
+			for (int i = 0; i < m_Vertices.size(); i++) {
+				auto &v = m_Vertices[i];
+
+				for (auto &tref : m_HullTriangles) {
+
+					if(tref.contains(i))
+						continue;
+					if(superTetrahedronRef.contains(i))
+						continue;
+					
+					triangle3<T> triangle(
+						m_Vertices[tref.a].m_Vertex,
+						m_Vertices[tref.b].m_Vertex,
+						m_Vertices[tref.c].m_Vertex
+					);
+
+					if (triangle.distanceFrom(m_Center) > 0)
+						triangle.flip();
+
+					if (triangle.distanceFrom(v.m_Vertex) > EPSILON) {
+						m_Valid = false;
+						//LOG("Invalid detected!");// : " << tref.a << ", " << tref.b << ", " << tref.c << "  | " << i << " ... " << triangle.distanceFrom(v.m_Vertex));
+					}
+				}
+			}
+
+			if (!m_Valid){
+				std::ofstream file("log");
+				file << "{" << std::endl;
+				for (auto &v : m_Vertices) {
+					file << "\t" << "vec3d" << v.m_Vertex << "," << std::endl;
+				}
+				file << "}";
+
+				file.close();
+
+				LOG("Invalid detected!");// : " << tref.a << ", " << tref.b << ", " << tref.c << "  | " << i << " ... " << triangle.distanceFrom(v.m_Vertex));
+			}
+#endif
 		}
 
 		int getPointCount() const { return (int) m_Vertices.size(); };
@@ -232,4 +292,6 @@ namespace ftec {
 	typedef Delaunay3<float> Delaunay3f;
 	typedef Delaunay3<double> Delaunay3d;
 	typedef Delaunay3<int> Delaunay3i;
+	typedef Delaunay3<long> Delaunay3l;
+	typedef Delaunay3<long long> Delaunay3ll;
 }

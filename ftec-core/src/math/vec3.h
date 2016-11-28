@@ -216,6 +216,17 @@ namespace ftec{
 		}
 		friend bool operator<(const vec3<T>& left, const vec3<T>& right)
 		{
+			if (left.x < right.x)
+				return true;
+			if (left.x == right.x) {
+				if (left.y < right.y)
+					return true;
+				if (left.y == right.y)
+					return left.z < right.z;
+			}
+
+			return false;
+				
 			return left.x < right.x && left.y < right.y && left.z < right.z;
 		}
 
@@ -233,5 +244,8 @@ namespace ftec{
 	typedef vec3<float> vec3f;
 	typedef vec3<int> vec3i;
 	typedef vec3<double> vec3d;
+
+	typedef vec3<long> vec3l;
+	typedef vec3<long long> vec3ll;
 
 }

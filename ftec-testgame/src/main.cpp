@@ -3,8 +3,12 @@
 
 #include "logger/log.h"
 
+#include "math/mat3.h"
+
 int main(void)
 {
+	using namespace ftec;
+
 	ftec::Engine::create<ftec::Razura>();
 
 	WAIT();

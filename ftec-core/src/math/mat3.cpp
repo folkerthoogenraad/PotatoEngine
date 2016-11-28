@@ -54,9 +54,9 @@ namespace ftec {
 	}
 
 	template<typename T>
-	mat3<T> mat3<T>::multiplied()
+	mat3<T> mat3<T>::multiplied(const mat3<T>& m)
 	{
-		return mat3<T>();
+		return clone().multiply(m);
 	}
 
 	template<typename T>
@@ -98,4 +98,6 @@ namespace ftec {
 	template struct mat3<float>;
 	template struct mat3<int>;
 	template struct mat3<double>;
+	template struct mat3<long>;
+	template struct mat3<long long>;
 }

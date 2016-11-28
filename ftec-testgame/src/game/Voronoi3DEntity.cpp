@@ -19,6 +19,8 @@
 #include "graphics/Texture.h"
 #include "PointCloudEntity.h"
 
+#include <set>
+
 namespace ftec {
 
 	static float randf(float min, float max) 
@@ -28,42 +30,44 @@ namespace ftec {
 		return r * (max - min) + min;
 	}
 
+	static void drawTriangle(const triangle3f &tr, const color32 &c)
+	{
+		Graphics::enqueueLine(tr.edgeab(), c);
+		Graphics::enqueueLine(tr.edgebc(), c);
+		Graphics::enqueueLine(tr.edgeca(), c);
+	}
 	static void drawTetrahedron(const tetrahedronf &in)
 	{
 		tetrahedronf t = in;
 
-		Graphics::enqueueTriangle(
-			t.triangleabc(),
-			color32::red()
+		drawTriangle(
+			t.triangleabc(), color32::white()
 		);
-		Graphics::enqueueTriangle(
-			t.triangleacd(),
-			color32::green()
+		drawTriangle(
+			t.triangleacd(), color32::white()
 		);
-		Graphics::enqueueTriangle(
-			t.triangleadb(),
-			color32::cyan()
+		drawTriangle(
+			t.triangleadb(), color32::white()
 		);
-		Graphics::enqueueTriangle(
-			t.trianglebdc(),
-			color32::yellow()
+		drawTriangle(
+			t.trianglebdc(), color32::white()
 		);
 	}
 
+
 	//TODO make these not static and stuff, whatever
 	static Voronoi3d voronoi;
+	static Delaunay3d delaunay;
 
 	void Voronoi3DEntity::create()
 	{
-		Delaunay3d delaunay;
-
 		delaunay.triangulate(m_Points);
 		voronoi.create(delaunay);
 
 		for (const auto &l : voronoi.getLegos()) {
-			Engine::getScene()->addEntity(std::make_shared<PointCloudEntity>(l));
+			Engine::getScene()->addEntity(std::make_shared<PointCloudEntity>(l.m_Vertices));
 		}
-
+		//Engine::getScene()->addEntity(std::make_shared<PointCloudEntity>(m_Points));
 	}
 
 	Voronoi3DEntity::Voronoi3DEntity()
@@ -74,26 +78,70 @@ namespace ftec {
 	void Voronoi3DEntity::update()
 	{
 		if (Input::isKeyTyped(GLFW_KEY_ENTER)) {
+			/*m_Points = {
+				vec3d(-0.729189, -0.220405, 0.647628),
+				vec3d(-0.792915, 0.0644285, 0.190272),
+				vec3d(-0.579266, -0.558579, 1.01144),
+				vec3d(-0.198262, -0.528971, 0.0285342),
+				vec3d(-0.0333755, -0.98818, 0.615922),
+				vec3d(-0.264774, -0.418219, -0.0485973),
+				vec3d(-0.197283, -0.98818, 1.01144),
+				vec3d(-0.730016, -0.218901, 0.646062),
+				vec3d(-0.884902, 0.132082, 0.214651),
+				vec3d(-0.700895, -0.526021, 1.01144),
+				vec3d(-1.04433, 0.160198, 0.163342),
+				vec3d(-1.04433, -0.559212, 1.01144),
+				vec3d(-0.305183, -0.528646, -0.184989),
+				vec3d(-0.802971, -0.98818, -0.919672),
+				vec3d(-1.04433, -0.98818, -1.04203),
+				vec3d(-1.04433, -0.98818, 1.01144),
+			};*/
 			create();
 		}
 
 
 		if (Input::isKeyTyped(GLFW_KEY_SPACE)) {
-			m_Points.clear();
+			static int a = 0;
 
-			for (int i = 0; i < 500; i++) {
+			mat4f mat = mat4f::rotationY(34.18413248) * mat4f::rotationX(75.05415421);
+
+			double size = 4.0;
+
+			m_Points.clear();
+			/*for (int x = 0; x < size; x++) {
+				for (int y = 0; y < size; y++) {
+					for (int z = 0; z < size; z++) {
+						vec3d a = vec3d(
+							x / size - 0.5,
+							y / size - 0.5,
+							z / size - 0.5
+						);
+						m_Points.push_back(mat * a);
+					}
+				}
+			}*/
+			std::set<vec3d> vecs;
+			for (int i = 0; i < 20; i++) {
 				vec3d a = vec3d(
-					randf(-1, 1),
-					randf(-1, 1),
-					randf(-1, 1)
+					rand() % 512 - 256,
+					rand() % 512 - 256,
+					rand() % 512 - 256
 				);
 
-				m_Points.push_back(a);
+				vecs.insert(a);
 			}
 
+			++a;
+
+			for (auto &v : vecs) {
+				m_Points.push_back(v);
+			}
 
 			create();
 		}
+
+		if (true)
+			return;
 
 		if (Input::isKeyTyped(GLFW_KEY_R)) {
 			static int r = 0;
@@ -146,6 +194,7 @@ namespace ftec {
 
 	void Voronoi3DEntity::render()
 	{
+		//Draw the grid
 		for (int i = 0; i < 11; i++) {
 			Graphics::enqueueLine(
 				line3f(vec3f(i - 5, 0, -5), vec3f(i - 5, 0, 5)),
@@ -156,6 +205,19 @@ namespace ftec {
 				color32::dkgray()
 			);
 		}
+
+		/*for (int i = 0; i < delaunay.getTetraHedronCount(); i++) {
+			TetrahedronRef ref = delaunay.getTetraHedronRef(i);
+
+			tetrahedronf tetra(
+				delaunay.getPoint(ref.a),
+				delaunay.getPoint(ref.b),
+				delaunay.getPoint(ref.c),
+				delaunay.getPoint(ref.d)
+			);
+
+			drawTetrahedron(tetra);
+		}*/
 
 		/*for (auto &l : voronoi.getLegos()) {
 			for (auto &v : l.m_Vertices) {

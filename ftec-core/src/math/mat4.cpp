@@ -341,4 +341,6 @@ namespace ftec {
 	template struct mat4<float>;
 	template struct mat4<int>;
 	template struct mat4<double>;
+	template struct mat4<long>;
+	template struct mat4<long long>;
 }

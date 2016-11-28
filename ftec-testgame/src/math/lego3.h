@@ -26,21 +26,17 @@ namespace ftec {
 			m_Vertices.clear();
 
 			//Generate all the possible points
-			for (auto i = planes.begin(); i != planes.end(); i++) {
-				for (auto j = i; j != planes.end(); j++) {
-					if (i == j)
-						continue;
+			for (int i = 0; i < planes.size(); i++) {
+				for (int j = i + 1; j < planes.size(); j++) {
 
-					auto line = intersect(*i, *j);
+					auto line = intersect(planes[i], planes[j]);
 
 					if (!line)
 						continue;
 
-					for (auto k = j; k != planes.end(); k++) {
-						if (k == i || k == j)
-							continue;
+					for (int k = j + 1; k < planes.size(); k++) {
 
-						auto point = intersect(*k, *line);
+						auto point = intersect(planes[k], *line);
 
 						if (!point)
 							continue;

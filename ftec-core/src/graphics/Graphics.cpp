@@ -140,7 +140,7 @@ namespace ftec {
 
 			//Set skybox to normal version //This should obviously not be here
 			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test");
-			
+			/*
 			GraphicsState::matrixModel = mat4f::translation(c->m_Position);
 
 			//Drawing skybox
@@ -152,6 +152,7 @@ namespace ftec {
 			Renderer::drawDirect(*mesh);
 
 			glClear(GL_DEPTH_BUFFER_BIT);
+			*/
 
 			GraphicsState::m_Lights[0].enabled = true;
 			GraphicsState::m_Lights[0].light = *lights.front();// .m_Direction = vec3f(0.7f, -0.4f, -0.7f).normalize();

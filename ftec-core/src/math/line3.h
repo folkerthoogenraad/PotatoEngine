@@ -3,6 +3,10 @@
 #include "vec3.h"
 
 namespace ftec {
+
+	template<typename T>
+	struct mat4;
+
 	template<typename T>
 	struct line3 {
 		vec3<T> a;
@@ -67,6 +71,17 @@ namespace ftec {
 		line3<T> flipped() const
 		{
 			return clone().flip();
+		}
+	
+		line3<T> &transform(const mat4<T> &m)
+		{
+			a = m * a;
+			b = m * b;
+			return *this;
+		}
+		line3<T> transformed(const mat4<T> &m) const
+		{
+			return clone().transform(m);
 		}
 	};
 

@@ -16,23 +16,63 @@
 #include "math/Curve.h"
 #include "math/math.h"
 
+#include "logger/log.h"
+
 namespace ftec {
 
-	PointCloudEntity::PointCloudEntity(const lego3d &lego) : m_Points(lego.m_Vertices)
+	static void drawTriangle(const triangle3f &tr, const color32 &c)
 	{
-		Delaunay3d del;
+		Graphics::enqueueLine(tr.edgeab(), c);
+		Graphics::enqueueLine(tr.edgebc(), c);
+		Graphics::enqueueLine(tr.edgeca(), c);
+	}
+	static void drawTetrahedron(const tetrahedronf &in)
+	{
+		tetrahedronf t = in;
+
+		drawTriangle(
+			t.triangleabc(),
+			color32::red()
+		);
+		drawTriangle(
+			t.triangleacd(),
+			color32::green()
+		);
+		drawTriangle(
+			t.triangleadb(),
+			color32::cyan()
+		);
+		drawTriangle(
+			t.trianglebdc(),
+			color32::yellow()
+		);
+	}
+
+
+	PointCloudEntity::PointCloudEntity(std::vector<vec3d> vertices) : m_Points(std::move(vertices))
+	{
+		if (m_Points.size() == 0)
+			return;
+
+		for (auto &v : m_Points) {
+			v.x = round(v.x);
+			v.y = round(v.y);
+			v.z = round(v.z);
+		}
 
 		del.triangulate(m_Points);
 
 		m_Render = true;
+
 		m_Time = -1;
 
-		m_Direction = del.getBoundingBox().center();
+		m_Direction = vec3f(del.getBoundingBox().center()) / 512.0;
 
 		speed = (rand() % 16);
 
 		m_Mesh = std::make_unique<Mesh>();
-		center = lego.getCenter();
+
+		center = del.m_Center;
 
 		for (int i = 0; i < del.getHullTriangleCount(); i++) {
 			const TriangleRef &tr = del.getHullTriangleRef(i);
@@ -42,11 +82,11 @@ namespace ftec {
 			if (t.distanceFrom(center) > 0)
 				t.flip();
 
-			m_Mesh->m_Vertices.push_back(t.a);
-			m_Mesh->m_Vertices.push_back(t.b);
-			m_Mesh->m_Vertices.push_back(t.c);
+			m_Mesh->m_Vertices.push_back(t.a / 512.0);
+			m_Mesh->m_Vertices.push_back(t.b / 512.0);
+			m_Mesh->m_Vertices.push_back(t.c / 512.0);
 
-			vec3f normal = t.normal().normalize();
+			vec3f normal = vec3f(t.normal().normalize());
 			vec3f tangent = vec3f::cross(normal, vec3f(0, 1, 0));
 
 			if (tangent.magnitude() == 0)
@@ -84,8 +124,8 @@ namespace ftec {
 	}
 
 	void PointCloudEntity::update()
-	{
-		if ((Input::isKeyTyped(GLFW_KEY_SPACE) || Input::isKeyTyped(GLFW_KEY_R) || Input::isKeyTyped(GLFW_KEY_E) || Input::isKeyTyped(GLFW_KEY_ENTER)) && m_Time != -1) {
+	{// || Input::isKeyTyped(GLFW_KEY_R) || Input::isKeyTyped(GLFW_KEY_E) || 
+		if ((Input::isKeyTyped(GLFW_KEY_SPACE) || Input::isKeyTyped(GLFW_KEY_ENTER)) && m_Time != -1) {
 			m_Render = false;
 		}
 
@@ -119,7 +159,24 @@ namespace ftec {
 
 			mat4f rotation = mat4f::translation(-center);// mat4f::rotationY(amount * 37) * mat4f::rotationX(amount * 27) * mat4f::translation(-center);
 
-			Graphics::enqueueMesh(m_Mesh.get(), m_Material, model * rotation);// * 
+			if (Input::isKeyDown(GLFW_KEY_T)){
+
+				model = mat4f::scale(vec3f(1.0 / 512.0, 1.0 / 512.0, 1.0 / 512.0)) * mat4f::translation(this->m_Position + center);
+				
+				Graphics::enqueuePoint(model * rotation * center, color32::red());
+
+				for (auto &v : m_Points){
+					Graphics::enqueuePoint(model * rotation * v);
+				}
+
+				Graphics::enqueueLine(line3f(
+					del.getBoundingBox().min, del.getBoundingBox().max
+				).transform(model * rotation), color32::green());
+			}
+			
+			else {
+				Graphics::enqueueMesh(m_Mesh.get(), m_Material, model * rotation);// * 
+			}
 		}
 	}
 }

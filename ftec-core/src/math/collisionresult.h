@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+
 namespace ftec {
 
 	template <typename T>
@@ -9,7 +11,7 @@ namespace ftec {
 
 		collisionresult() : collided(false)
 		{ }
-		collisionresult(bool r) : collided(r)
+		collisionresult(bool b) : collided(b)
 		{ }
 		collisionresult(T t) : collided(true), result(t) { }
 		collisionresult(T t, bool collided) : collided(collided), result(t) { }

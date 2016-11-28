@@ -6,6 +6,9 @@
 namespace ftec {
 
 	template<typename T>
+	struct vec2;
+
+	template<typename T>
 	struct mat3
 	{
 		union {
@@ -28,7 +31,7 @@ namespace ftec {
 		mat3<T> &rotate(T x);
 
 		mat3<T> &multiply(const mat3<T> &m);
-		mat3<T> multiplied();
+		mat3<T> multiplied(const mat3<T> &m);
 
 		mat3<T> &transpose();
 		mat3<T> transposed();
@@ -47,4 +50,7 @@ namespace ftec {
 	typedef mat3<float> mat3f;
 	typedef mat3<double> mat3d;
 	typedef mat3<int> mat3i;
+
+	typedef mat3<long> mat3l;
+	typedef mat3<long long> mat3ll;
 }
