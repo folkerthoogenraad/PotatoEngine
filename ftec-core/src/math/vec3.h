@@ -245,7 +245,4 @@ namespace ftec{
 	typedef vec3<int> vec3i;
 	typedef vec3<double> vec3d;
 
-	typedef vec3<long> vec3l;
-	typedef vec3<long long> vec3ll;
-
 }
