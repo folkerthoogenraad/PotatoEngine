@@ -48,6 +48,7 @@ namespace ftec {
 		void begin();
 		void end();
 
+		//Deprecated as fuck
 		void begin3D(recti rectangle);
 		void end3D();
 
@@ -61,6 +62,13 @@ namespace ftec {
 		void drawLine(const vec2f &start, const vec2f &end);
 		void drawLine(const line2f &line);
 		void drawPoint(const vec2f &point);
+
+		void drawPrimitiveBegin(Primitive primitive);
+		void drawPrimitiveSetTexture(std::shared_ptr<Texture> texture);
+		void drawPrimitiveVertex(vec2f &vertex);
+		void drawPrimitiveUV(vec2f &uv);
+		void drawPrimitiveColor(color32 &color);
+		void drawPrimitiveEnd();
 
 		void drawClear();
 
