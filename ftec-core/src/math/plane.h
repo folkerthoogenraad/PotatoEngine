@@ -58,7 +58,7 @@ namespace ftec {
 		{
 			T mag = direction.magnitude();
 			direction /= mag;
-			offset *= mag;
+			offset /= mag;
 
 			return *this;
 		}

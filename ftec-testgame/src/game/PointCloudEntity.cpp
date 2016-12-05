@@ -54,19 +54,13 @@ namespace ftec {
 		if (m_Points.size() == 0)
 			return;
 
-		for (auto &v : m_Points) {
-			v.x = round(v.x);
-			v.y = round(v.y);
-			v.z = round(v.z);
-		}
-
 		del.triangulate(m_Points);
 
 		m_Render = true;
 
 		m_Time = -1;
 
-		m_Direction = vec3f(del.getBoundingBox().center()) / 512.0;
+		m_Direction = vec3f(del.getBoundingBox().center());
 
 		speed = (rand() % 16);
 
@@ -82,9 +76,9 @@ namespace ftec {
 			if (t.distanceFrom(center) > 0)
 				t.flip();
 
-			m_Mesh->m_Vertices.push_back(t.a / 512.0);
-			m_Mesh->m_Vertices.push_back(t.b / 512.0);
-			m_Mesh->m_Vertices.push_back(t.c / 512.0);
+			m_Mesh->m_Vertices.push_back(t.a);
+			m_Mesh->m_Vertices.push_back(t.b);
+			m_Mesh->m_Vertices.push_back(t.c);
 
 			vec3f normal = vec3f(t.normal().normalize());
 			vec3f tangent = vec3f::cross(normal, vec3f(0, 1, 0));
@@ -161,7 +155,7 @@ namespace ftec {
 
 			if (Input::isKeyDown(GLFW_KEY_T)){
 
-				model = mat4f::scale(vec3f(1.0 / 512.0, 1.0 / 512.0, 1.0 / 512.0)) * mat4f::translation(this->m_Position + center);
+				model =  mat4f::translation(this->m_Position + center);
 				
 				Graphics::enqueuePoint(model * rotation * center, color32::red());
 

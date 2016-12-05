@@ -105,9 +105,11 @@ namespace ftec {
 
 			mat4f mat = mat4f::rotationY(34.18413248) * mat4f::rotationX(75.05415421);
 
-			double size = 4.0;
+			double size = 2.0;
 
 			m_Points.clear();
+			std::set<vec3d> vecs;
+
 			/*for (int x = 0; x < size; x++) {
 				for (int y = 0; y < size; y++) {
 					for (int z = 0; z < size; z++) {
@@ -120,12 +122,10 @@ namespace ftec {
 					}
 				}
 			}*/
-			std::set<vec3d> vecs;
-			for (int i = 0; i < 20; i++) {
+			
+			for (int i = 0; i < 100; i++) {
 				vec3d a = vec3d(
-					rand() % 512 - 256,
-					rand() % 512 - 256,
-					rand() % 512 - 256
+					randf(-1,1), randf(-2, 2), randf(-1, 1)
 				);
 
 				vecs.insert(a);
@@ -195,7 +195,7 @@ namespace ftec {
 	void Voronoi3DEntity::render()
 	{
 		//Draw the grid
-		for (int i = 0; i < 11; i++) {
+		/*for (int i = 0; i < 11; i++) {
 			Graphics::enqueueLine(
 				line3f(vec3f(i - 5, 0, -5), vec3f(i - 5, 0, 5)),
 				color32::dkgray()
@@ -204,7 +204,7 @@ namespace ftec {
 				line3f(vec3f(-5, 0, i-5), vec3f(5, 0, i - 5)),
 				color32::dkgray()
 			);
-		}
+		}*/
 
 		/*for (int i = 0; i < delaunay.getTetraHedronCount(); i++) {
 			TetrahedronRef ref = delaunay.getTetraHedronRef(i);

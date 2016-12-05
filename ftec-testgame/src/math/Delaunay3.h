@@ -25,6 +25,8 @@ namespace ftec {
 		std::vector<TetrahedronRef> m_Tetrahedrons;
 		std::vector<TriangleRef> m_HullTriangles;
 
+		NormalizationStrategy m_Strategy = NormalizationStrategy::AGRESSIVE;
+
 	public: //TODO not public
 		bool m_Valid;
 		vec3<T> m_Center;
@@ -32,7 +34,7 @@ namespace ftec {
 		box<T> m_BoundingBox;
 	public:
 		Delaunay3() {}
-		Delaunay3(std::vector<vec3<T>> points) { triangulate(std::move(points));}
+		Delaunay3(std::vector<vec3<T>> points) { triangulate(std::move(points)); }
 
 		void triangulate(std::vector<vec3<T>> points)
 		{
@@ -77,8 +79,8 @@ namespace ftec {
 				vec3<T>(1, -1, -1),
 				vec3<T>(0, 1, 0)
 				).transform(
-				mat4<T>::translation(bSphere.center) * mat4<T>::scale(vec3<T>(bSphere.radius * 10, bSphere.radius * 10, bSphere.radius * 10))
-			);
+					mat4<T>::translation(bSphere.center) * mat4<T>::scale(vec3<T>(bSphere.radius * 10, bSphere.radius * 10, bSphere.radius * 10))
+				);
 
 			//Push the tetrahedron vertices
 			m_Vertices.push_back({ superTetrahedron.a, false, false });
@@ -112,7 +114,7 @@ namespace ftec {
 						m_Vertices[t.b].m_Vertex,
 						m_Vertices[t.c].m_Vertex,
 						m_Vertices[t.d].m_Vertex
-					);
+						);
 
 					tetrahedron<T> oriented = tr.clone().orient();
 
@@ -144,12 +146,13 @@ namespace ftec {
 
 					//Only when there is a triangle there
 					else if (sharedSuperCount == 3) {
-						triangle3<T> bdc = tr.trianglebdc();
+						plane<T> bdc = plane<T>(tr.trianglebdc().translate(tr.a - tr.b));
 
-						if (bdc.distanceFrom(tr.a) > 0)
+						if(m_Strategy > NormalizationStrategy::NONE)
+							bdc.normalize();
+
+						if (bdc.distanceFrom(tr.b) < 0)
 							bdc.flip();
-
-						bdc.translate(tr.a - tr.b);
 
 						//If its behind the current plane
 						if (bdc.distanceFrom(v) > -EPSILON) { //Favour epsilon deletion
@@ -161,6 +164,10 @@ namespace ftec {
 					else if (sharedSuperCount == 2) {
 						vec3<T> normal = vec3<T>::cross(tr.b - tr.a, tr.d - tr.c);
 						if (normal.sqrmagnitude() > 0) {
+							
+							if (m_Strategy > NormalizationStrategy::MILD)
+								normal.normalize();
+
 							//Flip if needed
 							if (vec3<T>::dot(normal, tr.c - tr.a) < 0)
 								normal = -normal;
@@ -173,7 +180,10 @@ namespace ftec {
 
 					//Use the abc triangle
 					else if (sharedSuperCount == 1) {
-						triangle3<T> abc = tr.triangleabc();
+						plane<T> abc = plane<T>(tr.triangleabc());
+
+						if (m_Strategy > NormalizationStrategy::NONE)
+							abc.normalize();
 
 						if (abc.distanceFrom(tr.d) > 0)
 							abc.flip();
@@ -182,7 +192,7 @@ namespace ftec {
 						if (abc.distanceFrom(v) < EPSILON) { // Favour the already existing
 							addTetrahedron();
 						}
-						
+
 					}
 
 					//Check if the circumsphere contains this
@@ -237,53 +247,46 @@ namespace ftec {
 			m_Valid = true;
 			for (int i = 0; i < m_Vertices.size(); i++) {
 				auto &v = m_Vertices[i];
-
 				for (auto &tref : m_HullTriangles) {
+					if (tref.contains(i))
+						continue;
+					if (superTetrahedronRef.contains(i))
+						continue;
 
-					if(tref.contains(i))
-						continue;
-					if(superTetrahedronRef.contains(i))
-						continue;
-					
 					triangle3<T> triangle(
 						m_Vertices[tref.a].m_Vertex,
 						m_Vertices[tref.b].m_Vertex,
 						m_Vertices[tref.c].m_Vertex
 					);
-
 					if (triangle.distanceFrom(m_Center) > 0)
 						triangle.flip();
-
 					if (triangle.distanceFrom(v.m_Vertex) > EPSILON) {
 						m_Valid = false;
 						//LOG("Invalid detected!");// : " << tref.a << ", " << tref.b << ", " << tref.c << "  | " << i << " ... " << triangle.distanceFrom(v.m_Vertex));
 					}
 				}
 			}
-
-			if (!m_Valid){
+			if (!m_Valid) {
 				std::ofstream file("log");
 				file << "{" << std::endl;
 				for (auto &v : m_Vertices) {
 					file << "\t" << "vec3d" << v.m_Vertex << "," << std::endl;
 				}
 				file << "}";
-
 				file.close();
-
 				LOG("Invalid detected!");// : " << tref.a << ", " << tref.b << ", " << tref.c << "  | " << i << " ... " << triangle.distanceFrom(v.m_Vertex));
 			}
 #endif
 		}
 
-		int getPointCount() const { return (int) m_Vertices.size(); };
+		int getPointCount() const { return (int)m_Vertices.size(); };
 		const vec3<T> &getPoint(int index) const { return m_Vertices[index].m_Vertex; }
 		bool isHull(int index) const { return m_Vertices[index].m_Hull; }
 
-		int getTetraHedronCount() const { return (int) m_Tetrahedrons.size(); }
+		int getTetraHedronCount() const { return (int)m_Tetrahedrons.size(); }
 		const TetrahedronRef &getTetraHedronRef(int index) const { return m_Tetrahedrons[index]; }
 
-		int getHullTriangleCount() const { return (int) m_HullTriangles.size(); }
+		int getHullTriangleCount() const { return (int)m_HullTriangles.size(); }
 		const TriangleRef &getHullTriangleRef(int index) const { return m_HullTriangles[index]; }
 
 		const box<T> &getBoundingBox() const { return m_BoundingBox; }

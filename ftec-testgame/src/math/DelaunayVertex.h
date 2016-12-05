@@ -1,6 +1,12 @@
 #pragma once
 
 namespace ftec {
+
+	enum class NormalizationStrategy {
+		NONE			= 0,
+		MILD			= 1,
+		AGRESSIVE		= 2
+	};
 	
 	template <typename T>
 	struct DelaunayVertex {
