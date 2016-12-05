@@ -137,6 +137,7 @@
     <ClCompile Include="src\game\PointCloudEntity.cpp" />
     <ClCompile Include="src\game\Razura.cpp" />
     <ClCompile Include="src\game\StairArcCanvas.cpp" />
+    <ClCompile Include="src\game\TestCanvas.cpp" />
     <ClCompile Include="src\game\VoronoiCanvas.cpp" />
     <ClCompile Include="src\game\Voronoi3DEntity.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="src\game\PointCloudEntity.h" />
     <ClInclude Include="src\game\Razura.h" />
     <ClInclude Include="src\game\StairArcCanvas.h" />
+    <ClInclude Include="src\game\TestCanvas.h" />
     <ClInclude Include="src\game\VoronoiCanvas.h" />
     <ClInclude Include="src\game\Voronoi3DEntity.h" />
     <ClInclude Include="src\math\Delaunay2.h" />

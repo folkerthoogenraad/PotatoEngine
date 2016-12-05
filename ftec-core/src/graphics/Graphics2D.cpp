@@ -86,6 +86,34 @@ namespace ftec {
 		}
 	}
 
+	void Graphics2D::drawPrimitiveBegin(Primitive primitive)
+	{
+		if (batch.isDrawing())
+			batch.end();
+
+		batch.begin(primitive);
+	}
+	void Graphics2D::drawPrimitiveSetTexture(std::shared_ptr<Texture> texture)
+	{
+		setTexture(texture);
+	}
+	void Graphics2D::drawPrimitiveVertex(vec2f & vertex)
+	{
+		batch.vertex(vertex);
+	}
+	void Graphics2D::drawPrimitiveUV(vec2f & uv)
+	{
+		batch.uv(uv);
+	}
+	void Graphics2D::drawPrimitiveColor(color32 & color)
+	{
+		batch.color(color);
+	}
+	void Graphics2D::drawPrimitiveEnd()
+	{
+		flush();
+	}
+
 	void Graphics2D::drawCircle(const vec2f & center, float radius, bool fill)
 	{
 		if (drawing3D) {

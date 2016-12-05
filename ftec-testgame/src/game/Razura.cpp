@@ -27,6 +27,7 @@
 #include "potato_ui/UILoader.h"
 #include "VoronoiCanvas.h"
 #include "Voronoi3DEntity.h"
+#include "TestCanvas.h"
 
 namespace ftec {
 
@@ -51,7 +52,8 @@ namespace ftec {
 			ui->setRoot(
 				//potato::UILoader::load("text.xml")
 				//std::make_shared<VoronoiCanvas>()
-				std::make_shared<potato::SceneView>()
+				//std::make_shared<potato::SceneView>()
+				std::make_shared<TestCanvas>()
 			);
 		}
 	
