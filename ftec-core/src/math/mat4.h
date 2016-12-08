@@ -72,5 +72,4 @@ namespace ftec {
 
 	typedef mat4<float> mat4f;
 	typedef mat4<double> mat4d;
-	typedef mat4<int> mat4i;
 }

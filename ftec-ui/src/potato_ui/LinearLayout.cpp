@@ -14,7 +14,7 @@ namespace potato {
 		Size layoutSize = localbounds().size;
 
 		//Available size (which we have to scale to)
-		float availableSize = m_Direction == HORIZONTAL ? layoutSize.width : layoutSize.height;
+		float availableSize = m_Direction == HORIZONTAL ? (float)layoutSize.width : (float) layoutSize.height;
 
 		//The total weight of all elements that need weighting
 		float totalWeight = 0;
@@ -94,7 +94,7 @@ namespace potato {
 					s.height = layoutSize.height;
 
 				child->localbounds() = Bounds(
-					offset, 0,
+					(int)offset, 0,
 					s.width, s.height
 				);
 
@@ -118,7 +118,7 @@ namespace potato {
 					s.width = layoutSize.width;
 
 				child->localbounds() = Bounds(
-					0, offset,
+					0, (int)offset,
 					s.width, s.height
 				);
 

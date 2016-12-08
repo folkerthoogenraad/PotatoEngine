@@ -39,11 +39,11 @@ namespace potato {
 
 		if (m_EditText.length() == 0) {
 			graphics.setColor(PotatoColor::secondaryText);
-			graphics.drawString(m_Hint, ftec::vec2f(bounds.x(), bounds.center().y));
+			graphics.drawString(m_Hint, ftec::vec2i(bounds.x(), bounds.center().y));
 		}
 		else {
 			graphics.setColor(PotatoColor::primaryText);
-			graphics.drawString(m_EditText.m_Text, ftec::vec2f(bounds.x(), bounds.center().y));
+			graphics.drawString(m_EditText.m_Text, ftec::vec2i(bounds.x(), bounds.center().y));
 		}
 
 		//A bit of alpha here

@@ -103,7 +103,7 @@ namespace ftec {
 		if (Input::isKeyTyped(GLFW_KEY_SPACE)) {
 			static int a = 0;
 
-			mat4f mat = mat4f::rotationY(34.18413248) * mat4f::rotationX(75.05415421);
+			mat4f mat = mat4f::rotationY(34.18413248f) * mat4f::rotationX(75.05415421f);
 
 			double size = 2.0;
 
@@ -177,7 +177,7 @@ namespace ftec {
 				for (int y = -1; y < 2; y += 2) {
 					for (int z = -1; z < 2; z += 2) {
 						vec3f a = vec3f(
-							x, y, z
+							(float) x, (float) y, (float) z
 						);
 
 						m_Points.push_back(mat * a);

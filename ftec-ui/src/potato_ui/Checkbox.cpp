@@ -20,16 +20,16 @@ namespace potato {
 		ftec::vec2i center = bounds.center();
 
 		graphics.setColor(PotatoColor::primary);
-		graphics.drawRectangle(ftec::rectf(bounds.left(), center.y - 8, 16,16), true);
+		graphics.drawRectangle(ftec::rectf((float)bounds.left(), (float)center.y - 8.0f, 16.0f,16.0f), true);
 		if (m_Checked) {
 			graphics.setColor(PotatoColor::accent);
-			graphics.drawRectangle(ftec::rectf(bounds.left() + 4, center.y - 4, 8, 8), true);
+			graphics.drawRectangle(ftec::rectf((float)bounds.left() + 4.0f, (float)center.y - 4.0f, 8.0f, 8.0f), true);
 		}
 
 		graphics.setColor(PotatoColor::primaryText);
 		graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
-		graphics.drawString(m_Text, ftec::vec2f(bounds.left() + 18, center.y));
+		graphics.drawString(m_Text, ftec::vec2f((float)bounds.left() + 18.0f, (float)center.y));
 
 		if (m_Focus) {
 			graphics.setColor(PotatoColor::darkPrimary);

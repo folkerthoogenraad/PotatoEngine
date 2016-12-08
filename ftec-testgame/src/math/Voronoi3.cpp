@@ -41,8 +41,8 @@ namespace ftec {
 		}
 
 		//Resize bounding box a bit, TODO bounding lego or something
-		m_BoundingBox.min -= 0.1;
-		m_BoundingBox.max += 0.1;
+		m_BoundingBox.min -= (T)0.1;
+		m_BoundingBox.max += (T)0.1;
 
 		for (int i = 0; i < m_Delaunay.getPointCount(); ++i) {
 			lego3<T> lego;
@@ -89,9 +89,6 @@ namespace ftec {
 	}
 
 
-	template struct Voronoi3<float>;
-	template struct Voronoi3<int>;
-	template struct Voronoi3<double>;
-	template struct Voronoi3<long>;
-	template struct Voronoi3<long long>;
+	template class Voronoi3<float>;
+	template class Voronoi3<double>;
 }

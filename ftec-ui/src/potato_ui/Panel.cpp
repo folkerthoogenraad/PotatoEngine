@@ -23,7 +23,7 @@ namespace potato {
 
 	Bounds Panel::getGlobalOutline()
 	{
-		ftec::vec2f p = m_LocalBounds.position;
+		ftec::vec2i p = m_LocalBounds.position;
 
 		if (m_Parent) {
 			p += m_Parent->getGlobalBounds().position;

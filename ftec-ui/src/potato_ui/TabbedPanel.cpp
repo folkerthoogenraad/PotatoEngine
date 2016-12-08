@@ -55,7 +55,7 @@ namespace potato {
 	void TabbedPanel::drawSelf(ftec::Graphics2D & graphics)
 	{
 		Bounds bounds = getGlobalBounds();
-		float offset = TAB_WIDTH / 2;
+		int offset = TAB_WIDTH / 2;
 
 		graphics.setHorizontalAlign(ftec::FontAlign::CENTER);
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
@@ -74,7 +74,11 @@ namespace potato {
 
 			}
 			graphics.setColor(PotatoColor::primaryText);
-			graphics.drawString(m_TabTitles[idx], ftec::vec2f(bounds.x() + offset, bounds.y() + TAB_HEIGHT / 2));
+			graphics.drawString(m_TabTitles[idx], ftec::vec2f(
+				(float)bounds.x()
+				+ (float)offset,
+				(float)bounds.y()
+				+ (float)TAB_HEIGHT / 2.0f));
 			offset += TAB_WIDTH;
 
 			idx++;

@@ -18,7 +18,7 @@ namespace potato {
 
 	void EditText::moveCursor(size_t newPos, bool makeSelection)
 	{
-		m_CursorPosition = newPos;
+		m_CursorPosition = (int)newPos;
 		if (!makeSelection) {
 			cancelSelection();
 		}
@@ -105,7 +105,7 @@ namespace potato {
 
 		//Just to be sure
 		clamp();
-		m_CursorPosition = selectionStart();
+		m_CursorPosition = (int)selectionStart();
 		m_Text.erase(selectionStart(), selectionSize());
 		cancelSelection();
 		clamp();
@@ -149,8 +149,8 @@ namespace potato {
 		if (crtlDown) {
 			if (ftec::Input::isKeyPressed(GLFW_KEY_A)) {
 				m_SelectionStart = 0;
-				m_SelectionEnd = m_Text.length();
-				m_CursorPosition = m_Text.length();
+				m_SelectionEnd = (int)m_Text.length();
+				m_CursorPosition = (int)m_Text.length();
 			}
 
 			if (ftec::Input::isKeyPressed(GLFW_KEY_C)) {

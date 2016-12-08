@@ -2,9 +2,6 @@
 
 #define PI 3.141592654f
 
-#include <vector>
-#include <algorithm>
-
 namespace ftec {
 
 	template <typename T>

@@ -146,7 +146,7 @@ namespace ftec {
 
 			FontCharacter ch;
 			rectf rect( //TODO correct the rows here
-				x, 0, g->bitmap.width, g->bitmap.rows
+				(float)x, 0.0, (float)g->bitmap.width, (float)g->bitmap.rows
 			);
 
 			ch.sprite = std::make_shared<Sprite>(texture, rect);

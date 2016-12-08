@@ -1,25 +1,28 @@
 #include "Input.h"
+
 #include "Engine.h"
 #include "graphics/Window.h"
 
+#include <assert.h>
+
 namespace ftec {
 
-	std::set<int> Input::downKeys = std::set<int>();
-	std::set<int> Input::pressedKeys = std::set<int>();
-	std::set<int> Input::releasedKeys = std::set<int>();
-	std::set<int> Input::typedKeys = std::set<int>();
+	static std::set<int> downKeys = std::set<int>();
+	static std::set<int> pressedKeys = std::set<int>();
+	static std::set<int> releasedKeys = std::set<int>();
+	static std::set<int> typedKeys = std::set<int>();
 
-	std::set<int> Input::downMouse = std::set<int>();
-	std::set<int> Input::pressedMouse = std::set<int>();
-	std::set<int> Input::releasedMouse = std::set<int>();
+	static std::set<int> downMouse = std::set<int>();
+	static std::set<int> pressedMouse = std::set<int>();
+	static std::set<int> releasedMouse = std::set<int>();
 
-	int Input::cursorMode = GLFW_CURSOR_NORMAL;
-	bool Input::disabled = false;
+	static CursorMode cursorMode = CursorMode::NORMAL;
+	static bool disabled = false;
 
-	std::string Input::keystring = "";
-	vec2f Input::mousePosition = vec2f();
-	vec2f Input::mouseDelta = vec2f();
-	vec2f Input::scrollDelta = vec2f();
+	static std::string keystring = "";
+	static vec2f mousePosition = vec2f();
+	static vec2f mouseDelta = vec2f();
+	static vec2f scrollDelta = vec2f();
 
 	vec2f Input::getMousePosition()
 	{
@@ -36,11 +39,23 @@ namespace ftec {
 		return disabled ? vec2f() : scrollDelta;
 	}
 
-	void Input::setCursorMode(int mode)
+	void Input::setCursorMode(CursorMode mode)
 	{
 		cursorMode = mode;
-		Engine::getWindow().setCursorMode(mode);
+		int c = -1;
+		
+		if (mode == CursorMode::GRABBED)
+			c = GLFW_CURSOR_DISABLED;
+		else if (mode == CursorMode::NORMAL)
+			c = GLFW_CURSOR_NORMAL;
+		else if (mode == CursorMode::HIDDEN)
+			c = GLFW_CURSOR_HIDDEN;
+		else
+			assert(false);
+
+		Engine::getWindow().setCursorMode(c);
 	}
+
 
 	void Input::reset()
 	{
@@ -52,6 +67,56 @@ namespace ftec {
 		mouseDelta = vec2f();
 		scrollDelta = vec2f();
 		keystring = "";
+	}
+
+	void Input::setEnabled(bool e)
+	{
+		disabled = !e;
+	}
+
+	bool Input::isEnabled()
+	{
+		return !disabled;
+	}
+
+	const std::string & Input::getKeyString()
+	{
+		return keystring;
+	}
+
+	const std::set<int>& Input::getKeysDown()
+	{
+		return downKeys;
+	}
+
+	const std::set<int>& Input::getKeysPressed()
+	{
+		return pressedKeys;
+	}
+
+	const std::set<int>& Input::getKeysReleased()
+	{
+		return releasedKeys;
+	}
+
+	const std::set<int>& Input::getKeysTyped()
+	{
+		return typedKeys;
+	}
+
+	const std::set<int>& Input::getMouseButtonsDown()
+	{
+		return downMouse;
+	}
+
+	const std::set<int>& Input::getMouseButtonsPressed()
+	{
+		return pressedMouse;
+	}
+
+	const std::set<int>& Input::getMouseButtonsReleased()
+	{
+		return releasedMouse;
 	}
 
 	void Input::handleKey(int key, int scancode, int action, int mods)
@@ -76,7 +141,7 @@ namespace ftec {
 	{
 		vec2f newPosition(x, y);
 		mouseDelta += newPosition - mousePosition;
-		if (cursorMode != CURSOR_GRABBED) {
+		if (cursorMode != CursorMode::GRABBED) {
 			mousePosition = newPosition;
 		}
 		else {

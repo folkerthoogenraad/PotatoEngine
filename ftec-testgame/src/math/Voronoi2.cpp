@@ -73,7 +73,7 @@ namespace ftec {
 	template <typename T>
 	int Voronoi2<T>::getPointCount() const
 	{
-		return m_Points.size();
+		return (int) m_Points.size();
 	}
 
 	template <typename T>
@@ -97,7 +97,6 @@ namespace ftec {
 
 
 	//Tell the compiler to pretty pretty please compile this 
-	template struct Voronoi2<float>;
-	template struct Voronoi2<int>;
-	template struct Voronoi2<double>;
+	template class Voronoi2<float>;
+	template class Voronoi2<double>;
 }

@@ -11,7 +11,7 @@
 
 namespace ftec {
 
-	class PBRMaterial;
+	struct PBRMaterial;
 	class Mesh;
 
 	class PointCloudEntity : public Entity {

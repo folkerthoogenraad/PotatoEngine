@@ -1,19 +1,12 @@
 #include "game/Razura.h"
-#include "engine/Engine.h"
-
+#include "engine/DesktopEngine.h"
 #include "logger/log.h"
-
-#include "math/plane.h"
-
 
 int main(void)
 {
-	using namespace ftec;
-
-	ftec::Engine::create<ftec::Razura>();
+	ftec::DesktopEngine::create<ftec::Razura>();
 
 	WAIT();
-
 	return 0;
 }
 

@@ -62,7 +62,7 @@ namespace ftec {
 
 		m_Direction = vec3f(del.getBoundingBox().center());
 
-		speed = (rand() % 16);
+		speed = (float)(rand() % 16);
 
 		m_Mesh = std::make_unique<Mesh>();
 

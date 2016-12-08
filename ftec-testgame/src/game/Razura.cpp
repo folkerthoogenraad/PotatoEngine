@@ -52,8 +52,8 @@ namespace ftec {
 			ui->setRoot(
 				//potato::UILoader::load("text.xml")
 				//std::make_shared<VoronoiCanvas>()
-				//std::make_shared<potato::SceneView>()
-				std::make_shared<TestCanvas>()
+				std::make_shared<potato::SceneView>()
+				//std::make_shared<TestCanvas>()
 			);
 		}
 	

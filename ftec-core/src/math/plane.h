@@ -31,8 +31,8 @@ namespace ftec {
 		
 		T distanceFrom(const vec3<T> &p) const
 		{
-			float c = vec3<T>::dot(direction, direction);
-			float r = vec3<T>::dot(direction, p);
+			T c = vec3<T>::dot(direction, direction);
+			T r = vec3<T>::dot(direction, p);
 
 			//ax + by + cz + d = 0
 			//ax + by + cz = -d
@@ -78,5 +78,4 @@ namespace ftec {
 
 	typedef plane<float> planef;
 	typedef plane<double> planed;
-	typedef plane<int> planei;
 }

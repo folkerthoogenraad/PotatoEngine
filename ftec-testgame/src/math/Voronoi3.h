@@ -33,7 +33,4 @@ namespace ftec {
 
 	typedef Voronoi3<float> Voronoi3f;
 	typedef Voronoi3<double> Voronoi3d;
-	typedef Voronoi3<int> Voronoi3i;
-	typedef Voronoi3<long> Voronoi3l;
-	typedef Voronoi3<long long> Voronoi3ll;
 }

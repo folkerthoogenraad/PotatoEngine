@@ -1,7 +1,5 @@
 #pragma once
 
-#include "math/math.h"
-
 namespace potato {
 
 	class LayoutParams {

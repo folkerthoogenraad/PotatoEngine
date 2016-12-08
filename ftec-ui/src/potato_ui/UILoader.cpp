@@ -79,7 +79,7 @@ namespace potato {
 		value = "";
 		node.getAttribute("weight", value);
 		if (value.size() > 0) {
-			panel->layoutparams().m_Weight = std::stoi(value);
+			panel->layoutparams().m_Weight = (float)std::stoi(value);
 		}
 	}
 

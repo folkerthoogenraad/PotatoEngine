@@ -154,7 +154,7 @@ namespace ftec {
 		setTexture(m_WhiteTexture);
 		batch.color(m_Color);
 
-		const float steps = m_CirclePrecision; //TODO make this dependend on the angleLimit
+		const float steps = (float)m_CirclePrecision; //TODO make this dependend on the angleLimit
 		const float anglePerStep = angleLength / steps;
 
 		if (fill) {
@@ -215,11 +215,12 @@ namespace ftec {
 			FontCharacter fch;
 			if (m_Font->getCharacter(c, fch)) {
 				//TODO make this 12 into something gotten from the font itself (or some shit, i dont know)
-				drawSprite(*fch.sprite, currentPosition + vec2f(fch.left, -fch.top + m_Font->getSize() - 2));
-				currentPosition.x += fch.xadvance;
+				drawSprite(*fch.sprite, currentPosition + vec2f((float)fch.left, (float)-fch.top + (float)m_Font->getSize() - 2.0f));
+
+				currentPosition.x += (float) fch.xadvance;
 
 				//Is this needed?
-				currentPosition.y += fch.yadvance;
+				currentPosition.y += (float) fch.yadvance;
 			}
 		}
 

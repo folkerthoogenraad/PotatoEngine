@@ -90,13 +90,13 @@ namespace ftec {
 	void Renderer::clip(const recti &rectangle)
 	{
 		//Both viewport and clip have 0,0 in the bottom left
-		glScissor(rectangle.x(), Engine::getWindow().getHeight() - rectangle.y() - rectangle.height(), rectangle.width(), rectangle.height());
+		glScissor(rectangle.x(), (int)Engine::getWindow().getHeight() - rectangle.y() - rectangle.height(), rectangle.width(), rectangle.height());
 	}
 	
 	void Renderer::viewport(const recti &rectangle)
 	{
 		//Both viewport and clip have 0,0 in the bottom left
-		glViewport(rectangle.x(), Engine::getWindow().getHeight() - rectangle.y() - rectangle.height(), rectangle.width(), rectangle.height());
+		glViewport(rectangle.x(), (int)Engine::getWindow().getHeight() - rectangle.y() - rectangle.height(), rectangle.width(), rectangle.height());
 	}
 
 	void Renderer::renderport(const recti &rectangle)

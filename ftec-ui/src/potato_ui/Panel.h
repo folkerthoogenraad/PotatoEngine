@@ -2,9 +2,10 @@
 
 #include <memory>
 #include <vector>
+
 #include "math/math.h"
 #include "PotatoUI.h"
-#include "logger/log.h"
+
 #include "Event.h"
 #include "LayoutParams.h"
 

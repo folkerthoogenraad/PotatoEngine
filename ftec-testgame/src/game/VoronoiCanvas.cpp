@@ -48,7 +48,7 @@ namespace ftec {
 		if (Input::isKeyTyped(GLFW_KEY_ENTER)) {
 			points.clear();
 			for (int i = 0; i < 200; i++) {
-				points.push_back(vec2f(
+				points.push_back(vec2i(
 					rand() % (int)(Engine::getWindow().getWidth() - 32) + 16,
 					rand() % (int)(Engine::getWindow().getHeight() - 32) + 16
 				));
@@ -59,7 +59,7 @@ namespace ftec {
 			points.clear();
 			for (int x = 0; x < 18; x++) {
 				for (int y = 0; y < 10; y++) {
-					points.push_back(vec2f(
+					points.push_back(vec2i(
 						x * 64 + 64, y * 64 + 64
 					));
 				}

@@ -40,7 +40,7 @@ namespace ftec {
 	template<typename T>
 	mat3<T>& mat3<T>::rotate(T angle)
 	{
-		T r = angle * (3.141592654 / 180.0);
+		T r = angle * ((T)3.141592654 / (T)180.0);
 		T s = sin(r);
 		T c = cos(r);
 
@@ -190,6 +190,5 @@ namespace ftec {
 
 	//Tyvm compiler for compiling this
 	template struct mat3<float>;
-	template struct mat3<int>;
 	template struct mat3<double>;
 }

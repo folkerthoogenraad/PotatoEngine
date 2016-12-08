@@ -1,5 +1,4 @@
 #pragma once
-#include <math.h>
 
 namespace ftec {
 	class Time {
@@ -13,11 +12,6 @@ namespace ftec {
 		static float sin2Time;
 		static float cos2Time;
 
-		static inline void calculateSinCosTime() {
-			sinTime = sinf(runTime);
-			cosTime = cosf(runTime);
-			sin2Time = sinf(runTime*2);
-			cos2Time = cosf(runTime*2);
-		}
+		static void calculateSinCosTime();
 	};
 }

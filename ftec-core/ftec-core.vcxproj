@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\DesktopEngine.cpp" />
     <ClCompile Include="src\engine\Engine.cpp" />
     <ClCompile Include="src\engine\Game.cpp" />
     <ClCompile Include="src\engine\Input.cpp" />
@@ -162,13 +163,14 @@
     <ClCompile Include="src\math\mat3.cpp" />
     <ClCompile Include="src\math\mat4.cpp" />
     <ClCompile Include="src\serialization\Serialization.cpp" />
-    <ClCompile Include="src\resources\ResourceManager.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\DesktopEngine.h" />
     <ClInclude Include="src\engine\Engine.h" />
     <ClInclude Include="src\engine\Game.h" />
     <ClInclude Include="src\engine\Input.h" />
+    <ClInclude Include="src\engine\KeyCodes.h" />
     <ClInclude Include="src\engine\Time.h" />
     <ClInclude Include="src\graphics\Camera.h" />
     <ClInclude Include="src\graphics\Cubemap.h" />

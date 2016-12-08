@@ -108,7 +108,7 @@ namespace ftec {
 	{
 		mat4<T> result;
 
-		T r = angle * (3.141592654f / 180.f);
+		T r = angle * ((T)3.141592654 / (T)180.0);
 		T c = cos(r);
 		T s = sin(r);
 		T omc = 1 - c;
@@ -149,7 +149,7 @@ namespace ftec {
 	{
 		mat4<T> result;
 
-		T r = (T) angle * (3.141592654 / 180.0);
+		T r = (T) angle * ((T)3.141592654 / (T)180.0);
 		T s = sin(r);
 		T c = cos(r);
 
@@ -171,7 +171,7 @@ namespace ftec {
 	{
 		mat4<T> result;
 
-		T r = angle * (3.141592654f / 180.f);
+		T r = angle * ((T)3.141592654 / (T)180.0);
 		T s = sin(r);
 		T c = cos(r);
 
@@ -192,7 +192,7 @@ namespace ftec {
 	{
 		mat4<T> result;
 
-		T r = angle * (3.141592654f / 180.f);
+		T r = angle * ((T)3.141592654 / (T)180.0);
 		T s = sin(r);
 		T c = cos(r);
 
@@ -212,9 +212,9 @@ namespace ftec {
 	{
 		mat4<T> result;
 
-		result.elements[0 + 0 * 4] = 2.0f / (r - l);
-		result.elements[1 + 1 * 4] = 2.0f / (t - b);
-		result.elements[2 + 2 * 4] = 2.0f / (n - f);
+		result.elements[0 + 0 * 4] = (T)2.0 / (r - l);
+		result.elements[1 + 1 * 4] = (T)2.0 / (t - b);
+		result.elements[2 + 2 * 4] = (T)2.0 / (n - f);
 
 		result.elements[3 + 0 * 4] = (l + r) / (l - r);
 		result.elements[3 + 1 * 4] = (b + t) / (b - t);
@@ -228,7 +228,7 @@ namespace ftec {
 	{
 		mat4<T> result;
 
-		T q = 1.0f / tan(0.5f * fov * (3.141592653f / 180.f));
+		T q = (T)1.0 / tan((T)0.5 * fov * ((T)3.141592653 / (T)180.0));
 		T a = q / asp;
 
 		T b = (near + far) / (near - far);
@@ -339,6 +339,5 @@ namespace ftec {
 
 	//Tell the compiler to pretty pretty please compile this 
 	template struct mat4<float>;
-	template struct mat4<int>;
 	template struct mat4<double>;
 }

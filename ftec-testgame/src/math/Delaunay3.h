@@ -64,7 +64,7 @@ namespace ftec {
 				m_Vertices.push_back({ std::move(p), false, false });
 			}
 
-			m_Center /= points.size();
+			m_Center /= (T) points.size();
 
 			m_Tetrahedrons.clear();
 			m_HullTriangles.clear();

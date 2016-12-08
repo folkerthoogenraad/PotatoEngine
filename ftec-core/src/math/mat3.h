@@ -66,5 +66,4 @@ namespace ftec {
 
 	typedef mat3<float> mat3f;
 	typedef mat3<double> mat3d;
-	typedef mat3<int> mat3i;
 }

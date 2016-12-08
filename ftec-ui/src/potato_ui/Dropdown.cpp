@@ -33,8 +33,8 @@ namespace potato {
 
 		graphics.setColor(PotatoColor::primary);
 		graphics.drawRectangle(ftec::rectf(
-			bounds.centerRight().x - 18,
-			bounds.centerRight().y - 8,
+			(float) bounds.centerRight().x - 18,
+			(float) bounds.centerRight().y - 8,
 			16,16
 		), true);
 	}

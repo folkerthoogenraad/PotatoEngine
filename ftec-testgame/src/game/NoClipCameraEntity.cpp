@@ -23,7 +23,7 @@ namespace ftec {
 	{
 		if (Input::isKeyPressed(GLFW_KEY_ESCAPE)) {
 			m_MouseGrabbed = !m_MouseGrabbed;
-			Input::setCursorMode(m_MouseGrabbed ? CURSOR_GRABBED : CURSOR_NORMAL);
+			Input::setCursorMode(m_MouseGrabbed ? CursorMode::GRABBED : CursorMode::NORMAL);
 		}
 
 		if (m_MouseGrabbed) {

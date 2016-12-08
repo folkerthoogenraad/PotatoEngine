@@ -31,7 +31,7 @@ namespace ftec {
 		}
 		vec3<T> center() const
 		{
-			return (a + b) / 2.0f;
+			return (a + b) / (T)2.0;
 		}
 
 		line3<T> normal() const
