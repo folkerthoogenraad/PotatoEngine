@@ -11,16 +11,11 @@
 #include <memory>
 #include <vector>
 
+#include "Primitive.h"
+
 typedef unsigned int GLuint;
 
 namespace ftec {
-
-	enum class Primitive {
-		LINES,
-		QUADS,
-		TRIANGLES,
-		POINTS
-	};
 
 	class SpriteBatch {
 
@@ -46,14 +41,18 @@ namespace ftec {
 		~SpriteBatch();
 
 		void begin(Primitive primitive);
+		void flush();
 		void end();
 
 		void depth(float d);
 
+		//TODO don't copy and make this more inlinefriendly
 		void vertex(const vec3f &position);
 		void vertex(const vec2f &position);
 		void color(const color32 &color);
 		void uv(const vec2f &uv);
+
+		Primitive primitive();
 
 		bool isDrawing() { return m_Drawing; }
 

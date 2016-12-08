@@ -51,6 +51,14 @@ namespace ftec {
 		m_Colors.clear();
 	}
 
+	void SpriteBatch::flush()
+	{
+		if (!m_Drawing)
+			return;
+		end();
+		begin(m_Primitive);
+	}
+
 	void SpriteBatch::end()
 	{
 		if (!m_Drawing) {
@@ -143,5 +151,10 @@ namespace ftec {
 	void SpriteBatch::uv(const vec2f & uv)
 	{
 		m_Uv = uv;
+	}
+
+	Primitive SpriteBatch::primitive()
+	{
+		return m_Primitive;
 	}
 }

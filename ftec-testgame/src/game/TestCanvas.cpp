@@ -1,6 +1,13 @@
 #include "TestCanvas.h"
 
+#include "math/mat3.h"
+
+#include "graphics/2d/Drawable2D.h"
+
+#include "logger/log.h"
+
 namespace ftec {
+
 
 	TestCanvas::TestCanvas()
 	{
@@ -12,16 +19,29 @@ namespace ftec {
 
 	}
 
+	struct TestDrawing : public Drawable2D
+	{
+	public:
+
+		void draw(Renderer2D &renderer) override
+		{
+			Paint paint(renderer, Primitive::QUADS);
+
+			
+		}
+	};
+
 	void TestCanvas::drawSelf(Graphics2D & graphics)
 	{
-		graphics.setDepth(1);
-		graphics.setColor(color32::red());
-		graphics.drawRectangle(rectf(2, 2, 64, 64), true);
+		Transformation transform(m_Renderer);
+		
+		TestDrawing test;
 
-		graphics.setDepth(-1);
-		graphics.setColor(color32::blue());
-		graphics.drawRectangle(rectf(16, 16, 64, 64), true);
+		m_Renderer.draw(test);
 
+		transform.translate(10, 10);
+
+		m_Renderer.draw(test);
 	}
 
 }
