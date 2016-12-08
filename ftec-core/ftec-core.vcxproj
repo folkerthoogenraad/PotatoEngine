@@ -138,6 +138,7 @@
     <ClCompile Include="src\engine\Game.cpp" />
     <ClCompile Include="src\engine\Input.cpp" />
     <ClCompile Include="src\engine\Time.cpp" />
+    <ClCompile Include="src\graphics\2d\Drawable2D.cpp" />
     <ClCompile Include="src\graphics\2d\Renderer2D.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\Cubemap.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="src\graphics\Light.h" />
     <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\Mesh.h" />
+    <ClInclude Include="src\graphics\Primitive.h" />
     <ClInclude Include="src\graphics\RenderBuffer.h" />
     <ClInclude Include="src\graphics\Sprite.h" />
     <ClInclude Include="src\graphics\VBORenderable.h" />
