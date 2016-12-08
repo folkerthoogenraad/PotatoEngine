@@ -214,11 +214,11 @@ namespace ftec {
 
 		result.elements[0 + 0 * 4] = (T)2.0 / (r - l);
 		result.elements[1 + 1 * 4] = (T)2.0 / (t - b);
-		result.elements[2 + 2 * 4] = (T)2.0 / (n - f);
+		result.elements[2 + 2 * 4] = (T)2.0 / (f - n);
 
-		result.elements[3 + 0 * 4] = (l + r) / (l - r);
-		result.elements[3 + 1 * 4] = (b + t) / (b - t);
-		result.elements[3 + 2 * 4] = (f + n) / (f - n);
+		result.elements[3 + 0 * 4] = -(r + l) / (r - l);
+		result.elements[3 + 1 * 4] = -(t + b) / (t - b);
+		result.elements[3 + 2 * 4] = -(f + n) / (f - n);
 
 		return result;
 	}

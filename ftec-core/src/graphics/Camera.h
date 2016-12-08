@@ -1,19 +1,35 @@
 #pragma once
-#include "math/mat4.h"
-#include "Layer.h"
+
 #include <memory>
-#include "RenderBuffer.h"
-#include "Shader.h"
+#include "Layer.h"
+
+#include "math/vec3.h"
+#include "math/mat4.h"
 
 namespace ftec {
+	
+	class RenderBuffer;
+	class Shader;
+
 	class Camera {
 	public:
 		vec3f m_Position;
-
+		
 		//TODO add render target
 		//TODO add ortho camera
 
-		float m_Fov, m_AspectRatio, m_Near, m_Far;
+		enum class Projection {
+			PERSPECTIVE, ORTHOGONAL
+		} m_Projection;
+
+		//for perspective
+		float m_Fov;
+
+		//for orthogonal
+		float m_Size = 1;
+
+		float m_AspectRatio;
+		float m_Near, m_Far;
 
 		float m_Pitch, m_Yaw;
 

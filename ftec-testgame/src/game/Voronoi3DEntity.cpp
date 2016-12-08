@@ -123,7 +123,7 @@ namespace ftec {
 				}
 			}*/
 			
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 5; i++) {
 				vec3d a = vec3d(
 					randf(-1,1), randf(-2, 2), randf(-1, 1)
 				);

@@ -4,18 +4,24 @@ namespace ftec {
 
 	TestCanvas::TestCanvas()
 	{
+
 	}
 
 	void TestCanvas::update()
 	{
+
 	}
 
 	void TestCanvas::drawSelf(Graphics2D & graphics)
 	{
-		graphics.drawPrimitiveSetTexture(nullptr);
-		graphics.drawPrimitiveBegin(Primitive::TRIANGLES);
+		graphics.setDepth(1);
+		graphics.setColor(color32::red());
+		graphics.drawRectangle(rectf(2, 2, 64, 64), true);
 
-		graphics.drawPrimitiveEnd();
+		graphics.setDepth(-1);
+		graphics.setColor(color32::blue());
+		graphics.drawRectangle(rectf(16, 16, 64, 64), true);
+
 	}
 
 }

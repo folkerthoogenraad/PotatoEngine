@@ -2,14 +2,15 @@
 
 namespace ftec {
 	Camera::Camera(float fov, float aspect, float near, float far)
-		:m_Fov(fov), m_AspectRatio(aspect), m_Near(near), m_Far(far), m_Pitch(0), m_Yaw(0), m_LayerMask(LAYER_ALL), m_RenderToScreen(true), m_PostProcessingShader(nullptr)
-	{
-		
-	}
+		:m_Fov(fov), m_AspectRatio(aspect), m_Near(near), m_Far(far), m_Pitch(0), m_Yaw(0), m_LayerMask(LAYER_ALL), m_RenderToScreen(true), m_PostProcessingShader(nullptr), m_Projection(Projection::PERSPECTIVE)
+	{ }
 
 	mat4f ftec::Camera::getProjectionMatrix() const
 	{
-		return mat4f::perspective(m_Fov, m_AspectRatio, m_Near, m_Far);// *mat4f::translation(vec3(0, 0, 1));
+		if (m_Projection == Projection::PERSPECTIVE)
+			return mat4f::perspective(m_Fov, m_AspectRatio, m_Near, m_Far);
+		else
+			return mat4f::orthographic(-m_Size * m_AspectRatio, m_Size * m_AspectRatio, -m_Size, m_Size, m_Near, m_Far);
 	}
 
 	mat4f ftec::Camera::getViewMatrix() const

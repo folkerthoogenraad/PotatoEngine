@@ -39,12 +39,16 @@ namespace ftec {
 		std::vector<vec3f> m_Vertices;
 		std::vector<vec2f> m_Uvs;
 		std::vector<color32> m_Colors;
+
+		float m_Depth = 0;
 	public:
 		SpriteBatch();
 		~SpriteBatch();
 
 		void begin(Primitive primitive);
 		void end();
+
+		void depth(float d);
 
 		void vertex(const vec3f &position);
 		void vertex(const vec2f &position);

@@ -78,6 +78,8 @@ namespace ftec {
 		void setColor(const color32 &color);
 		void setShader(std::shared_ptr<Shader> shader);
 
+		void setDepth(float depth);
+
 		void setLineWidth(float width) { m_LineWidth = width; }
 		void setPointSize(float size) { m_PointSize = size; }
 		void setPointType(PointType type) { m_PointType = type; }

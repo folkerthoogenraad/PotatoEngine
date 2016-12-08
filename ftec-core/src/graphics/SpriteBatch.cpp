@@ -117,6 +117,11 @@ namespace ftec {
 		glDisableVertexAttribArray(SHADER_ATTRIBUTE_COLOR);
 	}
 
+	void SpriteBatch::depth(float d)
+	{
+		m_Depth = d;
+	}
+
 	void SpriteBatch::vertex(const vec3f & position)
 	{
 		m_Vertices.push_back(position);
@@ -127,7 +132,7 @@ namespace ftec {
 
 	void SpriteBatch::vertex(const vec2f & position)
 	{
-		vertex(vec3f(position));
+		vertex(vec3f(position.x, position.y, m_Depth));
 	}
 
 	void SpriteBatch::color(const color32 & color)

@@ -10,6 +10,8 @@
 #include "Font.h"
 #include "logger/log.h"
 
+#include "engine/Time.h"
+
 namespace ftec {
 
 	Graphics2D::Graphics2D()
@@ -336,6 +338,11 @@ namespace ftec {
 		}
 	}
 
+	void Graphics2D::setDepth(float depth)
+	{
+		batch.depth(depth);
+	}
+
 	void Graphics2D::setTexture(std::shared_ptr<Texture> texture)
 	{
 		if (texture != m_Material->m_TextureMap) {
@@ -362,7 +369,7 @@ namespace ftec {
 
 		GraphicsState::matrixModel = mat4f::identity();
 		GraphicsState::matrixView = mat4f::identity();
-		GraphicsState::matrixProjection = mat4f::orthographic(0,Engine::getWindow().getWidth(), Engine::getWindow().getHeight(), 0, -100, 100);
+		GraphicsState::matrixProjection = mat4f::orthographic(0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight(), 0, -100, 100);
 
 		batch.end();
 		batch.begin(Primitive::QUADS);
