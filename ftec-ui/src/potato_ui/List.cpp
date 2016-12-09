@@ -23,7 +23,7 @@ namespace potato {
 		float offset = 0;
 
 		for (auto &s : m_TextOptions) {
-			graphics.drawString(s, ftec::vec2i(bounds.left(), bounds.top() + (int)offset));
+			graphics.drawString(s, ftec::Vector2i(bounds.left(), bounds.top() + (int)offset));
 			offset += 16.f;
 		}
 	}

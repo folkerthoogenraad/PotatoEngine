@@ -40,7 +40,7 @@ namespace ftec {
 		const std::string &getName() const { return m_Name; };
 		float getSize() const { return m_Size; }
 
-		vec2f measure(const std::string&);
+		Vector2f measure(const std::string&);
 
 		static std::shared_ptr<Font> load(const std::string &name);
 

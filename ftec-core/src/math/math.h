@@ -5,11 +5,11 @@
 namespace ftec {
 
 	template <typename T>
-	struct vec2;
+	struct Vector2;
 	template <typename T>
-	struct vec3;
+	struct Vector3;
 	template <typename T>
-	struct vec4;
+	struct Vector4;
 
 	template<typename T>
 	inline T clamp(const T &min, const T &max, T value)

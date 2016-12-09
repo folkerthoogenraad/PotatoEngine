@@ -32,9 +32,9 @@ namespace ftec {
 		return true;
 	}
 
-	vec2f Font::measure(const std::string &text)
+	Vector2f Font::measure(const std::string &text)
 	{
-		vec2f rect(0, m_Size); //TODO fix this height stuff
+		Vector2f rect(0, m_Size); //TODO fix this height stuff
 
 		float currentX = 0;
 

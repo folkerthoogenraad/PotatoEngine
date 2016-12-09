@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec3.h"
+#include "Vector3.h"
 
 namespace ftec {
 
@@ -14,25 +14,25 @@ namespace ftec {
 	template <typename T>
 	struct plane {
 		//Ax + By + Cz + D
-		vec3<T> direction;
+		Vector3<T> direction;
 		T offset;
 
 		plane() {}
 		explicit plane(const triangle3<T> &triangle)
 		{
 			direction = triangle.normal();
-			offset = -vec3<T>::dot(triangle.a, direction);
+			offset = -Vector3<T>::dot(triangle.a, direction);
 		}
-		plane(const vec3<T> position, const vec3<T> direction) : direction(direction)
+		plane(const Vector3<T> position, const Vector3<T> direction) : direction(direction)
 		{
-			offset = -vec3<T>::dot(position, direction);
+			offset = -Vector3<T>::dot(position, direction);
 		}
-		plane(const vec3<T> &dir, const T &offset) : direction(dir), offset(offset) {}
+		plane(const Vector3<T> &dir, const T &offset) : direction(dir), offset(offset) {}
 		
-		T distanceFrom(const vec3<T> &p) const
+		T distanceFrom(const Vector3<T> &p) const
 		{
-			T c = vec3<T>::dot(direction, direction);
-			T r = vec3<T>::dot(direction, p);
+			T c = Vector3<T>::dot(direction, direction);
+			T r = Vector3<T>::dot(direction, p);
 
 			//ax + by + cz + d = 0
 			//ax + by + cz = -d
@@ -49,9 +49,9 @@ namespace ftec {
 		}
 		plane<T> flipped() const { return clone().flip(); }
 
-		vec3<T> origin() const  
+		Vector3<T> origin() const  
 		{
-			return direction * distanceFrom(vec3f());
+			return direction * distanceFrom(Vector3f());
 		}
 
 		plane<T> &normalize() 
@@ -69,7 +69,7 @@ namespace ftec {
 
 		T magnitude() const { return direction.magnitude(); }
 
-		vec3<T> project(const vec3<T> &p) const
+		Vector3<T> project(const Vector3<T> &p) const
 		{
 			float t = distanceFrom(p);
 			return p + direction * t;

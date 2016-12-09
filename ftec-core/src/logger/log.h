@@ -16,24 +16,24 @@ namespace ftec {
 	// Vectors
 	//-------------------------------------------------------------------
 	template <typename T>
-	struct vec2;
+	struct Vector2;
 	template <typename T>
-	struct vec3;
+	struct Vector3;
 	template <typename T>
-	struct vec4;
+	struct Vector4;
 	
 	template <typename T>
-	std::ostream& operator<<(std::ostream& left, const vec2<T>& right)
+	std::ostream& operator<<(std::ostream& left, const Vector2<T>& right)
 	{
 		return left << "(" << right.x << ", " << right.y << ")";
 	}
 	template <typename T>
-	std::ostream& operator<<(std::ostream& left, const vec3<T>& right)
+	std::ostream& operator<<(std::ostream& left, const Vector3<T>& right)
 	{
 		return left << "(" << right.x << ", " << right.y << ", " << right.z << ")";
 	}
 	template <typename T>
-	std::ostream& operator<<(std::ostream& left, const vec4<T>& right)
+	std::ostream& operator<<(std::ostream& left, const Vector4<T>& right)
 	{
 		return left << "(" << right.x << ", " << right.y << ", " << right.z << ", " << right.w << ")";
 	}
@@ -71,12 +71,12 @@ namespace ftec {
 	//-------------------------------------------------------------------
 
 	template <typename T>
-	struct mat4;
+	struct Matrix4;
 	template <typename T>
-	struct mat3;
+	struct Matrix3;
 
 	template <typename T>
-	std::ostream& operator<<(std::ostream& left, const mat4<T>& right)
+	std::ostream& operator<<(std::ostream& left, const Matrix4<T>& right)
 	{
 		for (int row = 0; row < 4; ++row) {
 			left << "[";
@@ -92,7 +92,7 @@ namespace ftec {
 	}
 
 	template <typename T>
-	std::ostream& operator<<(std::ostream & left, const mat3<T> & right)
+	std::ostream& operator<<(std::ostream & left, const Matrix3<T> & right)
 	{
 		for (int row = 0; row < 3; ++row) {
 			left << "[";

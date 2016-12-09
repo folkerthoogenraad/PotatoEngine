@@ -167,19 +167,19 @@ namespace ftec {
 
 		friend Vector2<T> operator+(T left, const Vector2<T> right)
 		{
-			return vec2(left + right.x, left + right.y);
+			return Vector2(left + right.x, left + right.y);
 		}
 		friend Vector2<T> operator-(T left, const Vector2<T> right)
 		{
-			return vec2(left - right.x, left - right.y);
+			return Vector2(left - right.x, left - right.y);
 		}
 		friend Vector2<T> operator*(T left, const Vector2<T> right)
 		{
-			return vec2(left * right.x, left * right.y);
+			return Vector2(left * right.x, left * right.y);
 		}
 		friend Vector2<T> operator/(T left, const Vector2<T> right)
 		{
-			return vec2(left / right.x, left / right.y);
+			return Vector2(left / right.x, left / right.y);
 		}
 
 		friend Vector2<T>operator-(const Vector2<T>& left)

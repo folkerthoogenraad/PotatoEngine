@@ -1,11 +1,11 @@
 #pragma once
 
-#include "math/vec3.h"
+#include "math/Vector3.h"
 #include "math/box.h"
 #include "math/epsilon.h"
 #include "math/math.h"
 #include "math/collision.h"
-#include "math/mat4.h"
+#include "math/Matrix4.h"
 #include "math/sphere.h"
 #include "math/triangle3.h"
 #include "math/tetrahedron.h"
@@ -21,7 +21,7 @@ namespace ftec {
 	template <typename T>
 	class Delaunay3 {
 	private:
-		std::vector<DelaunayVertex<vec3<T>>> m_Vertices;
+		std::vector<DelaunayVertex<Vector3<T>>> m_Vertices;
 		std::vector<TetrahedronRef> m_Tetrahedrons;
 		std::vector<TriangleRef> m_HullTriangles;
 
@@ -29,22 +29,22 @@ namespace ftec {
 
 	public: //TODO not public
 		bool m_Valid;
-		vec3<T> m_Center;
+		Vector3<T> m_Center;
 
 		box<T> m_BoundingBox;
 	public:
 		Delaunay3() {}
-		Delaunay3(std::vector<vec3<T>> points) { triangulate(std::move(points)); }
+		Delaunay3(std::vector<Vector3<T>> points) { triangulate(std::move(points)); }
 
-		void triangulate(std::vector<vec3<T>> points)
+		void triangulate(std::vector<Vector3<T>> points)
 		{
 			m_Vertices.clear();
 
 			if (points.size() == 0)
 				return;
 
-			vec3<T> mn, mx;
-			m_Center = vec3<T>();
+			Vector3<T> mn, mx;
+			m_Center = Vector3<T>();
 
 			mn = points[0];
 			mx = points[0];
@@ -74,12 +74,12 @@ namespace ftec {
 
 			//Make a tetrahedron around the bounding sphere (which is about ~6 per unit)
 			tetrahedron<T> superTetrahedron = tetrahedron<T>(
-				vec3<T>(0, -1, 1),
-				vec3<T>(-1, -1, -1),
-				vec3<T>(1, -1, -1),
-				vec3<T>(0, 1, 0)
+				Vector3<T>(0, -1, 1),
+				Vector3<T>(-1, -1, -1),
+				Vector3<T>(1, -1, -1),
+				Vector3<T>(0, 1, 0)
 				).transform(
-					mat4<T>::translation(bSphere.center) * mat4<T>::scale(vec3<T>(bSphere.radius * 10, bSphere.radius * 10, bSphere.radius * 10))
+					Matrix4<T>::translation(bSphere.center) * Matrix4<T>::scale(Vector3<T>(bSphere.radius * 10, bSphere.radius * 10, bSphere.radius * 10))
 				);
 
 			//Push the tetrahedron vertices
@@ -100,7 +100,7 @@ namespace ftec {
 
 			//Loop through all the vertices
 			for (int i = 0; i < m_Vertices.size() - 4; i++) { //Ignore the last 4, because they are already processed by the super tetrahedron
-				const vec3<T> &v = m_Vertices[i].m_Vertex;
+				const Vector3<T> &v = m_Vertices[i].m_Vertex;
 
 				std::vector<TetrahedronRef> badTetrahedrons;
 
@@ -162,18 +162,18 @@ namespace ftec {
 
 					//Create plane from two lines
 					else if (sharedSuperCount == 2) {
-						vec3<T> normal = vec3<T>::cross(tr.b - tr.a, tr.d - tr.c);
+						Vector3<T> normal = Vector3<T>::cross(tr.b - tr.a, tr.d - tr.c);
 						if (normal.sqrmagnitude() > 0) {
 							
 							if (m_Strategy > NormalizationStrategy::MILD)
 								normal.normalize();
 
 							//Flip if needed
-							if (vec3<T>::dot(normal, tr.c - tr.a) < 0)
+							if (Vector3<T>::dot(normal, tr.c - tr.a) < 0)
 								normal = -normal;
 
 							//Add if its in the direction of the super triangle
-							if (vec3<T>::dot(normal, v - tr.a) > EPSILON)
+							if (Vector3<T>::dot(normal, v - tr.a) > EPSILON)
 								addTetrahedron();
 						}
 					}
@@ -270,7 +270,7 @@ namespace ftec {
 				std::ofstream file("log");
 				file << "{" << std::endl;
 				for (auto &v : m_Vertices) {
-					file << "\t" << "vec3d" << v.m_Vertex << "," << std::endl;
+					file << "\t" << "Vector3d" << v.m_Vertex << "," << std::endl;
 				}
 				file << "}";
 				file.close();
@@ -280,7 +280,7 @@ namespace ftec {
 		}
 
 		int getPointCount() const { return (int)m_Vertices.size(); };
-		const vec3<T> &getPoint(int index) const { return m_Vertices[index].m_Vertex; }
+		const Vector3<T> &getPoint(int index) const { return m_Vertices[index].m_Vertex; }
 		bool isHull(int index) const { return m_Vertices[index].m_Hull; }
 
 		int getTetraHedronCount() const { return (int)m_Tetrahedrons.size(); }

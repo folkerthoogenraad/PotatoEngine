@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec3.h"
+#include "Vector3.h"
 
 namespace ftec {
 
@@ -12,17 +12,17 @@ namespace ftec {
 	struct triangle3;
 
 	template<typename T>
-	struct mat4;
+	struct Matrix4;
 
 	template<typename T>
 	struct tetrahedron {
-		vec3<T> a;
-		vec3<T> b;
-		vec3<T> c;
-		vec3<T> d;
+		Vector3<T> a;
+		Vector3<T> b;
+		Vector3<T> c;
+		Vector3<T> d;
 
 		tetrahedron() {}
-		tetrahedron(const vec3<T> &a, const vec3<T> &b, const vec3<T> &c, const vec3<T> &d)
+		tetrahedron(const Vector3<T> &a, const Vector3<T> &b, const Vector3<T> &c, const Vector3<T> &d)
 			: a(a), b(b), c(c), d(d) {}
 
 		sphere<T> circumsphere()
@@ -30,35 +30,35 @@ namespace ftec {
 			//http://mathworld.wolfram.com/Circumsphere.html
 			//Don't even bother
 
-			T aa = mat4<T>({
+			T aa = Matrix4<T>({
 				a.x, a.y, a.z, 1,
 				b.x, b.y, b.z, 1,
 				c.x, c.y, c.z, 1,
 				d.x, d.y, d.z, 1
 			}).determinant();
 
-			T dx = mat4<T>({
+			T dx = Matrix4<T>({
 				a.sqrmagnitude(), a.y, a.z, 1,
 				b.sqrmagnitude(), b.y, b.z, 1,
 				c.sqrmagnitude(), c.y, c.z, 1,
 				d.sqrmagnitude(), d.y, d.z, 1
 			}).determinant();
 
-			T dy = -mat4<T>({
+			T dy = -Matrix4<T>({
 				a.sqrmagnitude(), a.x, a.z, 1,
 				b.sqrmagnitude(), b.x, b.z, 1,
 				c.sqrmagnitude(), c.x, c.z, 1,
 				d.sqrmagnitude(), d.x, d.z, 1
 			}).determinant();
 
-			T dz = mat4<T>({
+			T dz = Matrix4<T>({
 				a.sqrmagnitude(), a.x, a.y, 1,
 				b.sqrmagnitude(), b.x, b.y, 1,
 				c.sqrmagnitude(), c.x, c.y, 1,
 				d.sqrmagnitude(), d.x, d.y, 1
 			}).determinant();
 
-			T cc = mat4<T>({
+			T cc = Matrix4<T>({
 				a.sqrmagnitude(), a.x, a.y, a.z,
 				b.sqrmagnitude(), b.x, b.y, b.z,
 				c.sqrmagnitude(), c.x, c.y, c.z,
@@ -66,12 +66,12 @@ namespace ftec {
 			}).determinant();
 
 			return sphere<T>(
-				vec3<T>(dx / (2 * aa), dy / (2 * aa), dz / (2 * aa)),
+				Vector3<T>(dx / (2 * aa), dy / (2 * aa), dz / (2 * aa)),
 				sqrt(dx * dx + dy * dy + dz * dz - 4 * aa * cc) / (2.0f * abs(aa))
 				);
 		}
 		
-		tetrahedron<T> &transform(const mat4<T> &m)
+		tetrahedron<T> &transform(const Matrix4<T> &m)
 		{
 			a = m * a;
 			b = m * b;
@@ -79,7 +79,7 @@ namespace ftec {
 			d = m * d;
 			return *this;
 		}
-		tetrahedron<T> transformed(const mat4<T> &m) const
+		tetrahedron<T> transformed(const Matrix4<T> &m) const
 		{
 			return clone().transform(m);
 		}
@@ -88,7 +88,7 @@ namespace ftec {
 		tetrahedron<T> &orient()
 		{
 			if (trianglebdc().distanceFrom(a) > 0) {
-				vec3<T> t = b;
+				Vector3<T> t = b;
 				b = c;
 				c = t;
 			}
@@ -98,7 +98,7 @@ namespace ftec {
 		
 		tetrahedron<T> &flip()
 		{
-			vec3<T> t = b;
+			Vector3<T> t = b;
 			b = c;
 			c = t;
 			return *this;
@@ -113,7 +113,7 @@ namespace ftec {
 			return tetrahedron<T>(*this);
 		}
 
-		vec3<T> center()
+		Vector3<T> center()
 		{
 			return (a + b + c + d) / 4;
 		}
@@ -131,10 +131,10 @@ namespace ftec {
 			T h = (T) (sqrt( 1 - (2 * w) * (2 * w) ) / 3.0);
 
 			return tetrahedron<T>(
-				vec3<T>(0, -h, 2.f * w),	//A
-				vec3<T>(-0.5, -h, -w),		//B
-				vec3<T>(0.5, -h, -w),		//C
-				vec3<T>(0, 2 * h, 0)		//D
+				Vector3<T>(0, -h, 2.f * w),	//A
+				Vector3<T>(-0.5, -h, -w),		//B
+				Vector3<T>(0.5, -h, -w),		//C
+				Vector3<T>(0, 2 * h, 0)		//D
 				);
 		}
 	};

@@ -6,7 +6,7 @@
 
 namespace ftec {
 
-	vec2i glLoadImage(std::string name, unsigned int target)
+	Vector2i glLoadImage(std::string name, unsigned int target)
 	{
 		//image format
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -24,7 +24,7 @@ namespace ftec {
 			fif = FreeImage_GetFIFFromFilename(name.c_str());
 		//if still unkown, return failure
 		if (fif == FIF_UNKNOWN)
-			return vec2i(-1, -1);
+			return Vector2i(-1, -1);
 
 		//check that the plugin has reading capabilities and load the file
 		if (FreeImage_FIFSupportsReading(fif))
@@ -32,7 +32,7 @@ namespace ftec {
 
 		//if the image failed to load, return failure
 		if (!dib)
-			return vec2i(-1, -1);
+			return Vector2i(-1, -1);
 
 		FIBITMAP *image = FreeImage_ConvertTo32Bits(dib);
 
@@ -43,7 +43,7 @@ namespace ftec {
 		height = FreeImage_GetHeight(image);
 		//if this somehow one of these failed (they shouldn't), return failure
 		if ((bits == 0) || (width == 0) || (height == 0))
-			return vec2i(-1,-1);
+			return Vector2i(-1,-1);
 
 		//store the texture data for OpenGL use
 		glTexImage2D(target, 0, GL_RGBA, width, height,
@@ -54,6 +54,6 @@ namespace ftec {
 		FreeImage_Unload(image);
 
 		//return success
-		return vec2i(width, height);
+		return Vector2i(width, height);
 	}
 }

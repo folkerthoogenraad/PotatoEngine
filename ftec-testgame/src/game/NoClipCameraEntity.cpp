@@ -6,8 +6,8 @@
 #include "engine/Time.h"
 #include "engine/Input.h"
 
-#include "math/mat4.h" //Why was this already included?
-#include "math/vec3.h"
+#include "math/Matrix4.h" //Why was this already included?
+#include "math/Vector3.h"
 
 #include "graphics/Camera.h"
 #include "scene/Scene.h"
@@ -38,7 +38,7 @@ namespace ftec {
 			if (cam.m_Pitch < -90)
 				cam.m_Pitch = -90;
 
-			vec3f motion;
+			Vector3f motion;
 
 			if (Input::isKeyDown(GLFW_KEY_W)) {
 				motion.z -= 1;
@@ -50,7 +50,7 @@ namespace ftec {
 				motion.x += 1;
 			}
 
-			mat4f transform = mat4f::rotation(cam.m_Yaw, vec3f(0, 1, 0));
+			Matrix4f transform = Matrix4f::rotation(cam.m_Yaw, Vector3f(0, 1, 0));
 			motion = transform * motion;
 
 			motion.y = 0;

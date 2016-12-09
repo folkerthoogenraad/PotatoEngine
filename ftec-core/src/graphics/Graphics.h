@@ -6,13 +6,13 @@
 #include "Renderer.h"
 #include "Light.h"
 
-//TODO mat4f to mat4f, mat4fi, mat4fd
-#include "math/mat4.h"
-#include "math/vec3.h"
+//TODO Matrix4f to Matrix4f, Matrix4fi, Matrix4fd
+#include "math/Matrix4.h"
+#include "math/Vector3.h"
 #include "math/line3.h"
 #include "math/triangle3.h"
 #include "math/sphere.h"
-#include "math/vec4.h"
+#include "math/Vector4.h"
 
 #include "SpriteBatch.h"
 #include <memory>
@@ -25,11 +25,11 @@ namespace ftec {
 
 	private:
 		struct EnqueuedMesh {
-			/*EnqueuedMesh(const Mesh *m, const Material *mat, const mat4f &model, Layer layer, InstanceList *list)
+			/*EnqueuedMesh(const Mesh *m, const Material *mat, const Matrix4f &model, Layer layer, InstanceList *list)
 				:mesh(m), material(mat), modelMatrix(model), layer(layer), list(list){};*/
 			const Mesh *mesh;
 			std::shared_ptr<Material> material;
-			mat4f modelMatrix;
+			Matrix4f modelMatrix;
 			Layer layer;
 			InstanceList *list;
 		};
@@ -37,14 +37,14 @@ namespace ftec {
 		template <typename T>
 		struct ColorType {
 			T mesh;
-			color32 color;
+			Color32 color;
 		};
 
 		static std::unique_ptr<SpriteBatch> renderer;
 
 		//TODO all these things should be rendered correctly, and efficiently, which they currently don't
 		static std::vector<ColorType<line3f>> lines;
-		static std::vector<ColorType<vec3f>> points;
+		static std::vector<ColorType<Vector3f>> points;
 		static std::vector<ColorType<triangle3f>> triangles;
 		static std::vector<ColorType<spheref>> spheres;
 		static std::shared_ptr<Material2D> pointMaterial;
@@ -59,19 +59,19 @@ namespace ftec {
 		static void begin();
 
 		//Enqueues the mesh for rendering
-		static void enqueueMesh(const Mesh *mesh, std::shared_ptr<Material> material, const mat4f &modelMatrix = mat4f::identity(), Layer layer = LAYER_ALL, InstanceList* list = nullptr);
+		static void enqueueMesh(const Mesh *mesh, std::shared_ptr<Material> material, const Matrix4f &modelMatrix = Matrix4f::identity(), Layer layer = LAYER_ALL, InstanceList* list = nullptr);
 
 		//Enqueues the mesh for rendering
-		static void enqueueLine(const line3f &line, const color32 &color = color32::white());
+		static void enqueueLine(const line3f &line, const Color32 &color = Color32::white());
 
 		//Enqueues the mesh for rendering
-		static void enqueuePoint(const vec3f &point, const color32 &color = color32::white());
+		static void enqueuePoint(const Vector3f &point, const Color32 &color = Color32::white());
 
 		//Enqueues the mesh for rendering
-		static void enqueueTriangle(const triangle3f &triangle, const color32 &color = color32::white());
+		static void enqueueTriangle(const triangle3f &triangle, const Color32 &color = Color32::white());
 
 		//Enqueues the mesh for rendering
-		static void enqueueSphere(const spheref &sphere, const color32 &color = color32::white());
+		static void enqueueSphere(const spheref &sphere, const Color32 &color = Color32::white());
 
 		//Enqueues the camera to render the scene
 		static void enqueueCamera(const Camera *camera);

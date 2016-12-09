@@ -28,10 +28,10 @@ namespace ftec {
 	void Mesh::upload()
 	{
 
-		std::vector<vec3f> vertices;
-		std::vector<vec3f> normals;
-		std::vector<vec3f> tangents;
-		std::vector<vec2f> uvs;
+		std::vector<Vector3f> vertices;
+		std::vector<Vector3f> normals;
+		std::vector<Vector3f> tangents;
+		std::vector<Vector2f> uvs;
 		std::vector<unsigned int> indices;
 
 		for (int i = 0; i < m_Triangles.size(); i++) {
@@ -53,16 +53,16 @@ namespace ftec {
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_VerticesVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3f) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3f) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_NormalsVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3f) * normals.size(), &normals[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3f) * normals.size(), &normals[0], GL_STATIC_DRAW);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, m_TangentsVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3f) * tangents.size(), &tangents[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3f) * tangents.size(), &tangents[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_UvsVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec2f) * uvs.size(), &uvs[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector2f) * uvs.size(), &uvs[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndicesVBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
@@ -75,12 +75,12 @@ namespace ftec {
 
 	void Mesh::recalculateNormals()
 	{
-		struct vec3c {
-			vec3f value = vec3f(0, 0, 0);
+		struct Vector3c {
+			Vector3f value = Vector3f(0, 0, 0);
 			int count = 0;
 		};
 
-		std::vector<vec3c> normals;
+		std::vector<Vector3c> normals;
 
 		normals.resize(m_Normals.size());
 
@@ -98,13 +98,13 @@ namespace ftec {
 			//|____\
 			//p1   p2
 
-			const vec3f &p0 = m_Vertices[i0.vertex];
-			const vec3f &p1 = m_Vertices[i1.vertex];
-			const vec3f &p2 = m_Vertices[i2.vertex];
+			const Vector3f &p0 = m_Vertices[i0.vertex];
+			const Vector3f &p1 = m_Vertices[i1.vertex];
+			const Vector3f &p2 = m_Vertices[i2.vertex];
 
-			vec3f pDelta1 = p1 - p0;
-			vec3f pDelta2 = p2 - p0;
-			vec3f normal = vec3f::cross(pDelta1, pDelta2).normalize();
+			Vector3f pDelta1 = p1 - p0;
+			Vector3f pDelta2 = p2 - p0;
+			Vector3f normal = Vector3f::cross(pDelta1, pDelta2).normalize();
 
 			normals[i0.normal].value += normal;
 			normals[i0.normal].count++;
@@ -128,12 +128,12 @@ namespace ftec {
 	{
 		m_Tangents.resize(m_Normals.size());
 
-		struct vec3c {
-			vec3f value = vec3f(0, 0, 0);
+		struct Vector3c {
+			Vector3f value = Vector3f(0, 0, 0);
 			int count = 0;
 		};
 
-		std::vector<vec3c> tangents;
+		std::vector<Vector3c> tangents;
 		tangents.resize(m_Normals.size());
 
 		for (int i = 0; i < m_Triangles.size(); i += 3) {
@@ -150,23 +150,23 @@ namespace ftec {
 			//|____\
 			//p1   p2
 
-			const vec3f &v0 = m_Vertices[i0.vertex];
-			const vec3f &v1 = m_Vertices[i1.vertex];
-			const vec3f &v2 = m_Vertices[i2.vertex];
+			const Vector3f &v0 = m_Vertices[i0.vertex];
+			const Vector3f &v1 = m_Vertices[i1.vertex];
+			const Vector3f &v2 = m_Vertices[i2.vertex];
 
-			const vec2f &uv0 = m_Uvs[i0.uv];
-			const vec2f &uv1= m_Uvs[i1.uv];
-			const vec2f &uv2 = m_Uvs[i2.uv];
+			const Vector2f &uv0 = m_Uvs[i0.uv];
+			const Vector2f &uv1= m_Uvs[i1.uv];
+			const Vector2f &uv2 = m_Uvs[i2.uv];
 
-			vec3f deltaPos1 = v1 - v0;
-			vec3f deltaPos2 = v2 - v0;
+			Vector3f deltaPos1 = v1 - v0;
+			Vector3f deltaPos2 = v2 - v0;
 
-			vec2f deltaUV1 = uv1 - uv0;
-			vec2f deltaUV2 = uv2 - uv0;
+			Vector2f deltaUV1 = uv1 - uv0;
+			Vector2f deltaUV2 = uv2 - uv0;
 
 			float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
 
-			vec3f tangent = ((deltaPos1 * deltaUV2.y - deltaPos2 * deltaUV1.y) * r).normalize();
+			Vector3f tangent = ((deltaPos1 * deltaUV2.y - deltaPos2 * deltaUV1.y) * r).normalize();
 
 			tangents[i0.normal].value += tangent;
 			tangents[i0.normal].count++;
@@ -200,9 +200,9 @@ namespace ftec {
 		if (!input)
 			return mesh;
 
-		vector<vec3f> vertexInput;
-		vector<vec3f> normalInput;
-		vector<vec2f> uvInput;
+		vector<Vector3f> vertexInput;
+		vector<Vector3f> normalInput;
+		vector<Vector2f> uvInput;
 
 		vector<FaceIndex> triangleInput;
 
@@ -218,7 +218,7 @@ namespace ftec {
 			reader >> character;
 
 			if (character == "v") {
-				vec3f v;
+				Vector3f v;
 
 				reader >> v.x;
 				reader >> v.y;
@@ -228,7 +228,7 @@ namespace ftec {
 				vertexInput.push_back(v);
 			}
 			else if (character == "vt") {
-				vec2f v;
+				Vector2f v;
 
 				reader >> v.x;
 				reader >> v.y;
@@ -237,7 +237,7 @@ namespace ftec {
 				uvInput.push_back(v);
 			}
 			else if (character == "vn") {
-				vec3f v;
+				Vector3f v;
 
 				reader >> v.x;
 				reader >> v.y;

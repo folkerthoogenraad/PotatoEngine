@@ -22,16 +22,16 @@ namespace potato {
 	class PotatoColor {
 	public:PotatoColor() = delete; ~PotatoColor() = delete;
 	public:
-		static ftec::color32 primaryText;
-		static ftec::color32 secondaryText;
+		static ftec::Color32 primaryText;
+		static ftec::Color32 secondaryText;
 
-		static ftec::color32 darkPrimary;
-		static ftec::color32 primary;
-		static ftec::color32 lightPrimary;
+		static ftec::Color32 darkPrimary;
+		static ftec::Color32 primary;
+		static ftec::Color32 lightPrimary;
 
-		static ftec::color32 divider;
-		static ftec::color32 accent;
-		static ftec::color32 iconsText;
+		static ftec::Color32 divider;
+		static ftec::Color32 accent;
+		static ftec::Color32 iconsText;
 	};
 
 	class PotatoClipboard {

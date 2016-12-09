@@ -20,23 +20,23 @@ namespace ftec {
 	static bool disabled = false;
 
 	static std::string keystring = "";
-	static vec2f mousePosition = vec2f();
-	static vec2f mouseDelta = vec2f();
-	static vec2f scrollDelta = vec2f();
+	static Vector2f mousePosition = Vector2f();
+	static Vector2f mouseDelta = Vector2f();
+	static Vector2f scrollDelta = Vector2f();
 
-	vec2f Input::getMousePosition()
+	Vector2f Input::getMousePosition()
 	{
 		return mousePosition;
 	}
 
-	vec2f Input::getMouseDelta()
+	Vector2f Input::getMouseDelta()
 	{
-		return disabled ? vec2f() : mouseDelta;
+		return disabled ? Vector2f() : mouseDelta;
 	}
 
-	vec2f Input::getScroll()
+	Vector2f Input::getScroll()
 	{
-		return disabled ? vec2f() : scrollDelta;
+		return disabled ? Vector2f() : scrollDelta;
 	}
 
 	void Input::setCursorMode(CursorMode mode)
@@ -64,8 +64,8 @@ namespace ftec {
 		typedKeys.clear();
 		pressedMouse.clear();
 		releasedMouse.clear();
-		mouseDelta = vec2f();
-		scrollDelta = vec2f();
+		mouseDelta = Vector2f();
+		scrollDelta = Vector2f();
 		keystring = "";
 	}
 
@@ -139,7 +139,7 @@ namespace ftec {
 
 	void Input::handleCursor(float x, float y)
 	{
-		vec2f newPosition(x, y);
+		Vector2f newPosition(x, y);
 		mouseDelta += newPosition - mousePosition;
 		if (cursorMode != CursorMode::GRABBED) {
 			mousePosition = newPosition;
@@ -152,7 +152,7 @@ namespace ftec {
 
 	void Input::handleScroll(float x, float y)
 	{
-		scrollDelta += vec2f(x, y);
+		scrollDelta += Vector2f(x, y);
 	}
 
 	void Input::handleTyped(unsigned int unicode)

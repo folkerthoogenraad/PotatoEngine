@@ -110,7 +110,7 @@ namespace ftec {
 			shader.setUniform(lightEnabledLocation, GraphicsState::m_Lights[0].enabled);
 			shader.setUniform(lightDirectionLocation, GraphicsState::m_Lights[0].light.m_Direction);
 			shader.setUniform(lightIntensityLocation, GraphicsState::m_Lights[0].light.m_Intensity);
-			shader.setUniform(lightColorLocation, vec3f(
+			shader.setUniform(lightColorLocation, Vector3f(
 				GraphicsState::m_Lights[0].light.m_Color.x / 255.f,
 				GraphicsState::m_Lights[0].light.m_Color.y / 255.f,
 				GraphicsState::m_Lights[0].light.m_Color.z / 255.f

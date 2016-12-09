@@ -3,7 +3,7 @@
 #include <vector>
 #include <set>
 #include <map>
-#include "math/vec2.h"
+#include "math/Vector2.h"
 #include "math/rect.h"
 #include "Delaunay2.h"
 #include "lego2.h"
@@ -12,7 +12,7 @@ namespace ftec {
 
 	template <typename T>
 	class Voronoi2 {
-		std::vector<DelaunayVertex<vec2<T>>> m_Points;
+		std::vector<DelaunayVertex<Vector2<T>>> m_Points;
 	public:
 		std::vector<lego2<T>> m_Legos;
 
@@ -27,7 +27,7 @@ namespace ftec {
 
 		void create(const Delaunay2<T> &delaunay);
 
-		const vec2<T> &getPoint(int index) const;
+		const Vector2<T> &getPoint(int index) const;
 		int getPointCount() const;
 		const lego2<T> &getLego(int index) const;
 

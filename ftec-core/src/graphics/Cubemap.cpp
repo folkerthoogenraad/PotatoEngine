@@ -53,7 +53,7 @@ namespace ftec {
 		for (int i = 0; i < faces.size(); i++)
 		{
 			//Load the actual image
-			vec2i size = glLoadImage(faces[i], GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
+			Vector2i size = glLoadImage(faces[i], GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			if (size.x < 0) {
 				TERMINATE("Failed to load texture: " << faces[i]);
 			}

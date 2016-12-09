@@ -8,7 +8,7 @@
 #include "scene/Scene.h"
 
 #include "math/math.h"
-#include "math/mat4.h"
+#include "math/Matrix4.h"
 
 #include "math/tetrahedron.h"
 #include "math/Delaunay3.h"
@@ -30,7 +30,7 @@ namespace ftec {
 		return r * (max - min) + min;
 	}
 
-	static void drawTriangle(const triangle3f &tr, const color32 &c)
+	static void drawTriangle(const triangle3f &tr, const Color32 &c)
 	{
 		Graphics::enqueueLine(tr.edgeab(), c);
 		Graphics::enqueueLine(tr.edgebc(), c);
@@ -41,16 +41,16 @@ namespace ftec {
 		tetrahedronf t = in;
 
 		drawTriangle(
-			t.triangleabc(), color32::white()
+			t.triangleabc(), Color32::white()
 		);
 		drawTriangle(
-			t.triangleacd(), color32::white()
+			t.triangleacd(), Color32::white()
 		);
 		drawTriangle(
-			t.triangleadb(), color32::white()
+			t.triangleadb(), Color32::white()
 		);
 		drawTriangle(
-			t.trianglebdc(), color32::white()
+			t.trianglebdc(), Color32::white()
 		);
 	}
 
@@ -79,22 +79,22 @@ namespace ftec {
 	{
 		if (Input::isKeyTyped(GLFW_KEY_ENTER)) {
 			/*m_Points = {
-				vec3d(-0.729189, -0.220405, 0.647628),
-				vec3d(-0.792915, 0.0644285, 0.190272),
-				vec3d(-0.579266, -0.558579, 1.01144),
-				vec3d(-0.198262, -0.528971, 0.0285342),
-				vec3d(-0.0333755, -0.98818, 0.615922),
-				vec3d(-0.264774, -0.418219, -0.0485973),
-				vec3d(-0.197283, -0.98818, 1.01144),
-				vec3d(-0.730016, -0.218901, 0.646062),
-				vec3d(-0.884902, 0.132082, 0.214651),
-				vec3d(-0.700895, -0.526021, 1.01144),
-				vec3d(-1.04433, 0.160198, 0.163342),
-				vec3d(-1.04433, -0.559212, 1.01144),
-				vec3d(-0.305183, -0.528646, -0.184989),
-				vec3d(-0.802971, -0.98818, -0.919672),
-				vec3d(-1.04433, -0.98818, -1.04203),
-				vec3d(-1.04433, -0.98818, 1.01144),
+				Vector3d(-0.729189, -0.220405, 0.647628),
+				Vector3d(-0.792915, 0.0644285, 0.190272),
+				Vector3d(-0.579266, -0.558579, 1.01144),
+				Vector3d(-0.198262, -0.528971, 0.0285342),
+				Vector3d(-0.0333755, -0.98818, 0.615922),
+				Vector3d(-0.264774, -0.418219, -0.0485973),
+				Vector3d(-0.197283, -0.98818, 1.01144),
+				Vector3d(-0.730016, -0.218901, 0.646062),
+				Vector3d(-0.884902, 0.132082, 0.214651),
+				Vector3d(-0.700895, -0.526021, 1.01144),
+				Vector3d(-1.04433, 0.160198, 0.163342),
+				Vector3d(-1.04433, -0.559212, 1.01144),
+				Vector3d(-0.305183, -0.528646, -0.184989),
+				Vector3d(-0.802971, -0.98818, -0.919672),
+				Vector3d(-1.04433, -0.98818, -1.04203),
+				Vector3d(-1.04433, -0.98818, 1.01144),
 			};*/
 			create();
 		}
@@ -103,17 +103,17 @@ namespace ftec {
 		if (Input::isKeyTyped(GLFW_KEY_SPACE)) {
 			static int a = 0;
 
-			mat4f mat = mat4f::rotationY(34.18413248f) * mat4f::rotationX(75.05415421f);
+			Matrix4f mat = Matrix4f::rotationY(34.18413248f) * Matrix4f::rotationX(75.05415421f);
 
 			double size = 2.0;
 
 			m_Points.clear();
-			std::set<vec3d> vecs;
+			std::set<Vector3d> vecs;
 
 			/*for (int x = 0; x < size; x++) {
 				for (int y = 0; y < size; y++) {
 					for (int z = 0; z < size; z++) {
-						vec3d a = vec3d(
+						Vector3d a = Vector3d(
 							x / size - 0.5,
 							y / size - 0.5,
 							z / size - 0.5
@@ -124,7 +124,7 @@ namespace ftec {
 			}*/
 			
 			for (int i = 0; i < 5; i++) {
-				vec3d a = vec3d(
+				Vector3d a = Vector3d(
 					randf(-1,1), randf(-2, 2), randf(-1, 1)
 				);
 
@@ -161,7 +161,7 @@ namespace ftec {
 			if (r >= 3)
 				m_Points.push_back(t.d);
 			if (r >= 4)
-				m_Points.push_back(vec3d(0,0));
+				m_Points.push_back(Vector3d(0,0));
 
 			r++;
 
@@ -171,12 +171,12 @@ namespace ftec {
 		if (Input::isKeyTyped(GLFW_KEY_E)) {
 			m_Points.clear();
 
-			mat4f mat = mat4f::identity();// mat4f::rotationY(30) * mat4f::scale(vec3f(1.f, 1.f, 2.0f));
+			Matrix4f mat = Matrix4f::identity();// Matrix4f::rotationY(30) * Matrix4f::scale(Vector3f(1.f, 1.f, 2.0f));
 
 			for (int x = -1; x < 2; x+= 2) {
 				for (int y = -1; y < 2; y += 2) {
 					for (int z = -1; z < 2; z += 2) {
-						vec3f a = vec3f(
+						Vector3f a = Vector3f(
 							(float) x, (float) y, (float) z
 						);
 
@@ -197,12 +197,12 @@ namespace ftec {
 		//Draw the grid
 		/*for (int i = 0; i < 11; i++) {
 			Graphics::enqueueLine(
-				line3f(vec3f(i - 5, 0, -5), vec3f(i - 5, 0, 5)),
-				color32::dkgray()
+				line3f(Vector3f(i - 5, 0, -5), Vector3f(i - 5, 0, 5)),
+				Color32::dkgray()
 			);
 			Graphics::enqueueLine(
-				line3f(vec3f(-5, 0, i-5), vec3f(5, 0, i - 5)),
-				color32::dkgray()
+				line3f(Vector3f(-5, 0, i-5), Vector3f(5, 0, i - 5)),
+				Color32::dkgray()
 			);
 		}*/
 
@@ -221,17 +221,17 @@ namespace ftec {
 
 		/*for (auto &l : voronoi.getLegos()) {
 			for (auto &v : l.m_Vertices) {
-				Graphics::enqueuePoint(v, color32::green());
+				Graphics::enqueuePoint(v, Color32::green());
 			}
 		}
 
 		for (int i = 0; i < voronoi.getDelaunay().getPointCount(); i++) {
 			glPointSize(5.f);
-			Graphics::enqueuePoint(voronoi.getDelaunay().getPoint(i), color32::red());
+			Graphics::enqueuePoint(voronoi.getDelaunay().getPoint(i), Color32::red());
 		}
 
 		for (auto &p : m_Points) {
-			Graphics::enqueuePoint(p, color32::red());
+			Graphics::enqueuePoint(p, Color32::red());
 		}
 
 		for (int i = 0; i < del.getHullTriangleCount(); ++i) {

@@ -9,12 +9,12 @@ namespace ftec {
 	
 	template <typename T>
 	class lego2{
-		vec2<T> m_Center;
+		Vector2<T> m_Center;
 	public:
 		//Make these private and make use of constructor?
 
 		//The vertices generated
-		std::vector<vec2<T>> m_Vertices;
+		std::vector<Vector2<T>> m_Vertices;
 
 		//Recalculates the vertices
 		void create(std::vector<line2<T>> edges)
@@ -27,7 +27,7 @@ namespace ftec {
 			}
 
 			//This might not be needed
-			std::vector<vec2<T>> vertices;
+			std::vector<Vector2<T>> vertices;
 			vertices.reserve(edges.size() * edges.size());
 			
 			m_Vertices.clear();
@@ -46,7 +46,7 @@ namespace ftec {
 
 			//Filter all the stupid edges
 			vertices.erase(std::remove_if(vertices.begin(), vertices.end(), 
-				[&edges](const vec2<T> v) {
+				[&edges](const Vector2<T> v) {
 				for (auto &e : edges) {
 					if (e.distanceFrom(v) < -0.05)
 						return true;
@@ -61,11 +61,11 @@ namespace ftec {
 		}
 
 		//Makes sure all the lines face the point
-		void setCenter(vec2<T> center) 
+		void setCenter(Vector2<T> center) 
 		{
 			m_Center = center;
 		}
-		const vec2<T> &getCenter() { return m_Center; }
+		const Vector2<T> &getCenter() { return m_Center; }
 	};
 
 	typedef lego2<float> lego2f;

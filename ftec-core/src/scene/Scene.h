@@ -12,7 +12,7 @@
 
 namespace ftec {
 	struct StaticGeometry {
-		vec3f position;
+		Vector3f position;
 		std::shared_ptr<Material> material;
 
 		std::shared_ptr<Mesh> mesh;
@@ -35,7 +35,7 @@ namespace ftec {
 		void addEntity(std::shared_ptr<Entity> entity);
 		void removeEntity(std::shared_ptr<Entity> entity);
 
-		void addMesh(const vec3f &position, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material);
+		void addMesh(const Vector3f &position, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material);
 		
 	};
 

@@ -28,11 +28,11 @@ namespace ftec{
 		//static TextureSlot m_Textures[MAX_TEXTURES];
 		static LightSlot m_Lights[MAX_LIGHTS];
 
-		static vec3f eyePosition;//Rename, todo
+		static Vector3f eyePosition;//Rename, todo
 
-		static mat4f matrixModel;
-		static mat4f matrixView;
-		static mat4f matrixProjection;
+		static Matrix4f matrixModel;
+		static Matrix4f matrixView;
+		static Matrix4f matrixProjection;
 	public:
 		GraphicsState() = delete;
 		~GraphicsState() = delete;

@@ -1,49 +1,49 @@
 #pragma once
 
-#include "vec2.h"
+#include "Vector2.h"
 
 //TODO refactor this thing
 
 namespace ftec {
 	template<typename T>
 	struct line2 {
-		vec2<T> a;
-		vec2<T> b;
+		Vector2<T> a;
+		Vector2<T> b;
 
 		line2() {}
-		line2(const vec2<T> &a, const vec2<T> &b)
+		line2(const Vector2<T> &a, const Vector2<T> &b)
 			: a(a), b(b) {}
 
-		vec2<T> direction() const
+		Vector2<T> direction() const
 		{
 			return b - a;
 		}
 
-		vec2<T> perp() const
+		Vector2<T> perp() const
 		{
-			return vec2<T>::perp(direction());
+			return Vector2<T>::perp(direction());
 		}
 
-		const vec2<T> &origin() const
+		const Vector2<T> &origin() const
 		{
 			return a;
 		}
 
-		vec2<T> center() const
+		Vector2<T> center() const
 		{
 			return (a + b) / (T)2.0;
 		}
 
 		line2<T> normal() const
 		{
-			vec2<T> p = perp();
+			Vector2<T> p = perp();
 			return line2<T>(center(), center() + p);
 		}
 
 		//The distance from point to line in line units
-		T distanceFrom(const vec2<T> p)
+		T distanceFrom(const Vector2<T> p)
 		{
-			return vec2<T>::dot(p - a, perp());
+			return Vector2<T>::dot(p - a, perp());
 		}
 
 		T length() const
@@ -51,7 +51,7 @@ namespace ftec {
 			return distance(a, b);
 		}
 
-		line2<T> &translate(vec2f v)
+		line2<T> &translate(Vector2f v)
 		{
 			a += v;
 			b += v;

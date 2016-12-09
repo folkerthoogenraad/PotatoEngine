@@ -22,12 +22,12 @@ namespace potato {
 			graphics.end3D();
 		}
 		else {
-			graphics.setColor(ftec::color32::blue());
+			graphics.setColor(ftec::Color32::blue());
 			graphics.drawRectangle(bounds, true);
-			graphics.setColor(ftec::color32::white());
+			graphics.setColor(ftec::Color32::white());
 			graphics.setVerticalAlign(ftec::FontAlign::TOP);
 			graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
-			graphics.drawString("Scene missing.", bounds.position + ftec::vec2i(2,2));
+			graphics.drawString("Scene missing.", bounds.position + ftec::Vector2i(2,2));
 		}
 	}
 

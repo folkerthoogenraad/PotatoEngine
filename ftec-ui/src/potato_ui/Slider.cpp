@@ -71,8 +71,8 @@ namespace potato {
 		const float hs = SLIDER_BLOCK_SIZE / 2;
 		Bounds bounds = getGlobalBounds();
 
-		ftec::vec2f center = bounds.center();
-		ftec::vec2f position = ftec::vec2f(ftec::lerp((float)bounds.left() + hs, (float)bounds.right() - hs, m_Value), center.y);
+		ftec::Vector2f center = bounds.center();
+		ftec::Vector2f position = ftec::Vector2f(ftec::lerp((float)bounds.left() + hs, (float)bounds.right() - hs, m_Value), center.y);
 
 		return ftec::rectf(position.x - hs, position.y - hs, s, s);
 	}

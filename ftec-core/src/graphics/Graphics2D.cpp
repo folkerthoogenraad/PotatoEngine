@@ -28,7 +28,7 @@ namespace ftec {
 		m_Material->m_TextureMap = m_WhiteTexture;
 		m_Material->m_Shader = Engine::getResourceManager().load<Shader>("shaders/default2d");
 		resetClip();
-		m_Color = color32(255, 255, 255, 255);
+		m_Color = Color32(255, 255, 255, 255);
 	}
 
 	Graphics2D::~Graphics2D()
@@ -99,15 +99,15 @@ namespace ftec {
 	{
 		setTexture(texture);
 	}
-	void Graphics2D::drawPrimitiveVertex(vec2f & vertex)
+	void Graphics2D::drawPrimitiveVertex(Vector2f & vertex)
 	{
 		batch.vertex(vertex);
 	}
-	void Graphics2D::drawPrimitiveUV(vec2f & uv)
+	void Graphics2D::drawPrimitiveUV(Vector2f & uv)
 	{
 		batch.uv(uv);
 	}
-	void Graphics2D::drawPrimitiveColor(color32 & color)
+	void Graphics2D::drawPrimitiveColor(Color32 & color)
 	{
 		batch.color(color);
 	}
@@ -116,7 +116,7 @@ namespace ftec {
 		flush();
 	}
 
-	void Graphics2D::drawCircle(const vec2f & center, float radius, bool fill)
+	void Graphics2D::drawCircle(const Vector2f & center, float radius, bool fill)
 	{
 		if (drawing3D) {
 			LOG_ERROR("Can't draw 2D when drawing in 3D");
@@ -132,9 +132,9 @@ namespace ftec {
 			for (float i = 0; i < steps; i += 2) {
 				batch.vertex(center);
 
-				batch.vertex(center + vec3f(cosf(anglePerStep * (i + 2)), sinf(anglePerStep * (i + 2))) * radius);
-				batch.vertex(center + vec3f(cosf(anglePerStep * (i + 1)), sinf(anglePerStep * (i + 1))) * radius);
-				batch.vertex(center + vec3f(cosf(anglePerStep * (i + 0)), sinf(anglePerStep * (i + 0))) * radius);
+				batch.vertex(center + Vector3f(cosf(anglePerStep * (i + 2)), sinf(anglePerStep * (i + 2))) * radius);
+				batch.vertex(center + Vector3f(cosf(anglePerStep * (i + 1)), sinf(anglePerStep * (i + 1))) * radius);
+				batch.vertex(center + Vector3f(cosf(anglePerStep * (i + 0)), sinf(anglePerStep * (i + 0))) * radius);
 			}
 		}
 		else {
@@ -147,7 +147,7 @@ namespace ftec {
 		drawCircle(circle.center, circle.radius, fill);
 	}
 
-	void Graphics2D::drawArc(const vec2f & center, float radius, bool fill, float startAngle, float angleLength)
+	void Graphics2D::drawArc(const Vector2f & center, float radius, bool fill, float startAngle, float angleLength)
 	{
 		if (drawing3D) {
 			LOG_ERROR("Can't draw 2D when drawing in 3D");
@@ -165,31 +165,31 @@ namespace ftec {
 
 				batch.vertex(center);
 
-				batch.vertex(center + vec2f(cosf(startAngle + anglePerStep * (i + 2)), sinf(startAngle + anglePerStep * (i + 2))) * radius);
-				batch.vertex(center + vec2f(cosf(startAngle + anglePerStep * (i + 1)), sinf(startAngle + anglePerStep * (i + 1))) * radius);
-				batch.vertex(center + vec2f(cosf(startAngle + anglePerStep * (i + 0)), sinf(startAngle + anglePerStep * (i + 0))) * radius);
+				batch.vertex(center + Vector2f(cosf(startAngle + anglePerStep * (i + 2)), sinf(startAngle + anglePerStep * (i + 2))) * radius);
+				batch.vertex(center + Vector2f(cosf(startAngle + anglePerStep * (i + 1)), sinf(startAngle + anglePerStep * (i + 1))) * radius);
+				batch.vertex(center + Vector2f(cosf(startAngle + anglePerStep * (i + 0)), sinf(startAngle + anglePerStep * (i + 0))) * radius);
 			}
 		}
 		else {
 			for (float i = 0; i < steps; ++i) {
 				drawLine(
-					vec2f(center + vec2f(cosf(startAngle + anglePerStep * (i + 1)), sinf(startAngle + anglePerStep * (i + 1))) * radius),
-					vec2f(center + vec2f(cosf(startAngle + anglePerStep * (i + 0)), sinf(startAngle + anglePerStep * (i + 0))) * radius)
+					Vector2f(center + Vector2f(cosf(startAngle + anglePerStep * (i + 1)), sinf(startAngle + anglePerStep * (i + 1))) * radius),
+					Vector2f(center + Vector2f(cosf(startAngle + anglePerStep * (i + 0)), sinf(startAngle + anglePerStep * (i + 0))) * radius)
 				);
 			}
 		}
 	}
 
-	void Graphics2D::drawString(const std::string & text, const vec2f & position)
+	void Graphics2D::drawString(const std::string & text, const Vector2f & position)
 	{
 		if (drawing3D) {
 			LOG_ERROR("Can't draw 2D when drawing in 3D");
 		}
-		vec2f start = position;
+		Vector2f start = position;
 
 		//TODO figure this out for each line, not for the complete string
 		if (m_HAlign != FontAlign::LEFT || m_VAlign != FontAlign::TOP) {
-			vec2f bounds = m_Font->measure(text);
+			Vector2f bounds = m_Font->measure(text);
 			
 			if (m_HAlign == FontAlign::CENTER)
 				start.x -= bounds.x / 2;
@@ -205,7 +205,7 @@ namespace ftec {
 		}
 
 
-		vec2f currentPosition = start;
+		Vector2f currentPosition = start;
 
 		for (char c : text) {
 			//This should be done with a has, and then a reference get, that throws an exception when the character does not exist in the font.
@@ -217,7 +217,7 @@ namespace ftec {
 			FontCharacter fch;
 			if (m_Font->getCharacter(c, fch)) {
 				//TODO make this 12 into something gotten from the font itself (or some shit, i dont know)
-				drawSprite(*fch.sprite, currentPosition + vec2f((float)fch.left, (float)-fch.top + (float)m_Font->getSize() - 2.0f));
+				drawSprite(*fch.sprite, currentPosition + Vector2f((float)fch.left, (float)-fch.top + (float)m_Font->getSize() - 2.0f));
 
 				currentPosition.x += (float) fch.xadvance;
 
@@ -228,7 +228,7 @@ namespace ftec {
 
 	}
 
-	void Graphics2D::drawSprite(const Sprite & sprite, const vec2f & position)
+	void Graphics2D::drawSprite(const Sprite & sprite, const Vector2f & position)
 	{
 		if (drawing3D) {
 			LOG_ERROR("Can't draw 2D when drawing in 3D");
@@ -250,16 +250,16 @@ namespace ftec {
 		batch.vertex(position + sprite.bounds().topright());
 	}
 
-	void Graphics2D::drawLine(const vec2f & start, const vec2f & end)
+	void Graphics2D::drawLine(const Vector2f & start, const Vector2f & end)
 	{
 		if (drawing3D) {
 			LOG_ERROR("Can't draw 2D when drawing in 3D");
 		}
 		const float lw = m_LineWidth / 2.f;
-		vec2f dir = end - start;
+		Vector2f dir = end - start;
 		float length = dir.magnitude();
 		dir /= length;
-		vec2f normal(dir.y, -dir.x);
+		Vector2f normal(dir.y, -dir.x);
 		
 		setTexture(m_WhiteTexture);
 		batch.color(m_Color);
@@ -274,7 +274,7 @@ namespace ftec {
 		drawLine(line.a, line.b);
 	}
 
-	void Graphics2D::drawPoint(const vec2f & point)
+	void Graphics2D::drawPoint(const Vector2f & point)
 	{
 		if (m_PointType == PointType::CIRCLE) {
 			drawCircle(point,m_PointSize / 2.0f, true);
@@ -319,7 +319,7 @@ namespace ftec {
 		flush();
 	}
 
-	void Graphics2D::setColor(const color32 & color)
+	void Graphics2D::setColor(const Color32 & color)
 	{
 		//TODO find out what is more efficient
 		//Adding 4 bytes per vertex of memory to copy
@@ -367,9 +367,11 @@ namespace ftec {
 		GraphicsState::m_Material = m_Material;
 		GraphicsState::m_Skybox = nullptr;
 
-		GraphicsState::matrixModel = mat4f::identity();
-		GraphicsState::matrixView = mat4f::identity();
-		GraphicsState::matrixProjection = mat4f::orthographic(0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight(), 0, -100, 100);
+		GraphicsState::matrixModel = Matrix4f::identity();
+		GraphicsState::matrixView = Matrix4f::identity();
+		GraphicsState::matrixProjection = Matrix4f::orthographic(0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight(), 0, -100, 100);
+
+		GraphicsState::prepare();
 
 		batch.end();
 		batch.begin(Primitive::QUADS);

@@ -6,23 +6,37 @@
 
 namespace ftec {
 
+	class Texture;
+	class Shader;
+
 	struct Drawable2D;
 	
-	//Forward declare mat3
-	template<typename T> struct mat3; typedef mat3<float> mat3f;
-	template<typename T> struct vec2; typedef vec2<float> vec2f;
+	//Forward declare Matrix3
+	template<typename T> struct Matrix3; typedef Matrix3<float> Matrix3f;
+	template<typename T> struct Vector2; typedef Vector2<float> Vector2f;
 
 	//New graphics API stuff
 	class Renderer2D {
 		SpriteBatch batch;
-		std::vector<mat3f> m_TransformationStack;
+		std::vector<Matrix3f> m_TransformationStack;
+
+		std::shared_ptr<Shader> m_Shader;
+		std::shared_ptr<Texture> m_WhiteTexture;
+
+		std::shared_ptr<Texture> m_CurrentTexture;
+
+		int m_ModelLocation;
+		int m_ViewLocation;
+		int m_ProjectionLocation;
+
+		bool m_Drawing = false;
 	public:
 		Renderer2D();
 		~Renderer2D();
 
 		void draw(Drawable2D &drawable);
 
-		const mat3f &getTransformationMatrix() const;
+		const Matrix3f &getTransformationMatrix() const;
 
 		friend struct Transformation;
 		friend struct Paint;
@@ -34,7 +48,7 @@ namespace ftec {
 	private:
 		Renderer2D &m_Renderer;
 		Primitive m_Primitive;
-		float m_Depth;
+		float m_Depth = 0;
 	public:
 		Paint(Renderer2D &r, Primitive primitive);
 		~Paint();
@@ -42,7 +56,7 @@ namespace ftec {
 		void vertex(float x, float y);
 		void depth(float z);
 
-		void color(const color32 &color);
+		void color(Color32 color);
 		void uv(float u, float v);
 	};
 

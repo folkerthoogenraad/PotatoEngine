@@ -3,9 +3,9 @@
 #include "RenderBuffer.h"
 
 //TODO remove these if possible
-#include "math/vec4.h"
-#include "math/vec3.h"
-#include "math/mat4.h"
+#include "math/Vector4.h"
+#include "math/Vector3.h"
+#include "math/Matrix4.h"
 
 #define SHADOW_RESOLUTION 1024
 
@@ -13,8 +13,8 @@ namespace ftec {
 	//TODO class LightWorld or something LightSpace
 	class Light {
 	public:
-		vec3f m_Direction = vec3f(-1.0, -1.0, -1.0).normalize();
-		color32 m_Color = color32::white();
+		Vector3f m_Direction = Vector3f(-1.0, -1.0, -1.0).normalize();
+		Color32 m_Color = Color32::white();
 
 		//Currently not working correctly with PBR ( ~ish :') )
 		float m_Intensity = 1.f; 
@@ -29,7 +29,7 @@ namespace ftec {
 
 		inline bool isShadowsEnabled() const { return m_ShadowsEnabled; };
 		inline std::shared_ptr<RenderBuffer> getShadowBuffer() const { return m_ShadowMap; };
-		mat4f getShadowMatrix(const vec3f &position = vec3f()) const;
+		Matrix4f getShadowMatrix(const Vector3f &position = Vector3f()) const;
 
 		//This is too stupid and should not even exist
 		static inline Light defaultLight() { return Light(); };

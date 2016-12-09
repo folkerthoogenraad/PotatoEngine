@@ -17,7 +17,7 @@ namespace ftec {
 namespace potato {
 
 	typedef ftec::recti Bounds;
-	typedef ftec::vec2i Size;
+	typedef ftec::Vector2i Size;
 
 	struct Insets{
 		int top, right, bottom, left;
@@ -34,8 +34,8 @@ namespace potato {
 		Bounds m_LocalBounds;
 	protected:
 
-		ftec::color32 m_BackgroundColor = ftec::color32::white();
-		ftec::color32 m_ForegroundColor = ftec::color32::black();
+		ftec::Color32 m_BackgroundColor = ftec::Color32::white();
+		ftec::Color32 m_ForegroundColor = ftec::Color32::black();
 
 		std::shared_ptr<ftec::Font> m_Font;
 
@@ -79,11 +79,11 @@ namespace potato {
 		Bounds getGlobalBounds();
 		Bounds getGlobalOutline();
 
-		ftec::color32 &background() { return m_BackgroundColor; }
-		const ftec::color32 &background() const { return m_BackgroundColor; }
+		ftec::Color32 &background() { return m_BackgroundColor; }
+		const ftec::Color32 &background() const { return m_BackgroundColor; }
 
-		ftec::color32 &foreground() { return m_ForegroundColor; }
-		const ftec::color32 &foreground() const { return m_ForegroundColor; }
+		ftec::Color32 &foreground() { return m_ForegroundColor; }
+		const ftec::Color32 &foreground() const { return m_ForegroundColor; }
 
 		LayoutParams &layoutparams() { return m_LayoutParams; }
 		const LayoutParams &layoutparams() const { return m_LayoutParams; }
@@ -112,9 +112,9 @@ namespace potato {
 
 		virtual Size getPreferredSize() = 0;
 
-		bool inBounds(ftec::vec2i point);
-		bool inChildBounds(ftec::vec2i point);
-		bool inSelfBounds(ftec::vec2i point);
+		bool inBounds(ftec::Vector2i point);
+		bool inChildBounds(ftec::Vector2i point);
+		bool inSelfBounds(ftec::Vector2i point);
 
 		//Layout stuff
 		void requestUpdateLayout();

@@ -109,7 +109,7 @@ namespace ftec {
 
 			texture->bind();
 
-			vec2i size = glLoadImage(name, GL_TEXTURE_2D);
+			Vector2i size = glLoadImage(name, GL_TEXTURE_2D);
 
 			if (size.x < 0) {
 				TERMINATE("Failed to load texture: " << name);

@@ -4,7 +4,7 @@
 
 namespace ftec {
 	
-	StairArc::StairArc(vec2f a, vec2f b, vec2f c, float distance)
+	StairArc::StairArc(Vector2f a, Vector2f b, Vector2f c, float distance)
 		:m_Point{ a,b,c }, m_Distance(distance)
 	{
 
@@ -12,29 +12,29 @@ namespace ftec {
 
 	float StairArc::getStartAngle() const
 	{
-		vec2f from = (getOrigin() - getArcStart()).normalize();
+		Vector2f from = (getOrigin() - getArcStart()).normalize();
 
 		return atan2(-from.y, -from.x); //Note: atan2 has x and y reversed :)
 	}
 
 	float StairArc::getAngle() const
 	{
-		vec2f from = (getArcStart() - getOrigin()).normalize();
-		vec2f to = (getArcEnd() - getOrigin()).normalize();
+		Vector2f from = (getArcStart() - getOrigin()).normalize();
+		Vector2f to = (getArcEnd() - getOrigin()).normalize();
 
-		float d = vec2f::dot(to, from);
+		float d = Vector2f::dot(to, from);
 		return acos(d);
 	}
 
 	float StairArc::getRadius() const
 	{
-		vec2f p = getArcStart();
-		vec2f q = getArcEnd();
+		Vector2f p = getArcStart();
+		Vector2f q = getArcEnd();
 
-		vec2f r = vec2f::perp((getCenter() - getStart()).normalize());
-		vec2f s = vec2f::perp((getEnd() - getCenter()).normalize());
+		Vector2f r = Vector2f::perp((getCenter() - getStart()).normalize());
+		Vector2f s = Vector2f::perp((getEnd() - getCenter()).normalize());
 
-		float t = vec2f::cross(q - p, s) / vec2f::cross(r, s);
+		float t = Vector2f::cross(q - p, s) / Vector2f::cross(r, s);
 
 		return abs(t);
 	}
@@ -54,39 +54,39 @@ namespace ftec {
 		return getAngle() * getRadius();
 	}
 
-	vec2f StairArc::getArcStart() const
+	Vector2f StairArc::getArcStart() const
 	{
-		vec2f direction = (getStart() - getCenter()).normalize();
+		Vector2f direction = (getStart() - getCenter()).normalize();
 		return getCenter() + direction * m_Distance;
 	}
 
-	vec2f StairArc::getArcEnd() const
+	Vector2f StairArc::getArcEnd() const
 	{
-		vec2f direction = (getEnd() - getCenter()).normalize();
+		Vector2f direction = (getEnd() - getCenter()).normalize();
 		return getCenter() + direction * m_Distance;
 	}
 
-	vec2f StairArc::getOrigin() const
+	Vector2f StairArc::getOrigin() const
 	{
-		vec2f p = getArcStart();
-		vec2f q = getArcEnd();
+		Vector2f p = getArcStart();
+		Vector2f q = getArcEnd();
 
-		vec2f r = vec2f::perp((getCenter() - getStart()).normalize());
-		vec2f s = vec2f::perp((getEnd() - getCenter()).normalize());
+		Vector2f r = Vector2f::perp((getCenter() - getStart()).normalize());
+		Vector2f s = Vector2f::perp((getEnd() - getCenter()).normalize());
 
-		float t = vec2f::cross(q - p, s) / vec2f::cross(r, s);
+		float t = Vector2f::cross(q - p, s) / Vector2f::cross(r, s);
 
 		return p + r * t;
 	}
 
 	float StairArc::getSide() const
 	{
-		vec2f from = (getStart() - getCenter()).normalize();
-		vec2f to = (getEnd() - getCenter()).normalize();
+		Vector2f from = (getStart() - getCenter()).normalize();
+		Vector2f to = (getEnd() - getCenter()).normalize();
 
-		vec2f r = vec2f::perp(from);
+		Vector2f r = Vector2f::perp(from);
 
-		return sign(vec2f::dot(to, r));
+		return sign(Vector2f::dot(to, r));
 	}
 
 }

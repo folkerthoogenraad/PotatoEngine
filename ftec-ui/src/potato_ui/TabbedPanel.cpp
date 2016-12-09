@@ -74,7 +74,7 @@ namespace potato {
 
 			}
 			graphics.setColor(PotatoColor::primaryText);
-			graphics.drawString(m_TabTitles[idx], ftec::vec2f(
+			graphics.drawString(m_TabTitles[idx], ftec::Vector2f(
 				(float)bounds.x()
 				+ (float)offset,
 				(float)bounds.y()

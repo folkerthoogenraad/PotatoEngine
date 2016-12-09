@@ -2,26 +2,26 @@
 
 #include "collision.h" //TODO not need this
 
-#include "vec2.h"
+#include "Vector2.h"
 
 namespace ftec {
 
 	template<typename T>
 	struct triangle2 {
-		vec2<T> a;
-		vec2<T> b;
-		vec2<T> c;
+		Vector2<T> a;
+		Vector2<T> b;
+		Vector2<T> c;
 
 		triangle2() {}
-		triangle2(const vec2<T> &a, const vec2<T> &b, const vec2<T> &c)
+		triangle2(const Vector2<T> &a, const Vector2<T> &b, const Vector2<T> &c)
 			: a(a), b(b), c(c) {}
 
-		bool hasVertex(vec2<T> v)
+		bool hasVertex(Vector2<T> v)
 		{
 			return a == v || b == v || c == v;
 		}
 		
-		vec2<T> center()
+		Vector2<T> center()
 		{
 			return (a + b + c) / 3;
 		}
@@ -31,7 +31,7 @@ namespace ftec {
 			//Normals pointing outwards
 			//Flip b and c if the winding is reversed
 			if (edgeab().distanceFrom(c) > 0) {
-				vec2<T> t = b;
+				Vector2<T> t = b;
 				b = c;
 				c = t;
 			}
@@ -44,7 +44,7 @@ namespace ftec {
 			return triangle2<T>(*this);
 		}
 
-		vec2<T> circumcenter()
+		Vector2<T> circumcenter()
 		{
 			return intersect(
 				line2<T>(b, a).normal(),

@@ -3,7 +3,7 @@
 #include "VBORenderable.h"
 #include "Material.h"
 #include "Camera.h"
-#include "math/vec3.h"
+#include "math/Vector3.h"
 #include "math/rect.h"
 #include "Mesh.h"
 #include "Light.h"
@@ -38,7 +38,7 @@ namespace ftec {
 		InstanceList();
 		~InstanceList();
 
-		std::vector<vec3f> m_Positions;
+		std::vector<Vector3f> m_Positions;
 
 		void upload();
 		

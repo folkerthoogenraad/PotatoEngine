@@ -6,8 +6,8 @@
 namespace ftec {
 
 	template <typename T>
-	struct vec2;
-	typedef vec2<float> vec2f;
+	struct Vector2;
+	typedef Vector2<float> Vector2f;
 
 	enum class CursorMode {
 		NORMAL, HIDDEN, GRABBED
@@ -29,9 +29,9 @@ namespace ftec {
 		static float getMouseDX();
 		static float getMouseDY();
 
-		static vec2f getMousePosition();
-		static vec2f getMouseDelta();
-		static vec2f getScroll();
+		static Vector2f getMousePosition();
+		static Vector2f getMouseDelta();
+		static Vector2f getScroll();
 
 		static void setCursorMode(CursorMode mode);
 		static void reset();

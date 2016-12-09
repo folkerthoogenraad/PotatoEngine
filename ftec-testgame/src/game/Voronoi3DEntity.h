@@ -1,12 +1,12 @@
 #pragma once
 #include "scene/Entity.h"
 #include <vector>
-#include "math/vec3.h"
+#include "math/Vector3.h"
 
 namespace ftec {
 	class Voronoi3DEntity : public Entity {
 	private:
-		std::vector<vec3d> m_Points;
+		std::vector<Vector3d> m_Points;
 		void create();
 	public:
 		Voronoi3DEntity();

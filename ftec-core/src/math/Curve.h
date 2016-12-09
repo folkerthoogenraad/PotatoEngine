@@ -4,7 +4,7 @@
 
 //TODO refactor this whole codebase thing
 
-#include "vec2.h"
+#include "Vector2.h"
 
 // ):
 #include <math.h>
@@ -12,9 +12,9 @@
 namespace ftec {
 
 	template <typename T>
-	struct vec3;
+	struct Vector3;
 	template <typename T>
-	struct vec4;
+	struct Vector4;
 
 
 	namespace curves {
@@ -41,10 +41,10 @@ namespace ftec {
 
 		struct CubicBezier : public Base {
 		private:
-			vec2f p1, p2;
+			Vector2f p1, p2;
 		public:
 			//Default curve is stolen from google material stuff
-			CubicBezier(const vec2f &p1 = vec2f(.4f, 0.f), const vec2f &p2 = vec2f(.2f, 1.f)) : p1(p1), p2(p2) {};
+			CubicBezier(const Vector2f &p1 = Vector2f(.4f, 0.f), const Vector2f &p2 = Vector2f(.2f, 1.f)) : p1(p1), p2(p2) {};
 
 			float interpolate(float x) const override;
 		};
@@ -57,19 +57,19 @@ namespace ftec {
 	}
 
 	template <typename T>
-	vec2<T> tween(vec2<T> a, vec2<T> b, T f, const curves::Base &curve = curves::Linear())
+	Vector2<T> tween(Vector2<T> a, Vector2<T> b, T f, const curves::Base &curve = curves::Linear())
 	{
 		return a + (b - a) * curve.interpolate(f);
 	}
 
 	template <typename T>
-	vec3<T> tween(vec3<T> a, vec3<T> b, T f, const curves::Base &curve = curves::Linear())
+	Vector3<T> tween(Vector3<T> a, Vector3<T> b, T f, const curves::Base &curve = curves::Linear())
 	{
 		return a + (b - a) * curve.interpolate(f);
 	}
 
 	template <typename T>
-	vec4<T> tween(vec4<T> a, vec4<T> b, T f, const curves::Base &curve = curves::Linear())
+	Vector4<T> tween(Vector4<T> a, Vector4<T> b, T f, const curves::Base &curve = curves::Linear())
 	{
 		return a + (b - a) * curve.interpolate(f);
 	}

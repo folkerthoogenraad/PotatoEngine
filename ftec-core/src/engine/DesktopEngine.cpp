@@ -30,7 +30,7 @@ namespace ftec {
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		auto window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, true, 4);
+		auto window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, false, 4);
 
 		LOG("Loading GLEW...");
 		//Initialize extentions
@@ -106,20 +106,20 @@ namespace ftec {
 
 	static void initGL() {
 		glEnable(GL_DEPTH_TEST);
+		
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.1f);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_SCISSOR_TEST);
 		glDepthFunc(GL_LEQUAL);
-
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		//Reenable for performance reasons, disabled now for other reasons
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_BACK);
 
 		//glClearColor(.2f, .4f, .8f, 0.f);
 		//glClearColor(1.f, 1.f, 1.f, 1.f);

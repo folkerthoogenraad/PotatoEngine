@@ -42,14 +42,14 @@ namespace ftec {
 		return length;
 	}
 
-	vec2f StairAlgorithm::getPosition(float distance)
+	Vector2f StairAlgorithm::getPosition(float distance)
 	{
 		if (m_Vertices.size() == 0)
-			return vec2f(0, 0);
+			return Vector2f(0, 0);
 		else if (m_Vertices.size() == 1 || distance <= 0) 
 			return m_Vertices[0].m_Position;
 		else if (m_Vertices.size() == 2) {
-			vec2f v = m_Vertices[1].m_Position - m_Vertices[0].m_Position;
+			Vector2f v = m_Vertices[1].m_Position - m_Vertices[0].m_Position;
 			float length =  (v).magnitude();
 			v /= length;
 
@@ -67,7 +67,7 @@ namespace ftec {
 			auto &current = m_Vertices[currentIndex];
 
 			//Calculate the raw length of this piece
-			vec2f dir = current.m_Position - previous.m_Position;
+			Vector2f dir = current.m_Position - previous.m_Position;
 			float or = dir.magnitude();
 			float straightLength = dir.magnitude();
 			
@@ -108,7 +108,7 @@ namespace ftec {
 				float currentAngle = arc.getAngle() * f * arc.getSide();
 
 				return arc.getOrigin()
-					+ vec2f(
+					+ Vector2f(
 						cosf(startAngle + currentAngle),
 						sinf(startAngle + currentAngle)) * arc.getRadius();
 			}

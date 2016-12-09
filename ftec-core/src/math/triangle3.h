@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec3.h"
+#include "Vector3.h"
 
 namespace ftec {
 
@@ -9,15 +9,15 @@ namespace ftec {
 
 	template<typename T>
 	struct triangle3 {
-		vec3<T> a;
-		vec3<T> b;
-		vec3<T> c;
+		Vector3<T> a;
+		Vector3<T> b;
+		Vector3<T> c;
 
 		triangle3() {}
-		triangle3(const vec3<T> &a, const vec3<T> &b, const vec3<T> &c)
+		triangle3(const Vector3<T> &a, const Vector3<T> &b, const Vector3<T> &c)
 			: a(a), b(b), c(c) {}
 
-		triangle3<T> &translate(vec3<T> v)
+		triangle3<T> &translate(Vector3<T> v)
 		{
 			a += v;
 			b += v;
@@ -27,15 +27,15 @@ namespace ftec {
 		}
 
 		//The normal is NOT normalized
-		vec3<T> normal() const
+		Vector3<T> normal() const
 		{
-			return vec3<T>::cross(b - a, c - a);
+			return Vector3<T>::cross(b - a, c - a);
 		}
 
 		//The distance is in abstract triangle units
-		T distanceFrom(vec3<T> point)
+		T distanceFrom(Vector3<T> point)
 		{
-			return vec3<T>::dot(normal(), point - a);
+			return Vector3<T>::dot(normal(), point - a);
 		}
 
 		triangle3<T> &flip() {
@@ -51,9 +51,9 @@ namespace ftec {
 		static triangle3<T> unitTriangle()
 		{
 			return triangle3<T>(
-				vec3<T>(-0.5f, 0, -1.f / 3.f*sqrt(0.75)),
-				vec3<T>(0.5f, 0, -1.f / 3.f*sqrt(0.75)),
-				vec3<T>(0, 0, 2.f/3.f*sqrt(0.75))
+				Vector3<T>(-0.5f, 0, -1.f / 3.f*sqrt(0.75)),
+				Vector3<T>(0.5f, 0, -1.f / 3.f*sqrt(0.75)),
+				Vector3<T>(0, 0, 2.f/3.f*sqrt(0.75))
 				);
 		}
 	};

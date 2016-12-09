@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include "math/vec2.h"
+#include "math/Vector2.h"
 
 namespace ftec {
 	class Window {
@@ -13,7 +13,7 @@ namespace ftec {
 
 		GLFWwindow *m_Window;
 
-		vec2f m_MousePosition;
+		Vector2f m_MousePosition;
 		int m_MSAA;
 		bool m_Fullscreen;
 		bool m_CloseRequested;
@@ -33,8 +33,8 @@ namespace ftec {
 		inline float getWidth() { return (float)m_Width; }
 		inline float getHeight() { return (float)m_Height; }
 
-		void setMousePosition(const vec2f &newPosition);
-		inline vec2f getMousePosition() const { return m_MousePosition; }
+		void setMousePosition(const Vector2f &newPosition);
+		inline Vector2f getMousePosition() const { return m_MousePosition; }
 		inline bool isCloseRequested() const { return m_CloseRequested; }
 		inline bool isResized() const { return m_Resized; }
 

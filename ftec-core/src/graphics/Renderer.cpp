@@ -122,7 +122,7 @@ namespace ftec {
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3f) * m_Positions.size(), &m_Positions[0], GL_STATIC_DRAW); //Maybe dynamic, because instancing?
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3f) * m_Positions.size(), &m_Positions[0], GL_STATIC_DRAW); //Maybe dynamic, because instancing?
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}

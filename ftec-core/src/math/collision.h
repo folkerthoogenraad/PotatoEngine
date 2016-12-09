@@ -6,11 +6,11 @@ namespace ftec {
 
 	//Forward declare all the way !
 	template <typename T>
-	struct vec2;
+	struct Vector2;
 	template <typename T>
-	struct vec3;
+	struct Vector3;
 	template <typename T>
-	struct vec4;
+	struct Vector4;
 	template <typename T>
 	struct circle;
 	template <typename T>
@@ -23,25 +23,25 @@ namespace ftec {
 	struct plane;
 
 	template<typename T>
-	T distance(const vec2<T> &a, const vec2<T> &b)
+	T distance(const Vector2<T> &a, const Vector2<T> &b)
 	{
 		return (b - a).magnitude();
 	}
 	
 	template<typename T>
-	T distance(const vec3<T> &a, const vec3<T> &b)
+	T distance(const Vector3<T> &a, const Vector3<T> &b)
 	{
 		return (b - a).magnitude();
 	}
 	
 	template<typename T>
-	T distance(const vec4<T> &a, const vec4<T> &b)
+	T distance(const Vector4<T> &a, const Vector4<T> &b)
 	{
 		return (b - a).magnitude();
 	}
 
 	template<typename T>
-	collisionresult<vec2<T>>	intersect(const line2<T> &l1, const line2<T> &l2)
+	collisionresult<Vector2<T>>	intersect(const line2<T> &l1, const line2<T> &l2)
 	{
 		//p + t r = q + u s
 
@@ -50,13 +50,13 @@ namespace ftec {
 		//r = dir1
 		//s = dir2
 
-		T d = vec2<T>::cross(l1.direction(), l2.direction());
+		T d = Vector2<T>::cross(l1.direction(), l2.direction());
 
 		if (d == 0)
 			return false;
 
 		return l1.origin() + l1.direction() * (
-			vec2<T>::cross(l2.origin() - l1.origin(), l2.direction()) / d );
+			Vector2<T>::cross(l2.origin() - l1.origin(), l2.direction()) / d );
 	}
 
 	template<typename T>
@@ -74,16 +74,16 @@ namespace ftec {
 	}
 	
 	template<typename T>
-	collisionresult<vec3<T>>	intersect(const plane<T> &plane, const line3<T> &line) 
+	collisionresult<Vector3<T>>	intersect(const plane<T> &plane, const line3<T> &line) 
 	{
-		vec3<T> lineDir = line.direction();
+		Vector3<T> lineDir = line.direction();
 
-		T directionalDot = vec3<T>::dot(lineDir, plane.direction);
+		T directionalDot = Vector3<T>::dot(lineDir, plane.direction);
 
 		if (directionalDot == 0)
 			return false;
 
-		T planerDot = -(vec3<T>::dot(plane.direction, line.a) + plane.offset);
+		T planerDot = -(Vector3<T>::dot(plane.direction, line.a) + plane.offset);
 
 		T result = planerDot / directionalDot;
 
@@ -93,27 +93,27 @@ namespace ftec {
 	template<typename T>
 	collisionresult<line3<T>>	intersect(const plane<T> &p, const plane<T> &other)
 	{
-		vec3<T> dir = vec3<T>::cross(other.direction, p.direction);
+		Vector3<T> dir = Vector3<T>::cross(other.direction, p.direction);
 
 		if (dir.sqrmagnitude() == 0)
 			return false;
 
 		//Perform a line intersection with the other plane
-		line3<T> line(p.origin(), p.origin() + vec3<T>::cross(dir, p.direction));
+		line3<T> line(p.origin(), p.origin() + Vector3<T>::cross(dir, p.direction));
 
 		//TODO check if this is needed.
-		vec3<T> o = intersect(other, line).result;
+		Vector3<T> o = intersect(other, line).result;
 
 		return line3<T>(o, o + dir);
 	}
 
 	template<typename T>
-	bool contains(const circle<T> &c, const vec2<T> &point) {
+	bool contains(const circle<T> &c, const Vector2<T> &point) {
 		return distance(c.center, point) <= c.radius;
 	}
 	
 	template<typename T>
-	bool contains(const sphere<T> &c, const vec3<T> &point) {
+	bool contains(const sphere<T> &c, const Vector3<T> &point) {
 		return distance(c.center, point) <= c.radius;
 	}
 

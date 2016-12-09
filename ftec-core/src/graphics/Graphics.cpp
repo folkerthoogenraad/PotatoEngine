@@ -18,7 +18,7 @@ namespace ftec {
 	std::unique_ptr<SpriteBatch> Graphics::renderer;
 	std::shared_ptr<Material2D> Graphics::pointMaterial;
 	std::vector<Graphics::ColorType<line3f>> Graphics::lines;
-	std::vector<Graphics::ColorType<vec3f>> Graphics::points;
+	std::vector<Graphics::ColorType<Vector3f>> Graphics::points;
 	std::vector<Graphics::ColorType<spheref>> Graphics::spheres;
 	std::vector<Graphics::ColorType<triangle3f>> Graphics::triangles;
 
@@ -49,29 +49,29 @@ namespace ftec {
 		
 	}
 	//TODO constness and stuff
-	void Graphics::enqueueMesh(const Mesh *mesh, std::shared_ptr<Material> material, const mat4f &modelMatrix, Layer layer, InstanceList *list)
+	void Graphics::enqueueMesh(const Mesh *mesh, std::shared_ptr<Material> material, const Matrix4f &modelMatrix, Layer layer, InstanceList *list)
 	{
 		meshes.push_back({
 			mesh, material, modelMatrix, layer, list
 		});
 	}
 
-	void Graphics::enqueueLine(const line3f & line, const color32 &color)
+	void Graphics::enqueueLine(const line3f & line, const Color32 &color)
 	{
 		lines.push_back({line, color });
 	}
 
-	void Graphics::enqueuePoint(const vec3f & point, const color32 &color)
+	void Graphics::enqueuePoint(const Vector3f & point, const Color32 &color)
 	{
 		points.push_back({point, color });
 	}
 
-	void Graphics::enqueueTriangle(const triangle3f & triangle, const color32 &color)
+	void Graphics::enqueueTriangle(const triangle3f & triangle, const Color32 &color)
 	{
 		triangles.push_back({ triangle, color });
 	}
 
-	void Graphics::enqueueSphere(const spheref & sphere, const color32 & color)
+	void Graphics::enqueueSphere(const spheref & sphere, const Color32 & color)
 	{
 		spheres.push_back({ sphere, color });
 	}
@@ -109,7 +109,7 @@ namespace ftec {
 
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-				mat4f projection =  l->getShadowMatrix();
+				Matrix4f projection =  l->getShadowMatrix();
 
 				for (auto m : meshes) {
 
@@ -141,7 +141,7 @@ namespace ftec {
 			//Set skybox to normal version //This should obviously not be here
 			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test");
 			
-			GraphicsState::matrixModel = mat4f::translation(c->m_Position);
+			GraphicsState::matrixModel = Matrix4f::translation(c->m_Position);
 
 			//Drawing skybox
 			GraphicsState::m_Lights[0].enabled = false; //Idk man
@@ -155,7 +155,7 @@ namespace ftec {
 			
 
 			GraphicsState::m_Lights[0].enabled = true;
-			GraphicsState::m_Lights[0].light = *lights.front();// .m_Direction = vec3f(0.7f, -0.4f, -0.7f).normalize();
+			GraphicsState::m_Lights[0].light = *lights.front();// .m_Direction = Vector3f(0.7f, -0.4f, -0.7f).normalize();
 
 
 			for (auto m : meshes) {
@@ -191,13 +191,13 @@ namespace ftec {
 			
 			GraphicsState::m_Material = pointMaterial;
 			GraphicsState::m_Skybox = nullptr;
-			GraphicsState::matrixModel = mat4f::identity();
+			GraphicsState::matrixModel = Matrix4f::identity();
 
 			glPointSize(5);
 			glLineWidth(1);
 
 			renderer->begin(Primitive::POINTS);
-			renderer->color(color32::white());
+			renderer->color(Color32::white());
 			for (auto &p : points) {
 				renderer->color(p.color);
 				renderer->vertex(p.mesh);
@@ -205,7 +205,7 @@ namespace ftec {
 			renderer->end();
 
 			renderer->begin(Primitive::LINES);
-			renderer->color(color32::white());
+			renderer->color(Color32::white());
 			for (auto &l : lines) {
 				renderer->color(l.color);
 				renderer->vertex(l.mesh.a);
@@ -225,7 +225,7 @@ namespace ftec {
 			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
 
 			for (auto &s : spheres) {
-				GraphicsState::matrixModel = mat4f::translation(s.mesh.center) * mat4f::scale(vec3f(s.mesh.radius, s.mesh.radius, s.mesh.radius));
+				GraphicsState::matrixModel = Matrix4f::translation(s.mesh.center) * Matrix4f::scale(Vector3f(s.mesh.radius, s.mesh.radius, s.mesh.radius));
 				Renderer::drawDirect(*sphere);
 			}
 		}

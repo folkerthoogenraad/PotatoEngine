@@ -1,41 +1,41 @@
 #pragma once
 
-#include "vec3.h"
+#include "Vector3.h"
 
 namespace ftec {
 
 	template<typename T>
 	struct sphere;
 	template<typename T>
-	struct mat4;
+	struct Matrix4;
 
 	template<typename T>
 	struct box {
-		vec3<T> min;
-		vec3<T> max;
+		Vector3<T> min;
+		Vector3<T> max;
 
 		box() {}
-		box(vec3<T> mn, vec3<T> mx) : min(mn), max(mx) {}
+		box(Vector3<T> mn, Vector3<T> mx) : min(mn), max(mx) {}
 
-		vec3<T> center() const { return (min + max) / 2; }
-		vec3<T> extends() const { return max - center(); }
+		Vector3<T> center() const { return (min + max) / 2; }
+		Vector3<T> extends() const { return max - center(); }
 
 		T magnitude() const { return extends().magnitude(); }
 
-		box<T> &transform(const mat4<T> &m)
+		box<T> &transform(const Matrix4<T> &m)
 		{
 			min = m * min;
 			max = m * max;
 			return *this;
 		}
-		box<T> transformed(const mat4<T> &m) const
+		box<T> transformed(const Matrix4<T> &m) const
 		{
 			return clone().transform(m);
 		}
 
 		box<T> &flip()
 		{
-			vec3<T> t = max;
+			Vector3<T> t = max;
 			max = min;
 			min = t;
 

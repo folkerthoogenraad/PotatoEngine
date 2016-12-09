@@ -4,6 +4,7 @@
 #include "math/circle.h"
 
 #include "SpriteBatch.h"
+#include "Material.h"
 
 #include <memory>
 
@@ -28,7 +29,7 @@ namespace ftec {
 		std::shared_ptr<Material2D> m_Material;
 
 		recti m_ClippingRectangle;
-		color32 m_Color;
+		Color32 m_Color;
 		float m_LineWidth = 1.f;
 		float m_PointSize = 2.f;
 		PointType m_PointType = PointType::RECTANGLE;
@@ -53,21 +54,21 @@ namespace ftec {
 		void end3D();
 
 		void drawRectangle(const rectf& rectangle, bool fill);
-		void drawCircle(const vec2f &center, float radius, bool fill);
+		void drawCircle(const Vector2f &center, float radius, bool fill);
 		void drawCircle(const circlef &circle, bool fill);
-		void drawArc(const vec2f &center, float radius, bool fill, float startAngle, float angleLength);
+		void drawArc(const Vector2f &center, float radius, bool fill, float startAngle, float angleLength);
 
-		void drawString(const std::string &text, const vec2f &position);
-		void drawSprite(const Sprite &sprite, const vec2f &position);
-		void drawLine(const vec2f &start, const vec2f &end);
+		void drawString(const std::string &text, const Vector2f &position);
+		void drawSprite(const Sprite &sprite, const Vector2f &position);
+		void drawLine(const Vector2f &start, const Vector2f &end);
 		void drawLine(const line2f &line);
-		void drawPoint(const vec2f &point);
+		void drawPoint(const Vector2f &point);
 
 		void drawPrimitiveBegin(Primitive primitive);
 		void drawPrimitiveSetTexture(std::shared_ptr<Texture> texture);
-		void drawPrimitiveVertex(vec2f &vertex);
-		void drawPrimitiveUV(vec2f &uv);
-		void drawPrimitiveColor(color32 &color);
+		void drawPrimitiveVertex(Vector2f &vertex);
+		void drawPrimitiveUV(Vector2f &uv);
+		void drawPrimitiveColor(Color32 &color);
 		void drawPrimitiveEnd();
 
 		void drawClear();
@@ -75,7 +76,7 @@ namespace ftec {
 		//Set stuff
 		void setClip(const recti &rectangle);
 		void resetClip();
-		void setColor(const color32 &color);
+		void setColor(const Color32 &color);
 		void setShader(std::shared_ptr<Shader> shader);
 
 		void setDepth(float depth);
@@ -93,7 +94,7 @@ namespace ftec {
 
 		//Returns the current clipping area, as set by clip
 		inline const recti &getClip() { return m_ClippingRectangle; }
-		inline const color32 &getColor() { return m_Color; }
+		inline const Color32 &getColor() { return m_Color; }
 		inline std::shared_ptr<Shader> getShader() { return m_Material->m_Shader; } //TODO see implementation of setShader
 
 	protected:

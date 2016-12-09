@@ -61,18 +61,18 @@ namespace ftec {
 				planes.push_back(p);
 			}
 
-			vec3<T> center = m_BoundingBox.center();
-			vec3<T> delta = m_BoundingBox.extends();
+			Vector3<T> center = m_BoundingBox.center();
+			Vector3<T> delta = m_BoundingBox.extends();
 
 			//Boundingbox planes :)
-			planes.push_back(plane<T>(center + delta * vec3<T>(0, 1, 0), vec3<T>(0, 1, 0)));
-			planes.push_back(plane<T>(center + delta * vec3<T>(0, -1, 0), vec3<T>(0, 1, 0)));
+			planes.push_back(plane<T>(center + delta * Vector3<T>(0, 1, 0), Vector3<T>(0, 1, 0)));
+			planes.push_back(plane<T>(center + delta * Vector3<T>(0, -1, 0), Vector3<T>(0, 1, 0)));
 
-			planes.push_back(plane<T>(center + delta * vec3<T>(1, 0, 0), vec3<T>(1, 0, 0)));
-			planes.push_back(plane<T>(center + delta * vec3<T>(-1, 0, 0), vec3<T>(1, 0, 0)));
+			planes.push_back(plane<T>(center + delta * Vector3<T>(1, 0, 0), Vector3<T>(1, 0, 0)));
+			planes.push_back(plane<T>(center + delta * Vector3<T>(-1, 0, 0), Vector3<T>(1, 0, 0)));
 
-			planes.push_back(plane<T>(center + delta * vec3<T>(0, 0, 1), vec3<T>(0, 0, 1)));
-			planes.push_back(plane<T>(center + delta * vec3<T>(0, 0, -1), vec3<T>(0, 0, 1)));
+			planes.push_back(plane<T>(center + delta * Vector3<T>(0, 0, 1), Vector3<T>(0, 0, 1)));
+			planes.push_back(plane<T>(center + delta * Vector3<T>(0, 0, -1), Vector3<T>(0, 0, 1)));
 
 			lego.create(std::move(planes));
 

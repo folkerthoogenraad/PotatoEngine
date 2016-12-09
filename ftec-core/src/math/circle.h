@@ -1,22 +1,22 @@
 #pragma once
 
-#include "vec2.h"
+#include "Vector2.h"
 
 namespace ftec {
 
 	template<typename T>
-	struct mat3;
+	struct Matrix3;
 
 	template<typename T>
 	struct circle {
-		vec2<T> center;
+		Vector2<T> center;
 		T radius;
 
 		circle() {}
-		circle(const vec2<T> &c, T radius)
+		circle(const Vector2<T> &c, T radius)
 			: center(c), radius(radius) {}
 
-		circle<T> &transform(const mat3<T> m)
+		circle<T> &transform(const Matrix3<T> m)
 		{
 			//TODO PLS PLS
 

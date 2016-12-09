@@ -5,12 +5,12 @@
 namespace ftec {
 	float ftec::curves::CubicBezier::interpolate(float x) const
 	{
-		const vec2f p0 = vec2f(0, 0);
-		const vec2f p3 = vec2f(1, 1);
+		const Vector2f p0 = Vector2f(0, 0);
+		const Vector2f p3 = Vector2f(1, 1);
 
 		//TODO optimize
 		
-		vec2f result = tween(//blue
+		Vector2f result = tween(//blue
 			tween(//red
 				tween(//black
 					p0,

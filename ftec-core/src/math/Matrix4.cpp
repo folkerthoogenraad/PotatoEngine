@@ -1,13 +1,13 @@
-#include "mat4.h"
-#include "mat3.h"
+#include "Matrix4.h"
+#include "Matrix3.h"
 
-#include "vec3.h"
-#include "vec4.h"
+#include "Vector3.h"
+#include "Vector4.h"
 
 namespace ftec {
 
 	template <typename T>
-	mat4<T>::mat4()
+	Matrix4<T>::Matrix4()
 	{
 		std::fill(elements.begin(), elements.end(), (T)0);
 		elements[0 + 0 * 4] = (T)1;
@@ -17,17 +17,17 @@ namespace ftec {
 	}
 
 	template <typename T>
-	mat4<T> mat4<T>::identity()
+	Matrix4<T> Matrix4<T>::identity()
 	{
-		return mat4<T>();
+		return Matrix4<T>();
 	}
 
 	template <typename T>
-	mat4<T>& mat4<T>::multiply(const mat4<T>& other)
+	Matrix4<T>& Matrix4<T>::multiply(const Matrix4<T>& other)
 	{
 		//TODO look at this code
 		T sum;
-		mat4<T> m;
+		Matrix4<T> m;
 
 		for (int y = 0; y < 4; ++y) {
 			for (int x = 0; x < 4; ++x) {
@@ -47,9 +47,9 @@ namespace ftec {
 	}
 
 	template <typename T>
-	vec4<T> mat4<T>::multiply(const vec4<T> & other) const
+	Vector4<T> Matrix4<T>::multiply(const Vector4<T> & other) const
 	{
-		return vec4<T>(
+		return Vector4<T>(
 			other.x * elements[0 + 0 * 4] + other.y * elements[1 + 0 * 4] + other.z * elements[2 + 0 * 4] + other.w * elements[3 + 0 * 4],
 			other.x * elements[0 + 1 * 4] + other.y * elements[1 + 1 * 4] + other.z * elements[2 + 1 * 4] + other.w * elements[3 + 1 * 4],
 			other.x * elements[0 + 2 * 4] + other.y * elements[1 + 2 * 4] + other.z * elements[2 + 2 * 4] + other.w * elements[3 + 2 * 4],
@@ -58,9 +58,9 @@ namespace ftec {
 	}
 
 	template <typename T>
-	vec3<T> mat4<T>::multiply(const vec3<T> & other) const
+	Vector3<T> Matrix4<T>::multiply(const Vector3<T> & other) const
 	{
-		return vec3<T>(
+		return Vector3<T>(
 			other.x * elements[0 + 0 * 4] + other.y * elements[1 + 0 * 4] + other.z * elements[2 + 0 * 4] + elements[3 + 0 * 4],
 			other.x * elements[0 + 1 * 4] + other.y * elements[1 + 1 * 4] + other.z * elements[2 + 1 * 4] + elements[3 + 1 * 4],
 			other.x * elements[0 + 2 * 4] + other.y * elements[1 + 2 * 4] + other.z * elements[2 + 2 * 4] + elements[3 + 2 * 4]
@@ -68,33 +68,33 @@ namespace ftec {
 	}
 
 	template<typename T>
-	mat4<T> mat4<T>::operator*(const mat4<T>& right)
+	Matrix4<T> Matrix4<T>::operator*(const Matrix4<T>& right)
 	{
-		return mat4<T>(*this).multiply(right);
+		return Matrix4<T>(*this).multiply(right);
 	}
 
 	template <typename T>
-	mat4<T> mat4<T>::operator*=(const mat4<T>& right)
+	Matrix4<T> Matrix4<T>::operator*=(const Matrix4<T>& right)
 	{
 		return multiply(right);
 	}
 
 	template<typename T>
-	vec4<T> mat4<T>::operator*(const vec4<T> & right) const
+	Vector4<T> Matrix4<T>::operator*(const Vector4<T> & right) const
 	{
 		return multiply(right);
 	}
 
 	template<typename T>
-	vec3<T> mat4<T>::operator*(const vec3<T> & right) const
+	Vector3<T> Matrix4<T>::operator*(const Vector3<T> & right) const
 	{
 		return multiply(right);
 	}
 
 	template <typename T>
-	mat4<T> mat4<T>::translation(const vec3<T>& translation)
+	Matrix4<T> Matrix4<T>::translation(const Vector3<T>& translation)
 	{
-		mat4<T> result;
+		Matrix4<T> result;
 
 		result.elements[3 + 0 * 4] = translation.x;
 		result.elements[3 + 1 * 4] = translation.y;
@@ -104,9 +104,9 @@ namespace ftec {
 	}
 
 	template <typename T>
-	mat4<T> mat4<T>::rotation(T angle, const vec3<T>& axis)
+	Matrix4<T> Matrix4<T>::rotation(T angle, const Vector3<T>& axis)
 	{
-		mat4<T> result;
+		Matrix4<T> result;
 
 		T r = angle * ((T)3.141592654 / (T)180.0);
 		T c = cos(r);
@@ -133,9 +133,9 @@ namespace ftec {
 	}
 
 	template <typename T>
-	mat4<T> mat4<T>::scale(const vec3<T>& scale)
+	Matrix4<T> Matrix4<T>::scale(const Vector3<T>& scale)
 	{
-		mat4<T> result;
+		Matrix4<T> result;
 
 		result.elements[0 + 0 * 4] = scale.x;
 		result.elements[1 + 1 * 4] = scale.y;
@@ -145,9 +145,9 @@ namespace ftec {
 	}
 
 	template <typename T>
-	mat4<T> mat4<T>::rotationX(T angle)
+	Matrix4<T> Matrix4<T>::rotationX(T angle)
 	{
-		mat4<T> result;
+		Matrix4<T> result;
 
 		T r = (T) angle * ((T)3.141592654 / (T)180.0);
 		T s = sin(r);
@@ -167,9 +167,9 @@ namespace ftec {
 	}
 
 	template <typename T>
-	mat4<T> mat4<T>::rotationY(T angle)
+	Matrix4<T> Matrix4<T>::rotationY(T angle)
 	{
-		mat4<T> result;
+		Matrix4<T> result;
 
 		T r = angle * ((T)3.141592654 / (T)180.0);
 		T s = sin(r);
@@ -188,9 +188,9 @@ namespace ftec {
 	}
 
 	template <typename T>
-	mat4<T> mat4<T>::rotationZ(T angle)
+	Matrix4<T> Matrix4<T>::rotationZ(T angle)
 	{
-		mat4<T> result;
+		Matrix4<T> result;
 
 		T r = angle * ((T)3.141592654 / (T)180.0);
 		T s = sin(r);
@@ -208,9 +208,9 @@ namespace ftec {
 	}
 
 	template <typename T>
-	mat4<T> mat4<T>::orthographic(T l, T r, T b, T t, T n, T f)
+	Matrix4<T> Matrix4<T>::orthographic(T l, T r, T b, T t, T n, T f)
 	{
-		mat4<T> result;
+		Matrix4<T> result;
 
 		result.elements[0 + 0 * 4] = (T)2.0 / (r - l);
 		result.elements[1 + 1 * 4] = (T)2.0 / (t - b);
@@ -224,9 +224,9 @@ namespace ftec {
 	}
 
 	template <typename T>
-	mat4<T> mat4<T>::perspective(T fov, T asp, T near, T far)
+	Matrix4<T> Matrix4<T>::perspective(T fov, T asp, T near, T far)
 	{
-		mat4<T> result;
+		Matrix4<T> result;
 
 		T q = (T)1.0 / tan((T)0.5 * fov * ((T)3.141592653 / (T)180.0));
 		T a = q / asp;
@@ -246,28 +246,28 @@ namespace ftec {
 	}
 
 	template <typename T>
-	mat4<T> mat4<T>::lookAt(const vec3<T> & eye, const vec3<T> & center, const vec3<T> & up)
+	Matrix4<T> Matrix4<T>::lookAt(const Vector3<T> & eye, const Vector3<T> & center, const Vector3<T> & up)
 	{
-		mat4<T> result;
+		Matrix4<T> result;
 
-		vec3<T> zaxis = (center - eye).normalize();
-		vec3<T> xaxis = vec3<T>::cross(up, zaxis).normalize();
-		vec3<T> yaxis = vec3<T>::cross(zaxis, xaxis);
+		Vector3<T> zaxis = (center - eye).normalize();
+		Vector3<T> xaxis = Vector3<T>::cross(up, zaxis).normalize();
+		Vector3<T> yaxis = Vector3<T>::cross(zaxis, xaxis);
 
 		result.elements[0 + 0 * 4] = xaxis.x;
 		result.elements[1 + 0 * 4] = xaxis.y;
 		result.elements[2 + 0 * 4] = xaxis.z;
-		result.elements[3 + 0 * 4] = -vec3<T>::dot(xaxis, eye);
+		result.elements[3 + 0 * 4] = -Vector3<T>::dot(xaxis, eye);
 
 		result.elements[0 + 1 * 4] = yaxis.x;
 		result.elements[1 + 1 * 4] = yaxis.y;
 		result.elements[2 + 1 * 4] = yaxis.z;
-		result.elements[3 + 1 * 4] = -vec3<T>::dot(yaxis, eye);
+		result.elements[3 + 1 * 4] = -Vector3<T>::dot(yaxis, eye);
 
 		result.elements[0 + 2 * 4] = zaxis.x;
 		result.elements[1 + 2 * 4] = zaxis.y;
 		result.elements[2 + 2 * 4] = zaxis.z;
-		result.elements[3 + 2 * 4] = -vec3<T>::dot(zaxis, eye);
+		result.elements[3 + 2 * 4] = -Vector3<T>::dot(zaxis, eye);
 
 		result.elements[0 + 3 * 4] = 0;
 		result.elements[1 + 3 * 4] = 0;
@@ -278,28 +278,28 @@ namespace ftec {
 	}
 
 	template <typename T>
-	T mat4<T>::determinant() const
+	T Matrix4<T>::determinant() const
 	{
 		//[a b c d]
 		//[e f g h]
 		//[i j k l]
 		//[m n o p]
-		mat3<T> sub1 = mat3<T>({
+		Matrix3<T> sub1 = Matrix3<T>({
 			f,g,h,
 			j,k,l,
 			n,o,p
 		});
-		mat3<T> sub2 = mat3<T>({
+		Matrix3<T> sub2 = Matrix3<T>({
 			g,h,e,
 			k,l,i,
 			o,p,m
 		});
-		mat3<T> sub3 = mat3<T>({
+		Matrix3<T> sub3 = Matrix3<T>({
 			h,e,f,
 			l,i,j,
 			p,m,n
 		});
-		mat3<T> sub4 = mat3<T>({
+		Matrix3<T> sub4 = Matrix3<T>({
 			e,f,g,
 			i,j,k,
 			m,n,o
@@ -314,13 +314,13 @@ namespace ftec {
 
 
 	template <typename T>
-	mat4<T> mat4<T>::fromForward(const vec3<T> & forward, const vec3<T> & up)
+	Matrix4<T> Matrix4<T>::fromForward(const Vector3<T> & forward, const Vector3<T> & up)
 	{
-		vec3<T> zaxis = forward;
-		vec3<T> xaxis = vec3<T>::cross(up, zaxis);
-		vec3<T> yaxis = vec3<T>::cross(zaxis, xaxis);
+		Vector3<T> zaxis = forward;
+		Vector3<T> xaxis = Vector3<T>::cross(up, zaxis);
+		Vector3<T> yaxis = Vector3<T>::cross(zaxis, xaxis);
 
-		mat4<T> result;
+		Matrix4<T> result;
 
 		result.elements[0 + 0 * 4] = xaxis.x;
 		result.elements[1 + 0 * 4] = xaxis.y;
@@ -338,6 +338,6 @@ namespace ftec {
 	}
 
 	//Tell the compiler to pretty pretty please compile this 
-	template struct mat4<float>;
-	template struct mat4<double>;
+	template struct Matrix4<float>;
+	template struct Matrix4<double>;
 }

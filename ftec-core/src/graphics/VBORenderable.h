@@ -1,8 +1,9 @@
 #pragma once
 
-#include "math/vec3.h"
-#include "math/vec2.h"
 #include <vector>
+
+#include "math/Vector3.h"
+#include "math/Vector2.h"
 
 //TODO make this non copyable for resource reasons
 //Pretty deprecated
@@ -13,9 +14,9 @@ namespace ftec {
 	class VBORenderable {
 	public:
 		struct VBORVertex {
-			vec3f position;
-			vec3f normal;
-			vec2f uv;
+			Vector3f position;
+			Vector3f normal;
+			Vector2f uv;
 		};
 
 	public:

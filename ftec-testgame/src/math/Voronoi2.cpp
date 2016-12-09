@@ -32,8 +32,8 @@ namespace ftec {
 		}
 
 		m_BoundingBox = delaunay.getBoundingBox();
-		m_BoundingBox.position -= vec2<T>(1, 1);
-		m_BoundingBox.size += vec2<T>(2, 2);
+		m_BoundingBox.position -= Vector2<T>(1, 1);
+		m_BoundingBox.size += Vector2<T>(2, 2);
 
 		for (int i = 0; i < m_Points.size(); ++i) {
 			lego2<T> lego;
@@ -65,7 +65,7 @@ namespace ftec {
 	}
 
 	template <typename T>
-	const vec2<T> & ftec::Voronoi2<T>::getPoint(int index) const
+	const Vector2<T> & ftec::Voronoi2<T>::getPoint(int index) const
 	{
 		return m_Points[index].m_Vertex;
 	}

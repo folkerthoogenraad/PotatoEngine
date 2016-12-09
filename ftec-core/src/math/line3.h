@@ -1,49 +1,49 @@
 #pragma once
 
-#include "vec3.h"
+#include "Vector3.h"
 
 namespace ftec {
 
 	template<typename T>
-	struct mat4;
+	struct Matrix4;
 
 	template<typename T>
 	struct line3 {
-		vec3<T> a;
-		vec3<T> b;
+		Vector3<T> a;
+		Vector3<T> b;
 
 		line3() {}
-		line3(const vec3<T> &a, const vec3<T> &b)
+		line3(const Vector3<T> &a, const Vector3<T> &b)
 			: a(a), b(b) {}
 
-		vec3<T> direction() const
+		Vector3<T> direction() const
 		{
 			return b - a;
 		}
-		vec3<T> perp() const
+		Vector3<T> perp() const
 		{
-			return vec3<T>::perp(direction());
+			return Vector3<T>::perp(direction());
 		}
 
-		const vec3<T> &origin() const
+		const Vector3<T> &origin() const
 		{
 			return a;
 		}
-		vec3<T> center() const
+		Vector3<T> center() const
 		{
 			return (a + b) / (T)2.0;
 		}
 
 		line3<T> normal() const
 		{
-			vec3<T> p = perp();
+			Vector3<T> p = perp();
 			return line3<T>(center(), center() + p);
 		}
 
 		//The distance from point to line in line units
-		T distanceFrom(const vec3<T> p)
+		T distanceFrom(const Vector3<T> p)
 		{
-			return vec3<T>::dot(p - a, perp());
+			return Vector3<T>::dot(p - a, perp());
 		}
 
 		T sqrmagnitude() const
@@ -73,13 +73,13 @@ namespace ftec {
 			return clone().flip();
 		}
 	
-		line3<T> &transform(const mat4<T> &m)
+		line3<T> &transform(const Matrix4<T> &m)
 		{
 			a = m * a;
 			b = m * b;
 			return *this;
 		}
-		line3<T> transformed(const mat4<T> &m) const
+		line3<T> transformed(const Matrix4<T> &m) const
 		{
 			return clone().transform(m);
 		}

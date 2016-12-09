@@ -47,7 +47,7 @@ namespace ftec {
 		}
 	}
 
-	void Window::setMousePosition(const vec2f & newPosition)
+	void Window::setMousePosition(const Vector2f & newPosition)
 	{
 		m_MousePosition = newPosition;
 		glfwSetCursorPos(m_Window, newPosition.x, newPosition.y);
@@ -84,7 +84,7 @@ namespace ftec {
 		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
 		if (wp) {
 			Window &window = *wp;
-			window.m_MousePosition = vec2f((float) xpos, (float) ypos);
+			window.m_MousePosition = Vector2f((float) xpos, (float) ypos);
 		}
 		Input::handleCursor((float) xpos, (float) ypos);
 	 }

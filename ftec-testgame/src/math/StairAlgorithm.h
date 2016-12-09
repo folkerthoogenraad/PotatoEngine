@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "math/vec2.h"
+#include "math/Vector2.h"
 
 namespace ftec {
 
@@ -11,7 +11,7 @@ namespace ftec {
 	//Hourglass algorithm?
 
 	struct StairVertex {
-		vec2f m_Position;
+		Vector2f m_Position;
 		float m_Range;
 	};
 
@@ -19,7 +19,7 @@ namespace ftec {
 		std::vector<StairVertex> m_Vertices;
 
 		float getLength();
-		vec2f getPosition(float distance);
+		Vector2f getPosition(float distance);
 
 		StairArc getArc(int index);
 		bool isFirst(int index);

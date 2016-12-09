@@ -43,7 +43,7 @@ namespace potato {
 		graphics.setHorizontalAlign(ftec::FontAlign::CENTER);
 
 		if (m_Pressed) {
-			graphics.drawString(m_Text, bounds.center() + ftec::vec2i(1, 1));
+			graphics.drawString(m_Text, bounds.center() + ftec::Vector2i(1, 1));
 		}
 		else {
 			graphics.drawString(m_Text, bounds.center());

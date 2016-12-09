@@ -23,7 +23,7 @@ namespace potato {
 
 	Bounds Panel::getGlobalOutline()
 	{
-		ftec::vec2i p = m_LocalBounds.position;
+		ftec::Vector2i p = m_LocalBounds.position;
 
 		if (m_Parent) {
 			p += m_Parent->getGlobalBounds().position;
@@ -192,11 +192,11 @@ namespace potato {
 		}
 	}
 
-	bool Panel::inBounds(ftec::vec2i point)
+	bool Panel::inBounds(ftec::Vector2i point)
 	{
 		return getGlobalBounds().contains(point);
 	}
-	bool Panel::inChildBounds(ftec::vec2i point)
+	bool Panel::inChildBounds(ftec::Vector2i point)
 	{
 		//If not in our bounds, it certainly is not in our childs bounds
 		if (!inBounds(point))
@@ -210,7 +210,7 @@ namespace potato {
 
 		return false;
 	}
-	bool Panel::inSelfBounds(ftec::vec2i point)
+	bool Panel::inSelfBounds(ftec::Vector2i point)
 	{
 		return inBounds(point) && !inChildBounds(point);
 	}

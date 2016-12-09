@@ -29,14 +29,18 @@
 #include "Voronoi3DEntity.h"
 #include "TestCanvas.h"
 
+#include "graphics/2d/Drawable2D.h"
+
+#include "logger/log.h"
+
 namespace ftec {
 
+	std::shared_ptr<Renderer2D> renderer;
 
 	void Razura::update()
 	{
 		ui->update();
 	}
-
 
 	void Razura::render()
 	{
@@ -63,7 +67,7 @@ namespace ftec {
 			Engine::setScene(scene);
 
 #if 0
-			scene->m_Light.m_Direction = vec3f(1,-0.4f,-1).normalize();
+			scene->m_Light.m_Direction = Vector3f(1,-0.4f,-1).normalize();
 
 			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
 
@@ -80,9 +84,9 @@ namespace ftec {
 					material->m_RoughnessMap = Engine::getResourceManager().load<Texture>("textures/metal/metal_roughness.tif");
 					material->m_MetallicMap = Engine::getResourceManager().load<Texture>("textures/metal/metal_metallicness.tif");
 
-					material->m_Tiling = vec2f(4, 4);
+					material->m_Tiling = Vector2f(4, 4);
 
-					scene->addMesh(vec3f(x * 2.5, 0, y * 2.5), sphere, material);
+					scene->addMesh(Vector3f(x * 2.5, 0, y * 2.5), sphere, material);
 				}
 			}
 #endif

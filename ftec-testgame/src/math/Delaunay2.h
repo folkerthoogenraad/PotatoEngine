@@ -18,24 +18,24 @@ namespace ftec {
 	template <typename T>
 	class Delaunay2 {
 	private:
-		std::vector<DelaunayVertex<vec2<T>>> m_Vertices;
+		std::vector<DelaunayVertex<Vector2<T>>> m_Vertices;
 
 		std::vector<TriangleRef> m_Triangles;
 
 		rect<T> m_BoundingBox;
 	public:
 		Delaunay2() {}
-		Delaunay2(std::vector<vec2<T>> points)
+		Delaunay2(std::vector<Vector2<T>> points)
 		{
 			triangulate(std::move(points));
 		}
 
-		void triangulate(std::vector<vec2<T>> points)
+		void triangulate(std::vector<Vector2<T>> points)
 		{
 			m_Triangles.clear();
 
-			vec2<T> minPosition = points.front();
-			vec2<T> maxPosition = minPosition;
+			Vector2<T> minPosition = points.front();
+			Vector2<T> maxPosition = minPosition;
 
 			for (auto & v : points) {
 				minPosition.x = min(v.x, minPosition.x);
@@ -52,17 +52,17 @@ namespace ftec {
 			//This is a know issue, should be fixed very very soon (~ish)
 
 			{
-				vec2<T> delta = maxPosition - minPosition;
+				Vector2<T> delta = maxPosition - minPosition;
 				m_BoundingBox = rect<T>(minPosition.x, minPosition.y, delta.x, delta.y);
 			}
 
-			vec2<T> delta = maxPosition - minPosition;
+			Vector2<T> delta = maxPosition - minPosition;
 
 			circle<T> c = m_BoundingBox.boundingCircle();
 
-			m_Vertices.push_back({ c.center + vec2<T>(0, 2) * c.radius, true, true });
-			m_Vertices.push_back({ c.center + vec2<T>(-2, -1) * c.radius, true, true });
-			m_Vertices.push_back({ c.center + vec2<T>(2, -1) * c.radius, true, true });
+			m_Vertices.push_back({ c.center + Vector2<T>(0, 2) * c.radius, true, true });
+			m_Vertices.push_back({ c.center + Vector2<T>(-2, -1) * c.radius, true, true });
+			m_Vertices.push_back({ c.center + Vector2<T>(2, -1) * c.radius, true, true });
 
 			TriangleRef superTriangle((int)m_Vertices.size() - 1, (int)m_Vertices.size() - 2, (int)m_Vertices.size() - 3);
 
@@ -70,7 +70,7 @@ namespace ftec {
 			m_Triangles.push_back(superTriangle);
 
 			for (int i = 0; i < m_Vertices.size() - 3; i++) { //Ignore the last few vertices
-				const vec2<T> &v = m_Vertices[i].m_Vertex;
+				const Vector2<T> &v = m_Vertices[i].m_Vertex;
 
 				std::vector<TriangleRef> badTriangles;
 
@@ -176,8 +176,8 @@ namespace ftec {
 		}
 
 		int getPointCount() const { return m_Vertices.size(); };
-		const vec2<T> &getPoint(int index) const { return m_Vertices[index].m_Vertex; }
-		const std::vector<DelaunayVertex<vec2<T>>> &getVertices() const { return m_Vertices; }
+		const Vector2<T> &getPoint(int index) const { return m_Vertices[index].m_Vertex; }
+		const std::vector<DelaunayVertex<Vector2<T>>> &getVertices() const { return m_Vertices; }
 
 		int getTriangleCount() const { return (int) m_Triangles.size(); }
 		const TriangleRef &getTriangleRef(int index) const { return m_Triangles[index]; }

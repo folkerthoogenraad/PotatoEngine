@@ -1,6 +1,14 @@
 #include "Shader.h"
+
 #include "io/ioutils.h"
 #include "logger/log.h"
+
+#include "math/Vector2.h"
+#include "math/Vector3.h"
+#include "math/Vector4.h"
+
+#include "math/Matrix4.h"
+
 #include <vector>
 
 namespace ftec {
@@ -107,22 +115,22 @@ namespace ftec {
 		return glGetAttribLocation(m_Program, attribute.c_str());
 	}
 
-	void Shader::setUniform(int location, const mat4<float> &m)
+	void Shader::setUniform(int location, const Matrix4f &m)
 	{
 		glUniformMatrix4fv(location, 1, GL_TRUE, &m.elements[0]);
 	}
 
-	void Shader::setUniform(int location, const vec2f &v)
+	void Shader::setUniform(int location, const Vector2f &v)
 	{
 		glUniform2f(location, v.x, v.y);
 	}
 
-	void Shader::setUniform(int location, const vec3f &v)
+	void Shader::setUniform(int location, const Vector3f &v)
 	{
 		glUniform3f(location, v.x, v.y, v.z);
 	}
 
-	void Shader::setUniform(int location, const vec4f &v)
+	void Shader::setUniform(int location, const Vector4f &v)
 	{
 		glUniform4f(location, v.x, v.y, v.z, v.w);
 	}

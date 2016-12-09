@@ -1,19 +1,19 @@
 #pragma once
 
-#include "vec3.h"
+#include "Vector3.h"
 
 namespace ftec {
 
 	template<typename T>
 	struct sphere {
-		vec3<T> center;
+		Vector3<T> center;
 		T radius;
 
 		sphere() {}
-		sphere(const vec3<T> &c, T radius)
+		sphere(const Vector3<T> &c, T radius)
 			: center(c), radius(radius) {}
 
-		sphere<T> &transform(const mat4<T> m)
+		sphere<T> &transform(const Matrix4<T> m)
 		{
 			//TODO PLS PLS
 

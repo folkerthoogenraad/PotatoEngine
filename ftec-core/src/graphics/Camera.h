@@ -3,8 +3,8 @@
 #include <memory>
 #include "Layer.h"
 
-#include "math/vec3.h"
-#include "math/mat4.h"
+#include "math/Vector3.h"
+#include "math/Matrix4.h"
 
 namespace ftec {
 	
@@ -13,7 +13,7 @@ namespace ftec {
 
 	class Camera {
 	public:
-		vec3f m_Position;
+		Vector3f m_Position;
 		
 		//TODO add render target
 		//TODO add ortho camera
@@ -43,8 +43,8 @@ namespace ftec {
 		Camera(float fov, float aspect, float near, float far);
 		~Camera() = default;
 
-		mat4f getProjectionMatrix() const;
-		mat4f getViewMatrix() const;
+		Matrix4f getProjectionMatrix() const;
+		Matrix4f getViewMatrix() const;
 
 		inline bool hasRenderTarget() const { return m_RenderTarget != 0; };
 

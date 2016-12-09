@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math/vec3.h"
+#include "math/Vector3.h"
 #include "math/line3.h"
 #include "math/plane.h"
 
@@ -15,10 +15,10 @@ namespace ftec {
 
 	template <typename T>
 	class lego3 {
-		vec3<T> m_Center;
+		Vector3<T> m_Center;
 	public:
 		//The vertices generated
-		std::vector<vec3<T>> m_Vertices;
+		std::vector<Vector3<T>> m_Vertices;
 
 		//Recalculates the vertices
 		void create(std::vector<plane<T>> planes)
@@ -56,18 +56,18 @@ namespace ftec {
 				}
 				
 				m_Vertices.erase(std::remove_if(m_Vertices.begin(), m_Vertices.end(),
-					[&p](vec3<T> &v) -> bool {
+					[&p](Vector3<T> &v) -> bool {
 					return p.distanceFrom(v) < -EPSILON; //Small rounding error fix?
 				}), m_Vertices.end());
 			}
 		}
 
 
-		void setCenter(vec3<T> center)
+		void setCenter(Vector3<T> center)
 		{
 			m_Center = center;
 		}
-		const vec3<T> &getCenter() const { return m_Center; }
+		const Vector3<T> &getCenter() const { return m_Center; }
 	};
 
 	typedef lego3<float> lego3f;
