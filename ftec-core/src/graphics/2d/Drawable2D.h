@@ -2,6 +2,8 @@
 
 
 namespace ftec {
+
+	class Renderer2D;
 	
 	struct Drawable2D {
 	public:

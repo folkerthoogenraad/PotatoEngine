@@ -90,4 +90,17 @@ namespace ftec {
 	Paint::~Paint()
 	{
 	}
+	void Paint::vertex(float x, float y)
+	{
+	}
+	void Paint::depth(float z)
+	{
+		m_Depth = z;
+	}
+	void Paint::color(const color32 & color)
+	{
+	}
+	void Paint::uv(float u, float v)
+	{
+	}
 }

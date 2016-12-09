@@ -34,7 +34,7 @@ namespace ftec {
 	private:
 		Renderer2D &m_Renderer;
 		Primitive m_Primitive;
-		float depth;
+		float m_Depth;
 	public:
 		Paint(Renderer2D &r, Primitive primitive);
 		~Paint();
