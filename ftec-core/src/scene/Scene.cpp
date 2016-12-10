@@ -12,6 +12,7 @@
 
 #include "Entity.h"
 
+
 namespace ftec {
 
 	Scene::Scene()
@@ -27,6 +28,7 @@ namespace ftec {
 			m_Entities[i]->update();
 		}
 	}
+
 	void Scene::render()
 	{
 		for (auto &c : m_Cameras)
@@ -50,6 +52,7 @@ namespace ftec {
 			obj->render();
 		}
 	}
+
 	void Scene::addEntity(std::shared_ptr<Entity> entity)
 	{
 		m_Entities.push_back(entity);

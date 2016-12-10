@@ -2,6 +2,7 @@
 
 #include "math/Vector3.h"			// For position
 
+
 namespace ftec {
 	class Entity {
 	protected:

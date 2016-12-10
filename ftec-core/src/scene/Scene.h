@@ -5,6 +5,7 @@
 
 #include "math/Vector3.h"			//For Vector3
 
+
 namespace ftec {
 
 	class Entity;
