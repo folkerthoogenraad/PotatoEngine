@@ -1,46 +1,38 @@
 #pragma once
 
-//TODO remove most of all these things
-#include "Mesh.h"
-#include "Material.h"
-#include "Camera.h"
-#include "Renderer.h"
-#include "Light.h"
-
-#include "Layer.h"
-
-#include "math/Matrix4.h"
-#include "math/Vector3.h"
-#include "math/line3.h"
-#include "math/triangle3.h"
-#include "math/sphere.h"
-#include "math/Vector4.h"
-
-#include "SpriteBatch.h"
+#include <vector>
 #include <memory>
+
+#include "Layer.h"								//For LAYER_ALL
 
 namespace ftec {
 
+	//Special forward declares
+	template <typename T> struct Vector4;	typedef Vector4<unsigned char>	Color32;
+	template <typename T> struct Matrix4;	typedef Matrix4<float>			Matrix4f;
+
+	template <typename T> struct line3;		typedef line3<float>			line3f;
+	template <typename T> struct triangle3; typedef triangle3<float>		triangle3f;
+	template <typename T> struct sphere;	typedef sphere<float>			spheref;
+	template <typename T> struct Vector3;	typedef Vector3<float>			Vector3f;
+
+	//Normal forward declares
 	class SpriteBatch;
+	class Mesh;
+	class Camera;
+	class Light;
+
+	class InstanceList;
+
+	struct Material;
+	struct Material2D;
+
+	//Stuff that should not be used outside the graphics stuff
+	struct EnqueuedMesh;
+	template <typename T> struct ColorType;
 	
 	class Graphics {
-
 	private:
-		struct EnqueuedMesh {
-			const Mesh *mesh;
-			const Material *material;
-
-			Matrix4f modelMatrix;
-			Layer layer;
-
-			InstanceList *list;
-		};
-
-		template <typename T>
-		struct ColorType {
-			T mesh;
-			Color32 color;
-		};
 
 		static std::unique_ptr<SpriteBatch> renderer;
 
@@ -61,19 +53,19 @@ namespace ftec {
 		static void begin();
 
 		//Enqueues the mesh for rendering
-		static void enqueueMesh(const Mesh *mesh, const Material *material, const Matrix4f &modelMatrix = Matrix4f::identity(), Layer layer = LAYER_ALL, InstanceList* list = nullptr);
+		static void enqueueMesh(const Mesh *mesh, const Material *material, const Matrix4f &modelMatrix, Layer layer = LAYER_ALL, InstanceList* list = nullptr);
 
 		//Enqueues the mesh for rendering
-		static void enqueueLine(const line3f &line, const Color32 &color = Color32::white());
+		static void enqueueLine(const line3f &line, const Color32 &color);
 
 		//Enqueues the mesh for rendering
-		static void enqueuePoint(const Vector3f &point, const Color32 &color = Color32::white());
+		static void enqueuePoint(const Vector3f &point, const Color32 &color);
 
 		//Enqueues the mesh for rendering
-		static void enqueueTriangle(const triangle3f &triangle, const Color32 &color = Color32::white());
+		static void enqueueTriangle(const triangle3f &triangle, const Color32 &color);
 
 		//Enqueues the mesh for rendering
-		static void enqueueSphere(const spheref &sphere, const Color32 &color = Color32::white());
+		static void enqueueSphere(const spheref &sphere, const Color32 &color);
 
 		//Enqueues the camera to render the scene
 		static void enqueueCamera(const Camera *camera);

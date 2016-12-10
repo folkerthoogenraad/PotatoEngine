@@ -29,7 +29,7 @@ namespace ftec {
 		}
 
 		if (m_MouseGrabbed) {
-			Camera &cam = Engine::getScene()->m_Camera;
+			Camera &cam = Engine::getScene()->m_Cameras[0];
 
 			cam.m_Yaw += Input::getMouseDX() / 10.f;
 			cam.m_Pitch += Input::getMouseDY() / 10.f;

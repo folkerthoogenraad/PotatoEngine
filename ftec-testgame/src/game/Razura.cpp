@@ -65,7 +65,7 @@ namespace ftec {
 			Engine::setScene(scene);
 
 #if 1
-			scene->m_Light.m_Direction = Vector3f(1,-0.4f,-1).normalize();
+			scene->m_Lights[0].m_Direction = Vector3f(1,-0.4f,-1).normalize();
 
 			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
 

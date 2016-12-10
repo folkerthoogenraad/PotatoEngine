@@ -9,6 +9,7 @@
 
 #include "math/math.h"
 #include "math/Matrix4.h"
+#include "math/Vector4.h"
 
 #include "math/tetrahedron.h"
 #include "math/Delaunay3.h"

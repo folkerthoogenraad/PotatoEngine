@@ -1,19 +1,52 @@
 #include "Graphics.h"
+
+#include "GL.h"
 #include "logger/log.h"
 #include "Renderer.h"
 #include "engine/Engine.h"
 #include "GraphicsState.h"
 #include "Cubemap.h"
 
+#include "Mesh.h"
+#include "Material.h"
+#include "Camera.h"
+#include "Renderer.h"
+#include "Light.h"
+
+#include "Layer.h"
+
+#include "math/Matrix4.h"
+#include "math/Vector3.h"
+#include "math/line3.h"
+#include "math/triangle3.h"
+#include "math/sphere.h"
+#include "math/Vector4.h"
+
+#include "SpriteBatch.h"
+
 //This should not be here, because this is a graphics stuff
 #include "resources/ResourceManager.h"
-#include "GL.h"
 
 #define DEBUG_GRAPHICS 0
 
 namespace ftec {
 
-	std::vector<Graphics::EnqueuedMesh> Graphics::meshes = {};
+	struct EnqueuedMesh {
+		const Mesh *mesh;
+		const Material *material;
+
+		Matrix4f modelMatrix;
+		Layer layer;
+
+		InstanceList *list;
+	};
+
+	template <typename T> struct ColorType {
+		T mesh;
+		Color32 color;
+	};
+
+	std::vector<EnqueuedMesh> Graphics::meshes = {};
 	std::vector<const Camera *> Graphics::cameras = {};
 	std::vector<const Light *> Graphics::lights = {};
 	bool Graphics::drawing = false;
@@ -21,10 +54,10 @@ namespace ftec {
 
 	std::unique_ptr<SpriteBatch> Graphics::renderer;
 	std::shared_ptr<Material2D> Graphics::pointMaterial;
-	std::vector<Graphics::ColorType<line3f>> Graphics::lines;
-	std::vector<Graphics::ColorType<Vector3f>> Graphics::points;
-	std::vector<Graphics::ColorType<spheref>> Graphics::spheres;
-	std::vector<Graphics::ColorType<triangle3f>> Graphics::triangles;
+	std::vector<ColorType<line3f>> Graphics::lines;
+	std::vector<ColorType<Vector3f>> Graphics::points;
+	std::vector<ColorType<spheref>> Graphics::spheres;
+	std::vector<ColorType<triangle3f>> Graphics::triangles;
 
 	void Graphics::begin()
 	{

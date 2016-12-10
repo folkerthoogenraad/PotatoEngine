@@ -10,6 +10,8 @@
 #include "engine/Time.h"
 #include "engine/Input.h"
 
+#include "math/Vector4.h"
+
 #include "math/Delaunay3.h"
 #include "math/triangle3.h"
 
@@ -164,7 +166,7 @@ namespace ftec {
 				Graphics::enqueuePoint(model * rotation * center, Color32::red());
 
 				for (auto &v : m_Points){
-					Graphics::enqueuePoint(model * rotation * v);
+					Graphics::enqueuePoint(model * rotation * v, Color32::white());
 				}
 
 				Graphics::enqueueLine(line3f(

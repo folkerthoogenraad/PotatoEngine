@@ -1,15 +1,24 @@
 #include "Scene.h"
-#include "graphics/Window.h"
+
 #include "engine/Engine.h"
-#include "engine/Time.h"
+
+#include "graphics/Window.h"
 #include "graphics/Graphics.h"
+#include "graphics/Mesh.h"
+#include "graphics/Material.h"
+#include "graphics/Camera.h"
+#include "graphics/Light.h"
+#include "graphics/Renderer.h"
+
+#include "Entity.h"
 
 namespace ftec {
 
 	Scene::Scene()
-		: m_Camera(Camera::perspective(60, Engine::getWindow().getWidth() / Engine::getWindow().getHeight(), 0.1f, 1000.f))
 	{
-
+		//Not sure if we want to have this, but whatever
+		m_Cameras.push_back(Camera::perspective(60, Engine::getWindow().getWidth() / Engine::getWindow().getHeight(), 0.1f, 1000.f));
+		m_Lights.push_back(Light());
 	}
 
 	void Scene::update()
@@ -17,19 +26,18 @@ namespace ftec {
 		for (int i = 0; i < m_Entities.size(); ++i) {
 			m_Entities[i]->update();
 		}
-		/*
-		for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {
-			auto obj = *i;
-			obj->update();
-		}*/
 	}
 	void Scene::render()
 	{
-		//This should obviously be batched.
-		Graphics::enqueueCamera(&m_Camera);
+		for (auto &c : m_Cameras)
+		{
+			Graphics::enqueueCamera(&c);
+		}
 
-		//Obviously this should be different
-		Graphics::enqueueLight(&m_Light);
+		for (auto &l : m_Lights)
+		{
+			Graphics::enqueueLight(&l);
+		}
 
 		for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {
 			StaticGeometry &geometry = *i;
@@ -49,12 +57,13 @@ namespace ftec {
 
 	void Scene::removeEntity(std::shared_ptr<Entity> entity)
 	{
-		//TODO
+
 	}
 
 	void Scene::addMesh(const Vector3f & position, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material)
 	{
 		StaticGeometry s;
+
 		s.mesh = mesh;
 		s.position = position;
 		s.material = material;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math/Vector3.h"
+#include "math/Vector3.h"			// For position
 
 namespace ftec {
 	class Entity {

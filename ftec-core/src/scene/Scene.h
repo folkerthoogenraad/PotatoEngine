@@ -1,27 +1,38 @@
 #pragma once
 
-#include <memory>
-#include <vector>
+#include <memory>					//For std::shared_ptr
+#include <vector>					//For std::vector
 
-#include "Entity.h"
-#include "graphics/Mesh.h"
-#include "graphics/Material.h"
-#include "graphics/Camera.h"
-#include "graphics/Light.h"
-#include "graphics/Renderer.h"
+#include "math/Vector3.h"			//For Vector3
 
 namespace ftec {
+
+	class Entity;
+	class Mesh;
+
+	struct Material;
+	
+	class Light;
+	class Camera;
+
 	struct StaticGeometry {
 		Vector3f position;
-		std::shared_ptr<Material> material;
 
+		std::shared_ptr<Material> material;
 		std::shared_ptr<Mesh> mesh;
 	};
 
 	class Scene {
 	public:
-		Camera m_Camera;
-		Light m_Light;		//Should be an array ofcourse, but that does not matter right now
+		std::vector<Camera> m_Cameras;
+		std::vector<Light> m_Lights;
+
+		enum SceneMode {
+			GRAPHICS_2D,
+			GRAPICS_3D,
+			GRAPHICS_BOTH
+		} m_Mode;
+
 	private:
 		std::vector<std::shared_ptr<Entity>> m_Entities;
 		std::vector<StaticGeometry> m_StaticGeometry;
