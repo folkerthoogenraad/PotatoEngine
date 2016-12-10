@@ -29,6 +29,7 @@
 
 #define DEBUG_GRAPHICS 0
 
+
 namespace ftec {
 
 	struct EnqueuedMesh {

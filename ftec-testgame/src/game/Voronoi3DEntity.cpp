@@ -73,6 +73,7 @@ namespace ftec {
 		//Engine::getScene()->addEntity(std::make_shared<PointCloudEntity>(m_Points));
 	}
 
+
 	Voronoi3DEntity::Voronoi3DEntity()
 	{
 		

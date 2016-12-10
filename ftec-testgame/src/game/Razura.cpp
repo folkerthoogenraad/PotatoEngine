@@ -33,6 +33,7 @@
 
 #include "logger/log.h"
 
+
 namespace ftec {
 
 	void Razura::update()

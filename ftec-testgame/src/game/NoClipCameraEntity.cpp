@@ -14,6 +14,7 @@
 
 #include "engine/Keycodes.h"
 
+
 namespace ftec {
 	NoClipCameraEntity::NoClipCameraEntity() : m_MouseGrabbed(false)
 	{ }

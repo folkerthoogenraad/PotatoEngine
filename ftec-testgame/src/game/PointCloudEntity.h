@@ -14,6 +14,7 @@ namespace ftec {
 	struct PBRMaterial;
 	class Mesh;
 
+
 	class PointCloudEntity : public Entity {
 		std::vector<Vector3d> m_Points;
 		std::shared_ptr<PBRMaterial> m_Material;

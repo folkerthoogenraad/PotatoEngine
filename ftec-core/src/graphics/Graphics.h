@@ -16,6 +16,7 @@ namespace ftec {
 	template <typename T> struct sphere;	typedef sphere<float>			spheref;
 	template <typename T> struct Vector3;	typedef Vector3<float>			Vector3f;
 
+
 	//Normal forward declares
 	class SpriteBatch;
 	class Mesh;
