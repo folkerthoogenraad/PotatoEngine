@@ -39,7 +39,7 @@ namespace ftec {
 		Matrix4f modelMatrix;
 		Layer layer;
 
-		InstanceList *list;
+		const InstanceList *list;
 	};
 
 	template <typename T> struct ColorType {
@@ -51,7 +51,6 @@ namespace ftec {
 	std::vector<const Camera *> Graphics::cameras = {};
 	std::vector<const Light *> Graphics::lights = {};
 	bool Graphics::drawing = false;
-
 
 	std::unique_ptr<SpriteBatch> Graphics::renderer;
 	std::shared_ptr<Material2D> Graphics::pointMaterial;
@@ -87,7 +86,7 @@ namespace ftec {
 		
 	}
 	//TODO constness and stuff
-	void Graphics::enqueueMesh(const Mesh *mesh, const Material *material, const Matrix4f &modelMatrix, Layer layer, InstanceList *list)
+	void Graphics::enqueueMesh(const Mesh *mesh, const Material *material, const Matrix4f &modelMatrix, Layer layer, const InstanceList *list)
 	{
 		meshes.push_back({
 			mesh, material, modelMatrix, layer, list

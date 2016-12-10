@@ -54,7 +54,7 @@ namespace ftec {
 		static void begin();
 
 		//Enqueues the mesh for rendering
-		static void enqueueMesh(const Mesh *mesh, const Material *material, const Matrix4f &modelMatrix, Layer layer = LAYER_ALL, InstanceList* list = nullptr);
+		static void enqueueMesh(const Mesh *mesh, const Material *material, const Matrix4f &modelMatrix, Layer layer = LAYER_ALL, const InstanceList* list = nullptr);
 
 		//Enqueues the mesh for rendering
 		static void enqueueLine(const line3f &line, const Color32 &color);

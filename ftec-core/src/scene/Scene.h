@@ -16,12 +16,7 @@ namespace ftec {
 	class Light;
 	class Camera;
 
-	struct StaticGeometry {
-		Vector3f position;
-
-		std::shared_ptr<Material> material;
-		std::shared_ptr<Mesh> mesh;
-	};
+	struct StaticGeometry; // Should be in internal oid
 
 	class Scene {
 	public:

@@ -10,10 +10,19 @@
 #include "graphics/Light.h"
 #include "graphics/Renderer.h"
 
+#include "math/Vector3.h"
+
 #include "Entity.h"
 
 
 namespace ftec {
+
+	struct StaticGeometry {
+		Vector3f position;
+
+		std::shared_ptr<Material> material;
+		std::shared_ptr<Mesh> mesh;
+	};
 
 	Scene::Scene()
 	{
