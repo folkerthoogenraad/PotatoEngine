@@ -11,7 +11,7 @@ namespace ftec {
 
 	struct Material {
 	public:
-		virtual void prepare() = 0;
+		virtual void prepare() const = 0;
 	};
 	
 	struct Material2D : public Material {
@@ -19,7 +19,7 @@ namespace ftec {
 		std::shared_ptr<Shader> m_Shader = nullptr; //This should be automatic
 		std::shared_ptr<Texture> m_TextureMap = nullptr;
 
-		void prepare();
+		void prepare() const;
 	};
 
 	struct PBRMaterial : public Material {
@@ -43,6 +43,6 @@ namespace ftec {
 		PBRMaterial() = default;
 		PBRMaterial(std::shared_ptr<Texture> texture, std::shared_ptr<Shader> shader) : m_TextureMap(texture), m_Shader(shader){}
 
-		void prepare();
+		void prepare() const;
 	};
 }

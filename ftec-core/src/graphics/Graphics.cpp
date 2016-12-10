@@ -5,6 +5,10 @@
 #include "GraphicsState.h"
 #include "Cubemap.h"
 
+//This should not be here, because this is a graphics stuff
+#include "resources/ResourceManager.h"
+#include "GL.h"
+
 #define DEBUG_GRAPHICS 0
 
 namespace ftec {
@@ -49,7 +53,7 @@ namespace ftec {
 		
 	}
 	//TODO constness and stuff
-	void Graphics::enqueueMesh(const Mesh *mesh, std::shared_ptr<Material> material, const Matrix4f &modelMatrix, Layer layer, InstanceList *list)
+	void Graphics::enqueueMesh(const Mesh *mesh, const Material *material, const Matrix4f &modelMatrix, Layer layer, InstanceList *list)
 	{
 		meshes.push_back({
 			mesh, material, modelMatrix, layer, list
@@ -145,7 +149,10 @@ namespace ftec {
 
 			//Drawing skybox
 			GraphicsState::m_Lights[0].enabled = false; //Idk man
-			GraphicsState::m_Material = std::make_shared<PBRMaterial>(nullptr, Engine::getResourceManager().load<Shader>("shaders/skybox"));
+
+			PBRMaterial skyboxMaterial(nullptr, Engine::getResourceManager().load<Shader>("shaders/skybox"));
+
+			GraphicsState::m_Material = &skyboxMaterial;
 			auto mesh = Engine::getResourceManager().load<Mesh>("mesh/skybox.obj");
 
 
@@ -189,7 +196,7 @@ namespace ftec {
 				}
 			}
 			
-			GraphicsState::m_Material = pointMaterial;
+			GraphicsState::m_Material = pointMaterial.get();
 			GraphicsState::m_Skybox = nullptr;
 			GraphicsState::matrixModel = Matrix4f::identity();
 

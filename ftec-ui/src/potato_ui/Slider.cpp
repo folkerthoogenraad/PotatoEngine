@@ -1,9 +1,12 @@
 #include "Slider.h"
-#include "math/math.h"
+
 #include "engine/Input.h"
+#include "engine/Keycodes.h"
+
 #include "graphics/Graphics2D.h"
+
 #include "logger/log.h"
-#include "PotatoUI.h"
+
 
 namespace potato {
 
@@ -38,16 +41,16 @@ namespace potato {
 
 		ftec::rectf blockBounds = getSliderBounds();
 
-		if (ftec::Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
+		if (ftec::Input::isMouseButtonPressed(MOUSE_BUTTON_1)) {
 			if (blockBounds.contains(ftec::Input::getMousePosition())) {
 				m_SliderHold = true;
 				event.consume();//Event is now consumed (Idk whether or not we need this, but whatever)
 			}
 		}
-		if (ftec::Input::isMouseButtonReleased(GLFW_MOUSE_BUTTON_1)) {
+		if (ftec::Input::isMouseButtonReleased(MOUSE_BUTTON_1)) {
 			m_SliderHold = false;
 		}
-		if (ftec::Input::isMouseButtonDown(GLFW_MOUSE_BUTTON_1) && m_SliderHold) {
+		if (ftec::Input::isMouseButtonDown(MOUSE_BUTTON_1) && m_SliderHold) {
 			const float hs = SLIDER_BLOCK_SIZE / 2;
 			m_Value = ftec::invLerp((float)bounds.left() + hs, (float)bounds.right() - hs, ftec::Input::getMousePosition().x);
 			m_Value = ftec::clamp(0.f, 1.f, m_Value);

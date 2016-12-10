@@ -1,7 +1,8 @@
 #pragma once
 
-#include "resources/ResourceManager.h"
-#include "GL.h"
+#include "resources/ManageableResource.h"
+#include <memory>
+#include <string>
 
 #define SHADER_ATTRIBUTE_POSITION 0
 #define SHADER_ATTRIBUTE_NORMAL 1
@@ -30,7 +31,7 @@ namespace ftec {
 
 	class Shader : public ManagableResource {
 	protected:
-		GLuint m_Program;
+		unsigned int m_Program;
 	public:
 		Shader(const std::string &vertexSource, const std::string &fragmentShader);
 		~Shader();

@@ -10,6 +10,8 @@
 
 #include "math/lego2.h"
 
+#include "engine/Keycodes.h"
+
 
 namespace ftec {
 
@@ -33,19 +35,19 @@ namespace ftec {
 
 	void VoronoiCanvas::update()
 	{
-		if (Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_2)) {
+		if (Input::isMouseButtonPressed(MOUSE_BUTTON_2)) {
 			points.clear();
 			recreate();
 		}
-		if (Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
+		if (Input::isMouseButtonPressed(MOUSE_BUTTON_1)) {
 			points.push_back(Input::getMousePosition());
 			recreate();
 		}
-		if (Input::isMouseButtonDown(GLFW_MOUSE_BUTTON_3)) {
+		if (Input::isMouseButtonDown(MOUSE_BUTTON_3)) {
 			points.back() = Input::getMousePosition();
 			recreate();
 		}
-		if (Input::isKeyTyped(GLFW_KEY_ENTER)) {
+		if (Input::isKeyTyped(KEY_ENTER)) {
 			points.clear();
 			for (int i = 0; i < 200; i++) {
 				points.push_back(Vector2i(
@@ -55,7 +57,7 @@ namespace ftec {
 			}
 			recreate();
 		}
-		if (Input::isKeyTyped(GLFW_KEY_C)) {
+		if (Input::isKeyTyped(KEY_C)) {
 			points.clear();
 			for (int x = 0; x < 18; x++) {
 				for (int y = 0; y < 10; y++) {
@@ -107,10 +109,10 @@ namespace ftec {
 				graphics.drawLine(l.m_Vertices.front(), l.m_Vertices.back());
 			}
 
-			if (!Input::isKeyDown(GLFW_KEY_Z))
+			if (!Input::isKeyDown(KEY_Z))
 				continue;
 
-			if (Input::isKeyDown(GLFW_KEY_SPACE)) {
+			if (Input::isKeyDown(KEY_SPACE)) {
 				graphics.setColor(Color32(144, 140, 90, 255));
 				graphics.setLineWidth(1);
 

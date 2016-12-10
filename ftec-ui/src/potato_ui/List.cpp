@@ -2,6 +2,8 @@
 #include "graphics/Font.h"
 #include "logger/log.h"
 #include "engine/Input.h"
+#include "engine/Keycodes.h"
+
 
 namespace potato {
 	List::List()
@@ -32,7 +34,7 @@ namespace potato {
 	{
 		Panel::processSelf(event);
 		
-		if (ftec::Input::isMouseButtonDown(GLFW_MOUSE_BUTTON_1)) {
+		if (ftec::Input::isMouseButtonDown(MOUSE_BUTTON_1)) {
 			if (isHoveringSelf()) {
 				//TODO callbacks, all that goodstuff
 				event.consume();

@@ -7,7 +7,7 @@
 namespace ftec {
 
 	Scene::Scene()
-		: m_Camera(60, Engine::getWindow().getWidth() / Engine::getWindow().getHeight(), 0.1f, 1000.f)
+		: m_Camera(Camera::perspective(60, Engine::getWindow().getWidth() / Engine::getWindow().getHeight(), 0.1f, 1000.f))
 	{
 
 	}
@@ -34,7 +34,7 @@ namespace ftec {
 		for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {
 			StaticGeometry &geometry = *i;
 
-			Graphics::enqueueMesh(geometry.mesh.get(), geometry.material, Matrix4f::translation(geometry.position), LAYER_STATIC);
+			Graphics::enqueueMesh(geometry.mesh.get(), geometry.material.get(), Matrix4f::translation(geometry.position), LAYER_STATIC);
 		}
 
 		for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {

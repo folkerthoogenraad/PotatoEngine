@@ -8,7 +8,7 @@ namespace ftec {
 
 	class Sprite {
 	private:
-		std::shared_ptr<Texture> m_Texture;
+		std::shared_ptr<Texture> m_Texture = 0;
 		
 		//This is where stuff gets weird. This needs some explaining
 		rectf m_LocalBounds;
@@ -16,6 +16,7 @@ namespace ftec {
 		rectf m_TextureRectangle;
 		rectf m_UVRectangle;
 	public:
+		Sprite() = default;
 		Sprite(std::shared_ptr<Texture> texture);
 		Sprite(std::shared_ptr<Texture> texture, const rectf &rectangle);
 		~Sprite() = default;

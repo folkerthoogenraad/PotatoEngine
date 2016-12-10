@@ -11,6 +11,8 @@
 
 #include <vector>
 
+#include "GL.h"
+
 namespace ftec {
 	
 	Shader::Shader(const std::string &vertexSource, const std::string &fragmentSource)

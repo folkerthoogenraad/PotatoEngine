@@ -1,21 +1,25 @@
 #pragma once
 
-#include "resources/ResourceManager.h"
-#include "GL.h"
+#include "resources/ManageableResource.h"
+#include <memory>
+#include <string>
 
 #define DEFAULT_TEXTURE_CHECKERBOARD "CHECKERBOARD"
 #define DEFAULT_TEXTURE_WHITE "WHITE"
 #define DEFAULT_TEXTURE_NORMAL "NORMAL"
 #define DEFAULT_TEXTURE_BLACK "BLACK"
 
-#define INTERPOLATION_LINEAR GL_LINEAR
-#define INTERPOLATION_NEAREST GL_NEAREST
-#define INTERPOLATION_LINEAR_MIPMAP GL_LINEAR_MIPMAP_LINEAR
 
 namespace ftec {
 	class Texture : public ManagableResource {
+
+	public:
+		enum InterpolationMode {
+			LINEAR, NEAREST, LINEAR_MIPMAP
+		};
+
 	private:
-		GLuint m_TextureID;
+		unsigned int m_TextureID;
 		int m_Width, m_Height;
 	public:
 		Texture();
@@ -27,15 +31,15 @@ namespace ftec {
 		int getWidth() const { return m_Width; }
 		int getHeight() const { return m_Height; }
 
-		void setMagnifyScaling(int scaling);
-		void setMinifyScaling(int scaling);
+		void setMagnifyScaling(InterpolationMode scaling);
+		void setMinifyScaling(InterpolationMode scaling);
 
-		void setScaling(int min, int mag);
+		void setScaling(InterpolationMode min, InterpolationMode mag);
 
-		inline GLuint id() const { return m_TextureID; }
+		inline unsigned int id() const { return m_TextureID; }
 
 		static std::shared_ptr<Texture> load(const std::string &name);
 
-		friend class Font;//TODO make this better
+		friend class Font; //Why is this here again?
 	};
 }

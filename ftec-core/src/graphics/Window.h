@@ -1,19 +1,19 @@
 #pragma once
 
-#include "GL.h"
-
 #include <string>
 
-#include "math/Vector2.h"
+struct GLFWwindow;
 
 namespace ftec {
+
 	class Window {
 		int m_Width, m_Height;
 		std::string m_Name;
 
 		GLFWwindow *m_Window;
 
-		Vector2f m_MousePosition;
+		double m_MouseX, m_MouseY;
+
 		int m_MSAA;
 		bool m_Fullscreen;
 		bool m_CloseRequested;
@@ -33,8 +33,8 @@ namespace ftec {
 		inline float getWidth() { return (float)m_Width; }
 		inline float getHeight() { return (float)m_Height; }
 
-		void setMousePosition(const Vector2f &newPosition);
-		inline Vector2f getMousePosition() const { return m_MousePosition; }
+		void setMousePosition(double xpos, double ypos);
+
 		inline bool isCloseRequested() const { return m_CloseRequested; }
 		inline bool isResized() const { return m_Resized; }
 

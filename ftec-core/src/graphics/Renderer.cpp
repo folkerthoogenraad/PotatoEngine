@@ -6,6 +6,7 @@
 #include "engine/Engine.h"
 #include "Window.h"
 #include "GraphicsState.h"
+#include "GL.h"
 
 namespace ftec {
 

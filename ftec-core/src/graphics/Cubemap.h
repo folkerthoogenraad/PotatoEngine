@@ -1,11 +1,13 @@
 #pragma once
-#include "resources/ResourceManager.h"
 
-typedef unsigned int GLuint;
+#include <memory>							//For std::shared_ptr
+#include <string>							//For std::string
+
+#include "resources/ManageableResource.h"	//For ManageableResource
 
 namespace ftec {
 	class Cubemap : public ManagableResource {
-		GLuint m_TextureID;
+		uint32_t m_TextureID;
 	public:
 		Cubemap();
 		~Cubemap();

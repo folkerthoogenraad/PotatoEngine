@@ -1,15 +1,16 @@
 #pragma once
 
-#include "math/Vector2.h"
-#include "math/Vector3.h"
-#include "math/Vector4.h"
-
 #include <memory>
 #include <vector>
+
+#include "math/Vector2.h"
+#include "math/Vector4.h"
 
 #include "Primitive.h"
 
 namespace ftec {
+
+	template<typename T> struct Vector3; typedef Vector3<float> Vector3f;
 
 	class SpriteBatch {
 

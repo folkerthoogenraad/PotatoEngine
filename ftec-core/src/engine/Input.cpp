@@ -1,7 +1,11 @@
 #include "Input.h"
 
 #include "Engine.h"
+
+#include "graphics/GL.h"
 #include "graphics/Window.h"
+
+#include "math/Vector2.h"
 
 #include <assert.h>
 
@@ -141,11 +145,13 @@ namespace ftec {
 	{
 		Vector2f newPosition(x, y);
 		mouseDelta += newPosition - mousePosition;
+		mousePosition = newPosition;
+
 		if (cursorMode != CursorMode::GRABBED) {
 			mousePosition = newPosition;
 		}
 		else {
-			Engine::getWindow().setMousePosition(mousePosition);
+			Engine::getWindow().setMousePosition(mousePosition.x, mousePosition.y);
 		}
 
 	}

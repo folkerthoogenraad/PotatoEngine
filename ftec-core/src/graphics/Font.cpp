@@ -8,6 +8,8 @@
 #include "engine/Engine.h"
 #include "graphics/Texture.h"
 
+#include "GL.h"
+
 #include "math/math.h"
 
 //Freetype stuff <3
@@ -78,11 +80,9 @@ namespace ftec {
 		FT_Face face;
 
 		if (FT_New_Face(lib.ft, name.c_str(), 0, &face)) {
-			LOG("Couldn't not open font");
+			LOG_ERROR("Couldn't not open font");
 			return std::make_shared<Font>();
 		}
-
-		LOG(face->num_glyphs);
 
 		FT_Set_Pixel_Sizes(
 			face,   /* handle to face object */
@@ -149,7 +149,7 @@ namespace ftec {
 				(float)x, 0.0, (float)g->bitmap.width, (float)g->bitmap.rows
 			);
 
-			ch.sprite = std::make_shared<Sprite>(texture, rect);
+			ch.sprite = Sprite(texture, rect);
 			ch.character = c;
 
 			//TODO update font metrics

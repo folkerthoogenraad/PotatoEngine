@@ -1,8 +1,10 @@
 #pragma once
 
-#include <map>
-#include "resources/ResourceManager.h"
-#include "Sprite.h"
+#include <map>								//For std::map
+#include <memory>							//For std::shared_ptr
+
+#include "resources/ManageableResource.h"	//For ManageableResource
+#include "Sprite.h"							//For FontCharacter::sprite
 
 namespace ftec {
 
@@ -18,7 +20,7 @@ namespace ftec {
 		int width;
 		int height;
 
-		std::shared_ptr<Sprite> sprite = nullptr;
+		Sprite sprite;
 	};
 
 	enum class FontAlign {
@@ -36,7 +38,7 @@ namespace ftec {
 		float m_Size;
 	public:
 		bool hasCharacter(char input) const;
-		bool getCharacter(char input, FontCharacter &out) const; //TODO must be changed when there is a std::optional
+		bool getCharacter(char input, FontCharacter &out) const;
 		const std::string &getName() const { return m_Name; };
 		float getSize() const { return m_Size; }
 

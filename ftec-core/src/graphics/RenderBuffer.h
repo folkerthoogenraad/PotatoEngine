@@ -1,13 +1,16 @@
 #pragma once
 
-#include "Texture.h"
-#include "GL.h"
+#include <memory>
 
 namespace ftec {
+
+	class Texture;
+
 	//Currently this class does not work, and should be reworked
 	class RenderBuffer {
 	private:
-		GLuint m_Framebuffer;
+		unsigned int m_Framebuffer;
+
 		std::shared_ptr<Texture> m_DepthAttachment;
 		std::shared_ptr<Texture> m_ColorAttachment;
 		int m_Width;

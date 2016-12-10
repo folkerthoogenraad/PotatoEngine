@@ -23,7 +23,10 @@ namespace ftec{
 
 		//static std::shared_ptr<Shader> m_Shader;
 		static std::shared_ptr<Cubemap> m_Skybox;
-		static std::shared_ptr<Material> m_Material;
+
+		//static std::shared_ptr<Material> m_Material;
+
+		static const Material *m_Material;
 
 		//static TextureSlot m_Textures[MAX_TEXTURES];
 		static LightSlot m_Lights[MAX_LIGHTS];

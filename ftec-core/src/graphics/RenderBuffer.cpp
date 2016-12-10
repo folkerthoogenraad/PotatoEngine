@@ -1,6 +1,9 @@
 #include "RenderBuffer.h"
 #include "logger/log.h"
 
+#include "Texture.h"
+#include "GL.h"
+
 namespace ftec {
 
 	RenderBuffer::RenderBuffer(int width, int height)
@@ -22,6 +25,7 @@ namespace ftec {
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthAttachment->id(), 0);
 	
 		GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+
 		if (status != GL_FRAMEBUFFER_COMPLETE) {
 			LOG_ERROR("Failed to create frame buffer extention");
 		}

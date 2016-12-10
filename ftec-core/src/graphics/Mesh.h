@@ -1,6 +1,9 @@
 #pragma once
 
-#include "resources/ResourceManager.h"
+#include <memory>
+#include <string>
+#include "resources/ManageableResource.h"
+
 #include <vector>
 #include "math/Vector2.h"
 #include "math/Vector3.h"
@@ -34,7 +37,9 @@ namespace ftec {
 		///Uploads the current data to the graphics processor
 		void upload();
 
+		///Optimizes the mesh and removes double vertices
 		void optimize();
+
 		void recalculateNormals();
 		void recalculateTangents();
 

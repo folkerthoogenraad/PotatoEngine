@@ -17,7 +17,7 @@ namespace ftec {
 	Matrix4f GraphicsState::matrixProjection;
 	Vector3f GraphicsState::eyePosition;
 
-	std::shared_ptr<Material> GraphicsState::m_Material(nullptr);
+	const Material *GraphicsState::m_Material(nullptr);
 
 	LightSlot GraphicsState::m_Lights[MAX_LIGHTS];
 

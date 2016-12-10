@@ -1,16 +1,23 @@
 #include "Razura.h"
-#include "scene/Scene.h"
 #include "engine/Engine.h"
 #include "engine/Input.h"
-#include "NoClipCameraEntity.h"
-#include "graphics/Graphics.h"
 
+#include "scene/Scene.h"
+#include "resources/ResourceManager.h"
+
+#include "NoClipCameraEntity.h"
+#include "VoronoiCanvas.h"
+#include "Voronoi3DEntity.h"
+#include "TestCanvas.h"
+
+#include "graphics/Graphics.h"
 #include "graphics/GraphicsState.h"
 #include "graphics/Shader.h"
-
 #include "graphics/Graphics2D.h"
-#include "math/math.h"
 #include "graphics/Font.h"
+#include "graphics/Renderer.h"
+
+#include "math/math.h"
 
 #include "potato_ui/Button.h"
 #include "potato_ui/TextField.h"
@@ -22,20 +29,11 @@
 #include "potato_ui/LayoutParams.h"
 #include "potato_ui/TabbedPanel.h"
 #include "potato_ui/SceneView.h"
-#include "graphics/Renderer.h"
-
 #include "potato_ui/UILoader.h"
-#include "VoronoiCanvas.h"
-#include "Voronoi3DEntity.h"
-#include "TestCanvas.h"
-
-#include "graphics/2d/Drawable2D.h"
 
 #include "logger/log.h"
 
 namespace ftec {
-
-	std::shared_ptr<Renderer2D> renderer;
 
 	void Razura::update()
 	{
@@ -54,10 +52,10 @@ namespace ftec {
 			ui = std::make_shared<potato::PotatoUI>();
 
 			ui->setRoot(
-				//potato::UILoader::load("text.xml")
+				potato::UILoader::load("text.xml")
 				//std::make_shared<VoronoiCanvas>()
 				//std::make_shared<potato::SceneView>()
-				std::make_shared<TestCanvas>()
+				//std::make_shared<TestCanvas>()
 			);
 		}
 	
@@ -66,7 +64,7 @@ namespace ftec {
 			std::shared_ptr<Scene> scene = std::make_shared<Scene>();
 			Engine::setScene(scene);
 
-#if 0
+#if 1
 			scene->m_Light.m_Direction = Vector3f(1,-0.4f,-1).normalize();
 
 			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
@@ -86,7 +84,7 @@ namespace ftec {
 
 					material->m_Tiling = Vector2f(4, 4);
 
-					scene->addMesh(Vector3f(x * 2.5, 0, y * 2.5), sphere, material);
+					scene->addMesh(Vector3f(x * 2.5f, 0, y * 2.5f), sphere, material);
 				}
 			}
 #endif

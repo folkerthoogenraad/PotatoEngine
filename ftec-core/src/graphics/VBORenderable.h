@@ -19,7 +19,7 @@ namespace ftec {
 			Vector2f uv;
 		};
 
-	public:
+	public://Should this even be used, like, ever?
 		std::vector<VBORVertex> m_Vertices;
 		unsigned int firstIndex;
 		unsigned int lastIndex;

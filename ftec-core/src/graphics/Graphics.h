@@ -1,12 +1,14 @@
 #pragma once
 
+//TODO remove most of all these things
 #include "Mesh.h"
 #include "Material.h"
 #include "Camera.h"
 #include "Renderer.h"
 #include "Light.h"
 
-//TODO Matrix4f to Matrix4f, Matrix4fi, Matrix4fd
+#include "Layer.h"
+
 #include "math/Matrix4.h"
 #include "math/Vector3.h"
 #include "math/line3.h"
@@ -25,12 +27,12 @@ namespace ftec {
 
 	private:
 		struct EnqueuedMesh {
-			/*EnqueuedMesh(const Mesh *m, const Material *mat, const Matrix4f &model, Layer layer, InstanceList *list)
-				:mesh(m), material(mat), modelMatrix(model), layer(layer), list(list){};*/
 			const Mesh *mesh;
-			std::shared_ptr<Material> material;
+			const Material *material;
+
 			Matrix4f modelMatrix;
 			Layer layer;
+
 			InstanceList *list;
 		};
 
@@ -59,7 +61,7 @@ namespace ftec {
 		static void begin();
 
 		//Enqueues the mesh for rendering
-		static void enqueueMesh(const Mesh *mesh, std::shared_ptr<Material> material, const Matrix4f &modelMatrix = Matrix4f::identity(), Layer layer = LAYER_ALL, InstanceList* list = nullptr);
+		static void enqueueMesh(const Mesh *mesh, const Material *material, const Matrix4f &modelMatrix = Matrix4f::identity(), Layer layer = LAYER_ALL, InstanceList* list = nullptr);
 
 		//Enqueues the mesh for rendering
 		static void enqueueLine(const line3f &line, const Color32 &color = Color32::white());
@@ -77,7 +79,7 @@ namespace ftec {
 		static void enqueueCamera(const Camera *camera);
 
 		//Enqueues the camera to render the scene
-		static void enqueueLight(const Light *light); //Loss of constness because setting light position, should be different probably
+		static void enqueueLight(const Light *light);
 
 		//Ends drawing, performs all draw calls and stuff
 		static void end();

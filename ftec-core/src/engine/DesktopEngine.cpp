@@ -23,25 +23,32 @@ namespace ftec {
 	void DesktopEngine::init()
 	{
 		LOG("Loading GLFW...");
+
 		//Initialize GLFW
 		if (!glfwInit()) {
 			TERMINATE("Failed to initialize GLFW");
 		}
+
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		auto window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, false, 4);
+		auto window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, true, 4);
 
 		LOG("Loading GLEW...");
+
 		//Initialize extentions
 		if (glewInit() != GLEW_OK) {
 			TERMINATE("Couldn't init glew!");
 		}
 		LOG("GLEW Loaded.");
 
+		LOG("Loading FreeImage...");
 		FreeImage_Initialise();
+		LOG("FreeImage loaded.");
 
-		LOG("Loading OpenGL...");
+		LOG("");
+
+		LOG("Setting up OpenGL...");
 
 		initGL();
 
@@ -49,6 +56,8 @@ namespace ftec {
 
 		//Tell the world how great we are
 		LOG("OpenGL " << glGetString(GL_VERSION) << " Loaded.");
+
+		LOG("");
 
 		Engine::setResourceManager(std::move(manager));
 		Engine::setWindow(std::move(window));
@@ -105,26 +114,30 @@ namespace ftec {
 	}
 
 	static void initGL() {
+		//Enable depth testing
 		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
 		
+		//Alpha test
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.1f);
+
+		//Blending
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
+		//Scissor testing
 		glEnable(GL_SCISSOR_TEST);
-		glDepthFunc(GL_LEQUAL);
+
+		//Cubemap interpolations
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//Backface culling
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
 
-		//Reenable for performance reasons, disabled now for other reasons
-		//glEnable(GL_CULL_FACE);
-		//glCullFace(GL_BACK);
+		//Clear color settings
+		glClearColor(1.f, 1.f, 1.f, 1.f);
 
-		//glClearColor(.2f, .4f, .8f, 0.f);
-		//glClearColor(1.f, 1.f, 1.f, 1.f);
-		//glClearColor(.2f, .2f, .2f, 1.f);
-		glClearColor(.0f, .0f, .0f, 1.f);
-		//glClearColor(132.f / 255.f, 119.f / 255.f, 106.f / 255.f, 1.f);
 	}
 }

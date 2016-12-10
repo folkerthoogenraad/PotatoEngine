@@ -18,6 +18,10 @@
 
 #include "logger/log.h"
 
+#include "resources/ResourceManager.h"
+
+#include "engine/Keycodes.h"
+
 namespace ftec {
 
 	static void drawTriangle(const triangle3f &tr, const Color32 &c)
@@ -118,21 +122,21 @@ namespace ftec {
 	}
 
 	void PointCloudEntity::update()
-	{// || Input::isKeyTyped(GLFW_KEY_R) || Input::isKeyTyped(GLFW_KEY_E) || 
-		if ((Input::isKeyTyped(GLFW_KEY_SPACE) || Input::isKeyTyped(GLFW_KEY_ENTER)) && m_Time != -1) {
+	{// || Input::isKeyTyped(KEY_R) || Input::isKeyTyped(KEY_E) || 
+		if ((Input::isKeyTyped(KEY_SPACE) || Input::isKeyTyped(KEY_ENTER)) && m_Time != -1) {
 			m_Render = false;
 		}
 
-		if (Input::isKeyDown(GLFW_KEY_N)) {
+		if (Input::isKeyDown(KEY_N)) {
 			m_Time += Time::deltaTime * 4;
 		}
 		else {
 			m_Time -= Time::deltaTime * 4;
 		}
 
-		if (Input::isKeyTyped(GLFW_KEY_UP)) {
+		if (Input::isKeyTyped(KEY_UP)) {
 			away += 0.25f;
-		}if(Input::isKeyTyped(GLFW_KEY_DOWN)) {
+		}if(Input::isKeyTyped(KEY_DOWN)) {
 			away -= 0.25f;
 		}
 
@@ -153,7 +157,7 @@ namespace ftec {
 
 			Matrix4f rotation = Matrix4f::translation(-center);// Matrix4f::rotationY(amount * 37) * Matrix4f::rotationX(amount * 27) * Matrix4f::translation(-center);
 
-			if (Input::isKeyDown(GLFW_KEY_T)){
+			if (Input::isKeyDown(KEY_T)){
 
 				model =  Matrix4f::translation(this->m_Position + center);
 				
@@ -169,7 +173,7 @@ namespace ftec {
 			}
 			
 			else {
-				Graphics::enqueueMesh(m_Mesh.get(), m_Material, model * rotation);// * 
+				Graphics::enqueueMesh(m_Mesh.get(), m_Material.get(), model * rotation);// * 
 			}
 		}
 	}

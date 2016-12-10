@@ -12,6 +12,10 @@
 
 #include "engine/Time.h"
 
+#include "GL.h"
+
+#include "resources/ResourceManager.h"
+
 namespace ftec {
 
 	Graphics2D::Graphics2D()
@@ -217,7 +221,7 @@ namespace ftec {
 			FontCharacter fch;
 			if (m_Font->getCharacter(c, fch)) {
 				//TODO make this 12 into something gotten from the font itself (or some shit, i dont know)
-				drawSprite(*fch.sprite, currentPosition + Vector2f((float)fch.left, (float)-fch.top + (float)m_Font->getSize() - 2.0f));
+				drawSprite(fch.sprite, currentPosition + Vector2f((float)fch.left, (float)-fch.top + (float)m_Font->getSize() - 2.0f));
 
 				currentPosition.x += (float) fch.xadvance;
 
@@ -364,7 +368,7 @@ namespace ftec {
 		calls++;
 
 		//Disable lighting
-		GraphicsState::m_Material = m_Material;
+		GraphicsState::m_Material = m_Material.get();
 		GraphicsState::m_Skybox = nullptr;
 
 		GraphicsState::matrixModel = Matrix4f::identity();

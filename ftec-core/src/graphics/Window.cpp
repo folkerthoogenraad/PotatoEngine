@@ -1,4 +1,6 @@
 #include "Window.h"
+
+#include "GL.h"
 #include "logger/log.h"
 #include "engine/Input.h"
 
@@ -24,7 +26,7 @@ namespace ftec {
 	{
 		m_Resized = false;
 		glfwPollEvents();
-		m_CloseRequested = glfwWindowShouldClose(m_Window) > 0; //fucking warnings
+		m_CloseRequested = glfwWindowShouldClose(m_Window) > 0;
 	}
 
 	void Window::setCursorMode(int mode)
@@ -47,10 +49,12 @@ namespace ftec {
 		}
 	}
 
-	void Window::setMousePosition(const Vector2f & newPosition)
+	void Window::setMousePosition(double xpos, double ypos)
 	{
-		m_MousePosition = newPosition;
-		glfwSetCursorPos(m_Window, newPosition.x, newPosition.y);
+		m_MouseX = xpos;
+		m_MouseY = ypos;
+
+		glfwSetCursorPos(m_Window, xpos, ypos);
 	}
 
 
@@ -84,7 +88,9 @@ namespace ftec {
 		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
 		if (wp) {
 			Window &window = *wp;
-			window.m_MousePosition = Vector2f((float) xpos, (float) ypos);
+
+			window.m_MouseX = xpos;
+			window.m_MouseY = ypos;
 		}
 		Input::handleCursor((float) xpos, (float) ypos);
 	 }

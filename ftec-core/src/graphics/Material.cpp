@@ -3,9 +3,11 @@
 #include "GraphicsState.h"
 #include "graphics/Cubemap.h"
 
+#include "GL.h"
+
 namespace ftec {
 
-	void Material2D::prepare()
+	void Material2D::prepare() const
 	{
 		Shader &shader = *m_Shader;
 
@@ -33,7 +35,7 @@ namespace ftec {
 			
 	}
 
-	void PBRMaterial::prepare()
+	void PBRMaterial::prepare() const
 	{
 		Shader &shader = *m_Shader;
 

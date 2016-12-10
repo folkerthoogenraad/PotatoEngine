@@ -19,6 +19,8 @@
 #include "graphics/Texture.h"
 #include "PointCloudEntity.h"
 
+#include "engine/Keycodes.h"
+
 #include <set>
 
 namespace ftec {
@@ -77,7 +79,7 @@ namespace ftec {
 
 	void Voronoi3DEntity::update()
 	{
-		if (Input::isKeyTyped(GLFW_KEY_ENTER)) {
+		if (Input::isKeyTyped(KEY_ENTER)) {
 			/*m_Points = {
 				Vector3d(-0.729189, -0.220405, 0.647628),
 				Vector3d(-0.792915, 0.0644285, 0.190272),
@@ -100,7 +102,7 @@ namespace ftec {
 		}
 
 
-		if (Input::isKeyTyped(GLFW_KEY_SPACE)) {
+		if (Input::isKeyTyped(KEY_SPACE)) {
 			static int a = 0;
 
 			Matrix4f mat = Matrix4f::rotationY(34.18413248f) * Matrix4f::rotationX(75.05415421f);
@@ -143,7 +145,7 @@ namespace ftec {
 		if (true)
 			return;
 
-		if (Input::isKeyTyped(GLFW_KEY_R)) {
+		if (Input::isKeyTyped(KEY_R)) {
 			static int r = 0;
 
 			r %= 5;
@@ -168,7 +170,7 @@ namespace ftec {
 			create();
 		}
 
-		if (Input::isKeyTyped(GLFW_KEY_E)) {
+		if (Input::isKeyTyped(KEY_E)) {
 			m_Points.clear();
 
 			Matrix4f mat = Matrix4f::identity();// Matrix4f::rotationY(30) * Matrix4f::scale(Vector3f(1.f, 1.f, 2.0f));

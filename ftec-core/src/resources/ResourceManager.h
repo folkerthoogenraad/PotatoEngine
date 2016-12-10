@@ -1,17 +1,14 @@
 #pragma once
+
 #include <iostream>	//for std::cout, std::cin, std::cerr
 #include <memory>	//for std::shared_ptr<T>
 #include <map>		//for std::map<K,V>
 #include <string>	//for std::string
 #include <typeinfo>	//for std::type_info
 
+#include "ManageableResource.h"
+
 namespace ftec {
-
-	//Empty baseclass so that resources can be stored in the same map
-	class ManagableResource
-	{
-
-	};
 
 	class ResourceFile {
 		std::string m_Folder;

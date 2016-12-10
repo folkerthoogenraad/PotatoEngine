@@ -1,9 +1,14 @@
 #include "SpriteBatch.h"
 
+#include "GL.h"
+
 #include "Renderer.h"
 #include "logger/log.h"
 
+#include "math/Vector3.h"
+
 #include "GraphicsState.h"
+
 
 namespace ftec {
 

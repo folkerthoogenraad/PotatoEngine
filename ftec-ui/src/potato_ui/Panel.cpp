@@ -1,10 +1,16 @@
 #include "Panel.h"
-#include "math/math.h"
+
 #include "graphics/Graphics2D.h"
 #include "graphics/Font.h"
+
 #include "engine/Input.h"
 #include "engine/Engine.h"
+
 #include "logger/log.h"
+
+#include "resources/ResourceManager.h"
+
+#include "engine/Keycodes.h"
 
 namespace potato {
 	Panel::Panel()
@@ -96,23 +102,23 @@ namespace potato {
 		//Click inputs
 		{
 			if (isHoveringSelf()) {
-				if (ftec::Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
+				if (ftec::Input::isMouseButtonPressed(MOUSE_BUTTON_1)) {
 					m_Pressed = true;
 					if (m_Focusable) {
 						m_Focus = true;
 					}
 				}
-				if (m_Pressed && ftec::Input::isMouseButtonReleased(GLFW_MOUSE_BUTTON_1)) {
+				if (m_Pressed && ftec::Input::isMouseButtonReleased(MOUSE_BUTTON_1)) {
 					m_Pressed = false; //Maybe a m_Clicked for one frame?
 					onClick();
 				}
 			}
 			else {
 				//cancel the press when its released outside the panel
-				if (m_Pressed && ftec::Input::isMouseButtonReleased(GLFW_MOUSE_BUTTON_1)) {
+				if (m_Pressed && ftec::Input::isMouseButtonReleased(MOUSE_BUTTON_1)) {
 					m_Pressed = false;
 				}
-				if (ftec::Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
+				if (ftec::Input::isMouseButtonPressed(MOUSE_BUTTON_1)) {
 					m_Focus = false;
 				}
 			}
@@ -120,7 +126,7 @@ namespace potato {
 
 		//Tabbing between focus things
 		{
-			if (ftec::Input::isKeyTyped(GLFW_KEY_TAB)) {
+			if (ftec::Input::isKeyTyped(KEY_TAB)) {
 				switchFocus();
 			}
 		}

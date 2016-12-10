@@ -1,8 +1,30 @@
 #include "Texture.h"
+
 #include "logger/log.h"
 #include "ImageHelper.h"
+#include "GL.h"
+
+#define INTERPOLATION_LINEAR GL_LINEAR
+#define INTERPOLATION_NEAREST GL_NEAREST
+#define INTERPOLATION_LINEAR_MIPMAP GL_LINEAR_MIPMAP_LINEAR
 
 namespace ftec {
+
+	static int getGLInterpolationMode(Texture::InterpolationMode m)
+	{
+		switch (m) {
+		case Texture::LINEAR:
+			return GL_LINEAR;
+		case Texture::NEAREST:
+			return GL_NEAREST;
+		case Texture::LINEAR_MIPMAP:
+			return GL_LINEAR_MIPMAP_LINEAR;
+		default:
+			LOG_ERROR("Unkown interpolation mode " << m);
+			return GL_NEAREST;
+		}
+	}
+
 	Texture::Texture()
 		:m_TextureID(0)
 	{
@@ -34,25 +56,25 @@ namespace ftec {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void Texture::setMagnifyScaling(int scaling)
+	void Texture::setMagnifyScaling(InterpolationMode scaling)
 	{
 		bind();
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, scaling);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, getGLInterpolationMode(scaling));
 		unbind();
 	}
 
-	void Texture::setMinifyScaling(int scaling)
+	void Texture::setMinifyScaling(InterpolationMode scaling)
 	{
 		bind();
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, scaling);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, getGLInterpolationMode(scaling));
 		unbind();
 	}
 
-	void Texture::setScaling(int min, int mag)
+	void Texture::setScaling(InterpolationMode min, InterpolationMode mag)
 	{
 		bind();
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, getGLInterpolationMode(min));
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, getGLInterpolationMode(mag));
 		unbind();
 	}
 

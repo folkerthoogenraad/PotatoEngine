@@ -6,6 +6,7 @@
 #include "math/StairArc.h"
 
 #include "math/StairAlgorithm.h"
+#include "engine/Keycodes.h"
 
 #include <sstream>
 
@@ -42,7 +43,7 @@ namespace ftec {
 				graphics.drawLine(previousEnd, arc.getArcStart());
 				drawStairArc(graphics, arc);
 
-				if (Input::isKeyDown(GLFW_KEY_SPACE)) {
+				if (Input::isKeyDown(KEY_SPACE)) {
 					graphics.setColor(Color32::blue());
 					graphics.drawRectangle(rectf(
 						arc.getArcStart().x - 4,
@@ -88,7 +89,7 @@ namespace ftec {
 			}
 			return closest;
 		};
-		if (Input::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
+		if (Input::isMouseButtonPressed(MOUSE_BUTTON_1)) {
 			StairVertex vert{
 				Input::getMousePosition(),
 				d
@@ -97,15 +98,15 @@ namespace ftec {
 
 		}
 
-		if (alg.m_Vertices.size() > 0 && Input::isMouseButtonDown(GLFW_MOUSE_BUTTON_3)) {
+		if (alg.m_Vertices.size() > 0 && Input::isMouseButtonDown(MOUSE_BUTTON_3)) {
 			alg.m_Vertices[getClosestIndex()].m_Position = Input::getMousePosition();
 		}
 
-		if (Input::isMouseButtonReleased(GLFW_MOUSE_BUTTON_2)) {
+		if (Input::isMouseButtonReleased(MOUSE_BUTTON_2)) {
 			alg.m_Vertices.clear();
 		}
 
-		if (Input::isKeyPressed(GLFW_KEY_ENTER)) {
+		if (Input::isKeyPressed(KEY_ENTER)) {
 			for (int i = 1; i + 1 < alg.m_Vertices.size(); ++i) {
 				auto &previous = alg.m_Vertices[i - 1];
 				auto &current = alg.m_Vertices[i];

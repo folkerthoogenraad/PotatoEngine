@@ -12,6 +12,8 @@
 #include "graphics/Camera.h"
 #include "scene/Scene.h"
 
+#include "engine/Keycodes.h"
+
 namespace ftec {
 	NoClipCameraEntity::NoClipCameraEntity() : m_MouseGrabbed(false)
 	{ }
@@ -21,7 +23,7 @@ namespace ftec {
 
 	void NoClipCameraEntity::update()
 	{
-		if (Input::isKeyPressed(GLFW_KEY_ESCAPE)) {
+		if (Input::isKeyPressed(KEY_ESCAPE)) {
 			m_MouseGrabbed = !m_MouseGrabbed;
 			Input::setCursorMode(m_MouseGrabbed ? CursorMode::GRABBED : CursorMode::NORMAL);
 		}
@@ -40,13 +42,13 @@ namespace ftec {
 
 			Vector3f motion;
 
-			if (Input::isKeyDown(GLFW_KEY_W)) {
+			if (Input::isKeyDown(KEY_W)) {
 				motion.z -= 1;
-			}if (Input::isKeyDown(GLFW_KEY_S)) {
+			}if (Input::isKeyDown(KEY_S)) {
 				motion.z += 1;
-			}if (Input::isKeyDown(GLFW_KEY_A)) {
+			}if (Input::isKeyDown(KEY_A)) {
 				motion.x -= 1;
-			}if (Input::isKeyDown(GLFW_KEY_D)) {
+			}if (Input::isKeyDown(KEY_D)) {
 				motion.x += 1;
 			}
 
@@ -54,9 +56,9 @@ namespace ftec {
 			motion = transform * motion;
 
 			motion.y = 0;
-			if (Input::isKeyDown(GLFW_KEY_Q)) {
+			if (Input::isKeyDown(KEY_Q)) {
 				motion.y += 1;
-			}if (Input::isKeyDown(GLFW_KEY_Z)) {
+			}if (Input::isKeyDown(KEY_Z)) {
 				motion.y -= 1;
 			}
 
