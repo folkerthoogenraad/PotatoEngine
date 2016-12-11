@@ -14,18 +14,20 @@ namespace ftec {
 	static std::unique_ptr<Window> window = nullptr;
 	static std::unique_ptr<ResourceManager> manager = nullptr;
 
-	static void initGL();
-	
-
 	void Engine::init()
-	{
-		
-	}
+	{ }
 
 	void Engine::update(Game & game)
 	{
 		game.update();
+		
+		if (getScene())
+			getScene()->update();
+		
 		game.render();
+
+		if (getScene())
+			getScene()->render();
 	}
 
 	void Engine::destroy()
@@ -35,14 +37,14 @@ namespace ftec {
 		manager.reset();
 	}
 
-	std::shared_ptr<Scene> Engine::getScene()
+	Scene *Engine::getScene()
 	{
-		return currentScene;
+		return currentScene.get();
 	}
 
-	void Engine::setScene(std::shared_ptr<Scene> scene)
+	void Engine::setScene(std::unique_ptr<Scene> scene)
 	{
-		currentScene = scene;
+		currentScene = std::move(scene);
 	}
 
 	Window & Engine::getWindow()

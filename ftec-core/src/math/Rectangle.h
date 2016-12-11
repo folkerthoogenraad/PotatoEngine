@@ -48,6 +48,16 @@ namespace ftec {
 		Circle<T> boundingCircle() const { return Circle<T>(center(), (bottomright() - center()).magnitude()); }
 
 		bool contains(Vector2<T> v) { return !(v.x < left() || v.x > right() || v.y < top() || v.y > bottom()); };
+
+		//TODO find the right names for these "constructors"
+		static Rectangle<T> centered(T x, T y, T width, T height)
+		{
+			return std::move(Rectangle<T>(
+				x - width / (T)2,
+				y - height / (T)2,
+				width, height
+				));
+		}
 	};
 
 	typedef Rectangle<float> Rectanglef;

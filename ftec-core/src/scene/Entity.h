@@ -7,9 +7,12 @@ namespace ftec {
 
 	class Graphics;
 	class Graphics2D;
+	class Scene;
 
 	class Entity {
 	protected:
+		Scene *m_Scene;
+		
 		Vector3f m_Position;
 	public:
 		Entity() = default;
@@ -19,6 +22,8 @@ namespace ftec {
 		
 		virtual void render3D() {};
 		virtual void render2D(Graphics2D &graphics) {};
+	
+		friend Scene;
 	};
 }
 

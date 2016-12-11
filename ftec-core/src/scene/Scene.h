@@ -21,7 +21,7 @@ namespace ftec {
 	struct StaticGeometry; // Should be in internal oid
 
 	class Scene {
-	public:
+	public: //Shouldn't be public
 		std::vector<Camera> m_Cameras;
 		std::vector<Light> m_Lights;
 
@@ -32,11 +32,13 @@ namespace ftec {
 			GRAPHICS_2D,
 			GRAPHICS_3D,
 			GRAPHICS_BOTH
-		} m_Mode;
+		};
 
-	private:
-		std::vector<std::shared_ptr<Entity>> m_Entities;
+	private: 
+		std::vector<std::unique_ptr<Entity>> m_Entities; //Maybe create a nice entity component system of sorts, but for now, this'll do
 		std::vector<StaticGeometry> m_StaticGeometry;
+
+		SceneMode m_Mode;
 	public:
 		Scene();
 		virtual ~Scene() = default;
@@ -44,11 +46,11 @@ namespace ftec {
 		virtual void update();
 		virtual void render();
 
-		void addEntity(std::shared_ptr<Entity> entity);
-		void removeEntity(std::shared_ptr<Entity> entity);
+		void addEntity(std::unique_ptr<Entity> entity);
 
 		void addMesh(const Vector3f &position, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material);
 		
+		void setMode(SceneMode mode);
 	};
 
 }

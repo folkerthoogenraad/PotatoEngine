@@ -1,16 +1,14 @@
 #pragma once
 
-#include "VBORenderable.h"
-#include "Material.h"
-#include "Camera.h"
-#include "math/Vector3.h"
-#include "math/Rectangle.h"
-#include "Mesh.h"
-#include "Light.h"
+#include <vector>
 
 namespace ftec {
 
 	class InstanceList;
+	class Mesh;
+
+	template <typename T> struct Rectangle; typedef Rectangle<int> Rectanglei;
+	template <typename T> struct Vector3; typedef Vector3<float> Vector3f;
 
 	class Renderer {
 
@@ -33,12 +31,12 @@ namespace ftec {
 
 	class InstanceList {
 	private:
-		GLuint m_Vbo;
+		unsigned int m_Vbo;
 	public:
+		std::vector<Vector3f> m_Positions;
+
 		InstanceList();
 		~InstanceList();
-
-		std::vector<Vector3f> m_Positions;
 
 		void upload();
 		

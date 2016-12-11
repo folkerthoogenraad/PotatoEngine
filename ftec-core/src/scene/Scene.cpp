@@ -16,6 +16,8 @@
 
 #include "Entity.h"
 
+#include "logger/log.h"
+
 
 namespace ftec {
 
@@ -37,58 +39,57 @@ namespace ftec {
 	void Scene::update()
 	{
 		for (int i = 0; i < m_Entities.size(); ++i) {
-			m_Entities[i]->update();
+				m_Entities[i]->update();
 		}
 	}
 
 	void Scene::render()
 	{
-		for (auto &c : m_Cameras)
-		{
-			Graphics::enqueueCamera(&c);
-		}
-
-		for (auto &l : m_Lights)
-		{
-			Graphics::enqueueLight(&l);
-		}
-
-		for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {
-			StaticGeometry &geometry = *i;
-
-			Graphics::enqueueMesh(geometry.mesh.get(), geometry.material.get(), Matrix4f::translation(geometry.position), LAYER_STATIC);
-		}
-
 		if (m_Mode == SceneMode::GRAPHICS_3D || m_Mode == SceneMode::GRAPHICS_BOTH) {
+			for (auto &c : m_Cameras)
+			{
+				Graphics::enqueueCamera(&c);
+			}
+
+			for (auto &l : m_Lights)
+			{
+				Graphics::enqueueLight(&l);
+			}
+
+			for (auto i = m_StaticGeometry.begin(); i != m_StaticGeometry.end(); i++) {
+				StaticGeometry &geometry = *i;
+
+				Graphics::enqueueMesh(geometry.mesh.get(), geometry.material.get(), Matrix4f::translation(geometry.position), LAYER_STATIC);
+			}
+
 			for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {
-				auto obj = *i;
+				auto &obj = *i;
 				obj->render3D();
 			}
 		}
+
 		else
 		{
 			if (!m_Graphics2D) {
 				//NOTE i hate everything about this
 				//TODO don't do this here, because this might cause hickups and stuff
 				m_Graphics2D = std::make_unique<Graphics2D>();
-				m_Graphics2D->m_Camera = this->m_Cameras[0]; //Aargh, this is so shit
 			}
 
-			for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {
-				auto obj = *i;
-				obj->render2D(*m_Graphics2D);
+			m_Graphics2D->begin();
+			m_Graphics2D->m_Camera = this->m_Cameras[0]; //Aargh, this is so shit
+			for (int i = 0; i < m_Entities.size(); ++i) {
+				m_Entities[i]->render2D(*m_Graphics2D);
 			}
+			m_Graphics2D->end();
 		}
 	}
 
-	void Scene::addEntity(std::shared_ptr<Entity> entity)
-	{
-		m_Entities.push_back(entity);
-	}
 
-	void Scene::removeEntity(std::shared_ptr<Entity> entity)
+	void Scene::addEntity(std::unique_ptr<Entity> entity)
 	{
-
+		entity->m_Scene = this;
+		m_Entities.push_back(std::move(entity));
 	}
 
 	void Scene::addMesh(const Vector3f & position, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material)
@@ -100,6 +101,11 @@ namespace ftec {
 		s.material = material;
 
 		m_StaticGeometry.push_back(s);
+	}
+
+	void Scene::setMode(SceneMode mode)
+	{
+		m_Mode = mode;
 	}
 
 }

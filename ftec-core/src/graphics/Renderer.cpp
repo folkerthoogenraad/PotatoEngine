@@ -1,12 +1,16 @@
 #include "Renderer.h"
 
-#include "engine/Time.h"
-#include "logger/log.h"
-#include "scene/Scene.h"
-#include "engine/Engine.h"
-#include "Window.h"
-#include "GraphicsState.h"
-#include "GL.h"
+#include "GL.h"						//For all OpenGL code
+
+#include "math/Vector3.h"
+#include "math/Rectangle.h"
+
+#include "engine/Engine.h"			//Shouldn't be needed.
+#include "graphics/Window.h"		//Shouldn't be needed.
+
+#include "Mesh.h"					//For mesh rendering
+
+#include "GraphicsState.h"			//For state objects
 
 namespace ftec {
 
@@ -90,6 +94,8 @@ namespace ftec {
 
 	void Renderer::clip(const Rectanglei &rectangle)
 	{
+		//TODO this is stupid, pls fix folkert.
+
 		//Both viewport and clip have 0,0 in the bottom left
 		glScissor(rectangle.x(), (int)Engine::getWindow().getHeight() - rectangle.y() - rectangle.height(), rectangle.width(), rectangle.height());
 	}

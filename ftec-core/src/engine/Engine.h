@@ -20,8 +20,8 @@ namespace ftec {
 		static void destroy();
 
 	public:
-		static std::shared_ptr<Scene> getScene();				//make this raw_ptr?
-		static void setScene(std::shared_ptr<Scene> scene);		//make this unique_ptr?
+		static Scene *getScene();
+		static void setScene(std::unique_ptr<Scene> scene);
 
 		static Window& getWindow();
 		static ResourceManager& getResourceManager();

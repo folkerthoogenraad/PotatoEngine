@@ -133,8 +133,8 @@ namespace ftec {
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 		//Backface culling
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_BACK);
 
 		//Clear color settings
 		glClearColor(1.f, 1.f, 1.f, 1.f);

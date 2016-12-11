@@ -21,14 +21,12 @@ namespace ftec{
 		static const int MAX_TEXTURES = 8;
 		static const int MAX_LIGHTS = 8;
 
-		//static std::shared_ptr<Shader> m_Shader;
-		static std::shared_ptr<Cubemap> m_Skybox;
+		//This shit is ugly as hell
 
-		//static std::shared_ptr<Material> m_Material;
+		static std::shared_ptr<Cubemap> m_Skybox;
 
 		static const Material *m_Material;
 
-		//static TextureSlot m_Textures[MAX_TEXTURES];
 		static LightSlot m_Lights[MAX_LIGHTS];
 
 		static Vector3f eyePosition;//Rename, todo

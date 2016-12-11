@@ -12,7 +12,6 @@ typedef unsigned int GLuint;
 
 namespace ftec {
 	
-
 	class Mesh : public ManagableResource {
 	private:
 	public:

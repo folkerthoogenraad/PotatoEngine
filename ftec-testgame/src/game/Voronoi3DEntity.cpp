@@ -1,6 +1,7 @@
 #include "Voronoi3DEntity.h"
 
 #include "graphics/Graphics.h"
+#include "graphics/Mesh.h"
 #include "engine/Input.h"
 #include "engine/Engine.h"
 #include "engine/Time.h"
@@ -68,7 +69,7 @@ namespace ftec {
 		voronoi.create(delaunay);
 
 		for (const auto &l : voronoi.getLegos()) {
-			Engine::getScene()->addEntity(std::make_shared<PointCloudEntity>(l.m_Vertices));
+			Engine::getScene()->addEntity(std::make_unique<PointCloudEntity>(l.m_Vertices));
 		}
 		//Engine::getScene()->addEntity(std::make_shared<PointCloudEntity>(m_Points));
 	}

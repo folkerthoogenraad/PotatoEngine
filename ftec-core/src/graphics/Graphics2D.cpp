@@ -307,6 +307,7 @@ namespace ftec {
 			return;
 		}
 
+		//Just for debugging actually
 		calls++;
 
 		float bufferWidth = Engine::getWindow().getWidth();
