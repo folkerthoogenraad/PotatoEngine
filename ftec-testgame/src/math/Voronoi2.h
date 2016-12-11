@@ -4,7 +4,7 @@
 #include <set>
 #include <map>
 #include "math/Vector2.h"
-#include "math/rect.h"
+#include "math/Rectangle.h"
 #include "Delaunay2.h"
 #include "lego2.h"
 
@@ -20,7 +20,7 @@ namespace ftec {
 		std::vector<std::set<int>> m_Edges;
 
 		//Bounding box
-		rect<T> m_BoundingBox;
+		Rectangle<T> m_BoundingBox;
 	public:
 		Voronoi2() {};
 		Voronoi2(const Delaunay2<T> &delaunay);
@@ -35,7 +35,7 @@ namespace ftec {
 		bool isOnHull(int index) const { return m_Points[index].m_Hull; }
 
 		const std::set<int> &getNeighbours(int index) const;
-		const rect<T> &getBoundingBox() const { return m_BoundingBox; }
+		const Rectangle<T> &getBoundingBox() const { return m_BoundingBox; }
 	
 	public:
 		void addNeighbour(int from, int to);

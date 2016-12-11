@@ -23,7 +23,7 @@ namespace potato {
 		Size getPreferredSize() override;
 
 	protected:
-		ftec::rectf getSliderBounds();
+		ftec::Rectanglef getSliderBounds();
 	};
 
 }

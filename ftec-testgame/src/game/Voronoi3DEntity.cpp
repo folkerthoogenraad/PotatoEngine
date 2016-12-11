@@ -33,15 +33,15 @@ namespace ftec {
 		return r * (max - min) + min;
 	}
 
-	static void drawTriangle(const triangle3f &tr, const Color32 &c)
+	static void drawTriangle(const Triangle3f &tr, const Color32 &c)
 	{
 		Graphics::enqueueLine(tr.edgeab(), c);
 		Graphics::enqueueLine(tr.edgebc(), c);
 		Graphics::enqueueLine(tr.edgeca(), c);
 	}
-	static void drawTetrahedron(const tetrahedronf &in)
+	static void drawTetrahedron(const Tetrahedronf &in)
 	{
-		tetrahedronf t = in;
+		Tetrahedronf t = in;
 
 		drawTriangle(
 			t.triangleabc(), Color32::white()
@@ -154,7 +154,7 @@ namespace ftec {
 
 			m_Points.clear();
 
-			auto t = tetrahedrond::unitTetrahedron();
+			auto t = Tetrahedrond::unitTetrahedron();
 
 			m_Points.push_back(t.a);
 
@@ -213,7 +213,7 @@ namespace ftec {
 		/*for (int i = 0; i < delaunay.getTetraHedronCount(); i++) {
 			TetrahedronRef ref = delaunay.getTetraHedronRef(i);
 
-			tetrahedronf tetra(
+			Tetrahedronf tetra(
 				delaunay.getPoint(ref.a),
 				delaunay.getPoint(ref.b),
 				delaunay.getPoint(ref.c),

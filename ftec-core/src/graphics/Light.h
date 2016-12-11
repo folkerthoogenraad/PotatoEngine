@@ -13,7 +13,7 @@ namespace ftec {
 	//TODO class LightWorld or something LightSpace
 	class Light {
 	public:
-		Vector3f m_Direction = Vector3f(-1.0, -1.0, -1.0).normalize();
+		Vector3f m_DiRectangleion = Vector3f(-1.0, -1.0, -1.0).normalize();
 		Color32 m_Color = Color32::white();
 
 		//Currently not working correctly with PBR ( ~ish :') )

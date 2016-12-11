@@ -19,7 +19,7 @@ namespace potato {
 			WORD,
 			LINE
 		};
-		enum Direction {
+		enum DiRectangleion {
 			FORWARD,
 			BACKWARD,
 		};
@@ -40,7 +40,7 @@ namespace potato {
 		void moveCursor(size_t newPos, bool makeSelection);
 
 		void insertAtCursor(const std::string &data);
-		void deleteAtCursor(Direction dir, DeletionStrategy strat);
+		void deleteAtCursor(DiRectangleion dir, DeletionStrategy strat);
 
 		std::string getSelectedText();
 

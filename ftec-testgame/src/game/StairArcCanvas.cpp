@@ -6,6 +6,8 @@
 #include "math/StairArc.h"
 
 #include "math/StairAlgorithm.h"
+#include "math/math.h"
+
 #include "engine/Keycodes.h"
 
 #include <sstream>
@@ -45,16 +47,16 @@ namespace ftec {
 
 				if (Input::isKeyDown(KEY_SPACE)) {
 					graphics.setColor(Color32::blue());
-					graphics.drawRectangle(rectf(
+					graphics.drawRectangle(Rectanglef(
 						arc.getArcStart().x - 4,
 						arc.getArcStart().y - 4, 8, 8
 					), true);
-					graphics.drawRectangle(rectf(
+					graphics.drawRectangle(Rectanglef(
 						arc.getArcEnd().x - 4,
 						arc.getArcEnd().y - 4, 8, 8
 					), true);
 					graphics.setColor(Color32::green());
-					graphics.drawRectangle(rectf(
+					graphics.drawRectangle(Rectanglef(
 						arc.getOrigin().x - 4,
 						arc.getOrigin().y - 4, 8, 8
 					), true);
@@ -151,7 +153,7 @@ namespace ftec {
 
 		graphics.setColor(Color32(97, 99, 60, 255));
 		for (auto &v : alg.m_Vertices) {
-			graphics.drawRectangle(rectf(
+			graphics.drawRectangle(Rectanglef(
 				v.m_Position.x - 6, v.m_Position.y - 6,
 				12, 12
 			), true);
@@ -160,7 +162,7 @@ namespace ftec {
 		/*
 		graphics.setColor(Color32::green());
 		Vector2f r = alg.getPosition(z * alg.getLength());
-		graphics.drawRectangle(rectf(
+		graphics.drawRectangle(Rectanglef(
 		r.x - 8, r.y - 8,
 		16, 16
 		), true);*/

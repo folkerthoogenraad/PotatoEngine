@@ -4,7 +4,7 @@
 #include "Material.h"
 #include "Camera.h"
 #include "math/Vector3.h"
-#include "math/rect.h"
+#include "math/Rectangle.h"
 #include "Mesh.h"
 #include "Light.h"
 
@@ -21,12 +21,12 @@ namespace ftec {
 		static void drawDirect(const Mesh &mesh, const InstanceList &list);
 
 		//Sets the clipping plane
-		static void clip(const recti &rectangle);
+		static void clip(const Rectanglei &rectangle);
 		//Sets the viewport
-		static void viewport(const recti &rectangle);
+		static void viewport(const Rectanglei &rectangle);
 
 		//Sets both the viewport and the clipping plane
-		static void renderport(const recti &rectangle);
+		static void renderport(const Rectanglei &rectangle);
 
 		static void clear();
 	};

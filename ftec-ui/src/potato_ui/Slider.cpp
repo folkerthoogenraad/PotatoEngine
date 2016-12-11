@@ -7,6 +7,8 @@
 
 #include "logger/log.h"
 
+#include "math/math.h"
+
 
 namespace potato {
 
@@ -39,7 +41,7 @@ namespace potato {
 		Panel::processSelf(event);
 		Bounds bounds = getGlobalBounds();
 
-		ftec::rectf blockBounds = getSliderBounds();
+		ftec::Rectanglef blockBounds = getSliderBounds();
 
 		if (ftec::Input::isMouseButtonPressed(MOUSE_BUTTON_1)) {
 			if (blockBounds.contains(ftec::Input::getMousePosition())) {
@@ -68,7 +70,7 @@ namespace potato {
 		return Size(128,32);
 	}
 
-	ftec::rectf Slider::getSliderBounds()
+	ftec::Rectanglef Slider::getSliderBounds()
 	{
 		const float s = SLIDER_BLOCK_SIZE;
 		const float hs = SLIDER_BLOCK_SIZE / 2;
@@ -77,6 +79,6 @@ namespace potato {
 		ftec::Vector2f center = bounds.center();
 		ftec::Vector2f position = ftec::Vector2f(ftec::lerp((float)bounds.left() + hs, (float)bounds.right() - hs, m_Value), center.y);
 
-		return ftec::rectf(position.x - hs, position.y - hs, s, s);
+		return ftec::Rectanglef(position.x - hs, position.y - hs, s, s);
 	}
 }

@@ -5,50 +5,50 @@
 namespace ftec {
 
 	template<typename T>
-	struct sphere {
+	struct Sphere {
 		Vector3<T> center;
 		T radius;
 
-		sphere() {}
-		sphere(const Vector3<T> &c, T radius)
+		Sphere() {}
+		Sphere(const Vector3<T> &c, T radius)
 			: center(c), radius(radius) {}
 
-		sphere<T> &transform(const Matrix4<T> m)
+		Sphere<T> &transform(const Matrix4<T> m)
 		{
 			//TODO PLS PLS
 
 			return *this;
 		}
-		sphere<T> transformed() const
+		Sphere<T> transformed() const
 		{
 			return clone().transform(m);
 		}
 
-		sphere<T> &flip()
+		Sphere<T> &flip()
 		{
 			radius = -radius;
 			return *this;
 		}
-		sphere<T> flipped() const
+		Sphere<T> flipped() const
 		{
 			return clone().flip();
 		}
 
-		sphere<T> &orient()
+		Sphere<T> &orient()
 		{
 			radius = abs(radius);
 			return *this;
 		}
-		sphere<T> oriented() const
+		Sphere<T> oriented() const
 		{
 			return clone().orient();
 		}
 
 		T magnitude() const { return radius; }
-		sphere<T> clone() const { return sphere<T>(*this); }
+		Sphere<T> clone() const { return Sphere<T>(*this); }
 	};
 
-	typedef sphere<float> spheref;
-	typedef sphere<double> sphered;
-	typedef sphere<int> spherei;
+	typedef Sphere<float> Spheref;
+	typedef Sphere<double> Sphered;
+	typedef Sphere<int> Spherei;
 }

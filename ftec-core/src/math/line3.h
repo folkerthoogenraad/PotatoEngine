@@ -8,12 +8,12 @@ namespace ftec {
 	struct Matrix4;
 
 	template<typename T>
-	struct line3 {
+	struct Line3 {
 		Vector3<T> a;
 		Vector3<T> b;
 
-		line3() {}
-		line3(const Vector3<T> &a, const Vector3<T> &b)
+		Line3() {}
+		Line3(const Vector3<T> &a, const Vector3<T> &b)
 			: a(a), b(b) {}
 
 		Vector3<T> direction() const
@@ -34,10 +34,10 @@ namespace ftec {
 			return (a + b) / (T)2.0;
 		}
 
-		line3<T> normal() const
+		Line3<T> normal() const
 		{
 			Vector3<T> p = perp();
-			return line3<T>(center(), center() + p);
+			return Line3<T>(center(), center() + p);
 		}
 
 		//The distance from point to line in line units
@@ -55,12 +55,12 @@ namespace ftec {
 			return (b - a).magnitude();
 		}
 
-		line3<T> clone()
+		Line3<T> clone()
 		{
-			return line3<T>(*this);
+			return Line3<T>(*this);
 		}
 
-		line3<T> &flip()
+		Line3<T> &flip()
 		{
 			T temp = a;
 			a = b;
@@ -68,24 +68,24 @@ namespace ftec {
 
 			return *this;
 		}
-		line3<T> flipped() const
+		Line3<T> flipped() const
 		{
 			return clone().flip();
 		}
 	
-		line3<T> &transform(const Matrix4<T> &m)
+		Line3<T> &transform(const Matrix4<T> &m)
 		{
 			a = m * a;
 			b = m * b;
 			return *this;
 		}
-		line3<T> transformed(const Matrix4<T> &m) const
+		Line3<T> transformed(const Matrix4<T> &m) const
 		{
 			return clone().transform(m);
 		}
 	};
 
-	typedef line3<float> line3f;
-	typedef line3<double> line3d;
-	typedef line3<int> line3i;
+	typedef Line3<float> Line3f;
+	typedef Line3<double> Line3d;
+	typedef Line3<int> Line3i;
 }

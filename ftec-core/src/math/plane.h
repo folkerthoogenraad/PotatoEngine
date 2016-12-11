@@ -5,29 +5,29 @@
 namespace ftec {
 
 	template <typename T>
-	struct triangle3;
+	struct Triangle3;
 	template <typename T>
-	struct line3;
+	struct Line3;
 	template <typename T>
-	struct plane;
+	struct Plane;
 
 	template <typename T>
-	struct plane {
+	struct Plane {
 		//Ax + By + Cz + D
 		Vector3<T> direction;
 		T offset;
 
-		plane() {}
-		explicit plane(const triangle3<T> &triangle)
+		Plane() {}
+		explicit Plane(const Triangle3<T> &triangle)
 		{
 			direction = triangle.normal();
 			offset = -Vector3<T>::dot(triangle.a, direction);
 		}
-		plane(const Vector3<T> position, const Vector3<T> direction) : direction(direction)
+		Plane(const Vector3<T> position, const Vector3<T> direction) : direction(direction)
 		{
 			offset = -Vector3<T>::dot(position, direction);
 		}
-		plane(const Vector3<T> &dir, const T &offset) : direction(dir), offset(offset) {}
+		Plane(const Vector3<T> &dir, const T &offset) : direction(dir), offset(offset) {}
 		
 		T distanceFrom(const Vector3<T> &p) const
 		{
@@ -39,22 +39,22 @@ namespace ftec {
 
 			return (-offset - r) / c;
 		}
-		plane<T> clone() const { return plane<T>(*this); }
+		Plane<T> clone() const { return Plane<T>(*this); }
 		
-		plane<T> &flip() 
+		Plane<T> &flip() 
 		{
 			direction = -direction;
 			offset = -offset;
 			return *this; 
 		}
-		plane<T> flipped() const { return clone().flip(); }
+		Plane<T> flipped() const { return clone().flip(); }
 
 		Vector3<T> origin() const  
 		{
 			return direction * distanceFrom(Vector3f());
 		}
 
-		plane<T> &normalize() 
+		Plane<T> &normalize() 
 		{
 			T mag = direction.magnitude();
 			direction /= mag;
@@ -62,7 +62,7 @@ namespace ftec {
 
 			return *this;
 		}
-		plane<T> normalized() const
+		Plane<T> normalized() const
 		{
 			return clone().normalize();
 		}
@@ -76,6 +76,6 @@ namespace ftec {
 		}
 	};
 
-	typedef plane<float> planef;
-	typedef plane<double> planed;
+	typedef Plane<float> Planef;
+	typedef Plane<double> Planed;
 }

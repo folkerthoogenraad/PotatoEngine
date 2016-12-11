@@ -1,20 +1,18 @@
 #pragma once
 
-#include <type_traits>
-
 namespace ftec {
 
 	template <typename T>
-	struct collisionresult {
+	struct CollisionResult {
 		bool collided;
 		T result;
 
-		collisionresult() : collided(false)
+		CollisionResult() : collided(false)
 		{ }
-		collisionresult(bool b) : collided(b)
+		CollisionResult(bool b) : collided(b)
 		{ }
-		collisionresult(T t) : collided(true), result(t) { }
-		collisionresult(T t, bool collided) : collided(collided), result(t) { }
+		CollisionResult(T t) : collided(true), result(t) { }
+		CollisionResult(T t, bool collided) : collided(collided), result(t) { }
 
 		T* operator->() {
 			return &result;

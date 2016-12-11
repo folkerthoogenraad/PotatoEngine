@@ -12,15 +12,15 @@ namespace ftec {
 	template <typename T>
 	struct Vector4;
 	template <typename T>
-	struct circle;
+	struct Circle;
 	template <typename T>
-	struct sphere;
+	struct Sphere;
 	template <typename T>
-	struct line2;
+	struct Line2;
 	template <typename T>
-	struct line3;
+	struct Line3;
 	template <typename T>
-	struct plane;
+	struct Plane;
 
 	template<typename T>
 	T distance(const Vector2<T> &a, const Vector2<T> &b)
@@ -41,7 +41,7 @@ namespace ftec {
 	}
 
 	template<typename T>
-	collisionresult<Vector2<T>>	intersect(const line2<T> &l1, const line2<T> &l2)
+	CollisionResult<Vector2<T>>	intersect(const Line2<T> &l1, const Line2<T> &l2)
 	{
 		//p + t r = q + u s
 
@@ -60,21 +60,21 @@ namespace ftec {
 	}
 
 	template<typename T>
-	collisionresult<T>			intersect(const circle<T> &c, const circle<T> &other) {
+	CollisionResult<T>			intersect(const Circle<T> &c, const Circle<T> &other) {
 		T t = (c.radius + other.radius) - distance(c.center, other.center);
 		
-		return collisionresult<T>(t, t >= 0);
+		return CollisionResult<T>(t, t >= 0);
 	}
 
 	template<typename T>
-	collisionresult<T>			intersect(const sphere<T> &c, const sphere<T> &other) {
+	CollisionResult<T>			intersect(const Sphere<T> &c, const Sphere<T> &other) {
 		T t = (c.radius + other.radius) - distance(c.center, other.center);
 
-		return collisionresult<T>(t, t >= 0);
+		return CollisionResult<T>(t, t >= 0);
 	}
 	
 	template<typename T>
-	collisionresult<Vector3<T>>	intersect(const plane<T> &plane, const line3<T> &line) 
+	CollisionResult<Vector3<T>>	intersect(const Plane<T> &plane, const Line3<T> &line) 
 	{
 		Vector3<T> lineDir = line.direction();
 
@@ -91,7 +91,7 @@ namespace ftec {
 	}
 
 	template<typename T>
-	collisionresult<line3<T>>	intersect(const plane<T> &p, const plane<T> &other)
+	CollisionResult<Line3<T>>	intersect(const Plane<T> &p, const Plane<T> &other)
 	{
 		Vector3<T> dir = Vector3<T>::cross(other.direction, p.direction);
 
@@ -99,21 +99,21 @@ namespace ftec {
 			return false;
 
 		//Perform a line intersection with the other plane
-		line3<T> line(p.origin(), p.origin() + Vector3<T>::cross(dir, p.direction));
+		Line3<T> line(p.origin(), p.origin() + Vector3<T>::cross(dir, p.direction));
 
 		//TODO check if this is needed.
 		Vector3<T> o = intersect(other, line).result;
 
-		return line3<T>(o, o + dir);
+		return Line3<T>(o, o + dir);
 	}
 
 	template<typename T>
-	bool contains(const circle<T> &c, const Vector2<T> &point) {
+	bool contains(const Circle<T> &c, const Vector2<T> &point) {
 		return distance(c.center, point) <= c.radius;
 	}
 	
 	template<typename T>
-	bool contains(const sphere<T> &c, const Vector3<T> &point) {
+	bool contains(const Sphere<T> &c, const Vector3<T> &point) {
 		return distance(c.center, point) <= c.radius;
 	}
 

@@ -37,7 +37,7 @@ namespace potato {
 
 	}
 
-	void EditText::deleteAtCursor(Direction dir, DeletionStrategy strat)
+	void EditText::deleteAtCursor(DiRectangleion dir, DeletionStrategy strat)
 	{
 		if (selectionSize() > 0) {
 			deleteSelection();

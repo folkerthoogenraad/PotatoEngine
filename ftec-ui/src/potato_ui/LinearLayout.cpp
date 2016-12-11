@@ -3,8 +3,8 @@
 #include "math/math.h"
 
 namespace potato {
-	LinearLayout::LinearLayout(LayoutDirection dir)
-		: m_Direction(dir)
+	LinearLayout::LinearLayout(LayoutDiRectangleion dir)
+		: m_DiRectangleion(dir)
 	{
 		m_Insets = { 0,0,0,0 };
 	}
@@ -14,7 +14,7 @@ namespace potato {
 		Size layoutSize = localbounds().size;
 
 		//Available size (which we have to scale to)
-		float availableSize = m_Direction == HORIZONTAL ? (float)layoutSize.width : (float) layoutSize.height;
+		float availableSize = m_DiRectangleion == HORIZONTAL ? (float)layoutSize.width : (float) layoutSize.height;
 
 		//The total weight of all elements that need weighting
 		float totalWeight = 0;
@@ -26,7 +26,7 @@ namespace potato {
 			LayoutParams &pChild = child->layoutparams();
 
 			//Horizontal stacking and stuff
-			if (m_Direction == HORIZONTAL) {
+			if (m_DiRectangleion == HORIZONTAL) {
 				//if we should match parent
 				if (pChild.m_WidthScaling == LayoutParams::MATCH_PARENT) {
 					totalWeight += ftec::max(pChild.m_Weight, 0.0f); //Negative weights will fuck this up
@@ -41,7 +41,7 @@ namespace potato {
 				}
 			}
 			//Vertical stacking and stuff (else case, but more readable
-			else if (m_Direction == VERTICAL){
+			else if (m_DiRectangleion == VERTICAL){
 				//if we should match parent
 				if (pChild.m_HeightScaling == LayoutParams::MATCH_PARENT) {
 					totalWeight += pChild.m_Weight;
@@ -77,7 +77,7 @@ namespace potato {
 			Size s = child->getPreferredSize();
 
 			//Horizontal stacking and stuff
-			if (m_Direction == HORIZONTAL) {
+			if (m_DiRectangleion == HORIZONTAL) {
 				//if we should match parent
 				if (pChild.m_WidthScaling == LayoutParams::MATCH_PARENT) {
 					s.width = (int) (sizePerWeight * pChild.m_Weight);
@@ -101,7 +101,7 @@ namespace potato {
 				offset += s.width;
 			}
 			//Vertical stacking and stuff (else case, but more readable)
-			else if (m_Direction == VERTICAL) {
+			else if (m_DiRectangleion == VERTICAL) {
 				//if we should match parent
 				if (pChild.m_HeightScaling == LayoutParams::MATCH_PARENT) {
 					s.height = (int) (sizePerWeight * pChild.m_Weight);
@@ -146,12 +146,12 @@ namespace potato {
 		for (auto child : m_Children){
 			Size pref = child->getPreferredSize();
 
-			if (m_Direction == HORIZONTAL) {
+			if (m_DiRectangleion == HORIZONTAL) {
 				s.x += pref.x;
 				s.y = ftec::max(s.y, pref.y);
 			}
 
-			if (m_Direction == VERTICAL) {
+			if (m_DiRectangleion == VERTICAL) {
 				s.x = ftec::max(s.x, pref.x);
 				s.y += pref.y;
 			}

@@ -7,13 +7,13 @@
 namespace ftec {
 
 	template<typename T>
-	struct triangle2 {
+	struct Triangle2 {
 		Vector2<T> a;
 		Vector2<T> b;
 		Vector2<T> c;
 
-		triangle2() {}
-		triangle2(const Vector2<T> &a, const Vector2<T> &b, const Vector2<T> &c)
+		Triangle2() {}
+		Triangle2(const Vector2<T> &a, const Vector2<T> &b, const Vector2<T> &c)
 			: a(a), b(b), c(c) {}
 
 		bool hasVertex(Vector2<T> v)
@@ -26,7 +26,7 @@ namespace ftec {
 			return (a + b + c) / 3;
 		}
 
-		triangle2<T> &orient()
+		Triangle2<T> &orient()
 		{
 			//Normals pointing outwards
 			//Flip b and c if the winding is reversed
@@ -39,23 +39,23 @@ namespace ftec {
 			return *this;
 		}
 
-		triangle2<T> clone()
+		Triangle2<T> clone()
 		{
-			return triangle2<T>(*this);
+			return Triangle2<T>(*this);
 		}
 
 		Vector2<T> circumcenter()
 		{
 			return intersect(
-				line2<T>(b, a).normal(),
-				line2<T>(b, c).normal()
+				Line2<T>(b, a).normal(),
+				Line2<T>(b, c).normal()
 			).result;
 		}
 
-		circle<T> circumcircle()
+		Circle<T> circumcircle()
 		{
 			auto center = circumcenter();
-			return circle<T>(
+			return Circle<T>(
 				center,
 				distance(a, center)
 				);
@@ -64,18 +64,18 @@ namespace ftec {
 		bool isValid()
 		{
 			return intersects(
-				line2<T>(b, a),
-				line2<T>(b, c)
+				Line2<T>(b, a),
+				Line2<T>(b, c)
 			);
 		}
 
-		line2<T> edgeab() const { return line2<T>(a, b); }
-		line2<T> edgebc() const { return line2<T>(b, c); }
-		line2<T> edgeca() const { return line2<T>(c, a); }
+		Line2<T> edgeab() const { return Line2<T>(a, b); }
+		Line2<T> edgebc() const { return Line2<T>(b, c); }
+		Line2<T> edgeca() const { return Line2<T>(c, a); }
 	};
 
-	typedef triangle2<float> triangle2f;
-	typedef triangle2<double> triangle2d;
-	typedef triangle2<int> triangle2i;
+	typedef Triangle2<float> Triangle2f;
+	typedef Triangle2<double> Triangle2d;
+	typedef Triangle2<int> Triangle2i;
 
 }

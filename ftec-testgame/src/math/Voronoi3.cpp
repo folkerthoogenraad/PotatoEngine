@@ -49,14 +49,14 @@ namespace ftec {
 
 			lego.setCenter(m_Delaunay.getPoint(i));
 
-			std::vector<plane<T>> planes;
+			std::vector<Plane<T>> planes;
 
 			const auto &ns = this->getNeighbours(i);
 
 			for (auto &n : ns) {
-				line3<T> line(m_Delaunay.getPoint(i), m_Delaunay.getPoint(n));
+				Line3<T> line(m_Delaunay.getPoint(i), m_Delaunay.getPoint(n));
 
-				plane<T> p = plane<T>(line.center(), -line.direction());
+				Plane<T> p = Plane<T>(line.center(), -line.direction());
 
 				planes.push_back(p);
 			}
@@ -65,14 +65,14 @@ namespace ftec {
 			Vector3<T> delta = m_BoundingBox.extends();
 
 			//Boundingbox planes :)
-			planes.push_back(plane<T>(center + delta * Vector3<T>(0, 1, 0), Vector3<T>(0, 1, 0)));
-			planes.push_back(plane<T>(center + delta * Vector3<T>(0, -1, 0), Vector3<T>(0, 1, 0)));
+			planes.push_back(Plane<T>(center + delta * Vector3<T>(0, 1, 0), Vector3<T>(0, 1, 0)));
+			planes.push_back(Plane<T>(center + delta * Vector3<T>(0, -1, 0), Vector3<T>(0, 1, 0)));
 
-			planes.push_back(plane<T>(center + delta * Vector3<T>(1, 0, 0), Vector3<T>(1, 0, 0)));
-			planes.push_back(plane<T>(center + delta * Vector3<T>(-1, 0, 0), Vector3<T>(1, 0, 0)));
+			planes.push_back(Plane<T>(center + delta * Vector3<T>(1, 0, 0), Vector3<T>(1, 0, 0)));
+			planes.push_back(Plane<T>(center + delta * Vector3<T>(-1, 0, 0), Vector3<T>(1, 0, 0)));
 
-			planes.push_back(plane<T>(center + delta * Vector3<T>(0, 0, 1), Vector3<T>(0, 0, 1)));
-			planes.push_back(plane<T>(center + delta * Vector3<T>(0, 0, -1), Vector3<T>(0, 0, 1)));
+			planes.push_back(Plane<T>(center + delta * Vector3<T>(0, 0, 1), Vector3<T>(0, 0, 1)));
+			planes.push_back(Plane<T>(center + delta * Vector3<T>(0, 0, -1), Vector3<T>(0, 0, 1)));
 
 			lego.create(std::move(planes));
 

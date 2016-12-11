@@ -40,13 +40,13 @@ namespace ftec {
 
 			lego.setCenter(m_Points[i].m_Vertex);
 
-			std::vector<line2<T>> edges;
+			std::vector<Line2<T>> edges;
 
 			const auto &ns = this->getNeighbours(i);
 
 			for (auto &n : ns) {
 				edges.push_back(
-					line2<T>(m_Points[i].m_Vertex,
+					Line2<T>(m_Points[i].m_Vertex,
 					m_Points[n].m_Vertex).normal()
 				);
 			}

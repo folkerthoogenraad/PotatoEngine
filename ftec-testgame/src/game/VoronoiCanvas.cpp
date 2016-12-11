@@ -119,7 +119,7 @@ namespace ftec {
 				const auto &v = voronoi.getNeighbours(i);
 
 				for (int j : v) {
-					line2f line(
+					Line2f line(
 						voronoi.getPoint(i),
 						voronoi.getPoint(j)
 					);

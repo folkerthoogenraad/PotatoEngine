@@ -44,24 +44,24 @@ namespace ftec {
 	//-------------------------------------------------------------------
 
 	template <typename T>
-	struct rect;
+	struct Rectangle;
 	template <typename T>
-	struct plane;
+	struct Plane;
 	template <typename T>
-	struct tetrahedron;
+	struct Tetrahedron;
 
 	template <typename T>
-	std::ostream& operator<<(std::ostream &out, const rect<T> &r)
+	std::ostream& operator<<(std::ostream &out, const Rectangle<T> &r)
 	{
 		return out << "(" << r.x() << ", " << r.y() << ", " << r.width() << ", " << r.height() << ")";
 	}
 	template <typename T>
-	std::ostream& operator<<(std::ostream &out, const plane<T> &r)
+	std::ostream& operator<<(std::ostream &out, const Plane<T> &r)
 	{
 		return out << r.direction << " * " << r.offset;
 	}
 	template <typename T>
-	std::ostream& operator<<(std::ostream &out, const tetrahedron<T> &r)
+	std::ostream& operator<<(std::ostream &out, const Tetrahedron<T> &r)
 	{
 		return out << "(" << r.a << ", " << r.b << ", " << r.c << ", " << r.d << ", " << ")";
 	}

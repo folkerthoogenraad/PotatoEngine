@@ -21,7 +21,7 @@ namespace ftec {
 		std::vector<Vector3<T>> m_Vertices;
 
 		//Recalculates the vertices
-		void create(std::vector<plane<T>> planes)
+		void create(std::vector<Plane<T>> planes)
 		{
 			m_Vertices.clear();
 

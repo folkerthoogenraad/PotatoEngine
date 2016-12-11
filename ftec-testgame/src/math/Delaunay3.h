@@ -1,12 +1,12 @@
 #pragma once
 
 #include "math/Vector3.h"
-#include "math/box.h"
+#include "math/Cuboid.h"
 #include "math/epsilon.h"
 #include "math/math.h"
 #include "math/collision.h"
 #include "math/Matrix4.h"
-#include "math/sphere.h"
+#include "math/Sphere.h"
 #include "math/triangle3.h"
 #include "math/tetrahedron.h"
 
@@ -31,7 +31,7 @@ namespace ftec {
 		bool m_Valid;
 		Vector3<T> m_Center;
 
-		box<T> m_BoundingBox;
+		Cuboid<T> m_BoundingBox;
 	public:
 		Delaunay3() {}
 		Delaunay3(std::vector<Vector3<T>> points) { triangulate(std::move(points)); }
@@ -69,11 +69,11 @@ namespace ftec {
 			m_Tetrahedrons.clear();
 			m_HullTriangles.clear();
 
-			m_BoundingBox = box<T>(mn, mx);
-			sphere<T> bSphere = m_BoundingBox.boudingsphere();
+			m_BoundingBox = Cuboid<T>(mn, mx);
+			Sphere<T> bSphere = m_BoundingBox.boudingsphere();
 
 			//Make a tetrahedron around the bounding sphere (which is about ~6 per unit)
-			tetrahedron<T> superTetrahedron = tetrahedron<T>(
+			Tetrahedron<T> superTetrahedron = Tetrahedron<T>(
 				Vector3<T>(0, -1, 1),
 				Vector3<T>(-1, -1, -1),
 				Vector3<T>(1, -1, -1),
@@ -109,14 +109,14 @@ namespace ftec {
 
 				//Find all the bad tetrahedra
 				for (auto &t : m_Tetrahedrons) {
-					tetrahedron<T> tr = tetrahedron<T>(
+					Tetrahedron<T> tr = Tetrahedron<T>(
 						m_Vertices[t.a].m_Vertex,
 						m_Vertices[t.b].m_Vertex,
 						m_Vertices[t.c].m_Vertex,
 						m_Vertices[t.d].m_Vertex
 						);
 
-					tetrahedron<T> oriented = tr.clone().orient();
+					Tetrahedron<T> oriented = tr.clone().orient();
 
 					auto addTetrahedron = [&t, &polygon, &badTetrahedrons]() {
 						badTetrahedrons.push_back(t);
@@ -146,7 +146,7 @@ namespace ftec {
 
 					//Only when there is a triangle there
 					else if (sharedSuperCount == 3) {
-						plane<T> bdc = plane<T>(tr.trianglebdc().translate(tr.a - tr.b));
+						Plane<T> bdc = Plane<T>(tr.trianglebdc().translate(tr.a - tr.b));
 
 						if(m_Strategy > NormalizationStrategy::NONE)
 							bdc.normalize();
@@ -180,7 +180,7 @@ namespace ftec {
 
 					//Use the abc triangle
 					else if (sharedSuperCount == 1) {
-						plane<T> abc = plane<T>(tr.triangleabc());
+						Plane<T> abc = Plane<T>(tr.triangleabc());
 
 						if (m_Strategy > NormalizationStrategy::NONE)
 							abc.normalize();
@@ -253,7 +253,7 @@ namespace ftec {
 					if (superTetrahedronRef.contains(i))
 						continue;
 
-					triangle3<T> triangle(
+					Triangle3<T> triangle(
 						m_Vertices[tref.a].m_Vertex,
 						m_Vertices[tref.b].m_Vertex,
 						m_Vertices[tref.c].m_Vertex
@@ -289,7 +289,7 @@ namespace ftec {
 		int getHullTriangleCount() const { return (int)m_HullTriangles.size(); }
 		const TriangleRef &getHullTriangleRef(int index) const { return m_HullTriangles[index]; }
 
-		const box<T> &getBoundingBox() const { return m_BoundingBox; }
+		const Cuboid<T> &getBoundingBox() const { return m_BoundingBox; }
 	};
 
 	typedef Delaunay3<float> Delaunay3f;

@@ -3,6 +3,8 @@
 #include "graphics/Font.h"
 #include "engine/Input.h"
 
+#include "math/math.h"
+
 namespace potato {
 
 	const int TAB_HEIGHT = 32;

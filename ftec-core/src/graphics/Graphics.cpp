@@ -19,7 +19,7 @@
 #include "math/Vector3.h"
 #include "math/line3.h"
 #include "math/triangle3.h"
-#include "math/sphere.h"
+#include "math/Sphere.h"
 #include "math/Vector4.h"
 
 #include "SpriteBatch.h"
@@ -54,10 +54,10 @@ namespace ftec {
 
 	std::unique_ptr<SpriteBatch> Graphics::renderer;
 	std::shared_ptr<Material2D> Graphics::pointMaterial;
-	std::vector<ColorType<line3f>> Graphics::lines;
+	std::vector<ColorType<Line3f>> Graphics::lines;
 	std::vector<ColorType<Vector3f>> Graphics::points;
-	std::vector<ColorType<spheref>> Graphics::spheres;
-	std::vector<ColorType<triangle3f>> Graphics::triangles;
+	std::vector<ColorType<Spheref>> Graphics::spheres;
+	std::vector<ColorType<Triangle3f>> Graphics::triangles;
 
 	void Graphics::begin()
 	{
@@ -93,7 +93,7 @@ namespace ftec {
 		});
 	}
 
-	void Graphics::enqueueLine(const line3f & line, const Color32 &color)
+	void Graphics::enqueueLine(const Line3f & line, const Color32 &color)
 	{
 		lines.push_back({line, color });
 	}
@@ -103,12 +103,12 @@ namespace ftec {
 		points.push_back({point, color });
 	}
 
-	void Graphics::enqueueTriangle(const triangle3f & triangle, const Color32 &color)
+	void Graphics::enqueueTriangle(const Triangle3f & triangle, const Color32 &color)
 	{
 		triangles.push_back({ triangle, color });
 	}
 
-	void Graphics::enqueueSphere(const spheref & sphere, const Color32 & color)
+	void Graphics::enqueueSphere(const Spheref & sphere, const Color32 & color)
 	{
 		spheres.push_back({ sphere, color });
 	}
@@ -142,7 +142,7 @@ namespace ftec {
 			/*if (l->isShadowsEnabled()) {
 				l->getShadowBuffer()->bind();
 
-				Renderer::renderport(recti(0, 0, l->getShadowBuffer()->getWidth(), l->getShadowBuffer()->getHeight()));
+				Renderer::renderport(Rectanglei(0, 0, l->getShadowBuffer()->getWidth(), l->getShadowBuffer()->getHeight()));
 
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -195,7 +195,7 @@ namespace ftec {
 			
 
 			GraphicsState::m_Lights[0].enabled = true;
-			GraphicsState::m_Lights[0].light = *lights.front();// .m_Direction = Vector3f(0.7f, -0.4f, -0.7f).normalize();
+			GraphicsState::m_Lights[0].light = *lights.front();// .m_DiRectangleion = Vector3f(0.7f, -0.4f, -0.7f).normalize();
 
 
 			for (auto m : meshes) {

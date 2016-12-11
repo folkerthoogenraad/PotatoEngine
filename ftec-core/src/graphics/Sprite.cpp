@@ -5,10 +5,10 @@
 
 namespace ftec {
 	Sprite::Sprite(std::shared_ptr<Texture> texture)
-		: Sprite(texture, rectf(0,0,(float) texture->getWidth(), (float) texture->getHeight()))
+		: Sprite(texture, Rectanglef(0,0,(float) texture->getWidth(), (float) texture->getHeight()))
 	{ }
 
-	Sprite::Sprite(std::shared_ptr<Texture> texture, const rectf & rectangle)
+	Sprite::Sprite(std::shared_ptr<Texture> texture, const Rectanglef & rectangle)
 		: m_Texture(texture), m_TextureRectangle(rectangle)
 	{
 		this->recalculateUVRectangle();

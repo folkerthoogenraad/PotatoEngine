@@ -6,12 +6,12 @@
 
 namespace ftec {
 	template<typename T>
-	struct line2 {
+	struct Line2 {
 		Vector2<T> a;
 		Vector2<T> b;
 
-		line2() {}
-		line2(const Vector2<T> &a, const Vector2<T> &b)
+		Line2() {}
+		Line2(const Vector2<T> &a, const Vector2<T> &b)
 			: a(a), b(b) {}
 
 		Vector2<T> direction() const
@@ -34,10 +34,10 @@ namespace ftec {
 			return (a + b) / (T)2.0;
 		}
 
-		line2<T> normal() const
+		Line2<T> normal() const
 		{
 			Vector2<T> p = perp();
-			return line2<T>(center(), center() + p);
+			return Line2<T>(center(), center() + p);
 		}
 
 		//The distance from point to line in line units
@@ -51,7 +51,7 @@ namespace ftec {
 			return distance(a, b);
 		}
 
-		line2<T> &translate(Vector2f v)
+		Line2<T> &translate(Vector2f v)
 		{
 			a += v;
 			b += v;
@@ -59,17 +59,17 @@ namespace ftec {
 			return *this;
 		}
 
-		line2<T> clone()
+		Line2<T> clone()
 		{
-			return line2<T>(*this);
+			return Line2<T>(*this);
 		}
 
-		line2<T> flipped()
+		Line2<T> flipped()
 		{
 			return clone().flip();
 		}
 
-		line2<T> &flip()
+		Line2<T> &flip()
 		{
 			auto aa= a;
 			a = b;
@@ -78,7 +78,7 @@ namespace ftec {
 		}
 	};
 
-	typedef line2<float> line2f;
-	typedef line2<double> line2d;
-	typedef line2<int> line2i;
+	typedef Line2<float> Line2f;
+	typedef Line2<double> Line2d;
+	typedef Line2<int> Line2i;
 }

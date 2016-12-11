@@ -17,10 +17,10 @@ namespace ftec {
 		std::vector<Vector2<T>> m_Vertices;
 
 		//Recalculates the vertices
-		void create(std::vector<line2<T>> edges)
+		void create(std::vector<Line2<T>> edges)
 		{
 			//Flip the edges, if needed
-			for (line2<T> &edge : edges) {
+			for (Line2<T> &edge : edges) {
 				if (edge.distanceFrom(m_Center) < 0) {
 					edge.flip();
 				}

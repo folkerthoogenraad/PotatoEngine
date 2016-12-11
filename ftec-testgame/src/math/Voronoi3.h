@@ -1,7 +1,7 @@
 #pragma once
 
 #include "math/lego3.h"
-#include "math/box.h"
+#include "math/Cuboid.h"
 
 #include "Delaunay3.h"
 
@@ -15,7 +15,7 @@ namespace ftec {
 	public:
 		std::vector<std::set<int>> m_Edges;
 		std::vector<lego3<T>> m_Legos;
-		box<T> m_BoundingBox;
+		Cuboid<T> m_BoundingBox;
 		Delaunay3<T> m_Delaunay;
 	public:
 		Voronoi3();

@@ -8,50 +8,50 @@ namespace ftec {
 	struct Matrix3;
 
 	template<typename T>
-	struct circle {
+	struct Circle {
 		Vector2<T> center;
 		T radius;
 
-		circle() {}
-		circle(const Vector2<T> &c, T radius)
+		Circle() {}
+		Circle(const Vector2<T> &c, T radius)
 			: center(c), radius(radius) {}
 
-		circle<T> &transform(const Matrix3<T> m)
+		Circle<T> &transform(const Matrix3<T> m)
 		{
 			//TODO PLS PLS
 
 			return *this;
 		}
-		circle<T> transformed() const 
+		Circle<T> transformed() const 
 		{
 			return clone().transform(m);
 		}
 
-		circle<T> &flip()
+		Circle<T> &flip()
 		{
 			radius = -radius;
 			return *this;
 		}
-		circle<T> flipped() const
+		Circle<T> flipped() const
 		{
 			return clone().flip();
 		}
 
-		circle<T> &orient()
+		Circle<T> &orient()
 		{
 			radius = abs(radius);
 			return *this;
 		}
-		circle<T> oriented() const
+		Circle<T> oriented() const
 		{
 			return clone().orient();
 		}
 
 		T magnitude() const { return radius; }
-		circle<T> clone() const { return circle<T>(*this); }
+		Circle<T> clone() const { return Circle<T>(*this); }
 	};
 
-	typedef circle<float> circlef;
-	typedef circle<double> circled;
-	typedef circle<int> circlei;
+	typedef Circle<float> Circlef;
+	typedef Circle<double> Circled;
+	typedef Circle<int> Circlei;
 }

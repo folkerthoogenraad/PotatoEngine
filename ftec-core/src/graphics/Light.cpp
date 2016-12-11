@@ -20,7 +20,7 @@ namespace ftec {
 	Matrix4f Light::getShadowMatrix(const Vector3f &position) const
 	{
 		//return Matrix4f::scale(Vector3(0.2f, 0.2f, -0.2f)) * Matrix4f::rotationX(45) * Matrix4f::rotationY(45);
-		//return  Matrix4f::fromForward(m_Direction, Vector3(0,1,0)) * Matrix4f::scale(Vector3(0.1f, 0.1f, -0.5f)); // TODO some shadow range calculations or something
-		return Matrix4f::orthographic(-10, 10, -10, 10, 10, -10) * Matrix4f::lookAt(-m_Direction + position, position);
+		//return  Matrix4f::fromForward(m_DiRectangleion, Vector3(0,1,0)) * Matrix4f::scale(Vector3(0.1f, 0.1f, -0.5f)); // TODO some shadow range calculations or something
+		return Matrix4f::orthographic(-10, 10, -10, 10, 10, -10) * Matrix4f::lookAt(-m_DiRectangleion + position, position);
 	}
 }

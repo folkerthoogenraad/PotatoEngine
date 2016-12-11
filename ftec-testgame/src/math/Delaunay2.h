@@ -1,7 +1,8 @@
 #pragma once
 
 #include "math/triangle2.h"
-#include "math/rect.h"
+#include "math/Rectangle.h"
+
 #include "math/math.h"
 #include "math/collision.h"
 #include "math/line2.h"
@@ -22,7 +23,7 @@ namespace ftec {
 
 		std::vector<TriangleRef> m_Triangles;
 
-		rect<T> m_BoundingBox;
+		Rectangle<T> m_BoundingBox;
 	public:
 		Delaunay2() {}
 		Delaunay2(std::vector<Vector2<T>> points)
@@ -53,12 +54,12 @@ namespace ftec {
 
 			{
 				Vector2<T> delta = maxPosition - minPosition;
-				m_BoundingBox = rect<T>(minPosition.x, minPosition.y, delta.x, delta.y);
+				m_BoundingBox = Rectangle<T>(minPosition.x, minPosition.y, delta.x, delta.y);
 			}
 
 			Vector2<T> delta = maxPosition - minPosition;
 
-			circle<T> c = m_BoundingBox.boundingCircle();
+			Circle<T> c = m_BoundingBox.boundingCircle();
 
 			m_Vertices.push_back({ c.center + Vector2<T>(0, 2) * c.radius, true, true });
 			m_Vertices.push_back({ c.center + Vector2<T>(-2, -1) * c.radius, true, true });
@@ -80,8 +81,8 @@ namespace ftec {
 				//Find all bad triangles
 				for (auto &t : m_Triangles) {
 					//Triangles
-					triangle2<T> triangle = triangle2<T>(m_Vertices[t.a].m_Vertex, m_Vertices[t.b].m_Vertex, m_Vertices[t.c].m_Vertex);
-					triangle2<T> oriented = triangle.clone().orient();
+					Triangle2<T> triangle = Triangle2<T>(m_Vertices[t.a].m_Vertex, m_Vertices[t.b].m_Vertex, m_Vertices[t.c].m_Vertex);
+					Triangle2<T> oriented = triangle.clone().orient();
 
 					//Function to add the triangle, it happens in 4 different scenarios.
 					auto addTriangle = [&t, &polygon, &badTriangles]() {
@@ -117,7 +118,7 @@ namespace ftec {
 
 					//If one is at super triangle -> pass when behind line
 					else if (sharedSuperCount == 1) {
-						line2f ab = triangle.edgeab();
+						Line2f ab = triangle.edgeab();
 						if (ab.distanceFrom(triangle.c) > 0) {
 							ab.flip();
 						}
@@ -181,17 +182,17 @@ namespace ftec {
 
 		int getTriangleCount() const { return (int) m_Triangles.size(); }
 		const TriangleRef &getTriangleRef(int index) const { return m_Triangles[index]; }
-		triangle2<T> getTriangle(int index) const
+		Triangle2<T> getTriangle(int index) const
 		{
 			TriangleRef ref = getTriangleRef(index);
 
-			return triangle2<T>(
+			return Triangle2<T>(
 				getPoint(ref.a),
 				getPoint(ref.b),
 				getPoint(ref.c));
 		}
 
-		const rect<T> &getBoundingBox() const { return m_BoundingBox; }
+		const Rectangle<T> &getBoundingBox() const { return m_BoundingBox; }
 	};
 
 	typedef Delaunay2<float> Delaunay2f;

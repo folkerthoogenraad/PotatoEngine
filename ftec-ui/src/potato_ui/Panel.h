@@ -3,7 +3,6 @@
 #include <memory>
 #include <vector>
 
-#include "math/math.h"
 #include "PotatoUI.h"
 
 #include "Event.h"
@@ -16,7 +15,7 @@ namespace ftec {
 
 namespace potato {
 
-	typedef ftec::recti Bounds;
+	typedef ftec::Rectanglei Bounds;
 	typedef ftec::Vector2i Size;
 
 	struct Insets{

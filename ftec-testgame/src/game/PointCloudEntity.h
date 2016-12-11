@@ -20,7 +20,7 @@ namespace ftec {
 		std::shared_ptr<PBRMaterial> m_Material;
 		std::unique_ptr<Mesh> m_Mesh;
 		Delaunay3d del;
-		Vector3d m_Direction;
+		Vector3d m_DiRectangleion;
 		float m_Time;
 		bool m_Render;
 

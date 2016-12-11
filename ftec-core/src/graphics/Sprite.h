@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "math/rect.h"
+#include "math/Rectangle.h"
 
 namespace ftec {
 	class Texture;
@@ -11,23 +11,23 @@ namespace ftec {
 		std::shared_ptr<Texture> m_Texture = 0;
 		
 		//This is where stuff gets weird. This needs some explaining
-		rectf m_LocalBounds;
+		Rectanglef m_LocalBounds;
 
-		rectf m_TextureRectangle;
-		rectf m_UVRectangle;
+		Rectanglef m_TextureRectangle;
+		Rectanglef m_UVRectangle;
 	public:
 		Sprite() = default;
 		Sprite(std::shared_ptr<Texture> texture);
-		Sprite(std::shared_ptr<Texture> texture, const rectf &rectangle);
+		Sprite(std::shared_ptr<Texture> texture, const Rectanglef &rectangle);
 		~Sprite() = default;
 
 		//Returns the uv rectangle
-		rectf &uvs() { return m_UVRectangle; };
-		const rectf &uvs() const { return m_UVRectangle; };
+		Rectanglef &uvs() { return m_UVRectangle; };
+		const Rectanglef &uvs() const { return m_UVRectangle; };
 
 		//Returns the bounds
-		rectf &bounds() { return m_LocalBounds; };
-		const rectf &bounds() const { return m_LocalBounds; };
+		Rectanglef &bounds() { return m_LocalBounds; };
+		const Rectanglef &bounds() const { return m_LocalBounds; };
 
 		//Returns the bounds
 		std::shared_ptr<Texture> &texture() { return m_Texture; };

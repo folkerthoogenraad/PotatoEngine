@@ -1,6 +1,6 @@
 #pragma once
 #include "math/line2.h"
-#include "math/rect.h"
+#include "math/Rectangle.h"
 #include "math/circle.h"
 
 #include "SpriteBatch.h"
@@ -28,7 +28,7 @@ namespace ftec {
 		//This has the current shader and the current texture.
 		std::shared_ptr<Material2D> m_Material;
 
-		recti m_ClippingRectangle;
+		Rectanglei m_ClippingRectangle;
 		Color32 m_Color;
 		float m_LineWidth = 1.f;
 		float m_PointSize = 2.f;
@@ -50,18 +50,18 @@ namespace ftec {
 		void end();
 
 		//Deprecated as fuck
-		void begin3D(recti rectangle);
+		void begin3D(Rectanglei rectangle);
 		void end3D();
 
-		void drawRectangle(const rectf& rectangle, bool fill);
+		void drawRectangle(const Rectanglef& rectangle, bool fill);
 		void drawCircle(const Vector2f &center, float radius, bool fill);
-		void drawCircle(const circlef &circle, bool fill);
+		void drawCircle(const Circlef &circle, bool fill);
 		void drawArc(const Vector2f &center, float radius, bool fill, float startAngle, float angleLength);
 
 		void drawString(const std::string &text, const Vector2f &position);
 		void drawSprite(const Sprite &sprite, const Vector2f &position);
 		void drawLine(const Vector2f &start, const Vector2f &end);
-		void drawLine(const line2f &line);
+		void drawLine(const Line2f &line);
 		void drawPoint(const Vector2f &point);
 
 		void drawPrimitiveBegin(Primitive primitive);
@@ -74,7 +74,7 @@ namespace ftec {
 		void drawClear();
 
 		//Set stuff
-		void setClip(const recti &rectangle);
+		void setClip(const Rectanglei &rectangle);
 		void resetClip();
 		void setColor(const Color32 &color);
 		void setShader(std::shared_ptr<Shader> shader);
@@ -93,7 +93,7 @@ namespace ftec {
 		
 
 		//Returns the current clipping area, as set by clip
-		inline const recti &getClip() { return m_ClippingRectangle; }
+		inline const Rectanglei &getClip() { return m_ClippingRectangle; }
 		inline const Color32 &getColor() { return m_Color; }
 		inline std::shared_ptr<Shader> getShader() { return m_Material->m_Shader; } //TODO see implementation of setShader
 

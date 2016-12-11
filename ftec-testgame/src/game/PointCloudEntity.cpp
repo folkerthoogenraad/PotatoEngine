@@ -26,15 +26,15 @@
 
 namespace ftec {
 
-	static void drawTriangle(const triangle3f &tr, const Color32 &c)
+	static void drawTriangle(const Triangle3f &tr, const Color32 &c)
 	{
 		Graphics::enqueueLine(tr.edgeab(), c);
 		Graphics::enqueueLine(tr.edgebc(), c);
 		Graphics::enqueueLine(tr.edgeca(), c);
 	}
-	static void drawTetrahedron(const tetrahedronf &in)
+	static void drawTetrahedron(const Tetrahedronf &in)
 	{
-		tetrahedronf t = in;
+		Tetrahedronf t = in;
 
 		drawTriangle(
 			t.triangleabc(),
@@ -66,7 +66,7 @@ namespace ftec {
 
 		m_Time = -1;
 
-		m_Direction = Vector3f(del.getBoundingBox().center());
+		m_DiRectangleion = Vector3f(del.getBoundingBox().center());
 
 		speed = (float)(rand() % 16);
 
@@ -77,7 +77,7 @@ namespace ftec {
 		for (int i = 0; i < del.getHullTriangleCount(); i++) {
 			const TriangleRef &tr = del.getHullTriangleRef(i);
 
-			triangle3f t(del.getPoint(tr.a), del.getPoint(tr.b), del.getPoint(tr.c));
+			Triangle3f t(del.getPoint(tr.a), del.getPoint(tr.b), del.getPoint(tr.c));
 
 			if (t.distanceFrom(center) > 0)
 				t.flip();
@@ -146,7 +146,7 @@ namespace ftec {
 
 		amount = tween(0.f, away, m_Time, curves::CubicBezier());
 
-		m_Position = m_Direction * amount;
+		m_Position = m_DiRectangleion * amount;
 
 		if (m_Time < EPSILON * 4)
 			m_Position = Vector3f(0, 0, 0);
@@ -169,7 +169,7 @@ namespace ftec {
 					Graphics::enqueuePoint(model * rotation * v, Color32::white());
 				}
 
-				Graphics::enqueueLine(line3f(
+				Graphics::enqueueLine(Line3f(
 					del.getBoundingBox().min, del.getBoundingBox().max
 				).transform(model * rotation), Color32::green());
 			}

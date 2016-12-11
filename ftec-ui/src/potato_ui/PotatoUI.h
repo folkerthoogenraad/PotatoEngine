@@ -10,10 +10,9 @@ PotatoEngine bases. The PotatoEngine will be fully compatible with the
 PotatoUI (obviously).
 */
 
-#include "math/math.h"
 #include <string>
-#include "graphics/Graphics2D.h"
 #include <condition_variable>
+#include "graphics/Graphics2D.h"
 
 namespace potato {
 

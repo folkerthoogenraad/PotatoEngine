@@ -140,9 +140,6 @@
     <ClInclude Include="src\engine\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\rect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\io\defer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -233,9 +230,6 @@
     <ClInclude Include="src\math\triangle2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\sphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\triangle3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -243,9 +237,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\tetrahedron.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\plane.h">
@@ -288,6 +279,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\resources\ManageableResource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Rectangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Cuboid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
