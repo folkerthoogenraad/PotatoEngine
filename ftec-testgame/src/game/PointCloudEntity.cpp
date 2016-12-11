@@ -152,7 +152,7 @@ namespace ftec {
 			m_Position = Vector3f(0, 0, 0);
 	}
 
-	void PointCloudEntity::render()
+	void PointCloudEntity::render3D()
 	{
 		if (m_Render) {
 			Matrix4f model = Matrix4f::translation(this->m_Position + center);

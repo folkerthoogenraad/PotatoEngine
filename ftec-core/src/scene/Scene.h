@@ -12,6 +12,8 @@ namespace ftec {
 	class Mesh;
 
 	struct Material;
+
+	class Graphics2D;
 	
 	class Light;
 	class Camera;
@@ -23,9 +25,12 @@ namespace ftec {
 		std::vector<Camera> m_Cameras;
 		std::vector<Light> m_Lights;
 
+		std::unique_ptr<Graphics2D> m_Graphics2D;
+		//std::unique_ptr<Graphics3D> m_Graphics3D;
+
 		enum SceneMode {
 			GRAPHICS_2D,
-			GRAPICS_3D,
+			GRAPHICS_3D,
 			GRAPHICS_BOTH
 		} m_Mode;
 

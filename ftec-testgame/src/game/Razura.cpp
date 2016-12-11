@@ -38,61 +38,15 @@ namespace ftec {
 
 	void Razura::update()
 	{
-		ui->update();
 	}
 
 	void Razura::render()
 	{
-		ui->render();
 	}
 
 	void Razura::init()
 	{
-		//UI
-		{
-			ui = std::make_shared<potato::PotatoUI>();
-
-			ui->setRoot(
-				potato::UILoader::load("text.xml")
-				//std::make_shared<VoronoiCanvas>()
-				//std::make_shared<potato::SceneView>()
-				//std::make_shared<TestCanvas>()
-			);
-		}
-	
-		//3D stuff
-		{
-			std::shared_ptr<Scene> scene = std::make_shared<Scene>();
-			Engine::setScene(scene);
-
-#if 1
-			scene->m_Lights[0].m_DiRectangleion = Vector3f(1,-0.4f,-1).normalize();
-
-			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
-
-			for (int x = 0; x < 5; x++) {
-				for (int y = 0; y < 5; y++) {
-					auto material = std::make_shared<PBRMaterial>(
-						Engine::getResourceManager().load<Texture>("textures/metal/metal_albedo.tif"),
-						Engine::getResourceManager().load<Shader>("shaders/default")
-					);
-					material->m_Metallicness = x / 5.0f;
-					material->m_Roughness = y / 5.0f;
-					
-					material->m_NormalMap = Engine::getResourceManager().load<Texture>("textures/metal/metal_normal.tif");
-					material->m_RoughnessMap = Engine::getResourceManager().load<Texture>("textures/metal/metal_roughness.tif");
-					material->m_MetallicMap = Engine::getResourceManager().load<Texture>("textures/metal/metal_metallicness.tif");
-
-					material->m_Tiling = Vector2f(4, 4);
-
-					scene->addMesh(Vector3f(x * 2.5f, 0, y * 2.5f), sphere, material);
-				}
-			}
-#endif
-
-			scene->addEntity(std::make_shared<Voronoi3DEntity>());
-			scene->addEntity(std::make_shared<NoClipCameraEntity>());
-		}
+		
 	}
 
 	void Razura::destroy()

@@ -21,15 +21,23 @@ namespace ftec {
 		m_LayerMask(LAYER_ALL),
 		m_RenderTarget(nullptr),
 		m_RenderToScreen(false),
-		m_PostProcessingShader(nullptr)
+		m_PostProcessingShader(nullptr),
+		m_Flipped(false),
+		m_Viewport(0,0,1,1)
 	{ }
 
 	Matrix4f ftec::Camera::getProjectionMatrix() const
 	{
 		if (m_Projection == Projection::PERSPECTIVE)
 			return Matrix4f::perspective(m_Fov, m_AspectRatio, m_Near, m_Far);
-		else
-			return Matrix4f::orthographic(-m_Size * m_AspectRatio, m_Size * m_AspectRatio, -m_Size, m_Size, m_Near, m_Far);
+		else {
+			if (!m_Flipped) {
+				return Matrix4f::orthographic(-m_Size * m_AspectRatio, m_Size * m_AspectRatio, -m_Size, m_Size, m_Near, m_Far);
+			}
+			else {
+				return Matrix4f::orthographic(-m_Size * m_AspectRatio, m_Size * m_AspectRatio, m_Size, -m_Size, m_Near, m_Far);
+			}
+		}
 	}
 
 	Matrix4f ftec::Camera::getViewMatrix() const
@@ -45,7 +53,7 @@ namespace ftec {
 	{
 		return !(*this == other);
 	}
-	Camera Camera::orthagonal(float size, float aspect, float near, float far)
+	Camera Camera::orthagonal(float size, float aspect, float near, float far, bool flipped)
 	{
 		Camera camera = Camera();
 		camera.m_Projection = Camera::Projection::ORTHOGONAL;
@@ -53,6 +61,7 @@ namespace ftec {
 		camera.m_AspectRatio = aspect;
 		camera.m_Near = near;
 		camera.m_Far = far;
+		camera.m_Flipped = flipped;
 
 		return std::move(camera);
 	}

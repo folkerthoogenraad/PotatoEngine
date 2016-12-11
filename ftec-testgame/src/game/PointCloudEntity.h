@@ -32,6 +32,7 @@ namespace ftec {
 		PointCloudEntity(std::vector<Vector3d> vertices);
 		~PointCloudEntity() = default;
 		void update() override;
-		void render() override;
+
+		void render3D() override;
 	};
 }

@@ -8,7 +8,7 @@ namespace ftec {
 	public:
 		NoClipCameraEntity();
 		~NoClipCameraEntity();
+
 		void update() override;
-		void render() override;
 	};
 }

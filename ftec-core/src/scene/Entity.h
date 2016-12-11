@@ -4,14 +4,21 @@
 
 
 namespace ftec {
+
+	class Graphics;
+	class Graphics2D;
+
 	class Entity {
 	protected:
 		Vector3f m_Position;
 	public:
 		Entity() = default;
 		virtual ~Entity() = default;
-		virtual void update() = 0;
-		virtual void render() = 0;
+
+		virtual void update() {};
+		
+		virtual void render3D() {};
+		virtual void render2D(Graphics2D &graphics) {};
 	};
 }
 

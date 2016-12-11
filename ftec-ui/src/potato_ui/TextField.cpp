@@ -21,7 +21,8 @@ namespace potato {
 
 	void TextField::drawSelf(ftec::Graphics2D & graphics)
 	{
-		graphics.setClip(getGlobalOutline());
+		//TODO manage to find a solution for this
+		//graphics.setClip(getGlobalOutline());
 		Bounds bounds = getGlobalBounds();
 
 		graphics.setFont(m_Font);
@@ -66,7 +67,8 @@ namespace potato {
 			true
 		);
 
-		graphics.resetClip();
+		//TODO see top of function
+		//graphics.resetClip();
 	}
 	Size TextField::getPreferredSize()
 	{

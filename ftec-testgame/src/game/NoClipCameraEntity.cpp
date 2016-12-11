@@ -71,7 +71,4 @@ namespace ftec {
 		
 		
 	}
-
-	void NoClipCameraEntity::render()
-	{ }
 }

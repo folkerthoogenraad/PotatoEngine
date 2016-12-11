@@ -3,6 +3,7 @@
 #include <memory>				//For std::shared_ptr
 
 #include "math/Vector3.h"		//For camera position
+#include "math/Rectangle.h"		//For viewport rectangle
 
 namespace ftec {
 	
@@ -31,8 +32,10 @@ namespace ftec {
 		float m_Near, m_Far;
 
 		float m_Pitch, m_Yaw;
+		bool m_Flipped;
 
 		Layer m_LayerMask;
+		Rectanglef m_Viewport;
 
 		std::shared_ptr<RenderBuffer> m_RenderTarget;
 
@@ -50,7 +53,7 @@ namespace ftec {
 		bool operator==(const Camera &other);
 		bool operator!=(const Camera &other);
 
-		static Camera orthagonal(float size, float aspect, float near, float far);
+		static Camera orthagonal(float size, float aspect, float near, float far, bool flipped = false);
 		static Camera perspective(float fov, float aspect, float near, float far);
 
 	};

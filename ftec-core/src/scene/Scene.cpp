@@ -10,6 +10,8 @@
 #include "graphics/Light.h"
 #include "graphics/Renderer.h"
 
+#include "graphics/Graphics2D.h"
+
 #include "math/Vector3.h"
 
 #include "Entity.h"
@@ -28,6 +30,7 @@ namespace ftec {
 	{
 		//Not sure if we want to have this, but whatever
 		m_Cameras.push_back(Camera::perspective(60, Engine::getWindow().getWidth() / Engine::getWindow().getHeight(), 0.1f, 1000.f));
+		m_Mode = SceneMode::GRAPHICS_3D;
 		m_Lights.push_back(Light());
 	}
 
@@ -56,9 +59,25 @@ namespace ftec {
 			Graphics::enqueueMesh(geometry.mesh.get(), geometry.material.get(), Matrix4f::translation(geometry.position), LAYER_STATIC);
 		}
 
-		for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {
-			auto obj = *i;
-			obj->render();
+		if (m_Mode == SceneMode::GRAPHICS_3D || m_Mode == SceneMode::GRAPHICS_BOTH) {
+			for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {
+				auto obj = *i;
+				obj->render3D();
+			}
+		}
+		else
+		{
+			if (!m_Graphics2D) {
+				//NOTE i hate everything about this
+				//TODO don't do this here, because this might cause hickups and stuff
+				m_Graphics2D = std::make_unique<Graphics2D>();
+				m_Graphics2D->m_Camera = this->m_Cameras[0]; //Aargh, this is so shit
+			}
+
+			for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {
+				auto obj = *i;
+				obj->render2D(*m_Graphics2D);
+			}
 		}
 	}
 

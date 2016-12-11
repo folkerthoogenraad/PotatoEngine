@@ -196,7 +196,7 @@ namespace ftec {
 	}
 
 
-	void Voronoi3DEntity::render()
+	void Voronoi3DEntity::render3D()
 	{
 		//Draw the grid
 		/*for (int i = 0; i < 11; i++) {

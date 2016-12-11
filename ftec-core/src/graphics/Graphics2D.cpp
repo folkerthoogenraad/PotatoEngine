@@ -10,6 +10,8 @@
 #include "Font.h"
 #include "logger/log.h"
 
+#include "math/Rectangle.h"
+
 #include "engine/Time.h"
 
 #include "GL.h"
@@ -31,13 +33,18 @@ namespace ftec {
 
 		m_Material->m_TextureMap = m_WhiteTexture;
 		m_Material->m_Shader = Engine::getResourceManager().load<Shader>("shaders/default2d");
-		resetClip();
+
 		m_Color = Color32(255, 255, 255, 255);
+
+		m_Camera = Camera::orthagonal(Engine::getWindow().getHeight() / 2.0f, Engine::getWindow().getWidth() / Engine::getWindow().getHeight(), -100, 100, true);
+		m_Camera.m_Position = Vector3f(Engine::getWindow().getWidth() / 2.0f, Engine::getWindow().getHeight() / 2.0f);
 	}
 
 	Graphics2D::~Graphics2D()
 	{
-		end();
+		if (batch.isDrawing()) {
+			end();
+		}
 	}
 
 	void Graphics2D::begin() {
@@ -92,34 +99,6 @@ namespace ftec {
 		}
 	}
 
-	void Graphics2D::drawPrimitiveBegin(Primitive primitive)
-	{
-		if (batch.isDrawing())
-			batch.end();
-
-		batch.begin(primitive);
-	}
-	void Graphics2D::drawPrimitiveSetTexture(std::shared_ptr<Texture> texture)
-	{
-		setTexture(texture);
-	}
-	void Graphics2D::drawPrimitiveVertex(Vector2f & vertex)
-	{
-		batch.vertex(vertex);
-	}
-	void Graphics2D::drawPrimitiveUV(Vector2f & uv)
-	{
-		batch.uv(uv);
-	}
-	void Graphics2D::drawPrimitiveColor(Color32 & color)
-	{
-		batch.color(color);
-	}
-	void Graphics2D::drawPrimitiveEnd()
-	{
-		flush();
-	}
-
 	void Graphics2D::drawCircle(const Vector2f & center, float radius, bool fill)
 	{
 		if (drawing3D) {
@@ -127,23 +106,6 @@ namespace ftec {
 		}
 
 		drawArc(center, radius, fill, 0, PI * 2);
-		/*if (fill) {
-			setTexture(m_WhiteTexture);
-			batch.color(m_Color);
-
-			const float steps = 32;
-			const float anglePerStep = 2 * PI / steps;
-			for (float i = 0; i < steps; i += 2) {
-				batch.vertex(center);
-
-				batch.vertex(center + Vector3f(cosf(anglePerStep * (i + 2)), sinf(anglePerStep * (i + 2))) * radius);
-				batch.vertex(center + Vector3f(cosf(anglePerStep * (i + 1)), sinf(anglePerStep * (i + 1))) * radius);
-				batch.vertex(center + Vector3f(cosf(anglePerStep * (i + 0)), sinf(anglePerStep * (i + 0))) * radius);
-			}
-		}
-		else {
-			//TODO
-		}*/
 	}
 
 	void Graphics2D::drawCircle(const Circlef & circle, bool fill)
@@ -301,28 +263,6 @@ namespace ftec {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void Graphics2D::setClip(const Rectanglei &rectangle)
-	{
-		flush();
-
-		this->m_ClippingRectangle = rectangle;
-		//Flush again to apply the clip
-		flush();
-	}
-
-	void Graphics2D::resetClip()
-	{
-		flush();
-
-		m_ClippingRectangle.x() = 0;
-		m_ClippingRectangle.y() = 0;
-		m_ClippingRectangle.width() = (int) Engine::getWindow().getWidth();
-		m_ClippingRectangle.height() = (int) Engine::getWindow().getHeight();
-
-		//Flush again to apply the clip
-		flush();
-	}
-
 	void Graphics2D::setColor(const Color32 & color)
 	{
 		//TODO find out what is more efficient
@@ -347,6 +287,12 @@ namespace ftec {
 		batch.depth(depth);
 	}
 
+	void Graphics2D::setCamera(Camera camera)
+	{
+		flush();
+		this->m_Camera = std::move(camera);
+	}
+
 	void Graphics2D::setTexture(std::shared_ptr<Texture> texture)
 	{
 		if (texture != m_Material->m_TextureMap) {
@@ -357,27 +303,35 @@ namespace ftec {
 
 	void Graphics2D::flush()
 	{
-		//Is Graphics2D responseable for this?
-		Renderer::viewport(Rectanglei(0, 0, (int)Engine::getWindow().getWidth(), (int)Engine::getWindow().getHeight()));
-		Renderer::clip(this->m_ClippingRectangle);
-
 		if (batch.count() <= 0) {
 			return;
 		}
 
 		calls++;
 
-		//Disable lighting
+		float bufferWidth = Engine::getWindow().getWidth();
+		float bufferHeight = Engine::getWindow().getHeight();
+
+		//TODO Is Graphics2D responseable for this?
+		Rectanglei clipping(0, 0, (int)bufferWidth, (int)bufferHeight);
+		Rectanglei viewport(
+			(int)(m_Camera.m_Viewport.x() * bufferWidth), 
+			(int)(m_Camera.m_Viewport.y() * bufferHeight),
+			(int)(m_Camera.m_Viewport.width() * bufferWidth),
+			(int)(m_Camera.m_Viewport.height() * bufferHeight)
+		);
+
+		Renderer::clip(clipping);
+		Renderer::viewport(viewport);
+
 		GraphicsState::m_Material = m_Material.get();
-		GraphicsState::m_Skybox = nullptr;
-
 		GraphicsState::matrixModel = Matrix4f::identity();
-		GraphicsState::matrixView = Matrix4f::identity();
-		GraphicsState::matrixProjection = Matrix4f::orthographic(0, Engine::getWindow().getWidth(), Engine::getWindow().getHeight(), 0, -100, 100);
+		GraphicsState::matrixView = m_Camera.getViewMatrix();
+		GraphicsState::matrixProjection = m_Camera.getProjectionMatrix();
 
+		//TODO optimize this obviously
 		GraphicsState::prepare();
 
-		batch.end();
-		batch.begin(Primitive::QUADS);
+		batch.flush();
 	}
 }

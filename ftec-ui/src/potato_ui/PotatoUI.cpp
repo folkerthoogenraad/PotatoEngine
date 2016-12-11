@@ -66,7 +66,6 @@ namespace potato {
 	{
 		std::lock_guard<std::mutex> lock(m_Mutex);
 
-		m_Graphics.resetClip();
 		m_Graphics.drawClear();
 		m_Graphics.begin();
 
