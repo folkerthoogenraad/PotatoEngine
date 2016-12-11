@@ -34,12 +34,15 @@ namespace ftec {
 	struct TestEntity : public Entity
 	{
 		Vector2f m_Direction;
+		Color32 m_Color;
 		Sprite m_Sprite;
 
 		TestEntity()
 		{
 			m_Position.x = RANDOM * 20 - 10;
 			m_Position.y = RANDOM * 10 - 5;
+
+			m_Color = Color32(RANDOM * 255, RANDOM * 255, RANDOM * 255, 255);
 
 			m_Direction.x = -5.0f * RANDOM;
 			m_Direction.y =  0.0f;
@@ -68,7 +71,7 @@ namespace ftec {
 		{
 			graphics.setDepth(m_Direction.x);
 
-			graphics.setColor(Color32::white());
+			graphics.setColor(m_Color);
 			graphics.drawSprite(m_Sprite, Vector2f(m_Position.x, m_Position.y));
 		};
 	};
