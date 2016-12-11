@@ -17,8 +17,8 @@
 
 #include "math/Matrix4.h"
 #include "math/Vector3.h"
-#include "math/line3.h"
-#include "math/triangle3.h"
+#include "math/Line3.h"
+#include "math/Triangle3.h"
 #include "math/Sphere.h"
 #include "math/Vector4.h"
 

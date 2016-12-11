@@ -1,12 +1,12 @@
 #pragma once
 
-#include "math/triangle2.h"
+#include "math/Triangle2.h"
 #include "math/Rectangle.h"
 
 #include "math/math.h"
 #include "math/collision.h"
-#include "math/line2.h"
-#include "math/circle.h"
+#include "math/Line2.h"
+#include "math/Circle.h"
 
 #include "DelaunayVertex.h"
 

@@ -13,7 +13,7 @@
 #include "math/Vector4.h"
 
 #include "math/Delaunay3.h"
-#include "math/triangle3.h"
+#include "math/Triangle3.h"
 
 #include "math/Curve.h"
 #include "math/math.h"

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "math/Vector3.h"
-#include "math/line3.h"
-#include "math/plane.h"
+#include "math/Line3.h"
+#include "math/Plane.h"
 
 #include "math/epsilon.h"
 #include "math/collision.h"

@@ -33,9 +33,6 @@
     <ClCompile Include="src\engine\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\Curve.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\serialization\Serialization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,6 +99,9 @@
     <ClCompile Include="src\engine\DesktopEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\math\Curve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\math\Matrix3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -111,9 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\logger\log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\Scene.h">
@@ -141,9 +138,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\io\defer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\Curve.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\serialization\Serialization.h">
@@ -218,39 +212,6 @@
     <ClInclude Include="src\threading\PotatoQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\collision.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\circle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\line2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\triangle2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\triangle3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\line3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\tetrahedron.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\plane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\epsilon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\sorting.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\collisionresult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\DesktopEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -260,13 +221,34 @@
     <ClInclude Include="src\graphics\Primitive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\Vector2.h">
+    <ClInclude Include="src\resources\ManageableResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\Vector3.h">
+    <ClInclude Include="src\math\Circle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\Vector4.h">
+    <ClInclude Include="src\math\collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\CollisionResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Cuboid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Curve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\epsilon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Line2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Line3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\Matrix3.h">
@@ -275,19 +257,37 @@
     <ClInclude Include="src\math\Matrix4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\math\Quaternion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\resources\ManageableResource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\Rectangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\Cuboid.h">
+    <ClInclude Include="src\math\sorting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Tetrahedron.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Triangle2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Triangle3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Vector2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Vector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Vector4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

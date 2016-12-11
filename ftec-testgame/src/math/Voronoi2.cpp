@@ -1,6 +1,6 @@
 #include "Voronoi2.h"
 
-#include "math/line2.h"
+#include "math/Line2.h"
 
 #include "logger/log.h"
 

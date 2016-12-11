@@ -1,7 +1,7 @@
 #include "Voronoi3.h"
 
-#include "math/line3.h"
-#include "math/plane.h"
+#include "math/Line3.h"
+#include "math/Plane.h"
 
 namespace ftec {
 

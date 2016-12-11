@@ -11,7 +11,7 @@
 #include "math/Matrix4.h"
 #include "math/Vector4.h"
 
-#include "math/tetrahedron.h"
+#include "math/Tetrahedron.h"
 #include "math/Delaunay3.h"
 #include "math/Voronoi3.h"
 #include "logger/log.h"

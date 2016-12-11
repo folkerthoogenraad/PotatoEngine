@@ -1,7 +1,7 @@
 #pragma once
-#include "math/line2.h"
+#include "math/Line2.h"
 #include "math/Rectangle.h"
-#include "math/circle.h"
+#include "math/Circle.h"
 
 #include "SpriteBatch.h"
 #include "Material.h"

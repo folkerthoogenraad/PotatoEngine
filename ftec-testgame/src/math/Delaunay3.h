@@ -7,8 +7,8 @@
 #include "math/collision.h"
 #include "math/Matrix4.h"
 #include "math/Sphere.h"
-#include "math/triangle3.h"
-#include "math/tetrahedron.h"
+#include "math/Triangle3.h"
+#include "math/Tetrahedron.h"
 
 #include "DelaunayVertex.h"
 #include "logger/log.h"
