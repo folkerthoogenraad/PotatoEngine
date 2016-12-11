@@ -9,5 +9,6 @@ out vec4 FragColor;
 
 void main()
 {
-	FragColor = vec4(1.0,1.0, 1.0,texture(u_Textures[0], v_Uv).r) * v_Color;
+	//The commented code is for rendering text. This should have a different shader for sure
+	FragColor = texture(u_Textures[0], v_Uv) * v_Color; //vec4(1.0,1.0, 1.0,texture(u_Textures[0], v_Uv).r) * v_Color;
 }

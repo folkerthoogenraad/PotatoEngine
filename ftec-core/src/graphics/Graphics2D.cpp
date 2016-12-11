@@ -151,6 +151,9 @@ namespace ftec {
 		if (drawing3D) {
 			LOG_ERROR("Can't draw 2D when drawing in 3D");
 		}
+		//TODO TODO TODO
+		LOG("WONT WORK CURRENTLY. NEEDS DIFFERENT SHADER WITH texture().r as color component!");
+
 		Vector2f start = position;
 
 		//TODO figure this out for each line, not for the complete string

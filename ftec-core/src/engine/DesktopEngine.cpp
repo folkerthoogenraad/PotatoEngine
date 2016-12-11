@@ -32,7 +32,8 @@ namespace ftec {
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		auto window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, true, 4);
+		auto window = std::make_unique<Window>("PotatoEngine", 1920, 1080, true, true, 4);
+		window->setVisible(true); //Figure out what we want here (either visible, or invisible)
 
 		LOG("Loading GLEW...");
 
@@ -137,7 +138,7 @@ namespace ftec {
 		//glCullFace(GL_BACK);
 
 		//Clear color settings
-		glClearColor(1.f, 1.f, 1.f, 1.f);
+		glClearColor(0.f, 0.f, 1.f, 1.f);
 
 	}
 }

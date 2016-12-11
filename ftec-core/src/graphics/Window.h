@@ -30,6 +30,7 @@ namespace ftec {
 		void setCursorMode(int mode);
 		void setVisible(bool visible);
 
+		inline float getAspectRatio() { return getWidth() / getHeight(); }
 		inline float getWidth() { return (float)m_Width; }
 		inline float getHeight() { return (float)m_Height; }
 
