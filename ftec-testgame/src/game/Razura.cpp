@@ -2,6 +2,8 @@
 
 #include "engine/Engine.h"
 #include "engine/Time.h"
+#include "engine/Input.h"
+#include "engine/Keycodes.h"
 
 #include "math/math.h"
 #include "math/Vector2.h"
@@ -20,6 +22,7 @@
 #include "graphics/Graphics.h"
 #include "graphics/Mesh.h"
 
+
 #include "logger/log.h"
 
 namespace ftec {
@@ -36,6 +39,8 @@ namespace ftec {
 	{
 		std::shared_ptr<Mesh> m_Mesh;
 		std::shared_ptr<PBRMaterial> m_Material;
+
+		float angle = 0;
 
 		TestEntity()
 		{
@@ -55,12 +60,17 @@ namespace ftec {
 
 		void update()
 		{
-
+			angle += Time::deltaTime * 8;
+			if (Input::isMouseButtonDown(MOUSE_BUTTON_LEFT)){
+				angle += Input::getMouseDX() * 0.25f;
+			}
 		}
 
 		void render3D()
 		{
-			Graphics::enqueueMesh(m_Mesh.get(), m_Material.get(), Matrix4f::translation(Vector3f(0, 0, -3)));
+			Graphics::enqueueMesh(m_Mesh.get(), m_Material.get(), 
+				Matrix4f::translation(Vector3f(0, 0, -3)) * 
+				Matrix4f::rotationY(angle));
 		}
 	};
 
@@ -69,7 +79,7 @@ namespace ftec {
 		auto scene = std::make_unique<Scene>();
 		scene->setMode(Scene::GRAPHICS_3D);
 
-		scene->m_Cameras[0] = Camera::perspective(90, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
+		scene->m_Cameras[0] = Camera::perspective(60, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
 
 		scene->addEntity(std::make_unique<TestEntity>());
 
