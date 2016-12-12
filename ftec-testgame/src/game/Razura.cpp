@@ -6,6 +6,7 @@
 #include "math/math.h"
 #include "math/Vector2.h"
 #include "math/Vector4.h"
+#include "math/Matrix4.h"
 
 #include "resources/ResourceManager.h"
 
@@ -16,10 +17,10 @@
 #include "graphics/Graphics2D.h"
 #include "graphics/Window.h"
 #include "graphics/Sprite.h"
+#include "graphics/Graphics.h"
+#include "graphics/Mesh.h"
 
 #include "logger/log.h"
-
-#define RANDOM ((rand() % 1000) / 1000.0f)
 
 namespace ftec {
 
@@ -33,58 +34,44 @@ namespace ftec {
 
 	struct TestEntity : public Entity
 	{
-		Vector2f m_Direction;
-		Color32 m_Color;
-		Sprite m_Sprite;
+		std::shared_ptr<Mesh> m_Mesh;
+		std::shared_ptr<PBRMaterial> m_Material;
 
 		TestEntity()
 		{
-			m_Position.x = RANDOM * 20 - 10;
-			m_Position.y = RANDOM * 10 - 5;
+			m_Material = std::make_shared<PBRMaterial>();
 
-			m_Color = Color32(RANDOM * 255, RANDOM * 255, RANDOM * 255, 255);
+			//God please rename these man.
+			m_Material->m_TextureMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
+			m_Material->m_NormalMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
 
-			m_Direction.x = -5.0f * RANDOM;
-			m_Direction.y =  0.0f;
+			m_Material->m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
+			m_Material->m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
 
-			auto texture = Engine::getResourceManager().load<Texture>("textures/test_image.png");
-			texture->setScaling(Texture::InterpolationMode::LINEAR, Texture::InterpolationMode::LINEAR);
-
-			m_Sprite = Sprite(
-				texture
-			);
-
-			float size = RANDOM * 5;
-			m_Sprite.bounds() = Rectanglef::centered(0, 0, size, size);
+			m_Material->m_Shader = Engine::getResourceManager().load<Shader>("shaders/default");
+			
+			m_Mesh = Engine::getResourceManager().load<Mesh>("mesh/monkey.obj");
 		}
 
 		void update()
 		{
-			m_Position.x += Time::deltaTime * m_Direction.x;
-			m_Position.y += Time::deltaTime * m_Direction.y;
 
-			if (m_Position.x < -12)
-				m_Position.x += 24;
 		}
 
-		void render2D(Graphics2D &graphics) override 
+		void render3D()
 		{
-			graphics.setDepth(m_Direction.x);
-
-			graphics.setColor(m_Color);
-			graphics.drawSprite(m_Sprite, Vector2f(m_Position.x, m_Position.y));
-		};
+			Graphics::enqueueMesh(m_Mesh.get(), m_Material.get(), Matrix4f::translation(Vector3f(0, 0, -3)));
+		}
 	};
 
 	void Razura::init()
 	{
 		auto scene = std::make_unique<Scene>();
-		scene->setMode(Scene::GRAPHICS_2D);
+		scene->setMode(Scene::GRAPHICS_3D);
 
-		scene->m_Cameras[0] = Camera::orthagonal(5, Engine::getWindow().getAspectRatio(), -100, 100);
+		scene->m_Cameras[0] = Camera::perspective(90, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
 
-		for(int i = 0; i < 1000; i++)
-			scene->addEntity(std::make_unique<TestEntity>());
+		scene->addEntity(std::make_unique<TestEntity>());
 
 		Engine::setScene(std::move(scene));
 	}

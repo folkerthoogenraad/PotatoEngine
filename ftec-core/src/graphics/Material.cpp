@@ -37,6 +37,9 @@ namespace ftec {
 
 	void PBRMaterial::prepare() const
 	{
+		if (!m_Shader) {
+			throw "Empty shader!"; //TODO real errors
+		}
 		Shader &shader = *m_Shader;
 
 		shader.use();
@@ -89,8 +92,8 @@ namespace ftec {
 			shader.setUniform(materialAlbedoLocation, m_Albedo);
 			shader.setUniform(materialSpecularLocation, m_Specular);
 			shader.setUniform(materialTilingLocation, m_Tiling);
-			shader.setUniform(materialRoughnessLocation, m_Roughness);
-			shader.setUniform(materialMetallicnessLocation, m_Metallicness);
+			shader.setUniform(materialRoughnessLocation, 1.0f);
+			shader.setUniform(materialMetallicnessLocation, 1.0f);
 		}
 
 		{

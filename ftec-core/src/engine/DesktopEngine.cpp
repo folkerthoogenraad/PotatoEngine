@@ -32,7 +32,7 @@ namespace ftec {
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		auto window = std::make_unique<Window>("PotatoEngine", 1920, 1080, true, true, 4);
+		auto window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, true, 4);
 		window->setVisible(true); //Figure out what we want here (either visible, or invisible)
 
 		LOG("Loading GLEW...");
@@ -78,7 +78,6 @@ namespace ftec {
 
 		//TODO see what part of this we need here, and what we need in the engine class
 		while (!Engine::getWindow().isCloseRequested()) {
-
 			Input::reset();
 
 			Engine::getWindow().poll();

@@ -34,11 +34,6 @@ namespace ftec {
 		Vector3f m_Albedo = Vector3f(1.0,1.0,1.0);
 		Vector3f m_Specular = Vector3f(1.0, 1.0, 1.0);
 		Vector2f m_Tiling = Vector2f(1.0, 1.0);
-
-		//Deprecated, for obvious reasons
-		float m_Bumpiness = 0.0f;
-		float m_Roughness = 1.0f;
-		float m_Metallicness = 0.0f;
 		
 		PBRMaterial() = default;
 		PBRMaterial(std::shared_ptr<Texture> texture, std::shared_ptr<Shader> shader) : m_TextureMap(texture), m_Shader(shader){}

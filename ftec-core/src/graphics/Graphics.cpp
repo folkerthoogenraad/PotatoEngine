@@ -195,8 +195,7 @@ namespace ftec {
 			
 
 			GraphicsState::m_Lights[0].enabled = true;
-			GraphicsState::m_Lights[0].light = *lights.front();// .m_DiRectangleion = Vector3f(0.7f, -0.4f, -0.7f).normalize();
-
+			GraphicsState::m_Lights[0].light = *lights.front();
 
 			for (auto m : meshes) {
 				//TODO material sorting

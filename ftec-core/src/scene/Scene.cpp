@@ -46,6 +46,9 @@ namespace ftec {
 	void Scene::render()
 	{
 		if (m_Mode == SceneMode::GRAPHICS_3D || m_Mode == SceneMode::GRAPHICS_BOTH) {
+
+			Graphics::begin();
+
 			for (auto &c : m_Cameras)
 			{
 				Graphics::enqueueCamera(&c);
@@ -66,6 +69,8 @@ namespace ftec {
 				auto &obj = *i;
 				obj->render3D();
 			}
+
+			Graphics::end();
 		}
 
 		else

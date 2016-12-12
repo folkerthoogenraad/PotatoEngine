@@ -115,12 +115,10 @@ namespace ftec {
 			Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE),
 			Engine::getResourceManager().load<Shader>("shaders/default")
 			);
-		m_Material->m_Metallicness = 0.2f;
-		m_Material->m_Roughness = 0.2f;
-
+		
 		m_Material->m_NormalMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
-		m_Material->m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
-		m_Material->m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
+		m_Material->m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
+		m_Material->m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
 	}
 
 	void PointCloudEntity::update()

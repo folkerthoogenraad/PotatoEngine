@@ -16,8 +16,6 @@ namespace ftec {
 
 	void setupMesh(const Mesh & mesh)
 	{
-		GraphicsState::prepare();
-
 		//Vertices
 		glBindBuffer(GL_ARRAY_BUFFER, mesh.m_VerticesVBO);
 		glEnableVertexAttribArray(SHADER_ATTRIBUTE_POSITION);
