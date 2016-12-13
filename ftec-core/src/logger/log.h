@@ -21,6 +21,9 @@ namespace ftec {
 	struct Vector3;
 	template <typename T>
 	struct Vector4;
+
+	template <typename T>
+	struct Quaternion;
 	
 	template <typename T>
 	std::ostream& operator<<(std::ostream& left, const Vector2<T>& right)
@@ -34,6 +37,11 @@ namespace ftec {
 	}
 	template <typename T>
 	std::ostream& operator<<(std::ostream& left, const Vector4<T>& right)
+	{
+		return left << "(" << right.x << ", " << right.y << ", " << right.z << ", " << right.w << ")";
+	}
+	template <typename T>
+	std::ostream& operator<<(std::ostream& left, const Quaternion<T>& right)
 	{
 		return left << "(" << right.x << ", " << right.y << ", " << right.z << ", " << right.w << ")";
 	}

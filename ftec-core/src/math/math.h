@@ -1,6 +1,7 @@
 #pragma once
 
 #define PI 3.141592654f
+#include <math.h> //for sin, cos, tan, etc
 
 namespace ftec {
 

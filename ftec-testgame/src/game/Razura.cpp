@@ -9,6 +9,7 @@
 #include "math/Vector2.h"
 #include "math/Vector4.h"
 #include "math/Matrix4.h"
+#include "math/Quaternion.h"
 
 #include "resources/ResourceManager.h"
 
@@ -40,10 +41,15 @@ namespace ftec {
 		std::shared_ptr<Mesh> m_Mesh;
 		std::shared_ptr<PBRMaterial> m_Material;
 
-		float angle = 0;
+		Quaternionf angle;
+
+		float angleX = 0;
+		float angleY = 0;
 
 		TestEntity()
 		{
+			angle = Quaternionf::identity();
+
 			m_Material = std::make_shared<PBRMaterial>();
 
 			//God please rename these man.
@@ -60,17 +66,23 @@ namespace ftec {
 
 		void update()
 		{
-			angle += Time::deltaTime * 8;
 			if (Input::isMouseButtonDown(MOUSE_BUTTON_LEFT)){
-				angle += Input::getMouseDX() * 0.25f;
+				angle *= Quaternionf::fromEuler(Vector3f(Input::getMouseDY() * -0.005f, Input::getMouseDX() * -0.005f, 0));
+
+				angleX += Input::getMouseDY() * -0.005f;
+				angleY += Input::getMouseDX() * -0.005f;
+			}
+			else {
+				angle *= Quaternionf::fromEuler(Vector3f(0,Time::deltaTime * 0.01f, 0));
 			}
 		}
 
 		void render3D()
 		{
+			//Quaternionf angle = Quaternionf::fromEuler(Vector3f(angleX, angleY, 0));
 			Graphics::enqueueMesh(m_Mesh.get(), m_Material.get(), 
 				Matrix4f::translation(Vector3f(0, 0, -3)) * 
-				Matrix4f::rotationY(angle));
+				angle.matrix());
 		}
 	};
 
