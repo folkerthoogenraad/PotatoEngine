@@ -73,7 +73,7 @@ namespace ftec {
 				angleY += Input::getMouseDX() * -0.005f;
 			}
 			else {
-				angle *= Quaternionf::fromEuler(Vector3f(0,Time::deltaTime * 0.01f, 0));
+				angle *= Quaternionf::fromEuler(Vector3f(0,Time::deltaTime * 0.1f, 0));
 			}
 		}
 
