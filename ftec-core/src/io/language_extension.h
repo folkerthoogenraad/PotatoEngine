@@ -56,3 +56,6 @@ namespace def_test {
 		throw std::exception("Failure or success? Find out next week in the finals.");
 	}
 }
+
+#define function auto
+#define var auto

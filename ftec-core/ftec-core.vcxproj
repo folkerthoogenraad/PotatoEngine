@@ -193,7 +193,7 @@
     <ClInclude Include="src\graphics\SpriteBatch.h" />
     <ClInclude Include="src\graphics\Texture.h" />
     <ClInclude Include="src\graphics\Window.h" />
-    <ClInclude Include="src\io\defer.h" />
+    <ClInclude Include="src\io\language_extension.h" />
     <ClInclude Include="src\io\ioutils.h" />
     <ClInclude Include="src\io\XMLDocument.h" />
     <ClInclude Include="src\io\XMLReader.h" />

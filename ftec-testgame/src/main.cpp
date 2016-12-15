@@ -6,7 +6,7 @@
 int main(void)
 {
 	ftec::DesktopEngine::create<ftec::Razura>();
-	
+
 	WAIT();
 	return 0;
 }

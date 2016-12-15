@@ -176,14 +176,14 @@ namespace ftec {
 			GraphicsState::matrixView = c->getViewMatrix();
 
 			//Set skybox to normal version //This should obviously not be here
-			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/test");
+			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/daylight");
 			
 			GraphicsState::matrixModel = Matrix4f::translation(c->m_Position);
 
 			//Drawing skybox
 			GraphicsState::m_Lights[0].enabled = false; //Idk man
 
-			PBRMaterial skyboxMaterial(nullptr, Engine::getResourceManager().load<Shader>("shaders/skybox"));
+			SkyboxMaterial skyboxMaterial(Engine::getResourceManager().load<Shader>("shaders/skybox"));
 
 			GraphicsState::m_Material = &skyboxMaterial;
 			auto mesh = Engine::getResourceManager().load<Mesh>("mesh/skybox.obj");

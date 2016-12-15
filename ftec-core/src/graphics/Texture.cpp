@@ -116,6 +116,27 @@ namespace ftec {
 			texture->unbind();
 		}
 
+		else if (name == DEFAULT_TEXTURE_GRAY) {
+			float data[] = {
+				0.5f,0.5f,0.5f
+			};
+			texture->bind();
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGB, GL_FLOAT, data);
+			texture->m_Width = 1;
+			texture->m_Height = 1;
+			texture->unbind();
+		}
+		else if (name == DEFAULT_TEXTURE_DARK_GRAY) {
+			float data[] = {
+				0.1f,0.1f,0.1f
+			};
+			texture->bind();
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGB, GL_FLOAT, data);
+			texture->m_Width = 1;
+			texture->m_Height = 1;
+			texture->unbind();
+		}
+
 		else if (name == DEFAULT_TEXTURE_NORMAL) {
 			float data[] = {
 				0.5f,0.5f,1.0f

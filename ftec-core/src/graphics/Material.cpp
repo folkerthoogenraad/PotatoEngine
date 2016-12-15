@@ -34,7 +34,6 @@ namespace ftec {
 		}
 			
 	}
-
 	void PBRMaterial::prepare() const
 	{
 		if (!m_Shader) {
@@ -124,5 +123,59 @@ namespace ftec {
 
 		int eyePositionLocation = shader.getUniformLocation("u_EyePosition");
 		shader.setUniform(eyePositionLocation, GraphicsState::eyePosition);
+	}
+	void SkyboxMaterial::prepare() const
+	{
+		if (!m_Shader) {
+			throw "Empty shader!"; //TODO real errors
+		}
+		Shader &shader = *m_Shader;
+
+		shader.use();
+
+		{
+			int matrixModelLocation = shader.getUniformLocation("u_MatrixModel");
+			int matrixViewLocation = shader.getUniformLocation("u_MatrixView");
+			int matrixProjectionLocation = shader.getUniformLocation("u_MatrixProjection");
+
+			shader.setUniform(matrixModelLocation, GraphicsState::matrixModel);
+			shader.setUniform(matrixViewLocation, GraphicsState::matrixView);
+			shader.setUniform(matrixProjectionLocation, GraphicsState::matrixProjection);
+		}
+
+		{
+			int skyboxLocation = shader.getUniformLocation("u_Skybox");
+			if (skyboxLocation > -1) {
+				glActiveTexture(GL_TEXTURE0 + GraphicsState::MAX_TEXTURES);
+				GraphicsState::m_Skybox->bind();
+				shader.setUniform(skyboxLocation, GraphicsState::MAX_TEXTURES);
+			}
+			glActiveTexture(GL_TEXTURE0);
+		}
+	}
+	void UnlitMaterial::prepare() const
+	{
+		Shader &shader = *m_Shader;
+
+		shader.use();
+
+		{
+			int matrixModelLocation = shader.getUniformLocation("u_MatrixModel");
+			int matrixViewLocation = shader.getUniformLocation("u_MatrixView");
+			int matrixProjectionLocation = shader.getUniformLocation("u_MatrixProjection");
+
+			shader.setUniform(matrixModelLocation, GraphicsState::matrixModel);
+			shader.setUniform(matrixViewLocation, GraphicsState::matrixView);
+			shader.setUniform(matrixProjectionLocation, GraphicsState::matrixProjection);
+		}
+
+		{
+			if (m_TextureMap) {
+				glActiveTexture(GL_TEXTURE0);
+				m_TextureMap->bind();
+				int l = shader.getUniformLocation("u_Textures[0]");
+				shader.setUniform(l, 0);
+			}
+		}
 	}
 }

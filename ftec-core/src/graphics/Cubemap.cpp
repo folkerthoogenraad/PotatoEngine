@@ -40,12 +40,12 @@ namespace ftec {
 	{
 		std::vector<std::string> faces;
 
-		faces.push_back(name + "_rt.jpg");
-		faces.push_back(name + "_lf.jpg");
-		faces.push_back(name + "_dn.jpg");//Flipped up and down (TODO fixme)
-		faces.push_back(name + "_up.jpg");
-		faces.push_back(name + "_bk.jpg");
-		faces.push_back(name + "_ft.jpg");
+		faces.push_back(name + "_rt.bmp");
+		faces.push_back(name + "_lf.bmp");
+		faces.push_back(name + "_dn.bmp");//Flipped up and down (TODO fixme)
+		faces.push_back(name + "_up.bmp");
+		faces.push_back(name + "_bk.bmp");
+		faces.push_back(name + "_ft.bmp");
 
 		auto cubemap = std::make_shared<Cubemap>();
 		cubemap->bind();

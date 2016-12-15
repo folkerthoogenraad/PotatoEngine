@@ -57,6 +57,11 @@ namespace ftec {
 		static Matrix4<T> rotationY(T angle);
 		static Matrix4<T> rotationZ(T angle);
 
+		Matrix4<T> clone();
+
+		Matrix4<T> transposed();
+		Matrix4<T> &transpose();
+
 		T determinant() const;
 
 		inline T &el(int collumn, int row) { return elements[collumn + row * 4]; }

@@ -118,7 +118,7 @@ namespace ftec {
 
 					//If one is at super triangle -> pass when behind line
 					else if (sharedSuperCount == 1) {
-						Line2f ab = triangle.edgeab();
+						Line2<T> ab = triangle.edgeab();
 						if (ab.distanceFrom(triangle.c) > 0) {
 							ab.flip();
 						}

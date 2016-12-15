@@ -207,6 +207,12 @@ namespace ftec {
 		return result;
 	}
 
+	template<typename T>
+	Matrix4<T> Matrix4<T>::clone()
+	{
+		return Matrix4<T>(*this);
+	}
+
 	template <typename T>
 	Matrix4<T> Matrix4<T>::orthographic(T l, T r, T b, T t, T n, T f)
 	{
@@ -275,6 +281,26 @@ namespace ftec {
 		result.elements[3 + 3 * 4] = 1;
 
 		return result;
+	}
+
+	template<typename T>
+	Matrix4<T> Matrix4<T>::transposed()
+	{
+		return clone().transpose();
+	}
+
+	template<typename T>
+	Matrix4<T>& Matrix4<T>::transpose()
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = i + i; j < 4; j++)
+			{
+				std::swap(el(i, j), el(j, i));
+			}
+		}
+
+		return *this;
 	}
 
 	template <typename T>

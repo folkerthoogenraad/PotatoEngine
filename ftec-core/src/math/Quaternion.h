@@ -3,6 +3,7 @@
 #include <array>
 #include "math/math.h"	//For sin, cos, etc
 
+//TODO find out if this is the right thing or not
 namespace ftec {
 
 	template<typename T> struct Vector3;
@@ -98,19 +99,22 @@ namespace ftec {
 		{
 			//http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/
 
-			Matrix4<T> m1({
-				w, z, -y, x,
-				-z, w, x, y,
-				y, -x, w, z,
-				-x, -y, -z, w });
+			Matrix4<T> out = Matrix4<T>::identity();
 
-			Matrix4<T> m2({
-				w, z, -y, -x,
-				-z, w, x, -y,
-				y, -x, w, -z,
-				x, y, z, w });
+			out.el(0, 0) = 1 -	2 * y * y - 2 * z * z;
+			out.el(1, 0) =		2 * x * y - 2 * z * w;
+			out.el(2, 0) =		2 * x * z + 2 * y * w;
+			
+			out.el(0, 1) =		2 * x * y + 2 * z * w;
+			out.el(1, 1) = 1 -	2 * x * x - 2 * z * z;
+			out.el(2, 1) =		2 * y * z - 2 * x * w;
 
-			return m1 * m2;
+
+			out.el(0, 2) =		2 * x * z - 2 * y * w;
+			out.el(1, 2) =		2 * y * z + 2 * x * w;
+			out.el(2, 2) = 1 -	2 * x * x - 2 * y * y;
+
+			return out.transpose();
 		}
 
 		static Quaternion<T> fromEuler(const Vector3<T> &euler)
