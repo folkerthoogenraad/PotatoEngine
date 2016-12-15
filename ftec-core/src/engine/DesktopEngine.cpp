@@ -22,6 +22,9 @@ namespace ftec {
 
 	void DesktopEngine::init()
 	{
+		//Create the resource manager first, so that we can 
+		auto manager = std::make_unique<ResourceManager>();
+
 		LOG("Loading GLFW...");
 
 		//Initialize GLFW
@@ -32,7 +35,7 @@ namespace ftec {
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		auto window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, true, 4);
+		auto window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, true, 16);
 		window->setVisible(true); //Figure out what we want here (either visible, or invisible)
 
 		LOG("Loading GLEW...");
@@ -52,8 +55,6 @@ namespace ftec {
 		LOG("Setting up OpenGL...");
 
 		initGL();
-
-		auto manager = std::make_unique<ResourceManager>();
 
 		//Tell the world how great we are
 		LOG("OpenGL " << glGetString(GL_VERSION) << " Loaded.");
