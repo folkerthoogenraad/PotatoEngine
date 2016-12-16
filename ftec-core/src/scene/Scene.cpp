@@ -49,13 +49,11 @@ namespace ftec {
 
 			Graphics::begin();
 
-			for (auto &c : m_Cameras)
-			{
+			for (auto &c : m_Cameras) {
 				Graphics::enqueueCamera(&c);
 			}
 
-			for (auto &l : m_Lights)
-			{
+			for (auto &l : m_Lights) {
 				Graphics::enqueueLight(&l);
 			}
 
@@ -73,8 +71,7 @@ namespace ftec {
 			Graphics::end();
 		}
 
-		else
-		{
+		if (m_Mode == SceneMode::GRAPHICS_2D || m_Mode == SceneMode::GRAPHICS_BOTH){
 			if (!m_Graphics2D) {
 				//NOTE i hate everything about this
 				//TODO don't do this here, because this might cause hickups and stuff

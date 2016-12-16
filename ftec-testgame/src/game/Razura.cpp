@@ -24,6 +24,7 @@
 #include "graphics/Mesh.h"
 
 #include "NoClipCameraEntity.h"
+#include "Voronoi3DEntity.h"
 
 #include "logger/log.h"
 
@@ -76,8 +77,11 @@ namespace ftec {
 			graphics.setDepth(-4);
 			graphics.setColor(Color32::yellow());
 			graphics.drawRectangle(Rectanglef::centered(0, 0, 1, 1), true);
+			graphics.setDepth(-8);
+			graphics.setColor(Color32::red());
+			graphics.drawRectangle(Rectanglef::centered(0, 0, 1, 1), true);
 
-			graphics.setDepth(-1.0f);
+			graphics.setDepth(1.0f);
 			graphics.setColor(Color32::white());
 			graphics.drawRectangle(Rectanglef::centered(m_Position.x, m_Position.y, 1, 1), true);
 		}
@@ -87,11 +91,12 @@ namespace ftec {
 	void Razura::init()
 	{
 		auto scene = std::make_unique<Scene>();
-		scene->setMode(Scene::GRAPHICS_2D);
+		scene->setMode(Scene::GRAPHICS_BOTH);
 
-		scene->m_Cameras[0] = Camera::orthagonal(4, Engine::getWindow().getAspectRatio(), 100.0f, -100.0f);
-		//scene->m_Cameras[0] = Camera::perspective(60, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
-		//scene->addEntity(std::make_unique<NoClipCameraEntity>());
+		//scene->m_Cameras[0] = Camera::orthagonal(5, Engine::getWindow().getAspectRatio(), 0.01, 100.0f);
+		scene->m_Cameras[0] = Camera::perspective(60, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
+		scene->addEntity(std::make_unique<NoClipCameraEntity>());
+		scene->addEntity(std::make_unique<Voronoi3DEntity>());
 		scene->addEntity(std::make_unique<TestEntity>(Vector2f(0,0)));
 
 		Engine::setScene(std::move(scene));

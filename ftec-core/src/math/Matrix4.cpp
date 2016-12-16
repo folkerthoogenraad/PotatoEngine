@@ -4,6 +4,8 @@
 #include "Vector3.h"
 #include "Vector4.h"
 
+#include "logger/log.h" //TODO remove ofc
+
 namespace ftec {
 
 	template <typename T>
@@ -233,19 +235,22 @@ namespace ftec {
 	Matrix4<T> Matrix4<T>::perspective(T fov, T asp, T near, T far)
 	{
 		Matrix4<T> result;
+		//TODO fix this to be GREAT AGAIN
 
-		T q = (T)1.0 / tan((T)0.5 * fov * ((T)3.141592653 / (T)180.0));
-		T a = q / asp;
+		T rad = ((T)3.141592653 / (T)180.0);
 
-		T b = (near + far) / (near - far);
-		T c = (2 * near * far) / (near - far);
+		T q = (T)1.0 / (tan((T)0.5 * fov * rad) );
+		T a = (T)1.0 / (tan((T)0.5 * fov * rad) * asp);
+
+		T b = (far + near) / (far - near);
+		T c = -(2 * far * near) / (far - near);
 
 		result.elements[0 + 0 * 4] = a;
 		result.elements[1 + 1 * 4] = q;
 		result.elements[2 + 2 * 4] = b;
 
 		result.elements[3 + 2 * 4] = c;
-		result.elements[2 + 3 * 4] = -1;
+		result.elements[2 + 3 * 4] = 1;
 		result.elements[3 + 3 * 4] = 0;
 
 		return result;

@@ -31,8 +31,8 @@ namespace ftec {
 		if (m_MouseGrabbed) {
 			Camera &cam = Engine::getScene()->m_Cameras[0];
 
-			cam.m_Yaw += Input::getMouseDX() / 10.f;
-			cam.m_Pitch += Input::getMouseDY() / 10.f;
+			cam.m_Yaw -= Input::getMouseDX() / 10.f;
+			cam.m_Pitch -= Input::getMouseDY() / 10.f;
 
 
 			if (cam.m_Pitch > 90)
@@ -43,9 +43,9 @@ namespace ftec {
 			Vector3f motion;
 
 			if (Input::isKeyDown(KEY_W)) {
-				motion.z -= 1;
-			}if (Input::isKeyDown(KEY_S)) {
 				motion.z += 1;
+			}if (Input::isKeyDown(KEY_S)) {
+				motion.z -= 1;
 			}if (Input::isKeyDown(KEY_A)) {
 				motion.x -= 1;
 			}if (Input::isKeyDown(KEY_D)) {
@@ -68,7 +68,6 @@ namespace ftec {
 
 			cam.m_Position += motion * 3.f * Time::deltaTime;
 		}
-		
-		
+
 	}
 }

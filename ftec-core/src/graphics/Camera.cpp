@@ -28,9 +28,9 @@ namespace ftec {
 
 	Matrix4f ftec::Camera::getProjectionMatrix() const
 	{
-		if (m_Projection == Projection::PERSPECTIVE)
+		if (m_Projection == Projection::PERSPECTIVE) {
 			return Matrix4f::perspective(m_Fov, m_AspectRatio, m_Near, m_Far);
-		else {
+		} else {
 			float size = m_Size / 2.0f;
 			if (!m_Flipped) {
 				return Matrix4f::orthographic(-size * m_AspectRatio, size * m_AspectRatio, -size, size, m_Near, m_Far);
