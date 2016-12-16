@@ -15,13 +15,11 @@ namespace ftec {
 	};
 	
 	struct Material2D : public Material {
-		
-		std::shared_ptr<Shader> m_Shader = nullptr; //This should be automatic
+		std::shared_ptr<Shader> m_Shader = nullptr;
 		std::shared_ptr<Texture> m_TextureMap = nullptr;
 
 		void prepare() const;
 	};
-	
 	struct UnlitMaterial : public Material {
 		std::shared_ptr<Shader> m_Shader = nullptr;
 		std::shared_ptr<Texture> m_TextureMap = nullptr;
@@ -31,9 +29,8 @@ namespace ftec {
 
 		void prepare() const;
 	};
-
 	struct PBRMaterial : public Material {
-		std::shared_ptr<Shader> m_Shader = nullptr;//This should be automatic
+		std::shared_ptr<Shader> m_Shader = nullptr;
 
 		std::shared_ptr<Texture> m_TextureMap = nullptr;
 		std::shared_ptr<Texture> m_NormalMap = nullptr;
@@ -50,15 +47,12 @@ namespace ftec {
 
 		void prepare() const;
 	};
-	
 	struct SkyboxMaterial : public Material {
-		std::shared_ptr<Shader> m_Shader = nullptr;//This should be automatic
+		std::shared_ptr<Shader> m_Shader = nullptr;
 
 		SkyboxMaterial() = default;
 		SkyboxMaterial(std::shared_ptr<Shader> shader) : m_Shader(shader) {}
 
 		void prepare() const;
 	};
-
-	
 }

@@ -133,6 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\collision\CollisionTransform.cpp" />
+    <ClCompile Include="src\collision\CollisionWorld.cpp" />
     <ClCompile Include="src\engine\DesktopEngine.cpp" />
     <ClCompile Include="src\engine\Engine.cpp" />
     <ClCompile Include="src\engine\Game.cpp" />
@@ -167,6 +169,8 @@
     <ClCompile Include="src\scene\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\collision\CollisionTransform.h" />
+    <ClInclude Include="src\collision\CollisionWorld.h" />
     <ClInclude Include="src\engine\DesktopEngine.h" />
     <ClInclude Include="src\engine\Engine.h" />
     <ClInclude Include="src\engine\Game.h" />

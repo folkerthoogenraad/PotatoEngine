@@ -11,12 +11,6 @@ namespace ftec {
 	class ConfigurationValue;
 	class ConfigurationObject;
 
-	class ConfigurationFile : public ManagableResource{
-		ConfigurationObject m_Root;
-	public:
-		static std::shared_ptr<ConfigurationFile> load(const std::string &file);
-	};
-
 	class ConfigurationNode{ };
 
 	class ConfigurationValue : public ConfigurationNode {
@@ -37,6 +31,13 @@ namespace ftec {
 		std::map<std::string, ConfigurationNode> m_Nodes;
 	public:
 
+	};
+
+
+	class ConfigurationFile : public ManagableResource {
+		ConfigurationObject m_Root;
+	public:
+		static std::shared_ptr<ConfigurationFile> load(const std::string &file);
 	};
 
 }

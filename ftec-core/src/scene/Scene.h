@@ -4,7 +4,7 @@
 #include <vector>					//For std::vector
 
 #include "math/Vector3.h"			//For Vector3
-
+#include "collision/CollisionWorld.h"
 
 namespace ftec {
 
@@ -26,8 +26,7 @@ namespace ftec {
 		std::vector<Light> m_Lights;
 
 		std::unique_ptr<Graphics2D> m_Graphics2D;
-		//std::unique_ptr<Graphics3D> m_Graphics3D;
-
+		
 		enum SceneMode {
 			GRAPHICS_2D,
 			GRAPHICS_3D,
@@ -35,7 +34,9 @@ namespace ftec {
 		};
 
 	private: 
-		std::vector<std::unique_ptr<Entity>> m_Entities; //Maybe create a nice entity component system of sorts, but for now, this'll do
+		CollisionWorld m_World;
+
+		std::vector<std::unique_ptr<Entity>> m_Entities;
 		std::vector<StaticGeometry> m_StaticGeometry;
 
 		SceneMode m_Mode;
@@ -50,6 +51,8 @@ namespace ftec {
 
 		void addMesh(const Vector3f &position, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material);
 		
+		const CollisionWorld &getCollisionWorld();
+
 		void setMode(SceneMode mode);
 	};
 

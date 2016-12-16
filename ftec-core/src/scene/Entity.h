@@ -1,8 +1,5 @@
 #pragma once
 
-#include "math/Vector3.h"			// For position
-
-
 namespace ftec {
 
 	class Graphics;
@@ -12,8 +9,6 @@ namespace ftec {
 	class Entity {
 	protected:
 		Scene *m_Scene;
-		
-		Vector3f m_Position;
 	public:
 		Entity() = default;
 		virtual ~Entity() = default;
@@ -22,6 +17,9 @@ namespace ftec {
 		
 		virtual void render3D() {};
 		virtual void render2D(Graphics2D &graphics) {};
+
+		void setScene(Scene *scene) { m_Scene = scene; }
+		Scene *getScene() { return m_Scene; }
 	
 		friend Scene;
 	};

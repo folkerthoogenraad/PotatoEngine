@@ -108,6 +108,11 @@ namespace ftec {
 		m_StaticGeometry.push_back(s);
 	}
 
+	const CollisionWorld & Scene::getCollisionWorld()
+	{
+		return m_World;
+	}
+
 	void Scene::setMode(SceneMode mode)
 	{
 		m_Mode = mode;

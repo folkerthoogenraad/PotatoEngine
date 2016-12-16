@@ -27,6 +27,8 @@ namespace ftec {
 		float speed;
 		float amount;
 		float away = 0.25f;
+
+		Vector3f m_Position;
 	public:
 		PointCloudEntity(std::vector<Vector3d> vertices);
 		~PointCloudEntity() = default;

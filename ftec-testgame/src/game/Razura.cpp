@@ -39,56 +39,60 @@ namespace ftec {
 
 	struct TestEntity : public Entity
 	{
-		std::shared_ptr<Mesh> m_Mesh;
-		std::shared_ptr<PBRMaterial> m_Material;
+		Vector2f m_Position;
+		float m_Speed = 4;
 
-		Quaternionf angle;
-
-		TestEntity()
+		TestEntity(Vector2f position)
 		{
-			angle = Quaternionf::identity();
-
-			m_Material = std::make_shared<PBRMaterial>();
-
-			//God please rename these man.
-			m_Material->m_TextureMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
-			m_Material->m_NormalMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
-
-			m_Material->m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_GRAY);
-			m_Material->m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
-
-			m_Material->m_Shader = Engine::getResourceManager().load<Shader>("shaders/default");
-			
-			m_Mesh = Engine::getResourceManager().load<Mesh>("mesh/monkey.obj");
+			m_Position = position;
 		}
 
 		void update()
 		{
-			if (Input::isMouseButtonDown(MOUSE_BUTTON_LEFT)){
-				angle *= Quaternionf::fromEuler(Vector3f(Input::getMouseDY() * -0.005f, Input::getMouseDX() * -0.005f, 0));
+			Vector2f velocity = Vector2f();
+
+			if (Input::isKeyDown(KEY_LEFT)) {
+				velocity.x -= 1;
 			}
-			else {
-				angle *= Quaternionf::fromEuler(Vector3f(0, Time::deltaTime * 0.1f, 0));
+			if (Input::isKeyDown(KEY_RIGHT)) {
+				velocity.x += 1;
 			}
+			if (Input::isKeyDown(KEY_UP)) {
+				velocity.y += 1;
+			}
+			if (Input::isKeyDown(KEY_DOWN)) {
+				velocity.y -= 1;
+			}
+
+			if (velocity.magnitude() > 0) {
+				velocity.normalize();
+				m_Position += velocity * (m_Speed * Time::deltaTime);
+			}
+
+		}
+		
+		void render2D(Graphics2D &graphics) override
+		{
+			graphics.setDepth(-4);
+			graphics.setColor(Color32::yellow());
+			graphics.drawRectangle(Rectanglef::centered(0, 0, 1, 1), true);
+
+			graphics.setDepth(-1.0f);
+			graphics.setColor(Color32::white());
+			graphics.drawRectangle(Rectanglef::centered(m_Position.x, m_Position.y, 1, 1), true);
 		}
 
-		void render3D()
-		{
-			Graphics::enqueueMesh(m_Mesh.get(), m_Material.get(), 
-				Matrix4f::translation(Vector3f(0, 0, -3)) * 
-				angle.matrix());
-		}
 	};
 
 	void Razura::init()
 	{
 		auto scene = std::make_unique<Scene>();
-		scene->setMode(Scene::GRAPHICS_3D);
+		scene->setMode(Scene::GRAPHICS_2D);
 
-		scene->m_Cameras[0] = Camera::perspective(60, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
-
-		scene->addEntity(std::make_unique<NoClipCameraEntity>());
-		scene->addEntity(std::make_unique<TestEntity>());
+		scene->m_Cameras[0] = Camera::orthagonal(4, Engine::getWindow().getAspectRatio(), 100.0f, -100.0f);
+		//scene->m_Cameras[0] = Camera::perspective(60, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
+		//scene->addEntity(std::make_unique<NoClipCameraEntity>());
+		scene->addEntity(std::make_unique<TestEntity>(Vector2f(0,0)));
 
 		Engine::setScene(std::move(scene));
 	}
