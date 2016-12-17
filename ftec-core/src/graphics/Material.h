@@ -10,13 +10,24 @@
 namespace ftec {
 
 	struct Material {
+	protected:
+		int m_MatrixModelLocation;
+		int m_MatrixViewLocation;
+		int m_MatrixProjectionLocation;
+
+		void loadMatrixLocations(Shader *shader);
 	public:
 		virtual void prepare() const = 0;
 	};
 	
 	struct Material2D : public Material {
+	private:
 		std::shared_ptr<Shader> m_Shader = nullptr;
+		int m_TextureLocation;
+	public:
 		std::shared_ptr<Texture> m_TextureMap = nullptr;
+
+		Material2D(std::shared_ptr<Shader> shader);
 
 		void prepare() const;
 	};

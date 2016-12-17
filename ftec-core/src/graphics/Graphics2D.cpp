@@ -29,10 +29,9 @@ namespace ftec {
 		m_VAlign = FontAlign::TOP;
 		m_HAlign = FontAlign::LEFT;
 
-		m_Material = std::make_shared<Material2D>();
+		m_Material = std::make_shared<Material2D>(Engine::getResourceManager().load<Shader>("shaders/default2d"));
 
 		m_Material->m_TextureMap = m_WhiteTexture;
-		m_Material->m_Shader = Engine::getResourceManager().load<Shader>("shaders/default2d");
 
 		m_Color = Color32(255, 255, 255, 255);
 
@@ -273,16 +272,6 @@ namespace ftec {
 		//Or add a drawcall
 
 		this->m_Color = color;
-	}
-
-	//This should be removed. This cannot be happening (probably? )
-	//There should be a custom Shader2D class, and maybe if this takes shared_ptr to Shader2D it can change it up
-	void Graphics2D::setShader(std::shared_ptr<Shader> shader)
-	{
-		if (shader != m_Material->m_Shader) {
-			flush();
-			m_Material->m_Shader = shader;
-		}
 	}
 
 	void Graphics2D::setDepth(float depth)

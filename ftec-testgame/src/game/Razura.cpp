@@ -42,10 +42,13 @@ namespace ftec {
 	{
 		Vector2f m_Position;
 		float m_Speed = 4;
+		Sprite sprite;
 
 		TestEntity(Vector2f position)
 		{
 			m_Position = position;
+			sprite = Sprite(Engine::getResourceManager().load<Texture>("textures/mario.png"));
+			sprite.bounds() = Rectanglef::centered(0, 0, 1, 1);
 		}
 
 		void update()
@@ -74,16 +77,16 @@ namespace ftec {
 		
 		void render2D(Graphics2D &graphics) override
 		{
-			graphics.setDepth(-4);
+			graphics.setDepth(4);
 			graphics.setColor(Color32::yellow());
 			graphics.drawRectangle(Rectanglef::centered(0, 0, 1, 1), true);
-			graphics.setDepth(-8);
+			graphics.setDepth(8);
 			graphics.setColor(Color32::red());
-			graphics.drawRectangle(Rectanglef::centered(0, 0, 1, 1), true);
+			graphics.drawRectangle(Rectanglef::centered(0.5f, 0.5f, 1, 1), true);
 
 			graphics.setDepth(1.0f);
 			graphics.setColor(Color32::white());
-			graphics.drawRectangle(Rectanglef::centered(m_Position.x, m_Position.y, 1, 1), true);
+			graphics.drawSprite(sprite, m_Position);
 		}
 
 	};
@@ -91,10 +94,11 @@ namespace ftec {
 	void Razura::init()
 	{
 		auto scene = std::make_unique<Scene>();
-		scene->setMode(Scene::GRAPHICS_BOTH);
+		scene->setMode(Scene::GRAPHICS_2D);
 
-		//scene->m_Cameras[0] = Camera::orthagonal(5, Engine::getWindow().getAspectRatio(), 0.01, 100.0f);
-		scene->m_Cameras[0] = Camera::perspective(60, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
+		scene->m_Cameras[0] = Camera::orthagonal(5, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
+		//scene->m_Cameras[0] = Camera::perspective(60, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
+		
 		scene->addEntity(std::make_unique<NoClipCameraEntity>());
 		scene->addEntity(std::make_unique<Voronoi3DEntity>());
 		scene->addEntity(std::make_unique<TestEntity>(Vector2f(0,0)));

@@ -4,6 +4,7 @@
 #include <vector>					//For std::vector
 
 #include "math/Vector3.h"			//For Vector3
+
 #include "collision/CollisionWorld.h"
 
 namespace ftec {
@@ -47,7 +48,8 @@ namespace ftec {
 		virtual void update();
 		virtual void render();
 
-		void addEntity(std::unique_ptr<Entity> entity);
+		Entity					   *addEntity(std::unique_ptr<Entity> entity);
+		std::unique_ptr<Entity>		removeEntity(Entity *entity);
 
 		void addMesh(const Vector3f &position, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material);
 		

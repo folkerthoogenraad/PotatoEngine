@@ -6,30 +6,33 @@
 #include "GL.h"
 
 namespace ftec {
+	Material2D::Material2D(std::shared_ptr<Shader> shader)
+		:m_Shader(shader)
+	{
+		if (m_Shader) {
+			loadMatrixLocations(m_Shader.get());
+			m_Shader->use();
+			m_TextureLocation = m_Shader->getUniformLocation("u_Textures[0]");
+			m_Shader->setUniform(m_TextureLocation, 0);
+		}
+	}
 
 	void Material2D::prepare() const
 	{
+		//This should not be changed often
 		Shader &shader = *m_Shader;
-
 		shader.use();
 
 		{
-			int matrixModelLocation = shader.getUniformLocation("u_MatrixModel");
-			int matrixViewLocation = shader.getUniformLocation("u_MatrixView");
-			int matrixProjectionLocation = shader.getUniformLocation("u_MatrixProjection");
-
-			shader.setUniform(matrixModelLocation, GraphicsState::matrixModel);
-			shader.setUniform(matrixViewLocation, GraphicsState::matrixView);
-			shader.setUniform(matrixProjectionLocation, GraphicsState::matrixProjection);
+			shader.setUniform(m_MatrixModelLocation, GraphicsState::matrixModel);
+			shader.setUniform(m_MatrixViewLocation, GraphicsState::matrixView);
+			shader.setUniform(m_MatrixProjectionLocation, GraphicsState::matrixProjection);
 		}
 
 		{
-			//TODO This does not have to change every frame :)
 			if (m_TextureMap) {
 				glActiveTexture(GL_TEXTURE0);
 				m_TextureMap->bind();
-				int l = shader.getUniformLocation("u_Textures[0]");
-				shader.setUniform(l, 0);
 			}
 		}
 			
@@ -176,6 +179,15 @@ namespace ftec {
 				int l = shader.getUniformLocation("u_Textures[0]");
 				shader.setUniform(l, 0);
 			}
+		}
+	}
+
+	void Material::loadMatrixLocations(Shader *shader)
+	{
+		if (shader) {
+			m_MatrixModelLocation =			shader->getUniformLocation("u_MatrixModel");
+			m_MatrixViewLocation =			shader->getUniformLocation("u_MatrixView");
+			m_MatrixProjectionLocation =	shader->getUniformLocation("u_MatrixProjection");
 		}
 	}
 }

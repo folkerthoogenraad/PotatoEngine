@@ -133,7 +133,7 @@ namespace ftec {
 		//Cubemap interpolations
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
-		//Backface culling
+		//Backface culling //All windings currently are reversed. I hate life
 		//glEnable(GL_CULL_FACE);
 		//glCullFace(GL_BACK);
 

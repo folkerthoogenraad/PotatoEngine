@@ -13,6 +13,8 @@ namespace ftec {
 	public:
 		~CollisionWorld();
 
+
+
 	private:
 		void addTransform(CollisionTransform *collider);
 		void removeTransform(CollisionTransform *collider);

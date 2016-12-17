@@ -18,7 +18,7 @@ namespace ftec {
 		bool m_Static;
 		int m_Layer;
 	public:
-		CollisionTransform(Rectanglef rectangle, CollisionWorld *world, bool isStatic = false, int layer = -1);
+		CollisionTransform(Rectanglef rectangle, CollisionWorld *world = nullptr, bool isStatic = false, int layer = -1);
 		~CollisionTransform();
 
 		inline const Rectanglef &getAABB(){ return m_Rectangle; };

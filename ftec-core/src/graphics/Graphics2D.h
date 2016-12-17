@@ -70,7 +70,6 @@ namespace ftec {
 
 		//Set stuff
 		void setColor(const Color32 &color);
-		void setShader(std::shared_ptr<Shader> shader);
 
 		void setDepth(float depth);
 
@@ -87,8 +86,6 @@ namespace ftec {
 		void setCamera(Camera camera);
 
 		inline const Color32 &getColor() { return m_Color; }
-		inline std::shared_ptr<Shader> getShader() { return m_Material->m_Shader; } //TODO see implementation of setShader
-
 	protected:
 		void setTexture(std::shared_ptr<Texture> texture);
 		void flush();

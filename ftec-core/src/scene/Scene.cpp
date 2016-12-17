@@ -88,10 +88,39 @@ namespace ftec {
 	}
 
 
-	void Scene::addEntity(std::unique_ptr<Entity> entity)
+	Entity *Scene::addEntity(std::unique_ptr<Entity> entity)
 	{
 		entity->m_Scene = this;
+		entity->onStart();
+
 		m_Entities.push_back(std::move(entity));
+
+		return m_Entities.back().get();
+	}
+
+	std::unique_ptr<Entity> Scene::removeEntity(Entity * entity)
+	{
+		if (!entity)
+			return nullptr;
+
+		int index = -1;
+
+		for (int i = 0; i < m_Entities.size(); i++){
+			if (m_Entities[i].get() == entity) {
+				index = i;
+				break;
+			}
+		}
+
+		if (index < 0)
+			return nullptr;
+		
+		std::unique_ptr<Entity> value = std::move(m_Entities[index]);
+		m_Entities.erase(m_Entities.begin() + index);
+
+		value->onEnd();
+
+		return std::move(value);
 	}
 
 	void Scene::addMesh(const Vector3f & position, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material)
