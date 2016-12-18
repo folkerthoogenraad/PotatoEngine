@@ -20,7 +20,7 @@ namespace ftec {
 
 	class ResourceManager {
 
-		typedef std::map<std::string, std::shared_ptr<ManagableResource>> ResourceMap;
+		typedef std::map<std::string, std::shared_ptr<ManageableResource>> ResourceMap;
 		typedef std::map<const std::type_info*, ResourceMap> Resources;
 
 		Resources m_Resources;

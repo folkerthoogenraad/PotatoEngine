@@ -6,7 +6,7 @@
 #include "resources/ManageableResource.h"	//For ManageableResource
 
 namespace ftec {
-	class Cubemap : public ManagableResource {
+	class Cubemap : public ManageableResource {
 		uint32_t m_TextureID;
 	public:
 		Cubemap();

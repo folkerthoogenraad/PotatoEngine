@@ -16,14 +16,56 @@
 #include "graphics/Window.h"
 #include "resources/ResourceManager.h"
 
+#include "io/INIFile.h"
+
 namespace ftec {
 
 	static void initGL();
 
+	namespace desktopengine {
+		static struct Config {
+			int width = 1280;
+			int height = 720;
+			bool fullscreen = false;
+			bool vsync = true;
+			int msaa = 4;
+		};
+
+		static desktopengine::Config getConfig()
+		{
+			auto file = Engine::getResourceManager().load<INIFile>(DEFAULT_GLOBAL_CONFIG_FILE);
+
+			desktopengine::Config config;
+
+			if (!file) {
+				LOG_WARNING("settings/config.ini does not exist.");
+				//TODO generate the file with default values in this case
+			}
+
+			INISegment *windowSegment = file->getSegmentByName("Window");
+			
+			if (!windowSegment) {
+				LOG_WARNING("settings/config.ini does not contain segment [Window].");
+				return std::move(config);
+			}
+
+			config.width = windowSegment->getInt("width", 1280); //TODO load default values rightly
+			config.height = windowSegment->getInt("height", 720);
+			config.fullscreen = windowSegment->getBool("fullscreen", false);
+			config.vsync = windowSegment->getBool("vsync", false);
+			config.msaa = windowSegment->getInt("msaa", 4);
+
+			return std::move(config);
+		}
+	}
+
 	void DesktopEngine::init()
 	{
-		//Create the resource manager first, so that we can 
-		auto manager = std::make_unique<ResourceManager>();
+		//Set the resource manager
+		Engine::setResourceManager(std::make_unique<ResourceManager>());
+
+		//TODO move this global config to somewhere better
+		desktopengine::Config c = desktopengine::getConfig();
 
 		LOG("Loading GLFW...");
 
@@ -35,7 +77,7 @@ namespace ftec {
 		LOG("GLFW Loaded.");
 
 		//Create context and stuff
-		auto window = std::make_unique<Window>("PotatoEngine", 1280, 720, false, true, 16);
+		auto window = std::make_unique<Window>("PotatoEngine", c.width, c.height, c.fullscreen, c.vsync, c.msaa);
 		window->setVisible(true); //Figure out what we want here (either visible, or invisible)
 
 		LOG("Loading GLEW...");
@@ -61,7 +103,7 @@ namespace ftec {
 
 		LOG("");
 
-		Engine::setResourceManager(std::move(manager));
+		//Set the window
 		Engine::setWindow(std::move(window));
 
 		Engine::init();

@@ -31,7 +31,7 @@ namespace ftec {
 		BOTTOM = 2
 	};
 
-	class Font : public ManagableResource {
+	class Font : public ManageableResource {
 	private:
 		std::map<char, FontCharacter> m_Characters;
 		std::string m_Name;

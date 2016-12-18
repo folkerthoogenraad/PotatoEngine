@@ -29,7 +29,7 @@ namespace ftec {
 	template<typename T> struct Vector3; typedef Vector3<float> Vector3f;
 	template<typename T> struct Vector4; typedef Vector4<float> Vector4f;
 
-	class Shader : public ManagableResource {
+	class Shader : public ManageableResource {
 	protected:
 		unsigned int m_Program;
 	public:

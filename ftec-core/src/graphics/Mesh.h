@@ -12,7 +12,7 @@ typedef unsigned int GLuint;
 
 namespace ftec {
 	
-	class Mesh : public ManagableResource {
+	class Mesh : public ManageableResource {
 	private:
 	public:
 		struct FaceIndex { //Wow this is ugly, but whatever

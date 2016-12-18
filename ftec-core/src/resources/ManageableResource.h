@@ -1,6 +1,6 @@
 #pragma once
 
 namespace ftec {
-	class ManagableResource
+	class ManageableResource
 	{ };
 }

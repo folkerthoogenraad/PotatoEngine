@@ -108,13 +108,13 @@
     <ClCompile Include="src\math\Matrix4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\io\ConfigurationFile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\collision\CollisionTransform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\collision\CollisionWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collision\Collider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\INIFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -299,13 +299,13 @@
     <ClInclude Include="src\io\language_extension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\io\ConfigurationFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\collision\CollisionWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\collision\CollisionTransform.h">
+    <ClInclude Include="src\collision\Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\io\INIFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

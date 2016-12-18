@@ -13,7 +13,7 @@
 
 
 namespace ftec {
-	class Texture : public ManagableResource {
+	class Texture : public ManageableResource {
 
 	public:
 		enum InterpolationMode {

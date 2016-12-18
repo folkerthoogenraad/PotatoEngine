@@ -108,4 +108,7 @@
   <ItemGroup>
     <Xml Include="text.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="settings\config.ini" />
+  </ItemGroup>
 </Project>

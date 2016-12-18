@@ -133,7 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\collision\CollisionTransform.cpp" />
+    <ClCompile Include="src\collision\Collider.cpp" />
     <ClCompile Include="src\collision\CollisionWorld.cpp" />
     <ClCompile Include="src\engine\DesktopEngine.cpp" />
     <ClCompile Include="src\engine\Engine.cpp" />
@@ -158,7 +158,7 @@
     <ClCompile Include="src\graphics\Texture.cpp" />
     <ClCompile Include="src\graphics\VBORenderable.cpp" />
     <ClCompile Include="src\graphics\Window.cpp" />
-    <ClCompile Include="src\io\ConfigurationFile.cpp" />
+    <ClCompile Include="src\io\INIFile.cpp" />
     <ClCompile Include="src\io\ioutils.cpp" />
     <ClCompile Include="src\io\XMLDocument.cpp" />
     <ClCompile Include="src\io\XMLReader.cpp" />
@@ -169,7 +169,7 @@
     <ClCompile Include="src\scene\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\collision\CollisionTransform.h" />
+    <ClInclude Include="src\collision\Collider.h" />
     <ClInclude Include="src\collision\CollisionWorld.h" />
     <ClInclude Include="src\engine\DesktopEngine.h" />
     <ClInclude Include="src\engine\Engine.h" />
@@ -198,7 +198,7 @@
     <ClInclude Include="src\graphics\SpriteBatch.h" />
     <ClInclude Include="src\graphics\Texture.h" />
     <ClInclude Include="src\graphics\Window.h" />
-    <ClInclude Include="src\io\ConfigurationFile.h" />
+    <ClInclude Include="src\io\INIFile.h" />
     <ClInclude Include="src\io\language_extension.h" />
     <ClInclude Include="src\io\ioutils.h" />
     <ClInclude Include="src\io\XMLDocument.h" />

@@ -5,20 +5,18 @@
 
 namespace ftec {
 
-	class CollisionTransform;
+	class Collider;
 
 	class CollisionWorld {
 		//This can be optimized a lot
-		std::vector<CollisionTransform*> m_Colliders;
+		std::vector<Collider*> m_Colliders;
 	public:
 		~CollisionWorld();
 
-
-
 	private:
-		void addTransform(CollisionTransform *collider);
-		void removeTransform(CollisionTransform *collider);
+		void addTransform(Collider *collider);
+		void removeTransform(Collider *collider);
 
-		friend CollisionTransform;
+		friend Collider;
 	};
 }

@@ -8,9 +8,11 @@
 namespace ftec {
 
 	class CollisionWorld;
+	class Entity;
 
-	class CollisionTransform {
+	class Collider {
 	private:
+		Entity *m_Entity;
 		CollisionWorld *m_World;
 	public:
 		Rectanglef m_Rectangle;
@@ -18,12 +20,15 @@ namespace ftec {
 		bool m_Static;
 		int m_Layer;
 	public:
-		CollisionTransform(Rectanglef rectangle, CollisionWorld *world = nullptr, bool isStatic = false, int layer = -1);
-		~CollisionTransform();
+		Collider(Rectanglef rectangle, Entity *entity = nullptr, CollisionWorld *world = nullptr, bool isStatic = false, int layer = -1);
+		~Collider();
 
 		inline const Rectanglef &getAABB(){ return m_Rectangle; };
 		
+		Entity *getEntity();
+		Collider &setEntity(Entity *entity);
+
 		CollisionWorld *getWorld();
-		void setWorld(CollisionWorld *world);
+		Collider &setWorld(CollisionWorld *world);
 	};
 }

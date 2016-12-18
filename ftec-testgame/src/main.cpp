@@ -3,26 +3,17 @@
 
 #include "logger/log.h"
 
-#include "collision/CollisionWorld.h"
-#include "collision/CollisionTransform.h"
-
 #include <memory>
 #include <algorithm>
 #include "math/Vector3.h"
 
-void test()
-{
-	using namespace ftec;
-	
-	CollisionWorld world;
+#include "io/INIFile.h"
 
-	CollisionTransform transform1(Rectanglef::centered(0, 0, 1, 1), &world);
-	CollisionTransform transform2(Rectanglef::centered(0, 0, 1, 1), &world);
-	CollisionTransform transform3(Rectanglef::centered(0, 0, 1, 1), &world);
-}
 
 int main(void)
 {
+	using namespace ftec;
+
 	ftec::DesktopEngine::create<ftec::Razura>();
 
 	WAIT();
