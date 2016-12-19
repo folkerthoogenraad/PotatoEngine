@@ -16,6 +16,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ftec-testgame", "ftec-testg
 		{3546B893-CC07-4421-8897-6CBC4F571C15} = {3546B893-CC07-4421-8897-6CBC4F571C15}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utils", "utils", "{8B609AA3-6F4D-43D5-930A-853D73A7AE5A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "engine", "engine", "{B2741A8B-EF0D-4F89-AE8D-DA9721F74B3F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ftec-util", "ftec-util\ftec-util.vcxproj", "{D2217B5C-FDFC-4765-8329-166C456B8256}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,8 +54,21 @@ Global
 		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Release|x64.Build.0 = Release|x64
 		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Release|x86.ActiveCfg = Release|Win32
 		{2287FCEF-23EF-4586-99F9-B556E0D31F92}.Release|x86.Build.0 = Release|Win32
+		{D2217B5C-FDFC-4765-8329-166C456B8256}.Debug|x64.ActiveCfg = Debug|x64
+		{D2217B5C-FDFC-4765-8329-166C456B8256}.Debug|x64.Build.0 = Debug|x64
+		{D2217B5C-FDFC-4765-8329-166C456B8256}.Debug|x86.ActiveCfg = Debug|Win32
+		{D2217B5C-FDFC-4765-8329-166C456B8256}.Debug|x86.Build.0 = Debug|Win32
+		{D2217B5C-FDFC-4765-8329-166C456B8256}.Release|x64.ActiveCfg = Release|x64
+		{D2217B5C-FDFC-4765-8329-166C456B8256}.Release|x64.Build.0 = Release|x64
+		{D2217B5C-FDFC-4765-8329-166C456B8256}.Release|x86.ActiveCfg = Release|Win32
+		{D2217B5C-FDFC-4765-8329-166C456B8256}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{220CB38F-4A82-4202-9D87-043D2D954AC0} = {B2741A8B-EF0D-4F89-AE8D-DA9721F74B3F}
+		{3546B893-CC07-4421-8897-6CBC4F571C15} = {B2741A8B-EF0D-4F89-AE8D-DA9721F74B3F}
+		{D2217B5C-FDFC-4765-8329-166C456B8256} = {8B609AA3-6F4D-43D5-930A-853D73A7AE5A}
 	EndGlobalSection
 EndGlobal

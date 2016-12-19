@@ -5,10 +5,9 @@
 
 #include <memory>
 #include <algorithm>
+#include <vector>
+
 #include "math/Vector3.h"
-
-#include "io/INIFile.h"
-
 
 int main(void)
 {
