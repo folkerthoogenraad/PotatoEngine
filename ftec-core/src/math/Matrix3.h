@@ -61,9 +61,8 @@ namespace ftec {
 		inline T el(int column, int row) const { return elements[column + row * 3]; }
 	};
 
-
-
-
 	typedef Matrix3<float> Matrix3f;
 	typedef Matrix3<double> Matrix3d;
+	typedef Matrix3<int> Matrix3i;
+	typedef Matrix3<long long> Matrix3ll;
 }

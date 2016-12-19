@@ -77,5 +77,6 @@ namespace ftec {
 	typedef Triangle2<float> Triangle2f;
 	typedef Triangle2<double> Triangle2d;
 	typedef Triangle2<int> Triangle2i;
+	typedef Triangle2<long long> Triangle2ll;
 
 }

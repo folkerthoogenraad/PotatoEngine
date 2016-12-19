@@ -54,4 +54,5 @@ namespace ftec {
 	typedef Circle<float> Circlef;
 	typedef Circle<double> Circled;
 	typedef Circle<int> Circlei;
+	typedef Circle<long long> Circlell;
 }

@@ -163,6 +163,7 @@
     <ClCompile Include="src\io\XMLDocument.cpp" />
     <ClCompile Include="src\io\XMLReader.cpp" />
     <ClCompile Include="src\math\Curve.cpp" />
+    <ClCompile Include="src\math\Matrix2.cpp" />
     <ClCompile Include="src\math\Matrix3.cpp" />
     <ClCompile Include="src\math\Matrix4.cpp" />
     <ClCompile Include="src\serialization\Serialization.cpp" />
@@ -213,9 +214,11 @@
     <ClInclude Include="src\math\Line2.h" />
     <ClInclude Include="src\math\Line3.h" />
     <ClInclude Include="src\math\math.h" />
+    <ClInclude Include="src\math\Matrix2.h" />
     <ClInclude Include="src\math\Matrix3.h" />
     <ClInclude Include="src\math\Matrix4.h" />
     <ClInclude Include="src\math\Plane.h" />
+    <ClInclude Include="src\math\precision.h" />
     <ClInclude Include="src\math\Quaternion.h" />
     <ClInclude Include="src\math\Rectangle.h" />
     <ClInclude Include="src\math\sorting.h" />

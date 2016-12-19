@@ -81,4 +81,5 @@ namespace ftec {
 	typedef Line2<float> Line2f;
 	typedef Line2<double> Line2d;
 	typedef Line2<int> Line2i;
+	typedef Line2<long long> Line2ll;
 }

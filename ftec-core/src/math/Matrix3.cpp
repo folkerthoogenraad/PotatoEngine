@@ -41,8 +41,8 @@ namespace ftec {
 	Matrix3<T>& Matrix3<T>::rotate(T angle)
 	{
 		T r = angle * ((T)3.141592654 / (T)180.0);
-		T s = sin(r);
-		T c = cos(r);
+		T s = (T) sin(r);
+		T c = (T) cos(r);
 
 		multiply(Matrix3<T>({
 			c,-s,0,
@@ -78,13 +78,11 @@ namespace ftec {
 	template<typename T>
 	Matrix3<T>& Matrix3<T>::transpose()
 	{
-		//Copy this
-		Matrix3<T> m = *this;
-
-		for (int collumn = 0; collumn < 3; collumn++) {
-			for (int row = 0; row < 3; row++) {
-				//Swap swapperdie swapswap
-				el(row, collumn) = m.el(collumn, row);
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = i + i; j < 3; j++)
+			{
+				std::swap(el(i, j), el(j, i));
 			}
 		}
 
@@ -94,6 +92,7 @@ namespace ftec {
 	template<typename T>
 	Matrix3<T>& Matrix3<T>::inverse()
 	{
+		//TODO TODO TODO :O
 		return *this;
 	}
 
@@ -191,4 +190,6 @@ namespace ftec {
 	//Tyvm compiler for compiling this
 	template struct Matrix3<float>;
 	template struct Matrix3<double>;
+	template struct Matrix3<int>;
+	template struct Matrix3<long long>;
 }

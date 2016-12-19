@@ -83,6 +83,10 @@ namespace ftec {
 		{
 			return (T)sqrt(x*x + y*y);
 		}
+		T sqrmagnitude()
+		{
+			return (T) x*x + y*y;
+		}
 
 		static T dot(const Vector2<T>&left, const Vector2<T>&right)
 		{
@@ -211,5 +215,6 @@ namespace ftec {
 	typedef Vector2<float> Vector2f;
 	typedef Vector2<int> Vector2i;
 	typedef Vector2<double> Vector2d;
+	typedef Vector2<long long> Vector2ll;
 
 }
