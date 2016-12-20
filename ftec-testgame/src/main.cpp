@@ -19,20 +19,22 @@
 int main(void)
 {
 	using namespace ftec;
-
+	/*
 	Triangle2ll triangle(
-		Vector2ll(-1, 0),
-		Vector2ll(0, 1),
-		Vector2ll(1, 0)
+		Vector2ll(INT_MIN + 1, INT_MIN + 1),
+		Vector2ll(INT_MAX - 1, INT_MIN + 1),
+		Vector2ll(INT_MAX - 1, INT_MAX - 1)
 	);
 
-	LOG(sign(incircle(triangle, Vector2ll(0, 0))));
-	LOG(sign(incircle(triangle, Vector2ll(1, 1))));
-	LOG(sign(incircle(triangle, Vector2ll(1, 0))));
-	LOG(sign(incircle(triangle, Vector2ll(0, 1))));
-	
+	LOG(triangle);
 
-	//ftec::DesktopEngine::create<ftec::Razura>();
+	LOG(sign(incircle(triangle, Vector2ll(INT_MAX, INT_MAX))));
+	LOG(sign(incircle(triangle, Vector2ll(0, 0))));
+	LOG(sign(incircle(triangle, Vector2ll(INT_MIN, INT_MAX))));
+	LOG(sign(incircle(triangle, Vector2ll(0, 1))));
+	*/
+
+	ftec::DesktopEngine::create<ftec::Razura>();
 
 	WAIT();
 	return 0;

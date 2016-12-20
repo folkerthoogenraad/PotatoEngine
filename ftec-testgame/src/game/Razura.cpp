@@ -87,6 +87,10 @@ namespace ftec {
 			graphics.setDepth(1.0f);
 			graphics.setColor(Color32::white());
 			graphics.drawSprite(sprite, m_Position);
+		
+			graphics.setLineWidth(0.01f);
+			graphics.setColor(Color32::white());
+			graphics.drawLine(Line2f(Vector2f(0,0), Vector2f(1,1)));
 		}
 
 	};

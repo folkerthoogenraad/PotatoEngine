@@ -29,6 +29,7 @@ namespace ftec {
 			bool fullscreen = false;
 			bool vsync = true;
 			int msaa = 4;
+			int targetfps = -1; //TODO implement this and shit
 		};
 
 		static desktopengine::Config getConfig()
@@ -54,6 +55,7 @@ namespace ftec {
 			config.fullscreen = windowSegment->getBool("fullscreen", false);
 			config.vsync = windowSegment->getBool("vsync", false);
 			config.msaa = windowSegment->getInt("msaa", 4);
+			config.targetfps = windowSegment->getInt("targetfps", -1);
 
 			return std::move(config);
 		}

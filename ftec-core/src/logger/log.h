@@ -59,6 +59,10 @@ namespace ftec {
 	struct Plane;
 	template <typename T>
 	struct Tetrahedron;
+	template <typename T>
+	struct Triangle2;
+	template <typename T>
+	struct Triangle3;
 
 	template <typename T>
 	std::ostream& operator<<(std::ostream &out, const Rectangle<T> &r)
@@ -73,7 +77,17 @@ namespace ftec {
 	template <typename T>
 	std::ostream& operator<<(std::ostream &out, const Tetrahedron<T> &r)
 	{
-		return out << "(" << r.a << ", " << r.b << ", " << r.c << ", " << r.d << ", " << ")";
+		return out << "(" << r.a << ", " << r.b << ", " << r.c << ", " << r.d << ")";
+	}
+	template <typename T>
+	std::ostream& operator<<(std::ostream &out, const Triangle2<T> &r)
+	{
+		return out << "(" << r.a << ", " << r.b << ", " << r.c << ")";
+	}
+	template <typename T>
+	std::ostream& operator<<(std::ostream &out, const Triangle3<T> &r)
+	{
+		return out << "(" << r.a << ", " << r.b << ", " << r.c << ")";
 	}
 
 	//-------------------------------------------------------------------
