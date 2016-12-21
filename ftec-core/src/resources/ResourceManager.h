@@ -8,6 +8,8 @@
 
 #include "ManageableResource.h"
 
+#define load_resource(type, resource) Engine::getResourceManager().load<type>(resource)
+
 namespace ftec {
 
 	class ResourceFile {

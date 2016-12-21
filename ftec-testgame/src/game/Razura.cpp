@@ -44,8 +44,19 @@ namespace ftec {
 		float m_Speed = 4;
 		Sprite sprite;
 
+		PBRMaterial m_Material;
+		std::shared_ptr<Mesh> m_Mesh;
+
 		TestEntity(Vector2f position)
 		{
+			m_Material.m_TextureMap = Engine::getResourceManager().load<Texture>("textures/chest_texture.png");
+			m_Material.m_NormalMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
+			m_Material.m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_DARK_GRAY);
+			m_Material.m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
+			m_Material.m_Shader = Engine::getResourceManager().load<Shader>("shaders/default");
+
+			m_Mesh = load_resource(Mesh, "mesh/chest.obj");
+
 			m_Position = position;
 			sprite = Sprite(Engine::getResourceManager().load<Texture>("textures/mario.png"));
 			sprite.bounds() = Rectanglef::centered(0, 0, 1, 1);
@@ -74,6 +85,11 @@ namespace ftec {
 			}
 
 		}
+
+		void render3D() override
+		{
+			Graphics::enqueueMesh(m_Mesh.get(), &m_Material, Matrix4f::translation(Vector3f(0,0,3)));
+		}
 		
 		void render2D(Graphics2D &graphics) override
 		{
@@ -98,10 +114,10 @@ namespace ftec {
 	void Razura::init()
 	{
 		auto scene = std::make_unique<Scene>();
-		scene->setMode(Scene::GRAPHICS_2D);
+		scene->setMode(Scene::GRAPHICS_3D);
 
 		scene->m_Cameras[0] = Camera::orthagonal(5, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
-		//scene->m_Cameras[0] = Camera::perspective(60, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
+		scene->m_Cameras[0] = Camera::perspective(60, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
 		
 		scene->addEntity(std::make_unique<NoClipCameraEntity>());
 		scene->addEntity(std::make_unique<Voronoi3DEntity>());

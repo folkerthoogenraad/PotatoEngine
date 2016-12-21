@@ -7,6 +7,9 @@
 
 #include "logger/log.h"
 
+#include <chrono>
+#include <thread>
+
 #include "Game.h"
 #include "Engine.h"
 
@@ -16,58 +19,20 @@
 #include "graphics/Window.h"
 #include "resources/ResourceManager.h"
 
-#include "io/INIFile.h"
+#include "EngineConfiguration.h"
+
 
 namespace ftec {
 
 	static void initGL();
-
-	namespace desktopengine {
-		static struct Config {
-			int width = 1280;
-			int height = 720;
-			bool fullscreen = false;
-			bool vsync = true;
-			int msaa = 4;
-			int targetfps = -1; //TODO implement this and shit
-		};
-
-		static desktopengine::Config getConfig()
-		{
-			auto file = Engine::getResourceManager().load<INIFile>(DEFAULT_GLOBAL_CONFIG_FILE);
-
-			desktopengine::Config config;
-
-			if (!file) {
-				LOG_WARNING("settings/config.ini does not exist.");
-				//TODO generate the file with default values in this case
-			}
-
-			INISegment *windowSegment = file->getSegmentByName("Window");
-			
-			if (!windowSegment) {
-				LOG_WARNING("settings/config.ini does not contain segment [Window].");
-				return std::move(config);
-			}
-
-			config.width = windowSegment->getInt("width", 1280); //TODO load default values rightly
-			config.height = windowSegment->getInt("height", 720);
-			config.fullscreen = windowSegment->getBool("fullscreen", false);
-			config.vsync = windowSegment->getBool("vsync", false);
-			config.msaa = windowSegment->getInt("msaa", 4);
-			config.targetfps = windowSegment->getInt("targetfps", -1);
-
-			return std::move(config);
-		}
-	}
-
+	
 	void DesktopEngine::init()
 	{
 		//Set the resource manager
 		Engine::setResourceManager(std::make_unique<ResourceManager>());
 
-		//TODO move this global config to somewhere better
-		desktopengine::Config c = desktopengine::getConfig();
+		//Load the engine configuration
+		EngineConfiguration::init();
 
 		LOG("Loading GLFW...");
 
@@ -78,9 +43,15 @@ namespace ftec {
 
 		LOG("GLFW Loaded.");
 
-		//Create context and stuff
-		auto window = std::make_unique<Window>("PotatoEngine", c.width, c.height, c.fullscreen, c.vsync, c.msaa);
-		window->setVisible(true); //Figure out what we want here (either visible, or invisible)
+		//Create the window
+		auto window = std::make_unique<Window>("PotatoEngine", 
+			EngineConfiguration::width, 
+			EngineConfiguration::height, 
+			EngineConfiguration::fullscreen, 
+			EngineConfiguration::vsync, 
+			EngineConfiguration::msaa);
+
+		window->setVisible(true);
 
 		LOG("Loading GLEW...");
 
@@ -98,6 +69,7 @@ namespace ftec {
 
 		LOG("Setting up OpenGL...");
 
+		//Initialize the OpenGL stuff
 		initGL();
 
 		//Tell the world how great we are
@@ -144,8 +116,15 @@ namespace ftec {
 			Engine::update(game);
 
 			frames++;
-
+			
 			Engine::getWindow().swap();
+			
+			//Set the right framerate
+			if (!EngineConfiguration::vsync && EngineConfiguration::targetfps > 0) {
+				std::this_thread::sleep_for(std::chrono::milliseconds(
+					(long long)(1000.0 / EngineConfiguration::targetfps)
+				));
+			}
 		}
 	}
 
