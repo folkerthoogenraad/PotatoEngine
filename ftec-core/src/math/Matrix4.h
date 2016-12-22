@@ -39,9 +39,26 @@ namespace ftec {
 		Matrix4(std::array<T, 4 * 4> elements) : elements(elements) {}
 
 		Matrix4<T>& multiply(const Matrix4& other);
+		Matrix4<T> multiplied(const Matrix4& other) const;
 
-		Vector4<T> multiply(const Vector4<T>& other) const;
-		Vector3<T> multiply(const Vector3<T>& other) const;
+		Matrix4<T>& multiply(const T& t);
+		Matrix4<T> multiplied(const T& t) const;
+
+		Vector4<T> transform(const Vector4<T>& other) const;
+		Vector3<T> transform(const Vector3<T>& other) const;
+
+		Matrix4<T> clone() const;
+
+		Matrix4<T> transposed() const;
+		Matrix4<T> &transpose();
+
+		Matrix4<T> inversed() const;
+		Matrix4<T> &inverse();
+
+		T determinant() const;
+
+		inline T &el(int collumn, int row) { return elements[collumn + row * 4]; }
+		inline T el(int collumn, int row) const { return elements[collumn + row * 4]; }
 
 		static Matrix4<T> identity();
 		static Matrix4<T> orthographic(T l, T r, T b, T t, T n, T f);
@@ -50,22 +67,15 @@ namespace ftec {
 		static Matrix4<T> fromForward(const Vector3<T> &forward, const Vector3<T> &up);
 
 		static Matrix4<T> translation(const Vector3<T>& translation);
-		static Matrix4<T> rotation(T angle, const Vector3<T>& axis);
-		static Matrix4<T> scale(const Vector3<T>& scale);
+		static Matrix4<T> scaled(const Vector3<T>& scale);
 
+		static Matrix4<T> translation(T x, T y, T z);
+		static Matrix4<T> scaled(T x, T y, T z);
+
+		static Matrix4<T> rotation(T angle, const Vector3<T>& axis);
 		static Matrix4<T> rotationX(T angle);
 		static Matrix4<T> rotationY(T angle);
 		static Matrix4<T> rotationZ(T angle);
-
-		Matrix4<T> clone();
-
-		Matrix4<T> transposed();
-		Matrix4<T> &transpose();
-
-		T determinant() const;
-
-		inline T &el(int collumn, int row) { return elements[collumn + row * 4]; }
-		inline T el(int collumn, int row) const { return elements[collumn + row * 4]; }
 
 		//operators
 		Matrix4<T> operator*(const Matrix4<T>& right);

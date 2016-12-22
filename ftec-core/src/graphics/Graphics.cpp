@@ -263,7 +263,7 @@ namespace ftec {
 			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
 
 			for (auto &s : spheres) {
-				GraphicsState::matrixModel = Matrix4f::translation(s.mesh.center) * Matrix4f::scale(Vector3f(s.mesh.radius, s.mesh.radius, s.mesh.radius));
+				GraphicsState::matrixModel = Matrix4f::translation(s.mesh.center) * Matrix4f::scaled(Vector3f(s.mesh.radius, s.mesh.radius, s.mesh.radius));
 				Renderer::drawDirect(*sphere);
 			}
 		}

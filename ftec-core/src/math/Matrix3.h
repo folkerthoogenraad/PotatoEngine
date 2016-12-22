@@ -39,6 +39,9 @@ namespace ftec {
 		Matrix3<T> &multiply(const Matrix3<T> &m);
 		Matrix3<T> multiplied(const Matrix3<T> &m) const;
 
+		Matrix3<T> &multiply(const T &t);
+		Matrix3<T> multiplied(const T &t) const;
+
 		Matrix3<T> &transpose();
 		Matrix3<T> transposed() const;
 
@@ -50,6 +53,14 @@ namespace ftec {
 		Matrix4<T> expand() const;
 
 		T determinant() const;
+
+		static Matrix3<T> identity();
+		static Matrix3<T> translation(T x, T y);
+		static Matrix3<T> scaled(T x, T y);
+		static Matrix3<T> rotation(T x);
+
+		static Matrix3<T> translation(Vector2<T> v);
+		static Matrix3<T> scaled(Vector2<T> v);
 
 		Matrix3<T> &operator *=(const Matrix3<T> other);
 

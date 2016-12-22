@@ -27,6 +27,36 @@ namespace ftec {
 	}
 
 	template<typename T>
+	Matrix3<T> Matrix3<T>::identity()
+	{
+		return Matrix3<T>();
+	}
+
+	template<typename T>
+	Matrix3<T> Matrix3<T>::translation(T x, T y)
+	{
+		return Matrix3<T>().translate(x, y);
+	}
+
+	template<typename T>
+	Matrix3<T> Matrix3<T>::translation(Vector2<T> v)
+	{
+		return translation(v.x, v.y);
+	}
+
+	template<typename T>
+	Matrix3<T> Matrix3<T>::scaled(T x, T y)
+	{
+		return Matrix3<T>().scale(x,y);
+	}
+
+	template<typename T>
+	Matrix3<T> Matrix3<T>::scaled(Vector2<T> v)
+	{
+		return scaled(v.x, v.y);
+	}
+
+	template<typename T>
 	Matrix3<T>& Matrix3<T>::scale(T x, T y)
 	{
 		multiply(Matrix3<T>({
@@ -35,6 +65,12 @@ namespace ftec {
 			0,0,1,
 		}));
 		return *this;
+	}
+
+	template<typename T>
+	Matrix3<T> Matrix3<T>::rotation(T x)
+	{
+		return Matrix3<T>().rotate(x);
 	}
 
 	template<typename T>
@@ -76,6 +112,21 @@ namespace ftec {
 	}
 
 	template<typename T>
+	Matrix3<T>& Matrix3<T>::multiply(const T & t)
+	{
+		for (int i = 0; i < elements.size(); i++) {
+			elements[i] *= t;
+		}
+		return *this;
+	}
+
+	template<typename T>
+	Matrix3<T> Matrix3<T>::multiplied(const T & t) const
+	{
+		return clone().multiply(t);
+	}
+
+	template<typename T>
 	Matrix3<T>& Matrix3<T>::transpose()
 	{
 		for (int i = 0; i < 3; i++)
@@ -92,8 +143,9 @@ namespace ftec {
 	template<typename T>
 	Matrix3<T>& Matrix3<T>::inverse()
 	{
-		//TODO TODO TODO :O
-		return *this;
+		T d = determinant();
+
+		return multiply((T)1.0 / d);
 	}
 
 	template<typename T>

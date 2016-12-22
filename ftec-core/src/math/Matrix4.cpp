@@ -24,10 +24,44 @@ namespace ftec {
 		return Matrix4<T>();
 	}
 
+	template<typename T>
+	Matrix4<T> Matrix4<T>::inversed() const
+	{
+		//TODO implement
+		return clone().inverse();
+	}
+
+	template<typename T>
+	Matrix4<T>& Matrix4<T>::inverse()
+	{
+
+		return *this;
+	}
+
+	template<typename T>
+	Matrix4<T>& Matrix4<T>::multiply(const T & t)
+	{
+		for (int i = 0; i < elements.size(); i++){
+			elements[i] *= t;
+		}
+		return *this;
+	}
+
+	template<typename T>
+	Matrix4<T> Matrix4<T>::multiplied(const T & t) const
+	{
+		return clone().multiply(t);
+	}
+
+	template<typename T>
+	Matrix4<T> Matrix4<T>::multiplied(const Matrix4 & other) const
+	{
+		return clone().multiply(other);
+	}
+
 	template <typename T>
 	Matrix4<T>& Matrix4<T>::multiply(const Matrix4<T>& other)
 	{
-		//TODO look at this code
 		T sum;
 		Matrix4<T> m;
 
@@ -49,7 +83,7 @@ namespace ftec {
 	}
 
 	template <typename T>
-	Vector4<T> Matrix4<T>::multiply(const Vector4<T> & other) const
+	Vector4<T> Matrix4<T>::transform(const Vector4<T> & other) const
 	{
 		return Vector4<T>(
 			other.x * elements[0 + 0 * 4] + other.y * elements[1 + 0 * 4] + other.z * elements[2 + 0 * 4] + other.w * elements[3 + 0 * 4],
@@ -60,7 +94,7 @@ namespace ftec {
 	}
 
 	template <typename T>
-	Vector3<T> Matrix4<T>::multiply(const Vector3<T> & other) const
+	Vector3<T> Matrix4<T>::transform(const Vector3<T> & other) const
 	{
 		return Vector3<T>(
 			other.x * elements[0 + 0 * 4] + other.y * elements[1 + 0 * 4] + other.z * elements[2 + 0 * 4] + elements[3 + 0 * 4],
@@ -84,25 +118,31 @@ namespace ftec {
 	template<typename T>
 	Vector4<T> Matrix4<T>::operator*(const Vector4<T> & right) const
 	{
-		return multiply(right);
+		return transform(right);
 	}
 
 	template<typename T>
 	Vector3<T> Matrix4<T>::operator*(const Vector3<T> & right) const
 	{
-		return multiply(right);
+		return transform(right);
 	}
 
-	template <typename T>
-	Matrix4<T> Matrix4<T>::translation(const Vector3<T>& translation)
+	template<typename T>
+	Matrix4<T> Matrix4<T>::translation(T x, T y, T z)
 	{
 		Matrix4<T> result;
 
-		result.elements[3 + 0 * 4] = translation.x;
-		result.elements[3 + 1 * 4] = translation.y;
-		result.elements[3 + 2 * 4] = translation.z;
+		result.elements[3 + 0 * 4] = x;
+		result.elements[3 + 1 * 4] = y;
+		result.elements[3 + 2 * 4] = z;
 
 		return result;
+	}
+
+	template <typename T>
+	Matrix4<T> Matrix4<T>::translation(const Vector3<T>& t)
+	{
+		return translation(t.x, t.y, t.z);
 	}
 
 	template <typename T>
@@ -134,16 +174,22 @@ namespace ftec {
 		return result;
 	}
 
-	template <typename T>
-	Matrix4<T> Matrix4<T>::scale(const Vector3<T>& scale)
+	template<typename T>
+	Matrix4<T> Matrix4<T>::scaled(T x, T y, T z)
 	{
 		Matrix4<T> result;
 
-		result.elements[0 + 0 * 4] = scale.x;
-		result.elements[1 + 1 * 4] = scale.y;
-		result.elements[2 + 2 * 4] = scale.z;
+		result.elements[0 + 0 * 4] = x;
+		result.elements[1 + 1 * 4] = y;
+		result.elements[2 + 2 * 4] = z;
 
 		return result;
+	}
+
+	template <typename T>
+	Matrix4<T> Matrix4<T>::scaled(const Vector3<T>& s)
+	{
+		return scaled(s.x, s.y, s.z);
 	}
 
 	template <typename T>
@@ -210,7 +256,7 @@ namespace ftec {
 	}
 
 	template<typename T>
-	Matrix4<T> Matrix4<T>::clone()
+	Matrix4<T> Matrix4<T>::clone() const
 	{
 		return Matrix4<T>(*this);
 	}
@@ -235,7 +281,6 @@ namespace ftec {
 	Matrix4<T> Matrix4<T>::perspective(T fov, T asp, T near, T far)
 	{
 		Matrix4<T> result;
-		//TODO fix this to be GREAT AGAIN
 
 		T rad = ((T)3.141592653 / (T)180.0);
 
@@ -289,7 +334,7 @@ namespace ftec {
 	}
 
 	template<typename T>
-	Matrix4<T> Matrix4<T>::transposed()
+	Matrix4<T> Matrix4<T>::transposed() const
 	{
 		return clone().transpose();
 	}

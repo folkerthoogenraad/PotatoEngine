@@ -79,7 +79,7 @@ namespace ftec {
 				Vector3<T>(1, -1, -1),
 				Vector3<T>(0, 1, 0)
 				).transform(
-					Matrix4<T>::translation(bSphere.center) * Matrix4<T>::scale(Vector3<T>(bSphere.radius * 10, bSphere.radius * 10, bSphere.radius * 10))
+					Matrix4<T>::translation(bSphere.center) * Matrix4<T>::scaled(Vector3<T>(bSphere.radius * 10, bSphere.radius * 10, bSphere.radius * 10))
 				);
 
 			//Push the tetrahedron vertices
