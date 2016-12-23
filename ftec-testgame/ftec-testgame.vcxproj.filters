@@ -54,6 +54,12 @@
     <ClCompile Include="src\game\TestCanvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\razura\RazuraWorldEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\razura\RazuraPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\NoClipCameraEntity.h">
@@ -102,6 +108,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\game\TestCanvas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\razura\RazuraWorldEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\razura\RazuraPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -146,6 +146,8 @@
     <ClCompile Include="src\math\StairArc.cpp" />
     <ClCompile Include="src\math\Voronoi2.cpp" />
     <ClCompile Include="src\math\Voronoi3.cpp" />
+    <ClCompile Include="src\razura\RazuraPlayer.cpp" />
+    <ClCompile Include="src\razura\RazuraWorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\NoClipCameraEntity.h" />
@@ -164,6 +166,8 @@
     <ClInclude Include="src\math\StairArc.h" />
     <ClInclude Include="src\math\Voronoi2.h" />
     <ClInclude Include="src\math\Voronoi3.h" />
+    <ClInclude Include="src\razura\RazuraPlayer.h" />
+    <ClInclude Include="src\razura\RazuraWorldEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="text.xml">
