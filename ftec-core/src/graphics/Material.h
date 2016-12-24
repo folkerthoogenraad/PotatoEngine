@@ -66,4 +66,16 @@ namespace ftec {
 
 		void prepare() const;
 	};
+
+	struct TerrainMaterial : public Material {
+	private:
+		std::shared_ptr<Shader> m_Shader = nullptr;
+		int m_TextureLocation;
+	public:
+		std::shared_ptr<Texture> m_TextureMap = nullptr;
+
+		TerrainMaterial(std::shared_ptr<Shader> shader);
+
+		void prepare() const;
+	};
 }

@@ -10,6 +10,6 @@ namespace ftec {
 		virtual void onEnd();
 
 		virtual void update();
-		virtual void render3D();
+		virtual void render();
 	};
 }

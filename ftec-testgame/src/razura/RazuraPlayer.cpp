@@ -1,6 +1,9 @@
 #include "RazuraPlayer.h"
 
+
 namespace ftec {
+
+
 	void RazuraPlayer::onStart()
 	{
 	}
@@ -13,7 +16,7 @@ namespace ftec {
 	{
 	}
 
-	void RazuraPlayer::render3D()
+	void RazuraPlayer::render()
 	{
 	}
 

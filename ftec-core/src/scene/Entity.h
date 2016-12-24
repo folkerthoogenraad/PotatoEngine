@@ -30,7 +30,7 @@ namespace ftec {
 
 		virtual void update() {};
 		
-		virtual void render3D() {};
+		virtual void render() {};
 		virtual void render2D(Graphics2D &graphics) {};
 
 		void setScene(Scene *scene) { m_Scene = scene; }

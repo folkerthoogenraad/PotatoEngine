@@ -9,7 +9,8 @@ namespace ftec {
 	Material2D::Material2D(std::shared_ptr<Shader> shader)
 		:m_Shader(shader)
 	{
-		if (m_Shader) {
+		if (shader) {
+			m_Shader = shader;
 			loadMatrixLocations(m_Shader.get());
 			m_Shader->use();
 			m_TextureLocation = m_Shader->getUniformLocation("u_Textures[0]");
@@ -188,6 +189,37 @@ namespace ftec {
 			m_MatrixModelLocation =			shader->getUniformLocation("u_MatrixModel");
 			m_MatrixViewLocation =			shader->getUniformLocation("u_MatrixView");
 			m_MatrixProjectionLocation =	shader->getUniformLocation("u_MatrixProjection");
+		}
+	}
+
+	TerrainMaterial::TerrainMaterial(std::shared_ptr<Shader> shader)
+	{
+		if (shader) {
+			m_Shader = shader;
+			loadMatrixLocations(m_Shader.get());
+			m_Shader->use();
+			m_TextureLocation = m_Shader->getUniformLocation("u_Textures[0]");
+			m_Shader->setUniform(m_TextureLocation, 0);
+		}
+	}
+
+	void TerrainMaterial::prepare() const
+	{
+		Shader &shader = *m_Shader;
+		shader.use();
+
+		{
+			shader.setUniform(m_MatrixModelLocation, GraphicsState::matrixModel);
+			shader.setUniform(m_MatrixViewLocation, GraphicsState::matrixView);
+			shader.setUniform(m_MatrixProjectionLocation, GraphicsState::matrixProjection);
+		}
+
+		{
+			if (m_TextureMap) {
+				glActiveTexture(GL_TEXTURE0);
+				shader.setUniform(m_TextureLocation, 0);
+				m_TextureMap->bind();
+			}
 		}
 	}
 }

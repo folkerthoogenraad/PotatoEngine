@@ -65,7 +65,7 @@ namespace ftec {
 
 			for (auto i = m_Entities.begin(); i != m_Entities.end(); i++) {
 				auto &obj = *i;
-				obj->render3D();
+				obj->render();
 			}
 
 			Graphics::end();

@@ -96,6 +96,10 @@ namespace ftec{
 		{
 			return Vector3<T>(*this).normalize();
 		}
+		T distanceFrom(const Vector3<T> &o)const
+		{
+			return (*this - o).magnitude();
+		}
 		inline T magnitude() const
 		{
 			return (T)sqrt(sqrmagnitude());

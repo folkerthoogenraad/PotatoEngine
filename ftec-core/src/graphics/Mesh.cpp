@@ -27,45 +27,28 @@ namespace ftec {
 
 	void Mesh::upload()
 	{
-
-		std::vector<Vector3f> vertices;
-		std::vector<Vector3f> normals;
-		std::vector<Vector3f> tangents;
-		std::vector<Vector2f> uvs;
-		std::vector<unsigned int> indices;
-
-		for (int i = 0; i < m_Triangles.size(); i++) {
-			FaceIndex &f = m_Triangles[i];
-
-			vertices.push_back(m_Vertices[f.vertex]);
-			normals.push_back(m_Normals[f.normal]);
-			tangents.push_back(m_Tangents[f.normal]); //Tangents and normals share the index, for obvious reasons
-			uvs.push_back(m_Uvs[f.uv]);
-
-			indices.push_back(i);
-		}
 		//TODO lots of checks to validate the data given in the stuff here
 		//TODO use buffer subdata, probably not useful in most cases here though
 
-		if (vertices.size() == 0 || normals.size() == 0 || uvs.size() == 0 || indices.size() == 0) {
+		if (m_Vertices.size() == 0 || m_Normals.size() == 0 || m_Uvs.size() == 0 || m_Triangles.size() == 0) {
 			LOG("Can't upload mesh.");
 			return;//Its not gonna work now is it
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_VerticesVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3f) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3f) * m_Vertices.size(), &m_Vertices[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_NormalsVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3f) * normals.size(), &normals[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3f) * m_Normals.size(), &m_Normals[0], GL_STATIC_DRAW);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, m_TangentsVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3f) * tangents.size(), &tangents[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3f) * m_Tangents.size(), &m_Tangents[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_UvsVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector2f) * uvs.size(), &uvs[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vector2f) * m_Uvs.size(), &m_Uvs[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndicesVBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * m_Triangles.size(), &m_Triangles[0], GL_STATIC_DRAW);
 	}
 
 	void Mesh::optimize()
@@ -75,20 +58,14 @@ namespace ftec {
 
 	void Mesh::recalculateNormals()
 	{
-		struct Vector3c {
-			Vector3f value = Vector3f(0, 0, 0);
-			int count = 0;
-		};
-
-		std::vector<Vector3c> normals;
-
-		normals.resize(m_Normals.size());
+		m_Normals.clear();
+		m_Normals.resize(m_Vertices.size());
 
 		for (int i = 0; i < m_Triangles.size(); i += 3) {
 			//Fetch all the needed stuff
-			FaceIndex &i0 = m_Triangles[i + 0];
-			FaceIndex &i1 = m_Triangles[i + 1];
-			FaceIndex &i2 = m_Triangles[i + 2];
+			int i0 = m_Triangles[i + 0];
+			int i1 = m_Triangles[i + 1];
+			int i2 = m_Triangles[i + 2];
 
 			//p0
 			//|\
@@ -98,49 +75,39 @@ namespace ftec {
 			//|____\
 			//p1   p2
 
-			const Vector3f &p0 = m_Vertices[i0.vertex];
-			const Vector3f &p1 = m_Vertices[i1.vertex];
-			const Vector3f &p2 = m_Vertices[i2.vertex];
+			const Vector3f &p0 = m_Vertices[i0];
+			const Vector3f &p1 = m_Vertices[i1];
+			const Vector3f &p2 = m_Vertices[i2];
 
 			Vector3f pDelta1 = p1 - p0;
 			Vector3f pDelta2 = p2 - p0;
 			Vector3f normal = Vector3f::cross(pDelta1, pDelta2).normalize();
 
-			normals[i0.normal].value += normal;
-			normals[i0.normal].count++;
-
-			normals[i1.normal].value += normal;
-			normals[i1.normal].count++;
-
-			normals[i2.normal].value += normal;
-			normals[i2.normal].count++;
+			m_Normals[i0] += normal;
+			m_Normals[i1] += normal;
+			m_Normals[i2] += normal;
 
 		}
 
 		for (int i = 0; i < m_Normals.size(); i ++){
-			if (normals[i].count > 0) {
-				m_Normals[i] = normals[i].value.normalize();
+			if (m_Normals[i].magnitude() > 0) {
+				m_Normals[i].normalize();
 			}
 		}
 	}
 
 	void Mesh::recalculateTangents()
 	{
+		std::vector<Vector3f> tangents;
+		
 		m_Tangents.resize(m_Normals.size());
-
-		struct Vector3c {
-			Vector3f value = Vector3f(0, 0, 0);
-			int count = 0;
-		};
-
-		std::vector<Vector3c> tangents;
 		tangents.resize(m_Normals.size());
 
 		for (int i = 0; i < m_Triangles.size(); i += 3) {
 			//Fetch all the needed stuff
-			FaceIndex &i0 = m_Triangles[i + 0];
-			FaceIndex &i1 = m_Triangles[i + 1];
-			FaceIndex &i2 = m_Triangles[i + 2];
+			int i0 = m_Triangles[i + 0];
+			int i1 = m_Triangles[i + 1];
+			int i2 = m_Triangles[i + 2];
 
 			//p0
 			//|\
@@ -150,13 +117,13 @@ namespace ftec {
 			//|____\
 			//p1   p2
 
-			const Vector3f &v0 = m_Vertices[i0.vertex];
-			const Vector3f &v1 = m_Vertices[i1.vertex];
-			const Vector3f &v2 = m_Vertices[i2.vertex];
+			const Vector3f &v0 = m_Vertices[i0];
+			const Vector3f &v1 = m_Vertices[i1];
+			const Vector3f &v2 = m_Vertices[i2];
 
-			const Vector2f &uv0 = m_Uvs[i0.uv];
-			const Vector2f &uv1= m_Uvs[i1.uv];
-			const Vector2f &uv2 = m_Uvs[i2.uv];
+			const Vector2f &uv0 = m_Uvs[i0];
+			const Vector2f &uv1= m_Uvs[i1];
+			const Vector2f &uv2 = m_Uvs[i2];
 
 			Vector3f deltaPos1 = v1 - v0;
 			Vector3f deltaPos2 = v2 - v0;
@@ -168,21 +135,14 @@ namespace ftec {
 
 			Vector3f tangent = ((deltaPos1 * deltaUV2.y - deltaPos2 * deltaUV1.y) * r).normalize();
 
-			tangents[i0.normal].value += tangent;
-			tangents[i0.normal].count++;
-
-			tangents[i1.normal].value += tangent;
-			tangents[i1.normal].count++;
-
-			tangents[i2.normal].value += tangent;
-			tangents[i2.normal].count++;
-
+			tangents[i0] += tangent;
+			tangents[i1] += tangent;
+			tangents[i2] += tangent;
 		}
 
 		for (int i = 0; i < m_Tangents.size(); i++) {
-			if (tangents[i].count > 0) {
-				
-				m_Tangents[i] = tangents[i].value.normalize();
+			if (tangents[i].magnitude() > 0) {
+				m_Tangents[i] = tangents[i].normalize();
 			}
 
 		}
@@ -192,6 +152,12 @@ namespace ftec {
 	{
 		//Currently only loads obj files, only ones with normals and uv's, and only ones with triangulated faces.
 		using namespace std;
+
+		struct FaceIndex { //Wow this is ugly, but whatever
+			int vertex = 0, normal = 0, uv = 0;
+			FaceIndex() {}
+			FaceIndex(int v, int n, int u) : vertex(v), normal(n), uv(u) {}
+		};
 
 		auto mesh = make_shared<Mesh>();
 
@@ -270,12 +236,21 @@ namespace ftec {
 		
 		//Now we just need to map it to the OpenGL way
 
-		mesh->m_Vertices = vertexInput;
+		/*mesh->m_Vertices = vertexInput;
 		mesh->m_Normals = normalInput;
-		mesh->m_Uvs = uvInput;
+		mesh->m_Uvs = uvInput;*/
 
-		//And ofcourse change this one
-		mesh->m_Triangles = triangleInput;
+		for (int i = 0; i < triangleInput.size(); i++) {
+			FaceIndex &f = triangleInput[i];
+
+			//Inefficient as fuck, but doesn't matter.
+
+			mesh->m_Vertices.push_back(vertexInput[f.vertex]);
+			mesh->m_Normals.push_back(normalInput[f.normal]);
+			mesh->m_Uvs.push_back(uvInput[f.uv]);
+
+			mesh->m_Triangles.push_back(i);
+		}
 
 		mesh->optimize();
 		//mesh->recalculateNormals();

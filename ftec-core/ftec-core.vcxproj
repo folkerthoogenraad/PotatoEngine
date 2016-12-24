@@ -169,6 +169,7 @@
     <ClCompile Include="src\math\Matrix4.cpp" />
     <ClCompile Include="src\serialization\Serialization.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
+    <ClCompile Include="src\terrain\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\collision\Collider.h" />
@@ -236,6 +237,7 @@
     <ClInclude Include="src\scene\Entity.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\serialization\Serialization.h" />
+    <ClInclude Include="src\terrain\Terrain.h" />
     <ClInclude Include="src\threading\PotatoQueue.h" />
   </ItemGroup>
   <ItemGroup>

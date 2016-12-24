@@ -12,6 +12,6 @@ namespace ftec {
 		Voronoi3DEntity();
 		~Voronoi3DEntity() = default;
 		void update() override;
-		void render3D() override;
+		void render() override;
 	};
 }

@@ -104,9 +104,9 @@ namespace ftec {
 			m_Mesh->m_Uvs.push_back(Vector2f());
 			m_Mesh->m_Uvs.push_back(Vector2f());
 
-			m_Mesh->m_Triangles.push_back({ i * 3 + 0, i * 3 + 0, i * 3 + 0 });
-			m_Mesh->m_Triangles.push_back({ i * 3 + 1, i * 3 + 1, i * 3 + 1 });
-			m_Mesh->m_Triangles.push_back({ i * 3 + 2, i * 3 + 2, i * 3 + 2 });
+			m_Mesh->m_Triangles.push_back(i * 3 + 0);
+			m_Mesh->m_Triangles.push_back(i * 3 + 1);
+			m_Mesh->m_Triangles.push_back(i * 3 + 2);
 		}
 
 		m_Mesh->upload();
@@ -150,7 +150,7 @@ namespace ftec {
 			m_Position = Vector3f(0, 0, 0);
 	}
 
-	void PointCloudEntity::render3D()
+	void PointCloudEntity::render()
 	{
 		if (m_Render) {
 			Matrix4f model = Matrix4f::translation(this->m_Position + center);

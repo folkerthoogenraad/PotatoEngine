@@ -122,5 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="settings\config.ini" />
+    <None Include="shaders\terrain_fragment.glsl" />
+    <None Include="shaders\terrain_vertex.glsl" />
   </ItemGroup>
 </Project>

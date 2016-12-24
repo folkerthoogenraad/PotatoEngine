@@ -34,6 +34,6 @@ namespace ftec {
 		~PointCloudEntity() = default;
 		void update() override;
 
-		void render3D() override;
+		void render() override;
 	};
 }
