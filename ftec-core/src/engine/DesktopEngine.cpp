@@ -160,6 +160,9 @@ namespace ftec {
 		//glEnable(GL_CULL_FACE);
 		//glCullFace(GL_BACK);
 
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 		//Clear color settings
 		glClearColor(0.f, 0.f, 1.f, 1.f);
 

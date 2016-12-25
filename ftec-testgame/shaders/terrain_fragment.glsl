@@ -42,6 +42,6 @@ out vec4 FragColor;
 //------------------------------------------------------------------//
 void main()
 {
-	FragColor = texture(u_Textures[0], v.uv) * dot(normalize(v.normal), -normalize(vec3(1.0,-1.0,1.0)));
+	FragColor = vec4(v.normal, 1.0);//texture(u_Textures[0], v.uv) * dot(normalize(v.normal), -normalize(vec3(1.0,-1.0,1.0)));
 	FragColor.a = 1.0;
 }

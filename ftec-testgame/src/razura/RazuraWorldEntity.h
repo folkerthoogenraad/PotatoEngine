@@ -4,20 +4,21 @@
 #include <vector>
 
 #include "scene/Entity.h"
-#include "terrain/Terrain.h"
-
 
 namespace ftec {
 
 	class Mesh;
+	struct UnlitMaterial;
 
 	class RazuraWorldEntity : public Entity {
-		std::unique_ptr<Terrain> m_Terrain;
+		std::unique_ptr<Mesh> m_Mesh;
+		std::unique_ptr<UnlitMaterial> m_Material;
 	public:
+		RazuraWorldEntity();
+		~RazuraWorldEntity();
+
 		virtual void onStart();
 		virtual void onEnd();
-
-		void remake();
 
 		virtual void update();
 		virtual void render();

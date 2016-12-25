@@ -11,9 +11,8 @@
 #include "graphics/Window.h"
 #include "graphics/Camera.h"
 
-
 #include "razura/RazuraPlayer.h"
-#include "razura/RazuraWorldEntity.h" //RazuraWorld?
+#include "razura/RazuraWorldEntity.h"
 
 #include "NoClipCameraEntity.h"
 

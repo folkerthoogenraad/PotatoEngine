@@ -124,5 +124,7 @@
     <None Include="settings\config.ini" />
     <None Include="shaders\terrain_fragment.glsl" />
     <None Include="shaders\terrain_vertex.glsl" />
+    <None Include="shaders\mandelbrot_vertex.glsl" />
+    <None Include="shaders\mandelbrot_fragment.glsl" />
   </ItemGroup>
 </Project>

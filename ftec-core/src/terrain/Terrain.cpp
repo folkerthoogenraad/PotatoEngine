@@ -14,6 +14,7 @@
 
 #include <assert.h>
 
+#define SMOOTH false
 
 namespace ftec {
 	Terrain::Terrain(int width, int height, float resolution)
@@ -31,42 +32,76 @@ namespace ftec {
 		if (!m_Mesh)
 			m_Mesh = std::make_shared<Mesh>();
 
-		//------------------------------------------------------------------//
-		// Create vertices
-		//------------------------------------------------------------------//
-		m_Mesh->m_Vertices.clear();
-		m_Mesh->m_Uvs.clear();
+		if (SMOOTH) {
+			//------------------------------------------------------------------//
+			// Create vertices
+			//------------------------------------------------------------------//
+			m_Mesh->m_Vertices.clear();
+			m_Mesh->m_Uvs.clear();
 
-		m_Mesh->m_Vertices.reserve(m_Width * m_Height);
-		m_Mesh->m_Uvs.reserve(m_Width * m_Height);
+			m_Mesh->m_Vertices.reserve(m_Width * m_Height);
+			m_Mesh->m_Uvs.reserve(m_Width * m_Height);
 
-		for (int x = 0; x < m_Width; x++) {
-			for (int y = 0; y < m_Height; y++) {
-				m_Mesh->m_Vertices.push_back(Vector3f(x / m_Resolution, getHeightRaw(x, y), y / m_Resolution));
-				m_Mesh->m_Uvs.push_back(Vector2f(x / (float)m_Width, y / (float)m_Height));
+			for (int x = 0; x < m_Width; x++) {
+				for (int y = 0; y < m_Height; y++) {
+					m_Mesh->m_Vertices.push_back(Vector3f(x / m_Resolution, getHeightRaw(x, y), y / m_Resolution));
+					m_Mesh->m_Uvs.push_back(Vector2f(x / (float)m_Width * 100, y / (float)m_Height * 100));
+				}
+			}
+
+			//------------------------------------------------------------------//
+			// Creating triangles
+			//------------------------------------------------------------------//
+			m_Mesh->m_Triangles.clear();
+
+			for (int x = 0; x < m_Width - 1; x++) {
+				for (int y = 0; y < m_Height - 1; y++) {
+					int i0 = x + y * m_Width;
+					int i1 = (x + 1) + y * m_Width;
+
+					int i2 = (x + 1) + (y + 1) * m_Width;
+					int i3 = x + (y + 1) * m_Width;
+
+					m_Mesh->m_Triangles.push_back(i0);
+					m_Mesh->m_Triangles.push_back(i1);
+					m_Mesh->m_Triangles.push_back(i2);
+
+					m_Mesh->m_Triangles.push_back(i0);
+					m_Mesh->m_Triangles.push_back(i2);
+					m_Mesh->m_Triangles.push_back(i3);
+				}
 			}
 		}
+		else {
+			//------------------------------------------------------------------//
+			// Create vertices
+			//------------------------------------------------------------------//
+			m_Mesh->m_Vertices.clear();
+			m_Mesh->m_Uvs.clear();
+			m_Mesh->m_Triangles.clear();
 
-		//------------------------------------------------------------------//
-		// Creating triangles
-		//------------------------------------------------------------------//
-		m_Mesh->m_Triangles.clear();
+			m_Mesh->m_Vertices.reserve(m_Width * m_Height);
+			m_Mesh->m_Uvs.reserve(m_Width * m_Height);
 
-		for (int x = 0; x < m_Width - 1; x++) {
-			for (int y = 0; y < m_Height - 1; y++) {
-				int i0 = x + y * m_Width;
-				int i1 = (x + 1) + y * m_Width;
+			int index = 0;
 
-				int i2 = (x + 1) + (y + 1) * m_Width;
-				int i3 = x + (y + 1) * m_Width;
+			auto add = [&](int x, int y) {
+				m_Mesh->m_Vertices.push_back(Vector3f(x / m_Resolution, getHeightRaw(x, y), y / m_Resolution));
+				m_Mesh->m_Uvs.push_back(Vector2f(x / (float)m_Width * 100, y / (float)m_Height * 100));
+				m_Mesh->m_Triangles.push_back(index);
+				index++;
+			};
 
-				m_Mesh->m_Triangles.push_back(i0);
-				m_Mesh->m_Triangles.push_back(i1);
-				m_Mesh->m_Triangles.push_back(i2);
+			for (int x = 0; x < m_Width - 1; x++) {
+				for (int y = 0; y < m_Height - 1; y++) {
+					add(x, y);
+					add(x + 1, y + 1);
+					add(x + 1, y);
 
-				m_Mesh->m_Triangles.push_back(i0);
-				m_Mesh->m_Triangles.push_back(i2);
-				m_Mesh->m_Triangles.push_back(i3);
+					add(x, y);
+					add(x, y + 1);
+					add(x + 1, y + 1);
+				}
 			}
 		}
 
