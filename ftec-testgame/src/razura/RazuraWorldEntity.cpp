@@ -19,6 +19,8 @@
 
 #include "logger/log.h"
 
+#include "graphics/MeshBuilder.h"
+
 
 namespace ftec {
 	RazuraWorldEntity::RazuraWorldEntity()
@@ -53,31 +55,13 @@ namespace ftec {
 		for(int x = 0; x < m_Map.getWidth(); x++){
 			for (int y = 0; y < m_Map.getHeight(); y++) {
 				Tile t = m_Map.getTile(x, y);
-				if (t == Tile::VOID)
-					continue;
 				
-				if (t == Tile::STONE || t == Tile::FLOOR) {
-					float h = t == Tile::STONE ? 0 : 1;
-
-					float i = (int)m_Mesh->m_Vertices.size();
-
-					m_Mesh->m_Vertices.push_back(Vector3f(x, h, y));
-					m_Mesh->m_Vertices.push_back(Vector3f(x + 1, h, y));
-					m_Mesh->m_Vertices.push_back(Vector3f(x + 1, h, y + 1));
-					m_Mesh->m_Vertices.push_back(Vector3f(x, h, y + 1));
-
-					m_Mesh->m_Uvs.push_back(Vector2f(0, 0));
-					m_Mesh->m_Uvs.push_back(Vector2f(1, 0));
-					m_Mesh->m_Uvs.push_back(Vector2f(1, 1));
-					m_Mesh->m_Uvs.push_back(Vector2f(0, 1));
-
-					m_Mesh->m_Triangles.push_back(i);
-					m_Mesh->m_Triangles.push_back(i + 2);
-					m_Mesh->m_Triangles.push_back(i + 1);
-
-					m_Mesh->m_Triangles.push_back(i);
-					m_Mesh->m_Triangles.push_back(i + 3);
-					m_Mesh->m_Triangles.push_back(i + 2);
+				if (true) {
+					MeshBuilder::addQuad(
+						*m_Mesh,
+						Matrix4f::fromForward(Vector3f(0, 1, 0), Vector3f(0, 0, -1)) * 
+						Matrix4f::translation(x + 0.5f, y + 0.5f, 0)
+					);
 				}
 			}
 		}

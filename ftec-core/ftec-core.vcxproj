@@ -151,6 +151,7 @@
     <ClCompile Include="src\graphics\Light.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Mesh.cpp" />
+    <ClCompile Include="src\graphics\MeshBuilder.cpp" />
     <ClCompile Include="src\graphics\RenderBuffer.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
