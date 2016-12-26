@@ -193,6 +193,7 @@
     <ClInclude Include="src\graphics\Light.h" />
     <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\Mesh.h" />
+    <ClInclude Include="src\graphics\MeshBuilder.h" />
     <ClInclude Include="src\graphics\Primitive.h" />
     <ClInclude Include="src\graphics\RenderBuffer.h" />
     <ClInclude Include="src\graphics\Sprite.h" />

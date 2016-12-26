@@ -329,6 +329,9 @@
     <ClInclude Include="src\terrain\Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\MeshBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default_vertex.glsl" />
