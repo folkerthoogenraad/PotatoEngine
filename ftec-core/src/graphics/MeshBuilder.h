@@ -11,6 +11,7 @@ namespace ftec {
 	public:
 		static void addQuad(Mesh &mesh, const Matrix4f &center);
 		static void addCube(Mesh &mesh, const Matrix4f &center);
+		static void apply(Mesh &mesh);
 	};
 
 }

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+
+#include "math/Vector3.h"
 #include "scene/Entity.h"
 
 namespace ftec {
@@ -9,7 +11,8 @@ namespace ftec {
 	struct PBRMaterial;
 
 	class RazuraPlayer : public Entity {
-		std::shared_ptr<Mesh> m_Mesh;
+		Vector3f m_Position;
+		std::unique_ptr<Mesh> m_Mesh;
 		std::unique_ptr<PBRMaterial> m_Material;
 	public:
 		RazuraPlayer();

@@ -28,4 +28,11 @@ namespace ftec {
 	{
 	}
 
+	void MeshBuilder::apply(Mesh & mesh)
+	{
+		mesh.recalculateNormals();
+		mesh.recalculateTangents();
+		mesh.upload();
+	}
+
 }

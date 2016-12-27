@@ -3,6 +3,7 @@
 #include "engine/Engine.h"
 #include "engine/KeyCodes.h"
 #include "engine/Input.h"
+#include "engine/Time.h"
 
 #include "resources/ResourceManager.h"
 
@@ -56,7 +57,7 @@ namespace ftec {
 			for (int y = 0; y < m_Map.getHeight(); y++) {
 				Tile t = m_Map.getTile(x, y);
 				
-				if (true) {
+				if (t != Tile::VOID) {
 					MeshBuilder::addQuad(
 						*m_Mesh,
 						Matrix4f::fromForward(Vector3f(0, 1, 0), Vector3f(0, 0, -1)) * 
