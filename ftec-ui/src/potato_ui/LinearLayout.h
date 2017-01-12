@@ -5,14 +5,14 @@
 namespace potato {
 	class LinearLayout : public Panel {
 	public:
-		enum LayoutDiRectangleion {
+		enum LayoutDirection {
 			HORIZONTAL,
 			VERTICAL
 		};
 	protected:
-		LayoutDiRectangleion m_DiRectangleion;
+		LayoutDirection m_DiRectangleion;
 	public:
-		LinearLayout(LayoutDiRectangleion dir);
+		LinearLayout(LayoutDirection dir);
 
 		void updateLayout() override;
 		void addPanel(std::shared_ptr<Panel> panel);

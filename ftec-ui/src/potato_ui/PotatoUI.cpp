@@ -1,8 +1,11 @@
 #include "PotatoUI.h"
 #include "Panel.h"
-#include "graphics/Window.h"
-#include "engine/Engine.h"
 #include "logger/log.h"
+
+#include "graphics/Window.h"
+#include "graphics/Camera.h"
+
+#include "engine/Engine.h"
 
 namespace potato {
 	//https://www.materialpalette.com/blue-grey/grey
@@ -25,12 +28,15 @@ namespace potato {
 		return data;
 	}
 
-	void PotatoClipboard::setData(const std::string &input) {
+	void PotatoClipboard::setData(const std::string &input) 
+	{
 		data = input;
 	}
 
 	PotatoUI::PotatoUI()
 	{
+		m_Graphics.m_Camera = ftec::Camera::orthagonal(ftec::Engine::getWindow().getHeight(), ftec::Engine::getWindow().getWidth() / ftec::Engine::getWindow().getHeight(), -100, 100, true);
+		m_Graphics.m_Camera.m_Position = ftec::Vector3f(ftec::Engine::getWindow().getWidth() / 2.0f, ftec::Engine::getWindow().getHeight() / 2.0f);
 	}
 
 	PotatoUI::~PotatoUI()

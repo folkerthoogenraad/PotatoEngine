@@ -14,32 +14,40 @@
 #include "razura/RazuraPlayer.h"
 #include "razura/RazuraWorldEntity.h"
 
+#include "potato_ui/PotatoUI.h"
+#include "potato_ui/Button.h"
+#include "potato_ui/LinearLayout.h"
+
 #include "NoClipCameraEntity.h"
 
 namespace ftec {
 
 	void Razura::update()
-	{ }
-
+	{ 
+		if (m_UI)
+			m_UI->update();
+	}
 
 	void Razura::render()
 	{
 		Renderer::clear();
+
+		if (m_UI)
+			m_UI->render();
 	}
 
 	void Razura::init()
 	{
-		auto scene = std::make_unique<Scene>();
-		scene->setMode(Scene::GRAPHICS_3D);
+		m_UI = std::make_shared<potato::PotatoUI>();
+		auto layout = std::make_shared<potato::LinearLayout>(potato::LinearLayout::VERTICAL);
+		
+		layout->addPanel(std::make_shared<potato::Button>("test123"));
+		layout->addPanel(std::make_shared<potato::Button>("Hello wrold"));
+		layout->addPanel(std::make_shared<potato::Button>("dikke stuff"));
 
-		scene->m_Cameras[0] = Camera::perspective(60, Engine::getWindow().getAspectRatio(), 0.01f, 100.0f);
-
-		scene->addEntity(std::make_unique<NoClipCameraEntity>());
-
-		scene->addEntity(std::make_unique<RazuraPlayer>());
-		scene->addEntity(std::make_unique<RazuraWorldEntity>());
-
-		Engine::setScene(std::move(scene));
+		m_UI->setRoot(
+			layout
+		);
 	}
 
 	void Razura::destroy()

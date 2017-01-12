@@ -34,9 +34,6 @@ namespace ftec {
 		m_Material->m_TextureMap = m_WhiteTexture;
 
 		m_Color = Color32(255, 255, 255, 255);
-
-		m_Camera = Camera::orthagonal(Engine::getWindow().getHeight() / 2.0f, Engine::getWindow().getWidth() / Engine::getWindow().getHeight(), -100, 100, true);
-		m_Camera.m_Position = Vector3f(Engine::getWindow().getWidth() / 2.0f, Engine::getWindow().getHeight() / 2.0f);
 	}
 
 	Graphics2D::~Graphics2D()

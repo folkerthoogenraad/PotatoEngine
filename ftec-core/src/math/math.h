@@ -97,7 +97,18 @@ namespace ftec {
 	{
 		return std::ceil(a);
 	}
-
+	
+	template <typename T>
+	T gcd(T a, T b)
+	{
+		T t;
+		while (b) {
+			t = a % b;
+			a = b;
+			b = t;
+		}
+		return a;
+	}
 }
 
 /*

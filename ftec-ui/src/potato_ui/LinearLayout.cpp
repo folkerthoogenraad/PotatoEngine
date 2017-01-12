@@ -3,7 +3,7 @@
 #include "math/math.h"
 
 namespace potato {
-	LinearLayout::LinearLayout(LayoutDiRectangleion dir)
+	LinearLayout::LinearLayout(LayoutDirection dir)
 		: m_DiRectangleion(dir)
 	{
 		m_Insets = { 0,0,0,0 };
