@@ -158,6 +158,7 @@
     <ClInclude Include="src\game\TestCanvas.h" />
     <ClInclude Include="src\game\VoronoiCanvas.h" />
     <ClInclude Include="src\game\Voronoi3DEntity.h" />
+    <ClInclude Include="src\math\BSP2.h" />
     <ClInclude Include="src\math\Delaunay2.h" />
     <ClInclude Include="src\math\Delaunay3.h" />
     <ClInclude Include="src\math\DelaunayVertex.h" />

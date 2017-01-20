@@ -17,6 +17,8 @@
 #include "potato_ui/PotatoUI.h"
 #include "potato_ui/Button.h"
 #include "potato_ui/LinearLayout.h"
+#include "potato_ui/Slider.h"
+#include "potato_ui/TextField.h"
 
 #include "NoClipCameraEntity.h"
 
@@ -40,10 +42,22 @@ namespace ftec {
 	{
 		m_UI = std::make_shared<potato::PotatoUI>();
 		auto layout = std::make_shared<potato::LinearLayout>(potato::LinearLayout::VERTICAL);
-		
-		layout->addPanel(std::make_shared<potato::Button>("test123"));
-		layout->addPanel(std::make_shared<potato::Button>("Hello wrold"));
-		layout->addPanel(std::make_shared<potato::Button>("dikke stuff"));
+
+		auto b = std::make_shared<potato::Button>("abcdefghijklmn");
+		b->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
+		auto b2 = std::make_shared<potato::Button>("more stuff");
+		b2->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
+
+		auto tf = std::make_shared<potato::TextField>();
+		tf->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
+		tf->layoutparams().m_Weight = 2.0f;
+		tf->hint() = "test text";
+
+		layout->addPanel(b);
+		layout->addPanel(std::make_shared<potato::Button>("Hello world"));
+		layout->addPanel(std::make_shared<potato::Button>("abcdefghijklmn"));
+		layout->addPanel(b2);
+		layout->addPanel(tf);
 
 		m_UI->setRoot(
 			layout

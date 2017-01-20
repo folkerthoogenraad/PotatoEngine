@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector2.h"
+#include "Matrix2.h"
 
 //TODO refactor this thing
 
@@ -40,8 +41,8 @@ namespace ftec {
 			return Line2<T>(center(), center() + p);
 		}
 
-		//The distance from point to line in line units
-		T distanceFrom(const Vector2<T> p)
+		//The distance from point to line in 'line units' (its complicated. If the line is normalized its just normal direction)
+		T distanceFrom(const Vector2<T> &p)
 		{
 			return Vector2<T>::dot(p - a, perp());
 		}

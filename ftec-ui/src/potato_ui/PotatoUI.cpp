@@ -72,6 +72,10 @@ namespace potato {
 	{
 		std::lock_guard<std::mutex> lock(m_Mutex);
 
+		//Always set the right size and stuff
+		m_Graphics.m_Camera = ftec::Camera::orthagonal(ftec::Engine::getWindow().getHeight(), ftec::Engine::getWindow().getWidth() / ftec::Engine::getWindow().getHeight(), -100, 100, true);
+		m_Graphics.m_Camera.m_Position = ftec::Vector3f(ftec::Engine::getWindow().getWidth() / 2.0f, ftec::Engine::getWindow().getHeight() / 2.0f);
+
 		m_Graphics.drawClear();
 		m_Graphics.begin();
 

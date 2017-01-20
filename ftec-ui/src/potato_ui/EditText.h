@@ -14,15 +14,17 @@ namespace potato {
 	// - Custom word delimiters
 
 	struct EditText {
-		enum DeletionStrategy {
+
+		enum Strategy {
 			CHARACTER,
 			WORD,
 			LINE
 		};
-		enum DiRectangleion {
+		enum Direction {
 			FORWARD,
 			BACKWARD,
 		};
+
 		std::string m_Text = "";
 
 		//Selection start and end can have negative width!
@@ -30,17 +32,23 @@ namespace potato {
 		int m_SelectionEnd = 0;
 		int m_CursorPosition = 0;		//It is named a carret, not a cursor ):
 
-		void clamp();
+
 		inline size_t length() { return m_Text.length(); }
 		inline size_t selectionStart() { return ftec::min(m_SelectionStart, m_SelectionEnd); }
 		inline size_t selectionEnd() { return ftec::max(m_SelectionStart, m_SelectionEnd); }
 		inline size_t selectionSize() { return ftec::distance(m_SelectionStart, m_SelectionEnd); }
 
+		void normalize();
+		int clamp(int index) const;
+		bool inbounds(int index) const;
+		int getIndexFromCursor(Direction dir, Strategy strat);
+
 		//Selection stuff
-		void moveCursor(size_t newPos, bool makeSelection);
+		void setCursorPosition(size_t newPos, bool makeSelection);
+		void moveCursor(Direction dir, Strategy strat, bool makeSelection);
 
 		void insertAtCursor(const std::string &data);
-		void deleteAtCursor(DiRectangleion dir, DeletionStrategy strat);
+		void deleteAtCursor(Direction dir, Strategy strat);
 
 		std::string getSelectedText();
 

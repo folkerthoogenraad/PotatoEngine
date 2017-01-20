@@ -114,6 +114,9 @@ namespace potato {
 				}
 			}
 			else {
+				//I see how this can become a big fucking bug if someone swallows the release event
+				//Well, just pray to lord jezus christ in heaven that noone ever swallows the release event
+
 				//cancel the press when its released outside the panel
 				if (m_Pressed && ftec::Input::isMouseButtonReleased(MOUSE_BUTTON_1)) {
 					m_Pressed = false;

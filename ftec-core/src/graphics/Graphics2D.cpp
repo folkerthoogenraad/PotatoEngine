@@ -148,7 +148,9 @@ namespace ftec {
 			LOG_ERROR("Can't draw 2D when drawing in 3D");
 		}
 		//TODO TODO TODO
-		LOG("WONT WORK CURRENTLY. NEEDS DIFFERENT SHADER WITH texture().r as color component!");
+		//Fix this when working with low graphics memory situations.
+		//This uses more than one shader though, now it can use just the same shader
+		//LOG("WONT WORK CURRENTLY. NEEDS DIFFERENT SHADER WITH texture().r as color component!");
 
 		Vector2f start = position;
 

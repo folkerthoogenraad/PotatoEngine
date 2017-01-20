@@ -47,7 +47,7 @@ namespace ftec {
 	template<typename T>
 	inline T distance(const T &a, const T &b)
 	{
-		return max(a, b) - min(a, b);
+		return abs(a - b);
 	}
 
 	template<typename T>

@@ -125,6 +125,9 @@
     <ClInclude Include="src\tiles\Tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\BSP2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="text.xml" />

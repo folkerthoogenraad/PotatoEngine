@@ -7,7 +7,7 @@
 
 namespace potato {
 
-	void EditText::clamp()
+	void EditText::normalize()
 	{
 		int l = (int) length();
 
@@ -17,7 +17,7 @@ namespace potato {
 		ftec::clamp(m_SelectionStart, 0, l);
 	}
 
-	void EditText::moveCursor(size_t newPos, bool makeSelection)
+	void EditText::setCursorPosition(size_t newPos, bool makeSelection)
 	{
 		m_CursorPosition = (int)newPos;
 		if (!makeSelection) {
@@ -26,66 +26,49 @@ namespace potato {
 		else {
 			m_SelectionEnd = m_CursorPosition;
 		}
-		clamp();
+		normalize();
+	}
+
+	void EditText::moveCursor(Direction dir, Strategy strat, bool makeSelection)
+	{
+		m_CursorPosition = (int)getIndexFromCursor(dir,strat);
+		if (!makeSelection) {
+			cancelSelection();
+		}
+		else {
+			m_SelectionEnd = m_CursorPosition;
+		}
+		normalize();
 	}
 
 	void EditText::insertAtCursor(const std::string & data)
 	{
 		deleteSelection();
 		m_Text.insert(m_CursorPosition, data);
-		moveCursor(m_CursorPosition + data.length(), false);
+		setCursorPosition(m_CursorPosition + data.length(), false);
 
 	}
 
-	void EditText::deleteAtCursor(DiRectangleion dir, DeletionStrategy strat)
+	void EditText::deleteAtCursor(Direction dir, Strategy strat)
 	{
 		if (selectionSize() > 0) {
 			deleteSelection();
 			return;
 		}
-		
-		if (strat == CHARACTER) {
-			if (dir == BACKWARD && m_CursorPosition > 0) {
-				m_Text.erase(m_CursorPosition - 1, (size_t)1);
-				moveCursor(m_CursorPosition - 1, false);
-			}
-			else if (dir == FORWARD && m_Text.length() > 0) {
-				m_Text.erase(m_CursorPosition, (size_t)1);
-			}
-		}
-		if (strat == WORD) {
-			int d = dir == FORWARD ? 1 : -1;
-			//The carret position is AFTER the character, so depending on the offset we start removing from the current carret position or one below that
-			int offset = dir == BACKWARD ? -1 : 0;
+		int idx = getIndexFromCursor(dir, strat);
 
-			int startIndex = m_CursorPosition + offset;
-			int endIndex = startIndex;
+		int amount = ftec::distance(idx, m_CursorPosition);
+		idx = ftec::min(idx, m_CursorPosition);
 
-			//We must first find a character, and then we can start removeing the word
-			bool charFound = false;
+		if (amount <= 0)
+			return;
 
-			for (; endIndex >= 0 && endIndex < m_Text.length(); endIndex += d) {
-				if (!charFound) {
-					if (!isspace(m_Text[endIndex])) {
-						charFound = true;
-					}
-				}
-				else {
-					if (isspace(m_Text[endIndex])) {
-						break;
-					}
-				}
-			}
+		m_Text.erase(
+			(size_t) idx,
+			(size_t) amount
+		);
 
-			if (ftec::distance(startIndex, endIndex) > 0) {
-				//And here we subtract that offset again
-				m_Text.erase((size_t)ftec::min(startIndex, endIndex) - offset, (size_t)ftec::distance(startIndex, endIndex));
-				moveCursor(ftec::min(startIndex, endIndex) - offset, false);
-			}
-		}
-		if (strat == LINE) {
-
-		}
+		m_CursorPosition = idx;
 	}
 
 	std::string EditText::getSelectedText()
@@ -105,31 +88,70 @@ namespace potato {
 			return;
 
 		//Just to be sure
-		clamp();
+		normalize();
 		m_CursorPosition = (int)selectionStart();
 		m_Text.erase(selectionStart(), selectionSize());
 		cancelSelection();
-		clamp();
+		normalize();
 	}
 
+	int EditText::clamp(int index) const
+	{
+		return ftec::clamp(0, (int)m_Text.size(), index);
+	}
+
+	bool EditText::inbounds(int index) const
+	{
+		return !(index < 0 || index >= m_Text.size());
+	}
+
+	int EditText::getIndexFromCursor(Direction dir, Strategy strat)
+	{
+		if (m_Text.size() == 0)
+			return 0;
+
+		int direction = dir == Direction::FORWARD ? 1 : -1;
+
+		if (strat == Strategy::CHARACTER) {
+			return clamp(m_CursorPosition + direction);
+		}
+		else if (strat == Strategy::WORD) {
+			int currentIndex = m_CursorPosition + direction; //Should this be added? Tune in next week to find out
+			
+			while (inbounds(currentIndex)) {
+				if (isspace(m_Text[currentIndex]))
+					break;
+				currentIndex += direction;
+			}
+
+			return clamp(currentIndex);
+		}
+		else {
+			return -1;
+		}
+		
+		return 0;
+	}
 
 	void EditText::keyboardInput()
 	{
 		bool shiftDown = (ftec::Input::isKeyDown(KEY_LEFT_SHIFT) || ftec::Input::isKeyDown(KEY_RIGHT_SHIFT));
 		bool crtlDown = (ftec::Input::isKeyDown(KEY_LEFT_CONTROL) || ftec::Input::isKeyDown(KEY_RIGHT_CONTROL));
 
+		Strategy strat = crtlDown ? Strategy::WORD : Strategy::CHARACTER;
+
 		//Move cursor
 		if (ftec::Input::isKeyTyped(KEY_LEFT)) {
-			moveCursor(m_CursorPosition - 1, shiftDown);
+			moveCursor(Direction::BACKWARD, strat, shiftDown);
 		}
 		if (ftec::Input::isKeyTyped(KEY_RIGHT)) {
-			moveCursor(m_CursorPosition + 1, shiftDown);
+			moveCursor(Direction::FORWARD, strat, shiftDown);
 		}
 		if (ftec::Input::isKeyTyped(KEY_HOME)) {
-			moveCursor(0, shiftDown);
+			setCursorPosition(0, shiftDown);
 		}
 		if (ftec::Input::isKeyTyped(KEY_END)) {
-			moveCursor(m_Text.length(), shiftDown);
+			setCursorPosition(m_Text.length(), shiftDown);
 		}
 
 		//Input text
@@ -138,7 +160,6 @@ namespace potato {
 		}
 
 		//Backspace and delete
-		DeletionStrategy strat = crtlDown ? DeletionStrategy::WORD : DeletionStrategy::CHARACTER;
 		if (ftec::Input::isKeyTyped(KEY_BACKSPACE)) {
 			deleteAtCursor(BACKWARD, strat);
 		}
