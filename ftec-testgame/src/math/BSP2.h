@@ -55,8 +55,9 @@ namespace ftec
 
 			//On line, and parallel
 			if (aRes == 0 && bRes == 0){
-				//Add it to my own lines 
-				m_Lines.push_back(index);
+				assert(false);
+				//TODO this is the only, very tricky one
+				//In essense its pretty easy but it does weird stuff with the space its dividing.
 			}
 			//To the right
 			else if (aRes >= 0 && bRes >= 0){
