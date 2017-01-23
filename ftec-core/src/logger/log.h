@@ -130,4 +130,15 @@ namespace ftec {
 
 		return left;
 	}
+
+	template <typename T>
+	class Rational;
+
+	template <typename T>
+	std::ostream& operator<<(std::ostream & left, const Rational<T> & right)
+	{
+		if (right.getDenominator() == 1)
+			return left << right.getNumerator();
+		return left << "(" << right.getNumerator() << " / " << right.getDenominator() << ")";
+	}
 }

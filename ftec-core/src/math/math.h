@@ -102,7 +102,7 @@ namespace ftec {
 	T gcd(T a, T b)
 	{
 		T t;
-		while (b) {
+		while (b != 0) {
 			t = a % b;
 			a = b;
 			b = t;

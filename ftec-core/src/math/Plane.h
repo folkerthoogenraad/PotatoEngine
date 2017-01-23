@@ -69,6 +69,7 @@ namespace ftec {
 
 		T magnitude() const { return direction.magnitude(); }
 
+		//Only works on normalized planes
 		Vector3<T> project(const Vector3<T> &p) const
 		{
 			float t = distanceFrom(p);

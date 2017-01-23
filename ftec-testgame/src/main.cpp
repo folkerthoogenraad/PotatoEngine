@@ -3,64 +3,31 @@
 
 #include "logger/log.h"
 
-#include "math/BSP2.h"
+#include "math/Rational.h"
+#include "math/Line2.h"
 
-void testCase1()
-{
-	using namespace ftec;
-
-	BSP2i bsp;
-
-	bsp.build({
-		Line2i(Vector2i(0,4), Vector2i(0,-4)),
-		Line2i(Vector2i(-3,0), Vector2i(4,0))
-	});
-
-	LOG("Test case 1 : " << bsp.cellcount());
-}
-
-void testCase2()
-{
-	using namespace ftec;
-
-	BSP2i bsp;
-
-	bsp.build({
-		Line2i(Vector2i(1,3), Vector2i(-1,-3)),
-		Line2i(Vector2i(2, -1), Vector2i(-2,1)),
-		Line2i(Vector2i(2,2), Vector2i(3,1))
-	});
-
-	LOG("Test case 2 : " << bsp.cellcount());
-}
-
-void testCase3()
-{
-	using namespace ftec;
-
-	BSP2i bsp;
-
-	bsp.build({
-		Line2i(Vector2i(0,3), Vector2i(0,-3)),
-		Line2i(Vector2i(2,2), Vector2i(4,0)),
-		Line2i(Vector2i(-2,0), Vector2i(-3,-2)),
-		Line2i(Vector2i(-1,-1), Vector2i(1, -2)),
-
-		Line2i(Vector2i(0,2), Vector2i(0,-2)),
-	});
-
-	LOG("Test case 3 : " << bsp.cellcount());
-}
+#include "math/collision.h"
 
 int main(void)
 {
 	using namespace ftec;
 
 	//ftec::DesktopEngine::create<ftec::Razura>();
+	
+	Vector2<Rationali> a(-1, 3);
+	Vector2<Rationali> b(4, 1);
+	Vector2<Rationali> c(0, -2);
+	Vector2<Rationali> d(3, 0);
 
-	testCase1();
-	testCase2();
-	testCase3();
+	Line2<Rationali> linea(a, b);
+	Line2<Rationali> lineb(c, d);
+
+	LOG(linea.a << " " << linea.b);
+	LOG(lineb.a << " " << lineb.b);
+
+	auto res = intersect(linea, lineb).result;
+
+	LOG(res);
 
 	WAIT();
 
