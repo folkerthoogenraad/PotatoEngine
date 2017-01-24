@@ -29,3 +29,43 @@ namespace ftec {
 }
 
 #endif
+
+namespace ftec {
+	template <typename T>
+	struct Vector2;
+	template <typename T>
+	struct Vector3;
+	template <typename T>
+	struct Vector4;
+
+	template <typename T>
+	struct Rectangle;
+	template <typename T>
+	struct Plane;
+	template <typename T>
+	struct Tetrahedron;
+	template <typename T>
+	struct Triangle2;
+	template <typename T>
+	struct Triangle3; 
+	template <typename T>
+	struct Matrix4;
+	template <typename T>
+	struct Matrix3;
+	template <typename T>
+	struct Matrix2;
+
+	typedef Vector2<rational> Vector2r;
+	typedef Vector3<rational> Vector3r;
+	typedef Vector4<rational> Vector4r;
+
+	typedef Rectangle<rational> Rectangler;
+	typedef Plane<rational> Planer;
+	typedef Tetrahedron<rational> Tetrahedronr;
+	typedef Triangle2<rational> Triangle2r;
+	typedef Triangle3<rational> Triangle3r;
+
+	typedef Matrix4<rational> Matrix4r;
+	typedef Matrix3<rational> Matrix3r;
+	typedef Matrix2<rational> Matrix2r;
+}

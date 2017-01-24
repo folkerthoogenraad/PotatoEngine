@@ -102,9 +102,6 @@
     <ClCompile Include="src\math\Curve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\Matrix4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\collision\CollisionWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

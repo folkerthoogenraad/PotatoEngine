@@ -167,7 +167,6 @@
     <ClCompile Include="src\io\XMLDocument.cpp" />
     <ClCompile Include="src\io\XMLReader.cpp" />
     <ClCompile Include="src\math\Curve.cpp" />
-    <ClCompile Include="src\math\Matrix4.cpp" />
     <ClCompile Include="src\serialization\Serialization.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\terrain\Terrain.cpp" />
