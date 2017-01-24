@@ -5,6 +5,7 @@
 
 #include "math/Rational.h"
 #include "math/Vector2.h"
+#include "math/Matrix2.h"
 
 
 int main(void)
@@ -13,9 +14,13 @@ int main(void)
 
 	//ftec::DesktopEngine::create<ftec::Razura>();
 
-	Vector2<rational> vec;
+	Matrix2<rational> matrix({
+		1,2,
+		3,4
+	});
 
-	LOG(vec);
+	LOG(matrix.determinant());
+	
 	WAIT();
 
 	return 0;
