@@ -20,6 +20,16 @@ namespace ftec {
 
 		explicit Vector2(T x = 0, T y = 0) : x(x), y(y) {};
 
+		Vector2(const Vector2<T> &other) : x(other.x), y(other.y){}
+		Vector2(Vector2<T> &&other) : x(std::move(other.x)), y(std::move(other.y)){}
+
+		~Vector2()
+		{
+			x.~T();
+			y.~T();
+		}
+
+
 		Vector2<T>& add(const Vector2<T>& other)
 		{
 			x += other.x;
@@ -189,6 +199,13 @@ namespace ftec {
 		friend Vector2<T>operator-(const Vector2<T>& left)
 		{
 			return Vector2<T>(-left.x, -left.y);
+		}
+
+		Vector2<T>& operator=(const Vector2<T>& right)
+		{
+			x = right.x;
+			y = right.y;
+			return *this;
 		}
 		
 		static const int COMPONENTS = 2;

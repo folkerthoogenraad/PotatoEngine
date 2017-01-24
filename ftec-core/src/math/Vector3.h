@@ -24,6 +24,17 @@ namespace ftec{
 		explicit Vector3(T x = 0, T y = 0, T z = 0) : x(x), y(y), z(z) {};
 		explicit Vector3(Vector2<T> v) : x(v.x), y(v.y), z(0) {};
 
+		Vector3(const Vector3<T> &other) : x(other.x), y(other.y), z(other.z) {}
+		Vector3(Vector3<T> &&other) : x(std::move(other.x)), y(std::move(other.y)), z(std::move(other.z)) {}
+		
+		~Vector3()
+		{
+			x.~T();
+			y.~T();
+			z.~T();
+		}
+
+
 		Vector3<T>& add(const Vector3<T>& other)
 		{
 			x += other.x;
@@ -210,6 +221,13 @@ namespace ftec{
 		friend Vector3<T>operator-(const Vector3<T>& left)
 		{
 			return Vector3<T>(-left.x, -left.y, -left.z);
+		}
+		Vector3<T>& operator=(const Vector3<T>& right)
+		{
+			x = right.x;
+			y = right.y;
+			z = right.z;
+			return *this;
 		}
 
         static const int COMPONENTS = 3;

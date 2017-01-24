@@ -31,6 +31,17 @@ namespace ftec {
 		Vector4(const Vector4<S> &other) : x((T)other.x), y((T)other.y), z((T)other.z), w((T)other.w) {};
 		explicit Vector4(T x = 0, T y = 0, T z = 0, T w = 0) : x(x), y(y), z(z), w(w) {};
 
+		Vector4(const Vector4<T> &other) : x(other.x), y(other.y), z(other.z), w(other.w) {}
+		Vector4(Vector4<T> &&other) : x(std::move(other.x)), y(std::move(other.y)), z(std::move(other.z)), w(std::move(other.w)) {}
+
+		~Vector4() 
+		{
+			x.~T();
+			y.~T();
+			z.~T();
+			w.~T();
+		}
+
 		Vector4<T>& add(const Vector4<T>& other)
 		{
 			x += other.x;
@@ -112,6 +123,10 @@ namespace ftec {
 		{
 			return (T)sqrt(x*x + y*y + z*z + w*w);
 		}
+		T sqrmagnitude()
+		{
+			return (T)x*x + y*y + z*z + w*w;
+		}
 		
 		static T dot(const Vector4<T>&left, const Vector4<T>&right)
 		{
@@ -167,6 +182,14 @@ namespace ftec {
 		Vector4<T>& operator/=(const Vector4<T>& right)
 		{
 			return divide(right);
+		}
+		Vector4<T>& operator=(const Vector4<T>& right)
+		{
+			x = right.x;
+			y = right.y;
+			z = right.z;
+			w = right.w;
+			return *this;
 		}
 
 		friend Vector4<T>operator-(const Vector4<T>& left)
