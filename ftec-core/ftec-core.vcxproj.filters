@@ -102,9 +102,6 @@
     <ClCompile Include="src\math\Curve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\math\Matrix3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\math\Matrix4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -115,9 +112,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\io\INIFile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\Matrix2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\EngineConfiguration.cpp">
