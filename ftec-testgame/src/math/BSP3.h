@@ -19,12 +19,12 @@ namespace ftec {
 	};
 
 	template <typename T>
-	struct BSPTriangle {
-		Triangle3<T> m_Triangle;
-		Vector3<T> m_Normal;
+	struct BSPPlane {
+		//Triangle3<T> m_Triangle;
+		//Vector3<T> m_Normal;
+		Plane<T> m_Plane;
 
-		BSPMaterial m_FrontMaterial;
-		BSPMaterial m_BackMaterial;
+		BSPMaterial m_Material;
 	};
 
 	//This can really benefit from more tight packing and inline nodes (unlike these nodes)
@@ -39,16 +39,16 @@ namespace ftec {
 
 	public:
 		template <typename T>
-		void insert(BSP3<T> &bsp, size_t index)
+		void insert(BSP3<T> &bsp, size_t index, const Vector3<T> &a, const Vector3<T> &b, const Vector3<T> &c)
 		{
-			BSPTriangle<T> &self = bsp.m_Triangles[m_Index];
-			BSPTriangle<T> &other = bsp.m_Triangles[index];
+			BSPPlane<T> &self = bsp.m_Planes[m_Index];
+			BSPPlane<T> &other = bsp.m_Planes[index];
 
 			int frontCount = 0;
 			int backCount = 0;
 			
 			auto insertTest = [&self](const Vector3<T> &point) -> T{
-				return Vector3<T>::dot(self.m_Normal, point - self.m_Triangle.a);
+				return self.m_Plane.distanceFrom(point);
 			};
 			auto compare = [&frontCount, &backCount](const T &v) {
 				if (v > 0)
@@ -58,13 +58,13 @@ namespace ftec {
 			};
 
 			//Test the triangle
-			compare(insertTest(other.m_Triangle.a));
-			compare(insertTest(other.m_Triangle.b));
-			compare(insertTest(other.m_Triangle.c));
+			compare(insertTest(a));
+			compare(insertTest(b));
+			compare(insertTest(c));
 			
-			auto create = [&bsp, &index, this](std::shared_ptr<BSPNode3> &position) {
+			auto create = [&](std::shared_ptr<BSPNode3> &position) {
 				if (position) {
-					position->insert(bsp, index);
+					position->insert(bsp, index, a, b, c);
 				}
 				else {
 					position = std::make_shared<BSPNode3>();
@@ -108,31 +108,35 @@ namespace ftec {
 	class BSP3 {
 	
 	private:
-		std::vector<BSPTriangle<T>> m_Triangles;
+		std::vector<BSPPlane<T>> m_Planes;
 		std::shared_ptr<BSPNode3> m_Root;
 	
 	public:
 
-		void insert(Triangle3<T> triangle)
+		void insert(const Triangle3<T> &triangle, BSPMaterial material = BSPMaterial::SOLID)
 		{
-			BSPTriangle<T> ct = {
-				std::move(triangle)
+			BSPPlane<T> ct = {
+				Plane<T>(triangle)
 			};
-			ct.m_Normal = ct.m_Triangle.normal();
-			m_Triangles.push_back(std::move(ct));
+			ct.m_Material = material;
+			//ct.m_Normal = ct.m_Triangle.normal();
+			m_Planes.push_back(std::move(ct));
 
 			if (!m_Root) {
 				m_Root = std::make_shared<BSPNode3>();
 				m_Root->m_Index = 0;
 			}
 			else {
-				m_Root->insert(*this, m_Triangles.size() - 1);
+				m_Root->insert(*this, m_Planes.size() - 1, triangle.a, triangle.b, triangle.c);
 			}
 		}
 		int cellcount()
 		{
 			return m_Root ? m_Root->cellcount() : 0;
 		}
+
+		BSPNode3 *getRoot() { return m_Root.get();};
+		const BSPPlane<T> &getPlane(int index) { return m_Planes[i]; }
 
 		friend BSPNode3;
 	};

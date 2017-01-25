@@ -21,6 +21,8 @@ namespace ftec {
 	struct Line3;
 	template <typename T>
 	struct Plane;
+	template <typename T>
+	struct Ray3;
 
 	template<typename T>
 	T distance(const Vector2<T> &a, const Vector2<T> &b)
@@ -88,6 +90,26 @@ namespace ftec {
 		T result = planerDot / directionalDot;
 
 		return line.a + lineDir * result;
+	}
+
+	template<typename T>
+	CollisionResult<Ray3<T>>	intersectRay(const Plane<T> &p, const Plane<T> &other)
+	{
+		const Vector3<T> normal = Vector3<T>::cross(p.direction, other.direction);
+		const T det = normal.sqrmagnitude();
+
+		if (det == 0)
+			return false;
+
+		Ray3<T> ray;
+
+		ray.origin = (
+			(Vector3<T>::cross(normal, other.direction) * p.offset) +
+			(Vector3<T>::cross(p.direction, normal) * other.offset)
+			) / det;
+		ray.direction = normal;
+
+		return ray;
 	}
 
 	template<typename T>

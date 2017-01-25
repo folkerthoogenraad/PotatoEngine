@@ -225,6 +225,7 @@
     <ClInclude Include="src\math\precision.h" />
     <ClInclude Include="src\math\Quaternion.h" />
     <ClInclude Include="src\math\Rational.h" />
+    <ClInclude Include="src\math\Ray3.h" />
     <ClInclude Include="src\math\Rectangle.h" />
     <ClInclude Include="src\math\sorting.h" />
     <ClInclude Include="src\math\Sphere.h" />

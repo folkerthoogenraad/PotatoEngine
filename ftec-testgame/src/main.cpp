@@ -6,6 +6,10 @@
 #include "math/Rational.h"
 #include "math/BSP3.h"
 
+#include "math/Plane.h"
+#include "math/collision.h"
+#include "math/Ray3.h"
+
 void test1()
 {
 	using namespace ftec;
@@ -159,6 +163,30 @@ void test4()
 	LOG(bsp.cellcount());
 }
 
+void test5()
+{
+	using namespace ftec;
+
+	Plane<rational> a(Triangle3r(
+		Vector3r(1, 1, 0),
+		Vector3r(4, 3, 0),
+		Vector3r(1, 1, 1)
+	));
+	Plane<rational> b(Triangle3r(
+		Vector3r(2, 4, 0),
+		Vector3r(4, 0, 0),
+		Vector3r(2, 4, 1)
+	));
+
+	LOG(a);
+	LOG(b);
+	
+	auto r = intersectRay(a, b).result;
+
+	LOG(r.direction);
+	LOG(r.origin);
+}
+
 int main(void)
 {
 	ftec::DesktopEngine::create<ftec::Razura>();
@@ -167,6 +195,7 @@ int main(void)
 	//test2();
 	//test3();
 	//test4();
+	test5();
 	
 	WAIT();
 

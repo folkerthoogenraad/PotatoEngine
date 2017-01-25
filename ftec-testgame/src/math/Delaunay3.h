@@ -75,16 +75,19 @@ namespace ftec {
 			m_HullTriangles.clear();
 
 			m_BoundingBox = Cuboid<T>(mn, mx);
-			Sphere<T> bSphere = m_BoundingBox.boudingsphere();
+
+			//Add a tiny bit of padding (maybe a large bit, it really doesn't matter
+			mn -= 1;
+			mx += 1;
+
+			Vector3<T> size = (mx - mn) * 3; //3 because of 3 dimensions, i really don't know why this is, i tested it though and its mathematically correct (2 in 2D, 3 in 3D, 4 in 4D, etc)
 
 			//Make a tetrahedron around the bounding sphere (which is about ~6 per unit)
 			Tetrahedron<T> superTetrahedron = Tetrahedron<T>(
-				Vector3<T>(0, -1, 1),
-				Vector3<T>(-1, -1, -1),
-				Vector3<T>(1, -1, -1),
-				Vector3<T>(0, 1, 0)
-				).transform(
-					Matrix4<T>::translation(bSphere.center) * Matrix4<T>::scaled(Vector3<T>(bSphere.radius * 10, bSphere.radius * 10, bSphere.radius * 10))
+				mn,
+				Vector3<T>(mn.x + size.x, mn.y, mn.z),
+				Vector3<T>(mn.x, mn.y + size.y, mn.z),
+				Vector3<T>(mn.x, mn.y, mn.z + size.z)
 				);
 
 			//Push the tetrahedron vertices
@@ -161,7 +164,7 @@ namespace ftec {
 							bdc.flip();
 
 						//If its behind the current plane
-						if (bdc.distanceFrom(v) > -EPSILON) { //Favour epsilon deletion
+						if (bdc.distanceFrom(v) > 0) { //Favour epsilon deletion
 							addTetrahedron();
 						}
 					}
@@ -180,7 +183,7 @@ namespace ftec {
 								normal = -normal;
 
 							//Add if its in the direction of the super triangle
-							if (Vector3<T>::dot(normal, v - tr.a) > EPSILON)
+							if (Vector3<T>::dot(normal, v - tr.a) > 0)
 								addTetrahedron();
 						}
 					}
@@ -197,14 +200,14 @@ namespace ftec {
 							abc.flip();
 
 						//If its behind the current plane
-						if (abc.distanceFrom(v) < EPSILON) { // Favour the already existing
+						if (abc.distanceFrom(v) < 0) { // Favour the already existing
 							addTetrahedron();
 						}
 
 					}
 
 					//Check if the circumsphere contains this
-					else if (tr.circumDistance(v) < EPSILON) {
+					else if (tr.circumDistance(v) <= 0) {
 						addTetrahedron();
 					}
 				}

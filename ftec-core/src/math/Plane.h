@@ -2,6 +2,7 @@
 
 #include "Vector3.h"
 
+//This math is broken as fuck.
 namespace ftec {
 
 	template <typename T>
@@ -31,13 +32,14 @@ namespace ftec {
 		
 		T distanceFrom(const Vector3<T> &p) const
 		{
-			T c = Vector3<T>::dot(direction, direction);
+			//Pretty sure this can just be removed.
+			//T c = Vector3<T>::dot(direction, direction);
 			T r = Vector3<T>::dot(direction, p);
 
 			//ax + by + cz + d = 0
 			//ax + by + cz = -d
 
-			return (-offset - r) / c;
+			return (-offset - r);
 		}
 		Plane<T> clone() const { return Plane<T>(*this); }
 		

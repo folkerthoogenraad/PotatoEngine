@@ -157,8 +157,8 @@ namespace ftec {
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 		//Backface culling //All windings currently are reversed. I hate life
-		//glEnable(GL_CULL_FACE);
-		//glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_FRONT);
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
