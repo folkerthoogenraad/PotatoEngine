@@ -12,10 +12,19 @@ namespace ftec {
 	template <typename T>
 	class BSP3;
 
+	enum class BSPMaterial
+	{
+		AIR = 0,
+		SOLID = 1
+	};
+
 	template <typename T>
-	struct CachedTriangle {
+	struct BSPTriangle {
 		Triangle3<T> m_Triangle;
 		Vector3<T> m_Normal;
+
+		BSPMaterial m_FrontMaterial;
+		BSPMaterial m_BackMaterial;
 	};
 
 	//This can really benefit from more tight packing and inline nodes (unlike these nodes)
@@ -32,8 +41,8 @@ namespace ftec {
 		template <typename T>
 		void insert(BSP3<T> &bsp, size_t index)
 		{
-			CachedTriangle<T> &self = bsp.m_Triangles[m_Index];
-			CachedTriangle<T> &other = bsp.m_Triangles[index];
+			BSPTriangle<T> &self = bsp.m_Triangles[m_Index];
+			BSPTriangle<T> &other = bsp.m_Triangles[index];
 
 			int frontCount = 0;
 			int backCount = 0;
@@ -99,14 +108,14 @@ namespace ftec {
 	class BSP3 {
 	
 	private:
-		std::vector<CachedTriangle<T>> m_Triangles;
+		std::vector<BSPTriangle<T>> m_Triangles;
 		std::shared_ptr<BSPNode3> m_Root;
 	
 	public:
 
 		void insert(Triangle3<T> triangle)
 		{
-			CachedTriangle<T> ct = {
+			BSPTriangle<T> ct = {
 				std::move(triangle)
 			};
 			ct.m_Normal = ct.m_Triangle.normal();

@@ -71,6 +71,21 @@ namespace ftec {
 				);
 		}
 		
+		T circumDistance(const Vector3<T> point)
+		{
+			Vector3<T> d1 = a - point;
+			Vector3<T> d2 = b - point;
+			Vector3<T> d3 = c - point;
+			Vector3<T> d4 = d - point;
+
+			return Matrix4<T>({
+				Vector3<T>::dot(d1,d1), d1.x, d1.y,d1.z,
+				Vector3<T>::dot(d2,d2), d2.x, d2.y,d2.z,
+				Vector3<T>::dot(d3,d3), d3.x, d3.y,d3.z,
+				Vector3<T>::dot(d4,d4), d4.x, d4.y,d4.z
+			}).determinant();
+		}
+
 		Tetrahedron<T> &transform(const Matrix4<T> &m)
 		{
 			a = m * a;

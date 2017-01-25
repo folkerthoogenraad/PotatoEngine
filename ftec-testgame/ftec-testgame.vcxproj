@@ -135,8 +135,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\game\BSPEntity.cpp" />
     <ClCompile Include="src\game\NoClipCameraEntity.cpp" />
     <ClCompile Include="src\game\PointCloudEntity.cpp" />
+    <ClCompile Include="src\game\RationalPointCloudEntity.cpp" />
     <ClCompile Include="src\game\Razura.cpp" />
     <ClCompile Include="src\game\StairArcCanvas.cpp" />
     <ClCompile Include="src\game\TestCanvas.cpp" />
@@ -158,8 +160,10 @@
     <ClCompile Include="src\tiles\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\game\BSPEntity.h" />
     <ClInclude Include="src\game\NoClipCameraEntity.h" />
     <ClInclude Include="src\game\PointCloudEntity.h" />
+    <ClInclude Include="src\game\RationalPointCloudEntity.h" />
     <ClInclude Include="src\game\Razura.h" />
     <ClInclude Include="src\game\StairArcCanvas.h" />
     <ClInclude Include="src\game\TestCanvas.h" />

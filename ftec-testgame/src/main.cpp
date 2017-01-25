@@ -12,14 +12,14 @@ void test1()
 
 	BSP3<int> bsp;
 
-	Vector3i offset = Vector3i(0, 0, 1);
+	Vector3r offset = Vector3r(0, 0, 1);
 
-	Vector3i a = Vector3i(1, 5, 0);
-	Vector3i b = Vector3i(2, 7, 0);
-	Vector3i c = Vector3i(6, 9, 0);
-	Vector3i d = Vector3i(9, 8, 0);
-	Vector3i e = Vector3i(8, 2, 0);
-	Vector3i f = Vector3i(4, 1, 0);
+	Vector3r a = Vector3r(1, 5, 0);
+	Vector3r b = Vector3r(2, 7, 0);
+	Vector3r c = Vector3r(6, 9, 0);
+	Vector3r d = Vector3r(9, 8, 0);
+	Vector3r e = Vector3r(8, 2, 0);
+	Vector3r f = Vector3r(4, 1, 0);
 
 	bsp.insert(Triangle3i(
 		a, d, a + offset
@@ -42,16 +42,16 @@ void test2()
 
 	BSP3<int> bsp;
 
-	Vector3i offset = Vector3i(0, 0, 1);
+	Vector3r offset = Vector3r(0, 0, 1);
 
-	Vector3i a = Vector3i(1, 4, 0);
-	Vector3i b = Vector3i(2, 5, 0);
-	Vector3i c = Vector3i(4, 5, 0);
-	Vector3i d = Vector3i(5, 4, 0);
-	Vector3i e = Vector3i(5, 2, 0);
-	Vector3i f = Vector3i(4, 1, 0);
-	Vector3i g = Vector3i(2, 1, 0);
-	Vector3i h = Vector3i(1, 2, 0);
+	Vector3r a = Vector3r(1, 4, 0);
+	Vector3r b = Vector3r(2, 5, 0);
+	Vector3r c = Vector3r(4, 5, 0);
+	Vector3r d = Vector3r(5, 4, 0);
+	Vector3r e = Vector3r(5, 2, 0);
+	Vector3r f = Vector3r(4, 1, 0);
+	Vector3r g = Vector3r(2, 1, 0);
+	Vector3r h = Vector3r(1, 2, 0);
 
 	bsp.insert(Triangle3i(
 		a, d, a + offset
@@ -79,11 +79,11 @@ void test3()
 
 	BSP3<int> bsp;
 
-	Vector3i offset = Vector3i(0, 0, 1);
+	Vector3r offset = Vector3r(0, 0, 1);
 
-	Vector3i a = Vector3i(2, 2, 0);
-	Vector3i b = Vector3i(4, 4, 0);
-	Vector3i c = Vector3i(5, 1, 0);
+	Vector3r a = Vector3r(2, 2, 0);
+	Vector3r b = Vector3r(4, 4, 0);
+	Vector3r c = Vector3r(5, 1, 0);
 	
 	bsp.insert(Triangle3i(
 		a, b, a + offset
@@ -100,14 +100,73 @@ void test3()
 	LOG(bsp.cellcount());
 }
 
+void test4()
+{
+	using namespace ftec;
+
+	BSP3<rational> bsp;
+
+	Vector3r offset = Vector3r(0, 0, 1);
+
+	Vector3r a = Vector3r(0, 2, 0);
+	Vector3r b = Vector3r(2, 2, 0);
+	Vector3r c = Vector3r(0, 0, 0);
+	Vector3r d = Vector3r(2, 0, 0);
+
+	Vector3r e = Vector3r(1, 3, 0);
+	Vector3r f = Vector3r(3, 3, 0);
+	Vector3r g = Vector3r(1, 1, 0);
+	Vector3r h = Vector3r(3, 1, 0);
+
+	Vector3r phantom = Vector3r(0, 3, 0);
+
+	//Top and bottom
+	bsp.insert(Triangle3r(
+		c + offset, phantom + offset, f + offset
+	));
+	bsp.insert(Triangle3r(
+		c, phantom, f
+	));
+
+	//Box a
+	bsp.insert(Triangle3r(
+		a, b, a + offset
+	));
+	bsp.insert(Triangle3r(
+		b, d, b + offset
+	));
+	bsp.insert(Triangle3r(
+		d, c, d + offset
+	));
+	bsp.insert(Triangle3r(
+		c, a, c + offset
+	));
+
+	//Box b
+	bsp.insert(Triangle3r(
+		e, f, e + offset
+	));
+	bsp.insert(Triangle3r(
+		f, h, f + offset
+	));
+	bsp.insert(Triangle3r(
+		h, g, h + offset
+	));
+	bsp.insert(Triangle3r(
+		g, e, g + offset
+	));
+
+	LOG(bsp.cellcount());
+}
+
 int main(void)
 {
+	ftec::DesktopEngine::create<ftec::Razura>();
 
-	//ftec::DesktopEngine::create<ftec::Razura>();
-
-	test1();
-	test2();
-	test3();
+	//test1();
+	//test2();
+	//test3();
+	//test4();
 	
 	WAIT();
 

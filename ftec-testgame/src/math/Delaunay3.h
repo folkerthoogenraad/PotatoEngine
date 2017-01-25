@@ -7,6 +7,7 @@
 #include "math/collision.h"
 #include "math/Matrix4.h"
 #include "math/Sphere.h"
+#include "math/Plane.h"
 #include "math/Triangle3.h"
 #include "math/Tetrahedron.h"
 
@@ -36,6 +37,10 @@ namespace ftec {
 		Delaunay3() {}
 		Delaunay3(std::vector<Vector3<T>> points) { triangulate(std::move(points)); }
 
+		//TODO specialize this for rationals
+		//TODO REALLY DO THAT PLEASE.
+		//THIS WORKS, BUT CLONES A LOT OF RATIONALS
+		//FOR NO REASON AT ALL
 		void triangulate(std::vector<Vector3<T>> points)
 		{
 			m_Vertices.clear();
@@ -148,8 +153,9 @@ namespace ftec {
 					else if (sharedSuperCount == 3) {
 						Plane<T> bdc = Plane<T>(tr.trianglebdc().translate(tr.a - tr.b));
 
-						if(m_Strategy > NormalizationStrategy::NONE)
-							bdc.normalize();
+						//TODO fix this
+						//if(m_Strategy > NormalizationStrategy::NONE)
+						//	bdc.normalize();
 
 						if (bdc.distanceFrom(tr.b) < 0)
 							bdc.flip();
@@ -165,8 +171,9 @@ namespace ftec {
 						Vector3<T> normal = Vector3<T>::cross(tr.b - tr.a, tr.d - tr.c);
 						if (normal.sqrmagnitude() > 0) {
 							
-							if (m_Strategy > NormalizationStrategy::MILD)
-								normal.normalize();
+							//TODO fix this
+							//if (m_Strategy > NormalizationStrategy::MILD)
+							//	normal.normalize();
 
 							//Flip if needed
 							if (Vector3<T>::dot(normal, tr.c - tr.a) < 0)
@@ -182,8 +189,9 @@ namespace ftec {
 					else if (sharedSuperCount == 1) {
 						Plane<T> abc = Plane<T>(tr.triangleabc());
 
-						if (m_Strategy > NormalizationStrategy::NONE)
-							abc.normalize();
+						//TODO fix this
+						//if (m_Strategy > NormalizationStrategy::NONE)
+						//	abc.normalize();
 
 						if (abc.distanceFrom(tr.d) > 0)
 							abc.flip();
@@ -196,7 +204,7 @@ namespace ftec {
 					}
 
 					//Check if the circumsphere contains this
-					else if (contains(tr.circumsphere(), v)) {
+					else if (tr.circumDistance(v) < EPSILON) {
 						addTetrahedron();
 					}
 				}

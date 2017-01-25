@@ -6,8 +6,8 @@
 #include "graphics/Shader.h"
 #include "graphics/Graphics.h"
 
-#include "engine/Engine.h"
 #include "engine/Time.h"
+#include "engine/Engine.h"
 #include "engine/Input.h"
 
 #include "math/Vector4.h"
@@ -66,7 +66,7 @@ namespace ftec {
 
 		m_Time = -1;
 
-		m_DiRectangleion = Vector3f(del.getBoundingBox().center());
+		m_Direction = Vector3f(del.getBoundingBox().center());
 
 		speed = (float)(rand() % 16);
 
@@ -144,7 +144,7 @@ namespace ftec {
 
 		amount = tween(0.f, away, m_Time, curves::CubicBezier());
 
-		m_Position = m_DiRectangleion * amount;
+		m_Position = m_Direction * amount;
 
 		if (m_Time < EPSILON * 4)
 			m_Position = Vector3f(0, 0, 0);

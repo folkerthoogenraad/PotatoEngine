@@ -91,7 +91,7 @@ namespace ftec {
 	Entity *Scene::addEntity(std::unique_ptr<Entity> entity)
 	{
 		entity->m_Scene = this;
-		entity->onStart();
+		entity->onStart(); //TODO call this when the scene starts, not when each and every entity is added (onStart should be called when the scene is loaded, probably)
 
 		m_Entities.push_back(std::move(entity));
 

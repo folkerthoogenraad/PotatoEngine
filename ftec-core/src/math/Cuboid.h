@@ -50,7 +50,7 @@ namespace ftec {
 		Sphere<T> boudingsphere() const {
 			return Sphere<T>(
 				(min + max) / 2,
-				(max - min).magnitude() / 2
+				(max - min).sqrmagnitude() / 2 // TODO fix this
 				);
 		}
 	};
