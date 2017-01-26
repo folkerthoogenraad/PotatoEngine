@@ -93,6 +93,21 @@ namespace ftec {
 	}
 
 	template<typename T>
+	CollisionResult<Vector3<T>>	intersect(const Plane<T> &plane, const Ray3<T> &ray)
+	{
+		T directionalDot = Vector3<T>::dot(ray.direction, plane.direction);
+
+		if (directionalDot == 0)
+			return false;
+
+		T planerDot = -(Vector3<T>::dot(plane.direction, ray.origin) + plane.offset);
+
+		T result = planerDot / directionalDot;
+
+		return ray.origin + ray.direction * result;
+	}
+
+	template<typename T>
 	CollisionResult<Ray3<T>>	intersectRay(const Plane<T> &p, const Plane<T> &other)
 	{
 		const Vector3<T> normal = Vector3<T>::cross(p.direction, other.direction);

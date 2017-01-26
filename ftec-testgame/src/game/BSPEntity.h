@@ -8,6 +8,7 @@ namespace ftec {
 	
 	public:
 		void onStart() override;
+		void render() override;
 	};
 
 }

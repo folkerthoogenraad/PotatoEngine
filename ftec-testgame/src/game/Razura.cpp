@@ -34,23 +34,7 @@ namespace ftec {
 
 		scene->addEntity(std::make_unique<NoClipCameraEntity>());
 
-		std::vector<Vector3r> v = {
-			Vector3r(0,0,0),
-			Vector3r(0,1,0),
-			Vector3r(1,0,0),
-			Vector3r(1,1,0),
-
-			Vector3r(0,0,1),
-			Vector3r(0,1,1),
-			Vector3r(1,0,1),
-			Vector3r(1,1,1)
-		};
-
-		v.push_back(Vector3r(1, 1, 1));
-		v.push_back(Vector3r(2, 1, 1));
-		v.push_back(Vector3r(2, 2, 1));
-
-		scene->addEntity(std::make_unique<RationalPointCloudEntity>(v));
+		scene->addEntity(std::make_unique<BSPEntity>());
 
 		Engine::setScene(std::move(scene));
 	}

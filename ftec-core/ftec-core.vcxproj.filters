@@ -114,10 +114,10 @@
     <ClCompile Include="src\engine\EngineConfiguration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\terrain\Terrain.cpp">
+    <ClCompile Include="src\graphics\MeshBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\MeshBuilder.cpp">
+    <ClCompile Include="src\terrain\Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -320,9 +320,6 @@
     <ClInclude Include="src\engine\EngineConfiguration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\terrain\Terrain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\MeshBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -330,6 +327,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\Ray3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\terrain\Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
