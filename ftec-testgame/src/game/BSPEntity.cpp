@@ -59,8 +59,6 @@ namespace ftec {
 
 				auto &plane = bsp.getPlane(index);
 
-				LOG(indices[i].first << " : " << indices[i].second);
-
 				if (plane.m_Plane.distanceFrom(test.vertex) * indices[i].second < 0) {
 					return true;
 				}
@@ -120,11 +118,6 @@ namespace ftec {
 		
 	}
 
-	Vector3r a = Vector3r(0, 0, 4);
-	Vector3r b = Vector3r(3, 0, 4);
-	Vector3r c = Vector3r(4, 0, 2);
-	Vector3r d = Vector3r(2, 0, 0);
-	Vector3r e = Vector3r(2, 0, 3);
 
 	void BSPEntity::onStart()
 	{
@@ -132,10 +125,17 @@ namespace ftec {
 		BSP3<rational> bsp;
 
 		//Create the space
+#define INSERT(A, B) bsp.insert(Triangle3r(A, B, A + offset), BSPMaterial::SOLID, #A #B);
+#if 0
 		{
 			Vector3r offset = Vector3r(0, 1, 0);
 
-			//Vector3r e = Vector3r(0, 0, 0);
+			Vector3r a = Vector3r(0, 0, 4);
+			Vector3r b = Vector3r(3, 0, 4);
+			Vector3r c = Vector3r(4, 0, 2);
+			Vector3r d = Vector3r(2, 0, 0);
+			Vector3r e = Vector3r(2, 0, 3);
+
 
 			//Top and bottom
 			bsp.insert(Triangle3r(
@@ -146,39 +146,45 @@ namespace ftec {
 			), BSPMaterial::SOLID, "Bottom");
 
 			//Box a
-			bsp.insert(Triangle3r(
-				a, b, a + offset
-			), BSPMaterial::SOLID, "AB");
-			bsp.insert(Triangle3r(
-				b, c, b + offset
-			), BSPMaterial::SOLID, "BC");
-			bsp.insert(Triangle3r(
-				c, d, c + offset
-			), BSPMaterial::SOLID, "CD");
-			bsp.insert(Triangle3r(
-				d, e, d + offset
-			), BSPMaterial::SOLID, "DE");
-			bsp.insert(Triangle3r(
-				e, a, e + offset
-			), BSPMaterial::SOLID, "EA");
-			/*bsp.insert(Triangle3r(
-				e, a, e + offset
-			));*/
+			INSERT(a, b);
+			INSERT(b, c);
+			INSERT(c, d);
+			INSERT(d, e);
+			INSERT(e, a);
 
-			//Box b
-			/*
+			bsp.print();
+		}
+#endif 
+		{
+			Vector3r offset = Vector3r(0, 1, 0);
+
+			Vector3r a = Vector3r(0, 0, 2);
+			Vector3r b = Vector3r(2, 0, 2);
+			Vector3r c = Vector3r(2, 0, 0);
+			Vector3r d = Vector3r(0, 0, 0);
+			Vector3r e = Vector3r(1, 0, 3);
+			Vector3r f = Vector3r(3, 0, 3);
+			Vector3r g = Vector3r(3, 0, 1);
+			Vector3r h = Vector3r(1, 0, 1);
+
+			//Top and bottom
 			bsp.insert(Triangle3r(
-				e, f, e + offset
-			));
+				a + offset, c + offset, d + offset
+			), BSPMaterial::SOLID, "Top");
 			bsp.insert(Triangle3r(
-				f, h, f + offset
-			));
-			bsp.insert(Triangle3r(
-				h, g, h + offset
-			));
-			bsp.insert(Triangle3r(
-				g, e, g + offset
-			));*/
+				a, d, c
+			), BSPMaterial::SOLID, "Bottom");
+
+			//Box a
+			INSERT(a, b);
+			INSERT(b, c);
+			INSERT(c, d);
+			INSERT(d, a);
+
+			INSERT(e, f);
+			INSERT(f, g);
+			INSERT(g, h);
+			INSERT(h, e);
 
 			bsp.print();
 		}
@@ -192,34 +198,6 @@ namespace ftec {
 
 	void BSPEntity::render()
 	{
-		auto toFloat = [](const Vector3r &v) -> Vector3f {
-			Vector3f out;
-			out.x = v.x.convert_to<float>();
-			out.y = v.y.convert_to<float>();
-			out.z = v.z.convert_to<float>();
-			return out;
-		};
-
-		Vector3f offset = Vector3f(0, 2, 0);
-
-		Line3f line;
-
-		line.a = toFloat(a);
-		line.b = line.a + offset;
-		Graphics::enqueueLine(line, Color32::red());
-		line.a = toFloat(b);
-		line.b = line.a + offset;
-		Graphics::enqueueLine(line, Color32::red());
-		line.a = toFloat(c);
-		line.b = line.a + offset;
-		Graphics::enqueueLine(line, Color32::red());
-		line.a = toFloat(d);
-		line.b = line.a + offset;
-		Graphics::enqueueLine(line, Color32::red());
-		line.a = toFloat(e);
-		line.b = line.a + offset;
-		Graphics::enqueueLine(line, Color32::red());
-		
 
 	}
 }
