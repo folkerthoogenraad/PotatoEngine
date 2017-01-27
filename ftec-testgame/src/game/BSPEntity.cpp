@@ -219,8 +219,10 @@ namespace ftec {
 			
 			bsp.csgUnion(bsp2);
 
-			bsp.print();
-			addPortals(m_Scene, bsp, bsp.getRoot());
+			//bsp.print();
+
+			auto box = makeBox<rational>(Vector3r(0,0,0), Vector3r(1,1,1));
+			addPortals(m_Scene, box, box.getRoot());
 			//addPortals(m_Scene, bsp2, bsp.getRoot());
 			//addPortals(m_Scene, bsp2, bsp.getRoot());
 		}

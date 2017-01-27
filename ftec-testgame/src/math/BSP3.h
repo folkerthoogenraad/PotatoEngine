@@ -296,4 +296,53 @@ namespace ftec {
 		friend BSPNode3<T>;
 	};
 
+	template <typename T>
+	BSP3<T> makeBox(const Vector3<T> &position, const Vector3<T> extends)
+	{
+		BSP3<T> bsp;
+
+		BSPFace<T> face;
+
+		auto makeFace = [&](const Vector3<T> &a, const Vector3<T> &b, const Vector3<T> &c, const Vector3<T> &d) {
+			face.m_Vertices.push_back(a);
+			face.m_Vertices.push_back(b);
+			face.m_Vertices.push_back(c);
+			face.m_Vertices.push_back(d);
+
+			face.m_Plane = Plane<T>(Triangle3<T>(a,b,c));
+		};
+
+		const Vector3<T> a(position.x - extends.x, position.y - extends.y, position.z - extends.z);
+		const Vector3<T> b(position.x + extends.x, position.y - extends.y, position.z - extends.z);
+		const Vector3<T> c(position.x + extends.x, position.y - extends.y, position.z + extends.z);
+		const Vector3<T> d(position.x - extends.x, position.y - extends.y, position.z + extends.z);
+
+		const Vector3<T> e(position.x - extends.x, position.y + extends.y, position.z - extends.z);
+		const Vector3<T> f(position.x + extends.x, position.y + extends.y, position.z - extends.z);
+		const Vector3<T> g(position.x + extends.x, position.y + extends.y, position.z + extends.z);
+		const Vector3<T> h(position.x - extends.x, position.y + extends.y, position.z + extends.z);
+
+		makeFace(a, b, c, d);
+		bsp.insert(face, "Bottom");
+
+		makeFace(e, h, g, f);
+		bsp.insert(face, "Top");
+
+		makeFace(e, a, b, f);
+		bsp.insert(face, "Front");
+
+		makeFace(h, d, c, g);
+		bsp.insert(face, "Back");
+
+		makeFace(b, f, g, c);
+		bsp.insert(face, "Left");
+
+		makeFace(a, d, h, e);
+		bsp.insert(face, "Right");
+
+		bsp.print();
+
+		return bsp;
+	}
+
 }
