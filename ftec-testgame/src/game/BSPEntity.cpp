@@ -232,6 +232,7 @@ namespace ftec {
 
 			box->csgUnion(*box2);
 
+
 			addPortals(m_Scene, *box, box->getRoot());
 		}
 
