@@ -22,81 +22,38 @@ namespace ftec {
 	};
 
 	template <typename T>
-	struct BSPPlane {
-		//Triangle3<T> m_Triangle;
-		//Vector3<T> m_Normal;
+	struct BSPFace {
 		Plane<T> m_Plane;
 
+		std::vector<Vector3<T>> m_Vertices;
+
+		std::string m_DebugTag;
+
+		int m_ID;
 		BSPMaterial m_Material;
 	};
 
 	//This can really benefit from more tight packing and inline nodes (unlike these nodes)
 	//This can be shared between BSP2 and BSP3, but whatever
+	template <typename T>
 	struct BSPNode3 {
-		std::shared_ptr<BSPNode3> m_Front;	//8 bytes
-		std::shared_ptr<BSPNode3> m_Back;	//8 bytes
+	
+	public: //TODO make this private!
 
-		std::string m_DebugTag;
-		BSPNode3 *m_Parent;					//8 bytes
+		std::shared_ptr<BSPNode3<T>> m_Front;
+		std::shared_ptr<BSPNode3<T>> m_Back;
 
-		size_t m_Index;						//8 bytes
+		BSPNode3<T> *m_Parent;
 
+		size_t m_Index;
+		BSP3<T> *m_BSP;
 	public:
-		template <typename T>
-		void insert(BSP3<T> &bsp, size_t index, const Vector3<T> &a, const Vector3<T> &b, const Vector3<T> &c, const std::string &dbg)
-		{
-			BSPPlane<T> &self = bsp.m_Planes[m_Index];
-			BSPPlane<T> &other = bsp.m_Planes[index];
-
-			int frontCount = 0;
-			int backCount = 0;
-			
-			auto insertTest = [&self](const Vector3<T> &point) -> T{
-				return self.m_Plane.distanceFrom(point);
-			};
-			auto compare = [&frontCount, &backCount](const T &v) {
-				if (v > 0)
-					frontCount++;
-				else if (v < 0)
-					backCount++;
-			};
-
-			//Test the triangle
-			compare(insertTest(a));
-			compare(insertTest(b));
-			compare(insertTest(c));
-			
-			auto create = [&](std::shared_ptr<BSPNode3> &position) {
-				if (position) {
-					position->insert(bsp, index, a, b, c, dbg);
-				}
-				else {
-					position = std::make_shared<BSPNode3>();
-					position->m_Parent = this;
-					position->m_Index = index;
-					position->m_DebugTag = dbg;
-				}
-			};
-
-			if (frontCount == 0 && backCount == 0) {
-				//TODO handle this case
-				//Look at a few things, like the normal direction might be important?
-				//assert(false);
-			}
-			if (frontCount > 0){
-				create(m_Front);
-			}
-			if (backCount > 0) {
-				create(m_Back);
-			}
-		}
-
 		void print(int tabs = 0)
 		{
 			for (int i = 0; i < tabs; i++)
 				std::cout << ' ' << ' ';
 
-			std::cout << m_DebugTag << '(' << m_Index << ')' << ":" << std::endl;
+			std::cout << m_BSP->getPlane(m_Index).m_DebugTag << '(' << m_Index << ')' << ":" << std::endl;
 
 			auto printSide = [&](std::shared_ptr<BSPNode3> &node) {
 				if (node) {
@@ -128,42 +85,203 @@ namespace ftec {
 
 			return result;
 		}
+		int solidcount()
+		{
+			int c = 0;
+			
+			if (m_Front)
+				c += m_Front->solidcount();
+			else
+				c += 1;
+			
+			if (m_Back)
+				c += m_Back->soldcount();
+
+			return c;
+		}
+
+	private:
+		void insert(size_t index, bool allowFront = true, bool allowBack = true)
+		{
+			BSPFace<T> &self = m_BSP->m_Planes[m_Index];
+			BSPFace<T> &other = m_BSP->m_Planes[index];
+
+			int frontCount = 0;
+			int backCount = 0;
+			
+			auto insertTest = [&self](const Vector3<T> &point) -> T{
+				return self.m_Plane.distanceFrom(point);
+			};
+			auto compare = [&frontCount, &backCount](const T &v) {
+				if (v > 0)
+					frontCount++;
+				else if (v < 0)
+					backCount++;
+			};
+
+			//Test the triangle
+			for (const auto &v : other.m_Vertices)
+			{
+				compare(insertTest(v));
+			}
+			
+			auto create = [&](std::shared_ptr<BSPNode3> &position, bool allowedToCreateNew) {
+				if (position) {
+					position->insert(index, allowFront, allowBack);
+				}
+				else if(allowedToCreateNew || self.m_ID == other.m_ID){
+					position = std::make_shared<BSPNode3>();
+					position->m_Parent = this;
+					position->m_Index = index;
+					position->m_BSP = m_BSP;
+				}
+			};
+
+			if (frontCount == 0 && backCount == 0) {
+				//TODO handle this case
+				//Look at a few things, like the normal direction might be important?
+				//assert(false);
+				LOG("Unhandled case! might be important soon™");
+			}
+			if (frontCount > 0){
+				create(m_Front, allowFront);
+			}
+			if (backCount > 0) {
+				create(m_Back, allowBack);
+			}
+		}
+		void invert()
+		{
+			//Planes should already be flipped right now
+			//Because planes are double references, its possible to accidentally double flip this.
+			auto t = m_Front;
+			m_Front = m_Back;
+			m_Back = t;
+
+			if (m_Front)
+				m_Front->invert();
+			if (m_Back)
+				m_Back->invert();
+		}
+
+		friend BSP3<T>;
 	};
 
+	//TODO clean this up, ofcourse
 	template <typename T>
 	class BSP3 {
 
 	private:
-		std::vector<BSPPlane<T>> m_Planes;
-		std::shared_ptr<BSPNode3> m_Root;
+		std::vector<BSPFace<T>> m_Planes;
+		std::shared_ptr<BSPNode3<T>> m_Root;
 
-	public:
-
-		void insert(const Triangle3<T> &triangle, BSPMaterial material = BSPMaterial::SOLID, const std::string &dbg = "Node")
+	public: //Should be private!
+		//Decpricatedage
+		void insert(const Triangle3<T> &triangle, BSPMaterial material = BSPMaterial::SOLID, const std::string &dbg = "Node", int id = 0, bool allowFront = true, bool allowBack = true)
 		{
-			BSPPlane<T> ct = {
+			//Create the needed plane
+			BSPFace<T> ct = {
 				Plane<T>(triangle)
 			};
 			ct.m_Material = material;
-			//ct.m_Normal = ct.m_Triangle.normal();
+			ct.m_Vertices.push_back(triangle.a);
+			ct.m_Vertices.push_back(triangle.b);
+			ct.m_Vertices.push_back(triangle.c);
+			ct.m_ID = id;
+			ct.m_DebugTag = dbg;
+
 			m_Planes.push_back(std::move(ct));
 
+			//If there is no BSP root yet, create the root
 			if (!m_Root) {
-				m_Root = std::make_shared<BSPNode3>();
+				m_Root = std::make_shared<BSPNode3<T>>();
 				m_Root->m_Index = 0;
-				m_Root->m_DebugTag = dbg;
+				m_Root->m_BSP = this;
 			}
+
+			//Else, if there is a root, insert it into the root and let it figure out the rest from here
 			else {
-				m_Root->insert(*this, m_Planes.size() - 1, triangle.a, triangle.b, triangle.c, dbg);
+				m_Root->insert(m_Planes.size() - 1, allowFront, allowBack);
 			}
 		}
+		
+		//Use this instead
+		void insert(BSPFace<T> ct, const std::string &dbg = "Node", int id = 0, bool allowFront = true, bool allowBack = true)
+		{
+			ct.m_ID = id;
+			ct.m_DebugTag = dbg;
+			m_Planes.push_back(std::move(ct));
+
+			//If there is no BSP root yet, create the root
+			if (!m_Root) {
+				m_Root = std::make_shared<BSPNode3<T>>();
+				m_Root->m_Index = 0;
+				m_Root->m_BSP = this;
+			}
+
+			//Else, if there is a root, insert it into the root and let it figure out the rest from here
+			else {
+				m_Root->insert(m_Planes.size() - 1, allowFront, allowBack);
+			}
+		}
+
+		void resetID()
+		{
+			for (auto &p : m_Planes)
+			{
+				p.m_ID = 0;
+			}
+		}
+		void invert()
+		{
+			for (auto &p : m_Planes)
+			{
+				p.m_Plane.flip();
+			}
+
+			if (m_Root)
+				m_Root->invert();
+		}
+
+
+	public:
 		int cellcount()
 		{
 			return m_Root ? m_Root->cellcount() : 0;
 		}
+		int solidcount()
+		{
+			if(m_Root)
+				return m_Root->solidcount();
+			return 0;
+		}
 
-		BSPNode3 *getRoot() { return m_Root.get(); };
-		const BSPPlane<T> &getPlane(int index) { return m_Planes[index]; }
+		BSP3<T> &csgUnion(const BSP3<T> &other)
+		{
+			for (const auto &p : other.m_Planes){
+				insert(p, p.m_DebugTag, 1, false, true);
+			}
+
+			resetID();
+
+			return *this;
+		}
+
+		BSP3<T> &csgIntersection(const BSP3<T> &other)
+		{
+
+			return *this;
+		}
+
+		BSP3<T> &csgDifference(const BSP3<T> &other)
+		{
+
+			return *this;
+		}
+
+		
+		BSPNode3<T> *getRoot() { return m_Root.get(); };
+		const BSPFace<T> &getPlane(int index) { return m_Planes[index]; }
 
 		void print()
 		{
@@ -175,7 +293,7 @@ namespace ftec {
 			}
 		}
 
-		friend BSPNode3;
+		friend BSPNode3<T>;
 	};
 
 }

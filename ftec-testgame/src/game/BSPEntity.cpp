@@ -85,12 +85,12 @@ namespace ftec {
 		}
 	}
 
-	static void addPortals(Scene *scene, BSP3<rational> &bsp, BSPNode3* node)
+	static void addPortals(Scene *scene, BSP3<rational> &bsp, BSPNode3<rational>* node)
 	{
 		if (node->m_Front == nullptr){
 			std::vector<std::pair<size_t, int>> indices;
 
-			BSPNode3 *n = node;
+			BSPNode3<rational> *n = node;
 
 			int dir = 1;
 
@@ -125,7 +125,8 @@ namespace ftec {
 		BSP3<rational> bsp;
 
 		//Create the space
-#define INSERT(A, B) bsp.insert(Triangle3r(A, B, A + offset), BSPMaterial::SOLID, #A #B);
+#define INSERT(BSP, A, B, ID, FRONT, BACK) BSP.insert(Triangle3r(A, B, A + offset), BSPMaterial::SOLID, #A #B, ID, FRONT, BACK);
+#define INSERT_HIGH(BSP, A, B, ID, FRONT, BACK) BSP.insert(Triangle3r(A, B, A + offset * 2), BSPMaterial::SOLID, #A #B, ID, FRONT, BACK);
 #if 0
 		{
 			Vector3r offset = Vector3r(0, 1, 0);
@@ -176,22 +177,52 @@ namespace ftec {
 			), BSPMaterial::SOLID, "Bottom");
 
 			//Box a
-			INSERT(a, b);
-			INSERT(b, c);
-			INSERT(c, d);
-			INSERT(d, a);
+			INSERT(bsp, a, b, 0, true, true);
+			INSERT(bsp, b, c, 0, true, true);
+			INSERT(bsp, c, d, 0, true, true);
+			INSERT(bsp, d, a, 0, true, true);
 
-			INSERT(e, f);
-			INSERT(f, g);
-			INSERT(g, h);
-			INSERT(h, e);
+			BSP3<rational> bsp2;
+
+			bsp2.insert(Triangle3r(
+				e + offset, f + offset, g + offset * 2
+			), BSPMaterial::SOLID, "Top");
+			bsp2.insert(Triangle3r(
+				e, g, f
+			), BSPMaterial::SOLID, "Bottom");
+
+			INSERT(bsp2, e, f, 0, true, true);
+			INSERT_HIGH(bsp2, f, g, 0, true, true);
+			INSERT_HIGH(bsp2, g, h, 0, true, true);
+			INSERT(bsp2, h, e, 0, true, true);
+
+			/* ADD
+			INSERT(bsp, e, f, 0, false, true);
+			INSERT(bsp, f, g, 0, false, true);
+			INSERT(bsp, g, h, 0, false, true);
+			INSERT(bsp, h, e, 0, false, true);
+			/* */
+
+			/* SUBTRACT
+			INSERT(e, h, 1, true, false);
+			INSERT(f, e, 1, true, false);
+			INSERT(g, f, 1, true, false);
+			INSERT(h, g, 1, true, false);
+			/* */
+
+			/* INTERSECTION
+			INSERT(e, f, 1, true, false);
+			INSERT(f, g, 1, true, false);
+			INSERT(g, h, 1, true, false);
+			INSERT(h, e, 1, true, false);
+			/* */
+			
+			bsp.csgUnion(bsp2);
 
 			bsp.print();
-		}
-	
-		//Create the "Portals"
-		{
 			addPortals(m_Scene, bsp, bsp.getRoot());
+			//addPortals(m_Scene, bsp2, bsp.getRoot());
+			//addPortals(m_Scene, bsp2, bsp.getRoot());
 		}
 
 	}
