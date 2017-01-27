@@ -122,7 +122,6 @@ namespace ftec {
 	void BSPEntity::onStart()
 	{
 		//OH BBY
-		BSP3<rational> bsp;
 
 		//Create the space
 #define INSERT(BSP, A, B, ID, FRONT, BACK) BSP.insert(Triangle3r(A, B, A + offset), BSPMaterial::SOLID, #A #B, ID, FRONT, BACK);
@@ -156,6 +155,8 @@ namespace ftec {
 			bsp.print();
 		}
 #endif 
+#if 0
+		BSP3<rational> bsp;
 		{
 			Vector3r offset = Vector3r(0, 1, 0);
 
@@ -216,15 +217,22 @@ namespace ftec {
 			INSERT(g, h, 1, true, false);
 			INSERT(h, e, 1, true, false);
 			/* */
-			
+
 			bsp.csgUnion(bsp2);
 
 			//bsp.print();
+			//addPortals(m_Scene, bsp2, bsp.getRoot());
+			//addPortals(m_Scene, bsp2, bsp.getRoot());
+		}
+#endif
+		{
+			auto box = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
 
-			auto box = makeBox<rational>(Vector3r(0,0,0), Vector3r(1,1,1));
-			addPortals(m_Scene, box, box.getRoot());
-			//addPortals(m_Scene, bsp2, bsp.getRoot());
-			//addPortals(m_Scene, bsp2, bsp.getRoot());
+			auto box2 = makeBox<rational>(Vector3r(1, 1, 1), Vector3r(1, 1, 1));
+
+			box->csgUnion(*box2);
+
+			addPortals(m_Scene, *box, box->getRoot());
 		}
 
 	}

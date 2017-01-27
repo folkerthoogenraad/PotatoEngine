@@ -297,9 +297,9 @@ namespace ftec {
 	};
 
 	template <typename T>
-	BSP3<T> makeBox(const Vector3<T> &position, const Vector3<T> extends)
+	std::unique_ptr<BSP3<T>> makeBox(const Vector3<T> &position, const Vector3<T> extends)
 	{
-		BSP3<T> bsp;
+		auto bsp = std::make_unique<BSP3<T>>();
 
 		BSPFace<T> face;
 
@@ -323,26 +323,26 @@ namespace ftec {
 		const Vector3<T> h(position.x - extends.x, position.y + extends.y, position.z + extends.z);
 
 		makeFace(a, b, c, d);
-		bsp.insert(face, "Bottom");
+		bsp->insert(face, "Bottom");
 
 		makeFace(e, h, g, f);
-		bsp.insert(face, "Top");
+		bsp->insert(face, "Top");
 
-		makeFace(e, a, b, f);
-		bsp.insert(face, "Front");
+		makeFace(a, e, f, b);
+		bsp->insert(face, "Front");
 
-		makeFace(h, d, c, g);
-		bsp.insert(face, "Back");
+		makeFace(c, g, h, d);
+		bsp->insert(face, "Back");
 
 		makeFace(b, f, g, c);
-		bsp.insert(face, "Left");
+		bsp->insert(face, "Left");
 
 		makeFace(a, d, h, e);
-		bsp.insert(face, "Right");
+		bsp->insert(face, "Right");
 
-		bsp.print();
+		bsp->print();
 
-		return bsp;
+		return std::move(bsp);
 	}
 
 }
