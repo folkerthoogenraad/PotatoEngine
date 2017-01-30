@@ -41,6 +41,7 @@ namespace ftec {
 		int cellcount();
 		int solidcount();
 
+		bool isSpace();
 	private:
 		bool insert(size_t index, bool allowFront = true, bool allowBack = true);
 		void invert();

@@ -55,6 +55,11 @@ namespace ftec {
 		return c;
 	}
 
+	bool BSPNode3::isSpace()
+	{
+		return m_Front == nullptr;
+	}
+
 	bool BSPNode3::insert(size_t index, bool allowFront, bool allowBack)
 	{
 		BSPFace &self = m_BSP->m_Planes[m_Index];
