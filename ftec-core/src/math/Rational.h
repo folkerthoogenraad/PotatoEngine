@@ -1,5 +1,7 @@
 #pragma once
 
+#define UB 0
+
 #if UB
 #include <boost/multiprecision/rational_adaptor.hpp>
 #include <boost/multiprecision/cpp_int.hpp>

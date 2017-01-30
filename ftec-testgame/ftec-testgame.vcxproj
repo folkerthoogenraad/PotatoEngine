@@ -150,6 +150,7 @@
     <ClCompile Include="src\math\bigint\BigIntegerUtils.cc" />
     <ClCompile Include="src\math\bigint\BigUnsigned.cc" />
     <ClCompile Include="src\math\bigint\BigUnsignedInABase.cc" />
+    <ClCompile Include="src\math\BSP3.cpp" />
     <ClCompile Include="src\math\DelaunayVertex.cpp" />
     <ClCompile Include="src\math\StairAlgorithm.cpp" />
     <ClCompile Include="src\math\StairArc.cpp" />

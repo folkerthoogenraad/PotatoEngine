@@ -7,18 +7,22 @@
 #include "math/Line3.h"
 #include "math/Vector4.h"
 
+#include "engine/Engine.h"
+#include "resources/ResourceManager.h"
+
 #include "scene/Scene.h"
 
 #include "graphics/Graphics.h"
+#include "graphics/Mesh.h"
+
+#include "engine/Time.h"
 
 #include "logger/log.h"
 
 namespace ftec {
 
-	static inline void makeFromIndices(Scene *scene, BSP3<rational> &bsp, std::vector<std::pair<size_t, int>> indices) //std::pair<size_t, int> is index in getPlane(size_t) and the plane direction (1 or -1)
+	static inline void makeFromIndices(Scene *scene, BSP3 &bsp, std::vector<std::pair<size_t, int>> indices) //std::pair<size_t, int> is index in getPlane(size_t) and the plane direction (1 or -1)
 	{
-		LOG("Ayy lmao");
-
 		struct Intersection {
 			int i, j, k;
 			Vector3<rational> vertex;
@@ -66,11 +70,11 @@ namespace ftec {
 
 			return false;
 		}), intersections.end());
-
-		LOG(intersections.size());
 	
 		if (intersections.size() > 3) {
 			std::vector<Vector3<rational>> vertices;
+
+			LOG("Creating space. (" << intersections.size() << ")");
 
 			//Not sure if i can even do this
 			for (int i = 0; i < intersections.size(); i++)
@@ -85,12 +89,15 @@ namespace ftec {
 		}
 	}
 
-	static void addPortals(Scene *scene, BSP3<rational> &bsp, BSPNode3<rational>* node)
+	static void addPortals(Scene *scene, BSP3 &bsp, BSPNode3* node)
 	{
+		if (!node)
+			return;
+
 		if (node->m_Front == nullptr){
 			std::vector<std::pair<size_t, int>> indices;
 
-			BSPNode3<rational> *n = node;
+			BSPNode3 *n = node;
 
 			int dir = 1;
 
@@ -118,6 +125,54 @@ namespace ftec {
 		
 	}
 
+	static std::unique_ptr<BSP3> createFromMesh(const std::string &file)
+	{
+		auto bsp = std::make_unique<BSP3>();
+
+		auto mesh = Engine::getResourceManager().load<Mesh>(file);
+
+		BSPFace face;
+
+		double start = Time::currentTimeMilliseconds();
+		int triangleCount = 0;
+
+		auto toRational = [&](Vector3f input) {
+			Vector3r result;
+
+			result.x = rational(round(input.x * 10000) / 10000);
+			result.y = rational(round(input.y * 10000) / 10000);
+			result.z = rational(round(input.z * 10000) / 10000);
+
+			return result;
+		};
+
+		LOG("Done loading mesh, building BSP");
+
+		for (int i = 0; i < mesh->m_Triangles.size(); i += 3) {
+			triangleCount++;
+			auto a = toRational(mesh->m_Vertices[i]);
+			auto b = toRational(mesh->m_Vertices[i + 1]);
+			auto c = toRational(mesh->m_Vertices[i + 2]);
+
+			face.m_ID = 0;
+			face.m_DebugTag = "MeshNode";
+			face.m_Vertices.clear();
+
+			face.m_Vertices.push_back(a);
+			face.m_Vertices.push_back(b);
+			face.m_Vertices.push_back(c);
+
+			face.m_Plane = Planer(a, b, c);
+
+			bsp->insert(face, "MeshNode");
+		}
+
+		double end = Time::currentTimeMilliseconds();
+
+		LOG("Done building bsp, starting making spaces. It took " << (end - start) << "ms for " << triangleCount << " triangles.");
+		
+		return std::move(bsp);
+	}
 
 	void BSPEntity::onStart()
 	{
@@ -224,18 +279,153 @@ namespace ftec {
 			//addPortals(m_Scene, bsp2, bsp.getRoot());
 			//addPortals(m_Scene, bsp2, bsp.getRoot());
 		}
-#endif
 		{
-			auto box = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
+			auto box = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(4, 1, 1));
+			auto box2 = makeBox<rational>(Vector3r(0, 1, 0) / 3 * 2, Vector3r(4, 1, 1) * 2 / 3);
+			auto box3 = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(rational(1) / 4, rational(1) * 4, rational(1) / 4));
+			auto box4 = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(rational(1) * 4, rational(1) / 4, rational(1) / 4));
+			auto box5 = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(rational(1) / 4, rational(1) / 4, rational(1) * 4));
 
-			auto box2 = makeBox<rational>(Vector3r(1, 1, 1), Vector3r(1, 1, 1));
+			auto box6 = makeBox<rational>(Vector3r(rational(1) / 3, rational(1) / 3, rational(1) / 3), Vector3r(1, 1, 1));
 
-			box->csgUnion(*box2);
+			box->csgDifference(*box2);
+			box->csgDifference(*box3);
+			box->csgDifference(*box4);
+			box->csgDifference(*box5);
 
+			box->csgDifference(*box6);
 
 			addPortals(m_Scene, *box, box->getRoot());
+
+			//addPortals(m_Scene, *box, box->getRoot());
+		}
+		{
+			LOG("Creating from mesh!");
+			auto bsp = std::make_unique<BSP3>();
+			
+			auto mesh = Engine::getResourceManager().load<Mesh>("mesh/monkey.obj");
+
+			BSPFace face;
+			
+			double start = Time::currentTimeMilliseconds();
+			int triangleCount = 0;
+
+			auto toRational = [&](Vector3f input) {
+				Vector3r result;
+
+				result.x = rational(round(input.x * 10000));
+				result.y = rational(round(input.y * 10000));
+				result.z = rational(round(input.z * 10000));
+
+				return result;
+			};
+
+			LOG("Done loading mesh, building BSP");
+
+			for (int i = 0; i < mesh->m_Triangles.size(); i += 3){
+				triangleCount++;
+				auto a = toRational(mesh->m_Vertices[i]);
+				auto b = toRational(mesh->m_Vertices[i + 1]);
+				auto c = toRational(mesh->m_Vertices[i + 2]);
+
+				face.m_ID = 0;
+				face.m_DebugTag = "MeshNode";
+				face.m_Vertices.clear();
+
+				face.m_Vertices.push_back(a);
+				face.m_Vertices.push_back(b);
+				face.m_Vertices.push_back(c);
+
+				face.m_Plane = Planer(a, b, c);
+
+				bsp->insert(face, "MeshNode");
+			}
+
+			double end = Time::currentTimeMilliseconds();
+
+			LOG("Done building bsp, starting making spaces. It took " << (end - start) << "ms for " << triangleCount << " triangles.");
+			
+			//addPortals(m_Scene, *bsp, bsp->getRoot());
+
+			//addPortals(m_Scene, *box, box->getRoot());
 		}
 
+		{
+			auto box1 = makeBox(Vector3r(1, 1, 1) * 2 / 5, Vector3r(1, 1, 1));
+			auto box2 = makeBox(Vector3r(1, 1, 1) * 2 / 5, Vector3r(1, 1, 1) * 2 / 3);
+			
+			auto box3 = makeBox(Vector3r(0, 0, 0), Vector3r(1, 2, 1));
+			
+			//Box with gap in it!
+			box1->csgDifference(*box2);
+			box3->csgDifference(*box1);
+
+			auto box4 = makeBox(Vector3r(0, 0, 0), Vector3r(6, 1, 1) / 2);
+			
+			//Only the intersection of both right here
+			box3->csgDifference(*box4);
+
+			//Create the portals
+			addPortals(m_Scene, *box3, box3->getRoot());
+
+			//addPortals(m_Scene, *box, box->getRoot());
+		}
+#endif
+		{
+			auto box1 = makeBox(Vector3r(0,0,0), Vector3r(1, 1, 1) * 3 / 4);
+			auto mesh = createFromMesh("mesh/lowsphere.obj");
+
+			double start = Time::currentTimeMilliseconds();
+
+			//Box with gap in it!
+			box1->csgIntersection(*mesh);
+
+			double end = Time::currentTimeMilliseconds();
+
+			LOG("It took "<< (end - start) << "ms to csgIntersect.");
+			
+			box1->print();
+
+			LOG(box1->solidcount());
+
+			//Create the portals
+			//addPortals(m_Scene, *box1, box1->getRoot());
+			//addPortals(m_Scene, *box1, box1->getRoot());
+
+			//addPortals(m_Scene, *box, box->getRoot());
+		}
+#if 0
+		{
+			auto box = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
+			auto box2 = makeBox<rational>(Vector3r(1, 1, 1), Vector3r(1, 1, 1));
+			auto box6 = makeBox<rational>(Vector3r(rational(1), rational(1), rational(0)), Vector3r(1, 1, 1));
+
+			box->csgUnion(*box2);
+			box->csgIntersection(*box6);
+
+			addPortals(m_Scene, *box, box->getRoot());
+
+			//addPortals(m_Scene, *box, box->getRoot());
+		}
+		{
+			auto box = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
+			auto box2 = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(rational(1) / 4, rational(1) * 4, rational(1) / 4));
+			auto box3 = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(rational(1) * 4, rational(1) / 4, rational(1) / 4));
+			auto box4 = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(rational(1) / 4, rational(1) / 4, rational(1) * 4));
+
+			auto out = makeBox<rational>(Vector3r(1, 1, 1), Vector3r(1, 1, 1) * 2 / 3);
+
+			box->csgDifference(*box2);
+			box->csgDifference(*box3);
+			box->csgDifference(*box4);
+
+			out->csgDifference(*box);
+
+			addPortals(m_Scene, *out, out->getRoot());
+
+			//addPortals(m_Scene, *box, box->getRoot());
+		}
+#endif
 	}
 
 	void BSPEntity::render()

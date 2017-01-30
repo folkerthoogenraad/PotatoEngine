@@ -1,6 +1,7 @@
 #include "Time.h"
 
 #include <math.h>
+#include <chrono>
 
 namespace ftec {
 	float Time::deltaTime = 0;
@@ -17,5 +18,13 @@ namespace ftec {
 		cosTime = cosf(runTime);
 		sin2Time = sinf(runTime * 2);
 		cos2Time = cosf(runTime * 2);
+	}
+
+	double Time::currentTimeMilliseconds()
+	{
+		auto now = std::chrono::high_resolution_clock::now();
+		auto t = now.time_since_epoch();
+
+		return (double)t.count() / (double) 1000000.0;
 	}
 }

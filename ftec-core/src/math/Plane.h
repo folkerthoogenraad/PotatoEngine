@@ -24,6 +24,11 @@ namespace ftec {
 			direction = triangle.normal();
 			offset = -Vector3<T>::dot(triangle.a, direction);
 		}
+		Plane(const Vector3<T> &a, const Vector3<T> &b, const Vector3<T> &c)
+		{
+			direction = Vector3<T>::cross(b - a, c - a);
+			offset = -Vector3<T>::dot(a, direction);
+		}
 		Plane(const Vector3<T> position, const Vector3<T> direction) : direction(direction)
 		{
 			offset = -Vector3<T>::dot(position, direction);
@@ -34,12 +39,13 @@ namespace ftec {
 		{
 			//Pretty sure this can just be removed.
 			//T c = Vector3<T>::dot(direction, direction);
-			T r = Vector3<T>::dot(direction, p);
+			//T r = Vector3<T>::dot(direction, p);
 
 			//ax + by + cz + d = 0
 			//ax + by + cz = -d
 
-			return (-offset - r);
+			//return (-offset - r);
+			return -(offset + Vector3<T>::dot(direction, p));
 		}
 		Plane<T> clone() const { return Plane<T>(*this); }
 		
