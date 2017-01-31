@@ -28,7 +28,14 @@ namespace ftec {
 	};
 
 	struct BSPCell3 {
-		
+		struct PlaneDirectionRef {
+			int planeIndex;
+
+			enum class Direction {
+				BACK = -1,
+				FRONT = 1
+			} direction;
+		};
 		struct BSPIntersection {
 			int i, j, k;
 
@@ -53,7 +60,7 @@ namespace ftec {
 		int cellcount() const;
 		int solidcount() const;
 
-		void forEach(std::function<void(BSPNode3 *)> &func);
+		void forEachCell(std::function<void(BSPNode3 *)> &func);
 
 		//I don't like the name of this function, but it calculates the cell vertices.
 		BSPCell3 calculateCell();
@@ -75,34 +82,6 @@ namespace ftec {
 		std::shared_ptr<BSPNode3> m_Root;
 
 	public: //Should be private!
-		//Decpricatedage
-		/*void insert(const Triangle3r &triangle, BSPMaterial material = BSPMaterial::SOLID, const std::string &dbg = "Node", int id = 0, bool allowFront = true, bool allowBack = true)
-		{
-			//Create the needed plane
-			BSPFacer ct = {
-				Planer(triangle)
-			};
-			ct.m_Material = material;
-			ct.m_Vertices.push_back(triangle.a);
-			ct.m_Vertices.push_back(triangle.b);
-			ct.m_Vertices.push_back(triangle.c);
-			ct.m_ID = id;
-			ct.m_DebugTag = dbg;
-
-			m_Planes.push_back(std::move(ct));
-
-			//If there is no BSP root yet, create the root
-			if (!m_Root) {
-				m_Root = std::make_shared<BSPNode3r>();
-				m_Root->m_Index = 0;
-				m_Root->m_BSP = this;
-			}
-
-			//Else, if there is a root, insert it into the root and let it figure out the rest from here
-			else {
-				m_Root->insert(m_Planes.size() - 1, allowFront, allowBack);
-			}
-		}*/
 		
 		//Use this instead
 		void insert(BSPFace ct, const std::string &dbg = "Node", int id = 0, bool allowFront = true, bool allowBack = true);
@@ -120,7 +99,7 @@ namespace ftec {
 		BSP3 &csgIntersection(const BSP3 &other);
 		BSP3 &csgDifference(const BSP3 &other);
 
-		void forEach(std::function<void(BSPNode3 *)> func);
+		void forEachCell(std::function<void(BSPNode3 *)> func);
 
 		BSPNode3 *getRoot() { return m_Root.get(); };
 		const BSPFace &getPlane(int index) { return m_Planes[index]; }
@@ -131,4 +110,6 @@ namespace ftec {
 	};
 
 	std::unique_ptr<BSP3> makeBox(const Vector3r &position, const Vector3r extends);
+	std::unique_ptr<BSP3> makeCylinder(const Vector3r &position, const Vector3r extends);
+	std::unique_ptr<BSP3> makeSphere(const Vector3r &position, const Vector3r extends);
 }

@@ -58,15 +58,15 @@ namespace ftec {
 		return c;
 	}
 
-	void BSPNode3::forEach(std::function<void(BSPNode3*)> &func)
+	void BSPNode3::forEachCell(std::function<void(BSPNode3*)> &func)
 	{
 		if (m_Front == nullptr)
 			func(this);
 		else
-			m_Front->forEach(func);
+			m_Front->forEachCell(func);
 		
 		if (m_Back != nullptr)
-			m_Back->forEach(func);
+			m_Back->forEachCell(func);
 	}
 
 	BSPCell3 BSPNode3::calculateCell()
@@ -155,7 +155,7 @@ namespace ftec {
 					auto &plane = m_BSP->getPlane(index);
 					int s = plane.m_Plane.distanceFrom(test.vertex).sign();
 
-					if (s != (int)indicesAndDirection[i].direction) {
+					if (s != (int)indicesAndDirection[i].direction && s != 0) {
 						return true;
 					}
 				}
@@ -362,26 +362,26 @@ namespace ftec {
 	BSP3 & BSP3::csgDifference(const BSP3 & other)
 	{
 		if (!other.isConvex())
-			LOG("Ohter BSP is not convex!");
+			LOG("Other BSP is not convex!");
 
 		//Keep in mind, we copy here!
 		for (BSPFace p : other.m_Planes) {
 			p.m_Plane.flip();	
+			
 			insert(p, p.m_DebugTag, 1, true, false); //Even better, double copy
 		}
 
-		//if (m_Root)
-		//	m_Root->removeWithoutId(1);
+		m_Root->removeWithoutId(1);
 
 		resetID();
 
 		return *this;
 	}
 
-	void BSP3::forEach(std::function<void(BSPNode3 *)> func)
+	void BSP3::forEachCell(std::function<void(BSPNode3 *)> func)
 	{
 		if (m_Root)
-			m_Root->forEach(func);
+			m_Root->forEachCell(func);
 	}
 
 	void BSP3::print()
@@ -464,6 +464,260 @@ namespace ftec {
 		makeFace(a, d, h, e);
 		bsp->insert(face, "Right");
 
+		return std::move(bsp);
+	}
+	std::unique_ptr<BSP3> makeCylinder(const Vector3r & position, const Vector3r extends)
+	{
+		auto bsp = std::make_unique<BSP3>();
+
+		std::vector<Vector3r> vertices;
+
+		{
+			rational diagonal = rational(5) / 7;
+
+			vertices.push_back(position + Vector3r(0, 0, extends.z));
+			vertices.push_back(position + Vector3r(extends.x * diagonal, 0, extends.z * diagonal));
+			vertices.push_back(position + Vector3r(extends.x, 0, 0));
+			vertices.push_back(position + Vector3r(extends.x * diagonal, 0, -extends.z * diagonal));
+			vertices.push_back(position + Vector3r(0, 0, -extends.z));
+			vertices.push_back(position + Vector3r(-extends.x * diagonal, 0, -extends.z * diagonal));
+			vertices.push_back(position + Vector3r(-extends.x, 0, 0));
+			vertices.push_back(position + Vector3r(-extends.x * diagonal, 0, extends.z * diagonal));
+		}
+
+		Vector3r up = Vector3r(0, extends.y, 0);
+
+		BSPFace face;
+
+		{
+			face.m_Vertices.clear();
+
+			for (int i = 0; i < vertices.size(); i++) {
+				face.m_Vertices.push_back(vertices[i] + up);
+			}
+			face.m_Plane = Planer(Triangle3r(face.m_Vertices[0], face.m_Vertices[1], face.m_Vertices[2]));
+
+			bsp->insert(face, "Cylinder top Plane");
+		}
+
+		{
+			face.m_Vertices.clear();
+
+			for (int i = vertices.size() - 1; i > 0; i--) {
+				face.m_Vertices.push_back(vertices[i] - up);
+			}
+			face.m_Plane = Planer(Triangle3r(face.m_Vertices[0], face.m_Vertices[1], face.m_Vertices[2]));
+
+			bsp->insert(face, "Cylinder bottom Plane");
+		}
+		
+		auto makeFace = [&](const Vector3r &a, const Vector3r &b, const Vector3r &c, const Vector3r &d) {
+			face.m_Vertices.clear();
+
+			face.m_Vertices.push_back(a);
+			face.m_Vertices.push_back(b);
+			face.m_Vertices.push_back(c);
+			face.m_Vertices.push_back(d);
+
+			face.m_Plane = Planer(Triangle3r(a, b, c));
+
+			if (BSP_DEBUG) {
+				auto d1 = face.m_Plane.distanceFrom(a);
+				auto d2 = face.m_Plane.distanceFrom(b);
+				auto d3 = face.m_Plane.distanceFrom(c);
+				auto d4 = face.m_Plane.distanceFrom(d);
+
+				if (d1 != 0) {
+					LOG("Invalid distance from plane (d1) : " << d1);
+					assert(false);
+				}
+				if (d2 != 0) {
+					LOG("Invalid distance from plane (d2) : " << d2);
+					assert(false);
+				}
+				if (d3 != 0) {
+					LOG("Invalid distance from plane (d3) : " << d3);
+					assert(false);
+				}
+				if (d4 != 0) {
+					LOG("Invalid distance from plane (d4) : " << d4);
+					assert(false);
+				}
+			}
+		};
+
+		for (int i = 0; i < vertices.size(); i++)
+		{
+			int index1 = i;
+			int index2 = (i + 1) % vertices.size();
+
+
+			makeFace(
+				vertices[index2] + up,
+				vertices[index1] + up,
+				vertices[index1] - up,
+				vertices[index2] - up);
+
+			bsp->insert(face, "Side Plane");
+		}
+
+		return std::move(bsp);
+	}
+	std::unique_ptr<BSP3> makeSphere(const Vector3r & position, const Vector3r extends)
+	{
+		auto bsp = std::make_unique<BSP3>();
+
+		std::vector<Vector3r> middleRing;
+		std::vector<Vector3r> innerRing;
+
+		Vector3r up = Vector3r(0, extends.y, 0);
+
+		rational diagonal = rational(5) / 7;
+		Vector3r innerUp = Vector3r(0, extends.y * diagonal, 0);
+
+		//Calculate middle ring vertices
+		{
+			rational x = extends.x;
+			rational z = extends.z;
+
+			middleRing.push_back(position + Vector3r(0, 0, z));
+			middleRing.push_back(position + Vector3r(x * diagonal, 0, z * diagonal));
+			middleRing.push_back(position + Vector3r(x, 0, 0));
+			middleRing.push_back(position + Vector3r(x * diagonal, 0, -z * diagonal));
+			middleRing.push_back(position + Vector3r(0, 0, -extends.z));
+			middleRing.push_back(position + Vector3r(-x * diagonal, 0, -z * diagonal));
+			middleRing.push_back(position + Vector3r(-x, 0, 0));
+			middleRing.push_back(position + Vector3r(-x * diagonal, 0, z * diagonal));
+		}
+
+		//Calculate inner ring vertices
+		{
+			rational x = extends.x;
+			rational z = extends.z;
+
+			innerRing.push_back(position + Vector3r(0, 0, z) * diagonal);
+			innerRing.push_back(position + Vector3r(x * diagonal, 0, z * diagonal) * diagonal);
+			innerRing.push_back(position + Vector3r(x, 0, 0)* diagonal);
+			innerRing.push_back(position + Vector3r(x * diagonal, 0, -z * diagonal)* diagonal);
+			innerRing.push_back(position + Vector3r(0, 0, -extends.z)* diagonal);
+			innerRing.push_back(position + Vector3r(-x * diagonal, 0, -z * diagonal)* diagonal);
+			innerRing.push_back(position + Vector3r(-x, 0, 0)* diagonal);
+			innerRing.push_back(position + Vector3r(-x * diagonal, 0, z * diagonal)* diagonal);
+		}
+
+		BSPFace face;
+
+		auto makeFace4 = [&](const Vector3r &a, const Vector3r &b, const Vector3r &c, const Vector3r &d) {
+			face.m_Vertices.clear();
+
+			face.m_Vertices.push_back(a);
+			face.m_Vertices.push_back(b);
+			face.m_Vertices.push_back(c);
+			face.m_Vertices.push_back(d);
+
+			face.m_Plane = Planer(Triangle3r(a, b, c));
+
+			if (BSP_DEBUG) {
+				auto d1 = face.m_Plane.distanceFrom(a);
+				auto d2 = face.m_Plane.distanceFrom(b);
+				auto d3 = face.m_Plane.distanceFrom(c);
+				auto d4 = face.m_Plane.distanceFrom(d);
+
+				if (d1 != 0) {
+					LOG("Invalid distance from plane (d1) : " << d1);
+					assert(false);
+				}
+				if (d2 != 0) {
+					LOG("Invalid distance from plane (d2) : " << d2);
+					assert(false);
+				}
+				if (d3 != 0) {
+					LOG("Invalid distance from plane (d3) : " << d3);
+					assert(false);
+				}
+				if (d4 != 0) {
+					LOG("Invalid distance from plane (d4) : " << d4);
+					assert(false);
+				}
+			}
+		};
+		auto makeFace3 = [&](const Vector3r &a, const Vector3r &b, const Vector3r &c) {
+			face.m_Vertices.clear();
+
+			face.m_Vertices.push_back(a);
+			face.m_Vertices.push_back(b);
+			face.m_Vertices.push_back(c);
+
+			face.m_Plane = Planer(Triangle3r(a, b, c));
+
+			if (BSP_DEBUG) {
+				auto d1 = face.m_Plane.distanceFrom(a);
+				auto d2 = face.m_Plane.distanceFrom(b);
+				auto d3 = face.m_Plane.distanceFrom(c);
+
+				if (d1 != 0) {
+					LOG("Invalid distance from plane (d1) : " << d1);
+					assert(false);
+				}
+				if (d2 != 0) {
+					LOG("Invalid distance from plane (d2) : " << d2);
+					assert(false);
+				}
+				if (d3 != 0) {
+					LOG("Invalid distance from plane (d3) : " << d3);
+					assert(false);
+				}
+			}
+		};
+
+		//Make simple faces
+		{
+			for (int i = 0; i < middleRing.size(); i++)
+			{
+				int index1 = i;
+				int index2 = (i + 1) % middleRing.size();
+
+				makeFace4(
+					middleRing[index1],
+					middleRing[index2],
+					innerRing[index1] + innerUp,
+					innerRing[index2] + innerUp);
+
+				bsp->insert(face, "Middle To Upper");
+
+				makeFace4(
+					middleRing[index2],
+					middleRing[index1],
+					innerRing[index1] - innerUp,
+					innerRing[index2] - innerUp);
+
+				bsp->insert(face, "Middle To Lower");
+			}
+		}
+
+		//Making the rest
+		{
+			for (int i = 0; i < middleRing.size(); i++)
+			{
+				int index1 = i;
+				int index2 = (i + 1) % middleRing.size();
+
+				makeFace3(
+					up + position,
+					innerRing[index1] + innerUp,
+					innerRing[index2] + innerUp);
+
+				bsp->insert(face, "Upper to top");
+
+				makeFace3(
+					-up + position,
+					innerRing[index2] - innerUp,
+					innerRing[index1] - innerUp);
+
+				bsp->insert(face, "Lower to bottom");
+			}
+		}
+		
 		return std::move(bsp);
 	}
 }

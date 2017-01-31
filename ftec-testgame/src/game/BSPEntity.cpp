@@ -23,7 +23,7 @@ namespace ftec {
 
 	static void addPortals(Scene *scene, BSP3 &bsp, BSPNode3* node)
 	{
-		bsp.forEach([&scene](BSPNode3* node) {
+		bsp.forEachCell([&scene](BSPNode3* node) {
 			BSPCell3 cell = node->calculateCell();
 
 			if (cell.m_Intersections.size() > 3) {
@@ -84,30 +84,96 @@ namespace ftec {
 		return std::move(bsp);
 	}
 
+	static void createHarryPotterThing(Scene *scene)
+	{
+		double start = Time::currentTimeMilliseconds();
+
+		auto box = makeBox(Vector3r(0, 0, 0), Vector3r(1, 2, 1));
+
+		auto cylinder = makeCylinder(Vector3r(0, 2, 0), Vector3r(1, 1, 1) * 3 / 4);
+
+		auto sphere1 = makeSphere(Vector3r(1, 0, 1), Vector3r(1, 2, 1) * 2 / 3);
+		auto sphere2 = makeSphere(Vector3r(-1, 0, 1), Vector3r(1, 2, 1) * 2 / 3);
+		auto sphere3 = makeSphere(Vector3r(-1, 0, -1), Vector3r(1, 2, 1) * 2 / 3);
+		auto sphere4 = makeSphere(Vector3r(1, 0, -1), Vector3r(1, 2, 1) * 2 / 3);
+
+		//auto sphere5 = makeSphere(Vector3r(0, 2, 0), Vector3r(2, 2, 2));
+
+		double split = Time::currentTimeMilliseconds();
+
+		box->csgDifference(*sphere1);
+		box->csgDifference(*sphere2);
+		box->csgDifference(*sphere3);
+		box->csgDifference(*sphere4);
+		box->csgDifference(*cylinder);
+
+		box->print();
+
+		LOG("\nREST:");
+		//box->csgDifference(*sphere5);
+
+		//box->print();
+
+		double end = Time::currentTimeMilliseconds();
+
+		LOG("Building BSP took " << (end - start) << "ms. CSG time was " << (split - start) << "ms!");
+
+		addPortals(scene, *box, box->getRoot());
+
+		//addPortals(m_Scene, *sphere5, sphere5->getRoot());
+
+
+		//addPortals(m_Scene, *sphere5, sphere5->getRoot());
+
+
+		//Create the portals
+		//addPortals(m_Scene, *box, box->getRoot());
+		//addPortals(m_Scene, *cylinder, cylinder->getRoot());
+	}
+
 	void BSPEntity::onStart()
 	{
 		{
-			auto box1 = makeBox(Vector3r(1, 1, 1) * 2 / 5, Vector3r(1, 1, 1));
-			auto box2 = makeBox(Vector3r(1, 1, 1) * 2 / 5, Vector3r(1, 1, 1) * 2 / 3);
+			double start = Time::currentTimeMilliseconds();
 
-			auto box3 = makeBox(Vector3r(0, 0, 0), Vector3r(1, 2, 1));
-			auto boxl = makeBox(Vector3r(0, 0, 0), Vector3r(1, 2, 1) * 3 / 2);
+			auto box = makeBox(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
+
+			auto sphere1 = makeSphere(Vector3r(1, 1, 1), Vector3r(1, 1, 1) * 2 / 3);
+			auto sphere2 = makeSphere(Vector3r(-1, 1, 1), Vector3r(1, 1, 1) * 2 / 3);
+			auto sphere3 = makeSphere(Vector3r(-1, 1, -1), Vector3r(1, 1, 1) * 2 / 3);
+			auto sphere4 = makeSphere(Vector3r(1, 1, -1), Vector3r(1, 1, 1) * 2 / 3);
+
+			//auto sphere5 = makeSphere(Vector3r(0, 2, 0), Vector3r(2, 2, 2));
+
+			double split = Time::currentTimeMilliseconds();
+
+			box->csgDifference(*sphere1);
+			box->csgDifference(*sphere2);
+			//box->csgDifference(*sphere3);
+			//box->csgDifference(*sphere4);
+
+			box->print();
+
+			LOG("\nREST:");
+			//box->csgDifference(*sphere5);
+
+			//box->print();
+
+			double end = Time::currentTimeMilliseconds();
+
+			LOG("Building BSP took " << (end - start) << "ms. CSG time was " << (split - start) << "ms!");
+
+			addPortals(m_Scene, *box, box->getRoot());
 			
-			//Box with gap in it!
-			box1->csgDifference(*box2);
-			box3->csgDifference(*box1);
-
-			auto box4 = makeBox(Vector3r(0, 0, 0), Vector3r(6, 1, 1) / 2);
+			//addPortals(m_Scene, *sphere5, sphere5->getRoot());
 			
-			//Only the intersection of both right here
-			box3->csgDifference(*box4);
 
-			boxl->csgDifference(*box3);
+			//addPortals(m_Scene, *sphere5, sphere5->getRoot());
+
 
 			//Create the portals
-			addPortals(m_Scene, *boxl, boxl->getRoot());
-
 			//addPortals(m_Scene, *box, box->getRoot());
+			//addPortals(m_Scene, *cylinder, cylinder->getRoot());
 		}
 	}
 
