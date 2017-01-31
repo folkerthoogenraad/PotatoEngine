@@ -563,6 +563,7 @@ namespace ftec {
 
 		return std::move(bsp);
 	}
+
 	std::unique_ptr<BSP3> makeSphere(const Vector3r & position, const Vector3r extends)
 	{
 		auto bsp = std::make_unique<BSP3>();
