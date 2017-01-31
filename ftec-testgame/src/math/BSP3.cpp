@@ -1,5 +1,8 @@
 #include "BSP3.h"
 
+#include "math/collision.h"
+#include "math/Ray3.h"
+
 namespace ftec {
 	void BSPNode3::print(int tabs)
 	{
@@ -55,6 +58,116 @@ namespace ftec {
 		return c;
 	}
 
+	void BSPNode3::forEach(std::function<void(BSPNode3*)> &func)
+	{
+		if (m_Front == nullptr)
+			func(this);
+		else
+			m_Front->forEach(func);
+		
+		if (m_Back != nullptr)
+			m_Back->forEach(func);
+	}
+
+	BSPCell3 BSPNode3::calculateCell()
+	{
+		assert(isSpace());
+		
+		BSPCell3 cell;
+		cell.m_BSP = m_BSP;
+
+		struct PlaneDirectionRef {
+			size_t planeIndex;
+
+			enum class Direction{
+				BACK = -1,
+				FRONT = 1
+			} direction;
+		};
+
+		std::vector<PlaneDirectionRef> indicesAndDirection;
+
+		//Find all the indices for all my parents.
+		{
+			BSPNode3 *n = this;
+
+			//If we are a space we are, by definition, in front.
+			PlaneDirectionRef::Direction dir = PlaneDirectionRef::Direction::FRONT; 
+
+			while (n)
+			{
+				indicesAndDirection.push_back({ n->m_Index, dir });
+
+				//Find the direction we are.
+				if (n->m_Parent) {
+					if (n->m_Parent->m_Back.get() == n)
+						dir = PlaneDirectionRef::Direction::BACK;
+					else
+						dir = PlaneDirectionRef::Direction::FRONT;
+				}
+
+				n = n->m_Parent;
+			}
+			//NOTE: this 'calculation' is far from perfect and even a little hacky
+			//however, there is no reason not to do it, the rest of the function is so
+			//much slower, that this is practically irrelevant.
+		}
+
+		//Now find all the intersection points.
+		{
+			//This part is very very time consuming.
+			for (int i = 0; i < indicesAndDirection.size(); i++) {
+				for (int j = i + 1; j < indicesAndDirection.size(); j++) {
+					auto &plane1 = m_BSP->getPlane(indicesAndDirection[i].planeIndex);
+					auto &plane2 = m_BSP->getPlane(indicesAndDirection[j].planeIndex);
+
+					auto rayResult = intersectRay(plane1.m_Plane, plane2.m_Plane);
+
+					if (!rayResult)
+						continue;
+
+					for (int k = j + 1; k < indicesAndDirection.size(); k++) {
+						auto &plane3 = m_BSP->getPlane(indicesAndDirection[k].planeIndex);
+
+						auto intersection = intersect(plane3.m_Plane, *rayResult);
+
+						if (intersection) {
+							cell.m_Intersections.push_back({
+								(int)indicesAndDirection[i].planeIndex,
+								(int)indicesAndDirection[j].planeIndex,
+								(int)indicesAndDirection[k].planeIndex,
+								*intersection
+							});
+						}
+					}
+				}
+			}
+			
+			//And then there is this part, which makes it even worse
+			cell.m_Intersections.erase(std::remove_if(cell.m_Intersections.begin(), cell.m_Intersections.end(),
+				[&](const BSPCell3::BSPIntersection &test) {
+				for (int i = 0; i < indicesAndDirection.size(); i++) {
+					int index = indicesAndDirection[i].planeIndex;
+
+					if (test.i == index || test.j == index || test.k == index)
+						continue;
+
+					auto &plane = m_BSP->getPlane(index);
+					int s = plane.m_Plane.distanceFrom(test.vertex).sign();
+
+					if (s != (int)indicesAndDirection[i].direction) {
+						return true;
+					}
+				}
+				return false;
+			
+			}), cell.m_Intersections.end());
+		}
+
+		//And then return the result
+		return std::move(cell);
+	}
+
 	bool BSPNode3::isSpace()
 	{
 		return m_Front == nullptr;
@@ -108,14 +221,17 @@ namespace ftec {
 			return false;
 		};
 
+		bool c = false;
+		
 		if (frontCount == 0 && backCount == 0) {
 			//TODO handle this case
 			//Look at a few things, like the normal direction might be important?
 			//assert(false);
-			LOG("Unhandled case! might be important soon™");
-		}
+			LOG("This case is really weird. The planes are coplanar. ");
+			LOG("Maybe add multiple planes per face.");
 
-		bool c = false;
+			return false;
+		}
 		
 		if (frontCount > 0) {
 			c = create(m_Front, allowFront) || c;
@@ -205,13 +321,13 @@ namespace ftec {
 	{
 		return m_Root ? m_Root->cellcount() : 0;
 	}
-
 	int BSP3::solidcount()
 	{
 		if (m_Root)
 			return m_Root->solidcount();
 		return 0;
 	}
+	
 	BSP3 & BSP3::csgUnion(const BSP3 & other)
 	{
 		for (const BSPFace &p : other.m_Planes) {
@@ -228,10 +344,6 @@ namespace ftec {
 			insert(p, p.m_DebugTag, 1, true, false);
 		}
 
-		//TODO clean this up
-		if (m_Root)
-			m_Root->removeWithoutId(1);
-
 		resetID();
 
 		return *this;
@@ -240,14 +352,24 @@ namespace ftec {
 	{
 		//Keep in mind, we copy here!
 		for (BSPFace p : other.m_Planes) {
-			p.m_Plane.flip();	//Even better, double copy
-			insert(p, p.m_DebugTag, 1, true, false);
+			p.m_Plane.flip();	
+			insert(p, p.m_DebugTag, 1, true, false); //Even better, double copy
 		}
+
+		//if (m_Root)
+		//	m_Root->removeWithoutId(1);
 
 		resetID();
 
 		return *this;
 	}
+
+	void BSP3::forEach(std::function<void(BSPNode3 *)> func)
+	{
+		if (m_Root)
+			m_Root->forEach(func);
+	}
+
 	void BSP3::print()
 	{
 		if (m_Root) {

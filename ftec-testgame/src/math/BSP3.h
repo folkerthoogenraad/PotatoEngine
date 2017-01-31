@@ -27,6 +27,18 @@ namespace ftec {
 		int m_ID;
 	};
 
+	struct BSPCell3 {
+		
+		struct BSPIntersection {
+			int i, j, k;
+
+			Vector3r vertex;
+		};
+
+		BSP3 *m_BSP;
+		std::vector<BSPIntersection> m_Intersections;
+	};
+
 	struct BSPNode3 {
 	public:
 		std::shared_ptr<BSPNode3> m_Front;
@@ -40,6 +52,11 @@ namespace ftec {
 		void print(int tabs = 0);
 		int cellcount();
 		int solidcount();
+
+		void forEach(std::function<void(BSPNode3 *)> &func);
+
+		//I don't like the name of this function, but it calculates the cell vertices.
+		BSPCell3 calculateCell();
 
 		bool isSpace();
 	private:
@@ -101,6 +118,8 @@ namespace ftec {
 		BSP3 &csgUnion(const BSP3 &other);
 		BSP3 &csgIntersection(const BSP3 &other);
 		BSP3 &csgDifference(const BSP3 &other);
+
+		void forEach(std::function<void(BSPNode3 *)> func);
 
 		BSPNode3 *getRoot() { return m_Root.get(); };
 		const BSPFace &getPlane(int index) { return m_Planes[index]; }

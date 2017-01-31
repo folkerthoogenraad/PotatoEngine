@@ -91,6 +91,7 @@ namespace ftec {
 
 	static void addPortals(Scene *scene, BSP3 &bsp, BSPNode3* node)
 	{
+#if 0
 		if (!node)
 			return;
 
@@ -122,7 +123,30 @@ namespace ftec {
 
 		if (node->m_Back)
 			addPortals(scene, bsp, node->m_Back.get());
-		
+#endif
+
+		bsp.forEach([&scene](BSPNode3* node) {
+			BSPCell3 cell = node->calculateCell();
+
+			if (cell.m_Intersections.size() > 3) {
+				std::vector<Vector3<rational>> vertices;
+
+				LOG("Creating space. (" << cell.m_Intersections.size() << ")");
+
+				//Not sure if i can even do this
+				for (int i = 0; i < cell.m_Intersections.size(); i++)
+				{
+					vertices.push_back(std::move(cell.m_Intersections[i].vertex));
+				}
+
+				scene->addEntity(std::make_unique<RationalPointCloudEntity>(vertices));
+			}
+			else {
+				LOG("Attempting to create mesh, but amount of vertices is too low.");
+			}
+		});
+
+
 	}
 
 	static std::unique_ptr<BSP3> createFromMesh(const std::string &file)
@@ -349,7 +373,7 @@ namespace ftec {
 
 			//addPortals(m_Scene, *box, box->getRoot());
 		}
-
+#endif
 		{
 			auto box1 = makeBox(Vector3r(1, 1, 1) * 2 / 5, Vector3r(1, 1, 1));
 			auto box2 = makeBox(Vector3r(1, 1, 1) * 2 / 5, Vector3r(1, 1, 1) * 2 / 3);
@@ -370,7 +394,7 @@ namespace ftec {
 
 			//addPortals(m_Scene, *box, box->getRoot());
 		}
-#endif
+#if 0
 		{
 			auto box1 = makeBox(Vector3r(0,0,0), Vector3r(1, 1, 1) * 3 / 4);
 			auto mesh = createFromMesh("mesh/lowsphere.obj");
@@ -394,11 +418,10 @@ namespace ftec {
 
 			//addPortals(m_Scene, *box, box->getRoot());
 		}
-#if 0
 		{
-			auto box = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
-			auto box2 = makeBox<rational>(Vector3r(1, 1, 1), Vector3r(1, 1, 1));
-			auto box6 = makeBox<rational>(Vector3r(rational(1), rational(1), rational(0)), Vector3r(1, 1, 1));
+			auto box = makeBox(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
+			auto box2 = makeBox(Vector3r(1, 1, 1), Vector3r(1, 1, 1));
+			auto box6 = makeBox(Vector3r(rational(1), rational(1), rational(0)), Vector3r(1, 1, 1));
 
 			box->csgUnion(*box2);
 			box->csgIntersection(*box6);
@@ -408,12 +431,13 @@ namespace ftec {
 			//addPortals(m_Scene, *box, box->getRoot());
 		}
 		{
-			auto box = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
-			auto box2 = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(rational(1) / 4, rational(1) * 4, rational(1) / 4));
-			auto box3 = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(rational(1) * 4, rational(1) / 4, rational(1) / 4));
-			auto box4 = makeBox<rational>(Vector3r(0, 0, 0), Vector3r(rational(1) / 4, rational(1) / 4, rational(1) * 4));
+			//Bugged as hell
+			auto box = makeBox(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
+			auto box2 = makeBox(Vector3r(0, 0, 0), Vector3r(rational(1) / 4, rational(1) * 4, rational(1) / 4));
+			auto box3 = makeBox(Vector3r(0, 0, 0), Vector3r(rational(1) * 4, rational(1) / 4, rational(1) / 4));
+			auto box4 = makeBox(Vector3r(0, 0, 0), Vector3r(rational(1) / 4, rational(1) / 4, rational(1) * 4));
 
-			auto out = makeBox<rational>(Vector3r(1, 1, 1), Vector3r(1, 1, 1) * 2 / 3);
+			auto out = makeBox(Vector3r(1, 1, 1), Vector3r(1, 1, 1) * 3 / 2);
 
 			box->csgDifference(*box2);
 			box->csgDifference(*box3);
