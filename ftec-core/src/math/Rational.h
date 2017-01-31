@@ -70,4 +70,7 @@ namespace ftec {
 	typedef Matrix4<rational> Matrix4r;
 	typedef Matrix3<rational> Matrix3r;
 	typedef Matrix2<rational> Matrix2r;
+
+	Vector3<float> toFloat(const Vector3r &v);
+	Vector3r toRational(const Vector3<float> &v, int resolution = 1);
 }

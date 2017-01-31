@@ -50,15 +50,15 @@ namespace ftec {
 		BSP3 *m_BSP;
 	public:
 		void print(int tabs = 0);
-		int cellcount();
-		int solidcount();
+		int cellcount() const;
+		int solidcount() const;
 
 		void forEach(std::function<void(BSPNode3 *)> &func);
 
 		//I don't like the name of this function, but it calculates the cell vertices.
 		BSPCell3 calculateCell();
 
-		bool isSpace();
+		bool isSpace() const;
 	private:
 		bool insert(size_t index, bool allowFront = true, bool allowBack = true);
 		void invert();
@@ -110,10 +110,11 @@ namespace ftec {
 		void resetID();
 		void invert();
 
-
 	public:
-		int cellcount();
-		int solidcount();
+		int cellcount() const;
+		int solidcount() const;
+
+		bool isConvex() const;
 		
 		BSP3 &csgUnion(const BSP3 &other);
 		BSP3 &csgIntersection(const BSP3 &other);

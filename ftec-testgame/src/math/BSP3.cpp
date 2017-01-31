@@ -26,7 +26,7 @@ namespace ftec {
 		printSide(m_Back);
 	}
 
-	int BSPNode3::cellcount()
+	int BSPNode3::cellcount() const
 	{
 		int result = 0;
 
@@ -43,7 +43,7 @@ namespace ftec {
 		return result;
 	}
 
-	int BSPNode3::solidcount()
+	int BSPNode3::solidcount() const
 	{
 		int c = 0;
 
@@ -168,7 +168,7 @@ namespace ftec {
 		return std::move(cell);
 	}
 
-	bool BSPNode3::isSpace()
+	bool BSPNode3::isSpace() const
 	{
 		return m_Front == nullptr;
 	}
@@ -317,19 +317,27 @@ namespace ftec {
 		if (m_Root)
 			m_Root->invert();
 	}
-	int BSP3::cellcount()
+	int BSP3::cellcount() const
 	{
 		return m_Root ? m_Root->cellcount() : 0;
 	}
-	int BSP3::solidcount()
+	int BSP3::solidcount() const
 	{
 		if (m_Root)
 			return m_Root->solidcount();
 		return 0;
 	}
+
+	bool BSP3::isConvex() const
+	{
+		return solidcount() == 1;
+	}
 	
 	BSP3 & BSP3::csgUnion(const BSP3 & other)
 	{
+		if (!other.isConvex())
+			LOG("Ohter BSP is not convex!");
+		
 		for (const BSPFace &p : other.m_Planes) {
 			insert(p, p.m_DebugTag, 1, false, true);
 		}
@@ -340,6 +348,9 @@ namespace ftec {
 	}
 	BSP3 & BSP3::csgIntersection(const BSP3 & other)
 	{
+		if (!other.isConvex())
+			LOG("Ohter BSP is not convex!");
+
 		for (const BSPFace &p : other.m_Planes) {
 			insert(p, p.m_DebugTag, 1, true, false);
 		}
@@ -350,6 +361,9 @@ namespace ftec {
 	}
 	BSP3 & BSP3::csgDifference(const BSP3 & other)
 	{
+		if (!other.isConvex())
+			LOG("Ohter BSP is not convex!");
+
 		//Keep in mind, we copy here!
 		for (BSPFace p : other.m_Planes) {
 			p.m_Plane.flip();	
