@@ -156,10 +156,12 @@ namespace ftec {
 		addPortals(m_Scene, *box7, box7->getRoot());
 #endif
 
-		auto box1 = makeBox(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
+		/*auto box1 = makeBox(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
 		auto box2 = makeBox(Vector3r(1, 1, 1), Vector3r(1, 1, 1));
 
-		box1->csgDifference(*box2);
+		box1->csgDifference(*box2);*/
+
+		auto box1 = createHarryPotterThing(m_Scene);
 
 		addPortals(m_Scene, *box1, box1->getRoot());
 	}

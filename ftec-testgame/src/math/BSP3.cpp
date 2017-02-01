@@ -392,7 +392,7 @@ namespace ftec {
 				}
 			});
 
-			return !done;
+			return false;
 		}
 
 		return false;
@@ -482,6 +482,10 @@ namespace ftec {
 		if (!other.isConvex())
 			LOG("Other BSP is not convex!");
 
+		if (m_Root->clip(other)) {
+			m_Root = nullptr;
+		}
+
 		//Keep in mind, we copy here!
 		for (BSPFace p : other.m_Planes) {
 			p.m_Plane.flip();	
@@ -489,9 +493,6 @@ namespace ftec {
 			insert(p, p.m_DebugTag, 1, true, false); //Even better, double copy
 		}
 
-		if (m_Root->clip(other)) {
-			m_Root = nullptr;
-		}
 
 		resetID();
 
