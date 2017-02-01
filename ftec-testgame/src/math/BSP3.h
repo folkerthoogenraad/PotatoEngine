@@ -20,21 +20,23 @@ namespace ftec {
 	struct BSPFace {
 		Planer m_Plane;
 
-		std::vector<Vector3r> m_Vertices;
-
 		std::string m_DebugTag;
 
+		//ID shouldn't be used.
 		int m_ID;
+	};
+
+	enum class BSPDirection {
+		BACK = -1,
+		ON = 0,
+		FRONT = 1
 	};
 
 	struct BSPCell3 {
 		struct PlaneDirectionRef {
 			int planeIndex;
 
-			enum class Direction {
-				BACK = -1,
-				FRONT = 1
-			} direction;
+			BSPDirection direction;
 		};
 		struct BSPIntersection {
 			int i, j, k;
@@ -51,14 +53,18 @@ namespace ftec {
 		std::shared_ptr<BSPNode3> m_Front;
 		std::shared_ptr<BSPNode3> m_Back;
 
+		std::vector<Vector3r> m_Vertices;
+
 		BSPNode3 *m_Parent;
 
-		size_t m_Index;
 		BSP3 *m_BSP;
+		size_t m_Index;
 	public:
 		void print(int tabs = 0);
 		int cellcount() const;
 		int solidcount() const;
+
+		BSPDirection onSide(const Vector3r &) const;
 
 		void forEachCell(std::function<void(BSPNode3 *)> &func);
 		void forEachCell(std::function<void(const BSPNode3 *)> &func) const;
@@ -68,6 +74,8 @@ namespace ftec {
 
 		bool isSpace() const;
 	private:
+		bool insert(std::shared_ptr<BSPNode3> node);
+
 		bool insert(size_t index, bool allowFront = true, bool allowBack = true);
 		void invert();
 
@@ -93,6 +101,8 @@ namespace ftec {
 		
 		//Use this instead
 		void insert(BSPFace ct, const std::string &dbg = "Node", int id = 0, bool allowFront = true, bool allowBack = true);
+		
+		void insert(std::vector<Vector3r> verts, const std::string &dbg = "Node");
 
 		void resetID();
 		void invert();

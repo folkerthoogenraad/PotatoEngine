@@ -57,6 +57,12 @@ namespace ftec {
 	template <typename T>
 	struct Matrix2;
 
+
+	template <typename T>
+	struct Line2;
+	template <typename T>
+	struct Line3;
+
 	typedef Vector2<rational> Vector2r;
 	typedef Vector3<rational> Vector3r;
 	typedef Vector4<rational> Vector4r;
@@ -70,6 +76,9 @@ namespace ftec {
 	typedef Matrix4<rational> Matrix4r;
 	typedef Matrix3<rational> Matrix3r;
 	typedef Matrix2<rational> Matrix2r;
+
+	typedef Line2<rational> Line2r;
+	typedef Line3<rational> Line3r;
 
 	Vector3<float> toFloat(const Vector3r &v);
 	Vector3r toRational(const Vector3<float> &v, int resolution = 1);

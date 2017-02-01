@@ -49,45 +49,7 @@ namespace ftec {
 		});
 	}
 
-	static std::unique_ptr<BSP3> createFromMesh(const std::string &file)
-	{
-		auto bsp = std::make_unique<BSP3>();
-
-		auto mesh = Engine::getResourceManager().load<Mesh>(file);
-
-		BSPFace face;
-
-		double start = Time::currentTimeMilliseconds();
-		int triangleCount = 0;
-
-		LOG("Done loading mesh, building BSP");
-
-		for (int i = 0; i < mesh->m_Triangles.size(); i += 3) {
-			triangleCount++;
-			auto a = toRational(mesh->m_Vertices[i], 10000);
-			auto b = toRational(mesh->m_Vertices[i + 1], 10000);
-			auto c = toRational(mesh->m_Vertices[i + 2], 10000);
-
-			face.m_ID = 0;
-			face.m_DebugTag = "MeshNode";
-			face.m_Vertices.clear();
-
-			face.m_Vertices.push_back(a);
-			face.m_Vertices.push_back(b);
-			face.m_Vertices.push_back(c);
-
-			face.m_Plane = Planer(a, b, c);
-
-			bsp->insert(face, "MeshNode");
-		}
-
-		double end = Time::currentTimeMilliseconds();
-
-		LOG("Done building bsp, starting making spaces. It took " << (end - start) << "ms for " << triangleCount << " triangles.");
-		
-		return std::move(bsp);
-	}
-
+#if 0
 	std::unique_ptr<BSP3> createHarryPotterThing(Scene *scene)
 	{
 		double start = Time::currentTimeMilliseconds();
@@ -124,6 +86,7 @@ namespace ftec {
 
 		return std::move(box);
 	}
+#endif 
 
 	void BSPEntity::onStart()
 	{
@@ -161,7 +124,9 @@ namespace ftec {
 
 		box1->csgDifference(*box2);*/
 
-		auto box1 = createHarryPotterThing(m_Scene);
+		auto box1 = makeBox(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
+
+		box1->print();
 
 		addPortals(m_Scene, *box1, box1->getRoot());
 	}
