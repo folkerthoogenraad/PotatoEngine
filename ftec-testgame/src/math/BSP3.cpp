@@ -262,30 +262,28 @@ namespace ftec {
 
 		assert(intersectionIndices.size() == intersectionPoints.size());
 
+		auto put = [&](std::shared_ptr<BSPNode3> &target, std::shared_ptr<BSPNode3> &source) {
+			if (!target) {
+				target = source;
+				target->m_Parent = this;
+			}
+			else {
+				target->insert(source);
+			}
+		};
+
 		//-------------------------------------------------------------------
 		// Insert in the back
 		//-------------------------------------------------------------------
 		if (hasBack && !hasFront) {
-			if (m_Back) {
-				m_Back->insert(node);
-			}
-			else {
-				m_Back = node;
-				m_Back->m_Parent = this; //Only set the parent?
-			}
+			put(m_Back, node);
 		}
 
 		//-------------------------------------------------------------------
 		// Insert in the front
 		//-------------------------------------------------------------------
 		else if (hasFront && !hasBack) {
-			if (m_Front) {
-				m_Front->insert(node);
-			}
-			else {
-				m_Front = node;
-				m_Front->m_Parent = this; //Only set the parent?
-			}
+			put(m_Front, node);
 		}
 
 		//-------------------------------------------------------------------
@@ -295,8 +293,11 @@ namespace ftec {
 			//Split the polygon.
 			assert(onCount <= 2);
 			assert(intersectionPoints.size() - onCount == 0);
-			
-			assert(false);
+
+			auto front = std::make_shared<BSPNode3>();
+			auto back = std::make_shared<BSPNode3>();
+
+
 		}
 
 		//-------------------------------------------------------------------
