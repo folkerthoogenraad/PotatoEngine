@@ -127,19 +127,41 @@ namespace ftec {
 
 	void BSPEntity::onStart()
 	{
-		auto thing = createHarryPotterThing(m_Scene);
-		//auto sphere = makeSphere(Vector3r(0, 3, 0), Vector3r(2, 2, 2));
-		auto sphere = makeSphere(Vector3r(0, 0, 0), Vector3r(1, 1, 1) * 16 / 9);
-		auto sphereHole = makeCylinder(Vector3r(0, 0, 0), Vector3r(1, 6, 1) / 2);
-		
-		thing->csgDifference(*sphere);
-		//thing->csgDifference(*sphereHole);
+#if 0
+		auto result = makeBox(Vector3r(0,0,0), Vector3r(4,4,4));
 
-		//addPortals(m_Scene, *sphere, sphere->getRoot());
-		//addPortals(m_Scene, *sphere, sphere->getRoot());
+		auto box1 = makeBox(Vector3r(4, 0, 0), Vector3r(3, 4, 4));
+		auto box2 = makeBox(Vector3r(-4, 0, 0), Vector3r(3, 4, 4));
 
-		addPortals(m_Scene, *thing, thing->getRoot());
-		//addPortals(m_Scene, *sphere, sphere->getRoot());
+		auto box3 = makeBox(Vector3r(0, 0, 4), Vector3r(4, 4, 3));
+		auto box4 = makeBox(Vector3r(0, 0, -4), Vector3r(4, 4, 3));
+
+		auto box5 = makeBox(Vector3r(0, 4, 0), Vector3r(4, 3, 4));
+		auto box6 = makeBox(Vector3r(0, -4, 0), Vector3r(4, 3, 4));
+
+		result->csgDifference(*box1);
+		result->csgDifference(*box2);
+		result->csgDifference(*box3);
+		result->csgDifference(*box4);
+		result->csgDifference(*box5);
+		result->csgDifference(*box6);
+
+		result->print();
+
+		auto box7 = makeBox(Vector3r(1, 1, 1) * 0 / 7, Vector3r(1, 1, 1) * 8 / 7);
+
+		result->csgDifference(*box7);
+
+		addPortals(m_Scene, *result, result->getRoot());
+		addPortals(m_Scene, *box7, box7->getRoot());
+#endif
+
+		auto box1 = makeBox(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
+		auto box2 = makeBox(Vector3r(1, 1, 1), Vector3r(1, 1, 1));
+
+		box1->csgDifference(*box2);
+
+		addPortals(m_Scene, *box1, box1->getRoot());
 	}
 
 	void BSPEntity::render()

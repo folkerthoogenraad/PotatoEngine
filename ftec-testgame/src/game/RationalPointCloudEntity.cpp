@@ -77,7 +77,7 @@ namespace ftec {
 			);
 
 		m_Material->m_NormalMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
-		m_Material->m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_DARK_GRAY);
+		m_Material->m_RoughnessMap = Engine::getResourceManager().load<Texture>("textures/concrete.jpg");
 		m_Material->m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
 
 	}

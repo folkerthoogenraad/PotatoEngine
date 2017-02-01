@@ -340,6 +340,7 @@ namespace ftec {
 		return false;
 	}*/
 
+	//Removes everything inside the BSP
 	bool BSPNode3::clip(const BSP3 & bsp)
 	{
 		if (m_Front && m_Front->clip(bsp))
@@ -348,34 +349,50 @@ namespace ftec {
 		if (m_Back && m_Back->clip(bsp))
 			m_Back.reset();
 
-		if (!m_Front && !m_Back) { //Hardcoded contains ID :')
+		if (!m_Front && !m_Back) {
+
 			BSPFace &self = m_BSP->m_Planes[m_Index];
 
+			LOG("Testing " << self.m_DebugTag);
+			
 			bool done = false;
 
 			bsp.forEachCell([&](const BSPNode3 *node) {
 				if (done)
 					return;
 
-				int frontCount = 0;
-				int backCount = 0;
+				int dir = 1;
 
 				while (node) {
 					const BSPFace &other = bsp.getPlane(node->m_Index);
-					testFace(other, self, frontCount, backCount);
 
-					if (frontCount > 0) {
+					int frontCount = 0;
+					int backCount = 0;
+					
+					if (dir == 1) {
+						testFace(other, self, frontCount, backCount);
+					}
+					if (dir == -1){
+						testFace(other, self, backCount, frontCount);
+					}
+
+					if (frontCount == 0 && backCount > 0) {
+						done = true;
 						break;
+					}
+
+					if (node->m_Parent) {
+						if (node->m_Parent->m_Front.get() == node)
+							dir = 1;
+						else
+							dir = -1;
 					}
 
 					node = node->m_Parent;
 				}
-
-				if (frontCount == 0)
-					done = true;
 			});
 
-			return done;
+			return !done;
 		}
 
 		return false;
@@ -465,13 +482,15 @@ namespace ftec {
 		if (!other.isConvex())
 			LOG("Other BSP is not convex!");
 
-		m_Root->clip(other);
-
 		//Keep in mind, we copy here!
 		for (BSPFace p : other.m_Planes) {
 			p.m_Plane.flip();	
 			
 			insert(p, p.m_DebugTag, 1, true, false); //Even better, double copy
+		}
+
+		if (m_Root->clip(other)) {
+			m_Root = nullptr;
 		}
 
 		resetID();
