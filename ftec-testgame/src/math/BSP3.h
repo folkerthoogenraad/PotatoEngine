@@ -61,6 +61,7 @@ namespace ftec {
 		int solidcount() const;
 
 		void forEachCell(std::function<void(BSPNode3 *)> &func);
+		void forEachCell(std::function<void(const BSPNode3 *)> &func) const;
 
 		//I don't like the name of this function, but it calculates the cell vertices.
 		BSPCell3 calculateCell();
@@ -70,7 +71,14 @@ namespace ftec {
 		bool insert(size_t index, bool allowFront = true, bool allowBack = true);
 		void invert();
 
-		bool removeWithoutId(int id);
+		bool removeWithoutID(int id);
+		bool containsID(int id);
+
+		void testFace(const BSPFace &self, const BSPFace &other, int &frontCount, int &backCount);
+
+		//bool clip(const std::vector<int> &indices); //Works only for convex
+
+		bool clip(const BSP3 &bps);
 
 		friend BSP3;
 	};
@@ -100,9 +108,10 @@ namespace ftec {
 		BSP3 &csgDifference(const BSP3 &other);
 
 		void forEachCell(std::function<void(BSPNode3 *)> func);
+		void forEachCell(std::function<void(const BSPNode3 *)> func) const;
 
 		BSPNode3 *getRoot() { return m_Root.get(); };
-		const BSPFace &getPlane(int index) { return m_Planes[index]; }
+		const BSPFace &getPlane(int index) const { return m_Planes[index]; }
 
 		void print();
 

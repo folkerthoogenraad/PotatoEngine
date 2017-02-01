@@ -53,9 +53,16 @@ namespace ftec {
 			m_Mesh->m_Tangents.push_back(tangent);
 			m_Mesh->m_Tangents.push_back(tangent);
 
-			m_Mesh->m_Uvs.push_back(Vector2f());
-			m_Mesh->m_Uvs.push_back(Vector2f());
-			m_Mesh->m_Uvs.push_back(Vector2f());
+			if (abs(Vector3f::dot(normal, Vector3f(0, 1, 0))) > 0.8f) {
+				m_Mesh->m_Uvs.push_back(Vector2f(t.a.x, t.a.z));
+				m_Mesh->m_Uvs.push_back(Vector2f(t.b.x, t.b.z));
+				m_Mesh->m_Uvs.push_back(Vector2f(t.c.x, t.c.z));
+			}
+			else {
+				m_Mesh->m_Uvs.push_back(Vector2f(t.a.x + t.a.z, t.a.y));
+				m_Mesh->m_Uvs.push_back(Vector2f(t.b.x + t.b.z, t.b.y));
+				m_Mesh->m_Uvs.push_back(Vector2f(t.c.x + t.c.z, t.c.y));
+			}
 
 			m_Mesh->m_Triangles.push_back(i * 3 + 0);
 			m_Mesh->m_Triangles.push_back(i * 3 + 1);
@@ -65,12 +72,12 @@ namespace ftec {
 		m_Mesh->upload();
 
 		m_Material = std::make_shared<PBRMaterial>(
-			Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE),
+			Engine::getResourceManager().load<Texture>("textures/concrete.jpg"),
 			Engine::getResourceManager().load<Shader>("shaders/default")
 			);
 
 		m_Material->m_NormalMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
-		m_Material->m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
+		m_Material->m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_DARK_GRAY);
 		m_Material->m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
 
 	}

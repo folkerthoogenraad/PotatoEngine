@@ -64,7 +64,17 @@ namespace ftec {
 			func(this);
 		else
 			m_Front->forEachCell(func);
-		
+
+		if (m_Back != nullptr)
+			m_Back->forEachCell(func);
+	}
+	void BSPNode3::forEachCell(std::function<void(const BSPNode3*)> &func) const
+	{
+		if (m_Front == nullptr)
+			func(this);
+		else
+			m_Front->forEachCell(func);
+
 		if (m_Back != nullptr)
 			m_Back->forEachCell(func);
 	}
@@ -181,30 +191,8 @@ namespace ftec {
 		int frontCount = 0;
 		int backCount = 0;
 
-		auto insertTest = [&self](const Vector3r &point) -> rational {
-			return self.m_Plane.distanceFrom(point);
-		};
-		auto compare = [&frontCount, &backCount](const rational &v) {
-			int s = v.sign();
-
-			if (s > 0)
-				frontCount++;
-			else if (s < 0)
-				backCount++;
-		};
-
-		//Test the triangle
-		for (const auto &v : other.m_Vertices)
-		{
-			//We calculate the full distance stuff, however, we only use the sign
-			//We might be able to reduce this a bit.
-
-			if (frontCount > 0 && backCount > 0)
-				break;
-
-			compare(insertTest(v));
-		}
-
+		testFace(self, other, frontCount, backCount);
+		
 		auto create = [&](std::shared_ptr<BSPNode3> &position, bool allowedToCreateNew) -> bool {
 			if (position) {
 				return position->insert(index, allowFront, allowBack);
@@ -255,7 +243,7 @@ namespace ftec {
 		if (m_Back)
 			m_Back->invert();
 	}
-	bool BSPNode3::removeWithoutId(int id)
+	bool BSPNode3::removeWithoutID(int id)
 	{
 		BSPFace &self = m_BSP->m_Planes[m_Index];
 
@@ -263,19 +251,132 @@ namespace ftec {
 			return false;
 
 		if (m_Front) {
-			if (m_Front->removeWithoutId(id)) {
+			if (m_Front->removeWithoutID(id)) {
 				m_Front.reset();
 			}
 		}
 
 		if (m_Back) {
-			if (m_Back->removeWithoutId(id)) {
+			if (m_Back->removeWithoutID(id)) {
 				m_Back.reset();
 			}
 		}
 
 		if (!m_Front && !m_Back)
 			return true;
+
+		return false;
+	}
+	bool BSPNode3::containsID(int id)
+	{
+		BSPFace &self = m_BSP->m_Planes[m_Index];
+
+		if (self.m_ID == id)
+			return true;
+
+		if (m_Front && m_Front->containsID(id))
+			return true;
+		if (m_Back && m_Back->containsID(id))
+			return true;
+
+		return false;
+	}
+	
+	void BSPNode3::testFace(const BSPFace & plane, const BSPFace &vertices, int & frontCount, int & backCount)
+	{
+		auto insertTest = [&plane](const Vector3r &point) -> rational {
+			return plane.m_Plane.distanceFrom(point);
+		};
+		auto compare = [&frontCount, &backCount](const rational &v) {
+			int s = v.sign();
+
+			if (s > 0)
+				frontCount++;
+			else if (s < 0)
+				backCount++;
+		};
+
+		//Test the triangle
+		for (const auto &v : vertices.m_Vertices)
+		{
+			//We calculate the full distance stuff, however, we only use the sign
+			//We might be able to reduce this a bit.
+
+			if (frontCount > 0 && backCount > 0)
+				break;
+
+			compare(insertTest(v));
+		}
+
+	}
+
+	/*bool BSPNode3::clip(const std::vector<int> &indices)
+	{
+		if (m_Front && m_Front->clip(indices))
+			m_Front.reset();
+
+		if (m_Back && m_Back->clip(indices))
+			m_Back.reset();
+
+		if (!m_Front && !m_Back && !containsID(1)) { //Hardcoded contains ID :')
+			BSPFace &self = m_BSP->m_Planes[m_Index];
+
+			int frontCount = 0;
+			int backCount = 0;
+
+			for (auto index : indices) {
+				BSPFace &other = m_BSP->m_Planes[index];
+				testFace(other, self, frontCount, backCount);
+
+				if (frontCount > 0)
+					break;
+			}
+
+			if (frontCount == 0 && backCount > 0) {
+				return true;
+			}
+		}
+
+		return false;
+	}*/
+
+	bool BSPNode3::clip(const BSP3 & bsp)
+	{
+		if (m_Front && m_Front->clip(bsp))
+			m_Front.reset();
+
+		if (m_Back && m_Back->clip(bsp))
+			m_Back.reset();
+
+		if (!m_Front && !m_Back) { //Hardcoded contains ID :')
+			BSPFace &self = m_BSP->m_Planes[m_Index];
+
+			bool done = false;
+
+			bsp.forEachCell([&](const BSPNode3 *node) {
+				if (done)
+					return;
+
+				int frontCount = 0;
+				int backCount = 0;
+
+				while (node) {
+					const BSPFace &other = bsp.getPlane(node->m_Index);
+					testFace(other, self, frontCount, backCount);
+
+					if (frontCount > 0) {
+						break;
+					}
+
+					node = node->m_Parent;
+				}
+
+				if (frontCount == 0)
+					done = true;
+			});
+
+			return done;
+		}
 
 		return false;
 	}
@@ -364,6 +465,8 @@ namespace ftec {
 		if (!other.isConvex())
 			LOG("Other BSP is not convex!");
 
+		m_Root->clip(other);
+
 		//Keep in mind, we copy here!
 		for (BSPFace p : other.m_Planes) {
 			p.m_Plane.flip();	
@@ -371,14 +474,17 @@ namespace ftec {
 			insert(p, p.m_DebugTag, 1, true, false); //Even better, double copy
 		}
 
-		m_Root->removeWithoutId(1);
-
 		resetID();
 
 		return *this;
 	}
 
 	void BSP3::forEachCell(std::function<void(BSPNode3 *)> func)
+	{
+		if (m_Root)
+			m_Root->forEachCell(func);
+	}
+	void BSP3::forEachCell(std::function<void(const BSPNode3 *)> func) const
 	{
 		if (m_Root)
 			m_Root->forEachCell(func);
