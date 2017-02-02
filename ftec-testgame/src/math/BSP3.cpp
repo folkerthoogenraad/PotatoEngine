@@ -59,6 +59,21 @@ namespace ftec {
 		return c;
 	}
 
+	bool BSPNode3::valid() const
+	{
+		BSPFace face = m_BSP->getPlane(m_Index);
+
+		if (face.m_Plane.direction.sqrmagnitude() == 0)
+			return false;
+
+		for (const auto &v : m_Vertices) {
+			if (!face.m_Plane.distanceFrom(v) == 0)
+				return false;
+		}
+
+		return true;
+	}
+
 	BSPDirection BSPNode3::onSide(const Vector3r &side) const
 	{
 		//This function tho
@@ -71,7 +86,7 @@ namespace ftec {
 		//Because there are only three options, -1, 0, 1
 		//And that is enough
 
-		return (BSPDirection) s;
+		return (BSPDirection)s;
 	}
 
 	void BSPNode3::forEachCell(std::function<void(BSPNode3*)> &func)
@@ -194,16 +209,34 @@ namespace ftec {
 		return std::move(cell);
 	}
 
+	std::shared_ptr<BSPNode3> BSPNode3::clone(BSP3 *newBSP) const
+	{
+		auto res = std::make_shared<BSPNode3>(*this);
+
+		res->m_BSP = newBSP;
+		if (res->m_Front) {
+			res->m_Front = m_Front->clone(newBSP);
+			res->m_Front->m_Parent = res.get();
+		}
+		if (res->m_Back) {
+			res->m_Back = m_Back->clone(newBSP);
+			res->m_Back->m_Parent = res.get();
+		}
+
+		return std::move(res);
+	}
+
 	bool BSPNode3::isSpace() const
 	{
 		return m_Front == nullptr;
 	}
 
-	bool BSPNode3::insert(std::shared_ptr<BSPNode3> node) //TODO allow front and allow back stuff
+	bool BSPNode3::insert(std::shared_ptr<BSPNode3> node, bool allowFront, bool allowBack) //TODO allow front and allow back stuff
 	{
 		assert(node->m_Vertices.size() >= 3);
 
 		const BSPFace &face = m_BSP->getPlane(m_Index);
+		const BSPFace &otherFace = m_BSP->getPlane(node->m_Index);
 
 		std::vector<int> intersectionIndices;
 		std::vector<Vector3r> intersectionPoints;
@@ -225,7 +258,7 @@ namespace ftec {
 
 			BSPDirection dir = onSide(node->m_Vertices[i]);
 
-			if (dir == BSPDirection::ON)
+			if (dir == BSPDirection::ON && index != node->m_Vertices.size())
 				onCount++;
 
 			if (dir == BSPDirection::BACK) {
@@ -243,32 +276,46 @@ namespace ftec {
 				}
 			}
 
-			directions.push_back(dir);
+			if (index != node->m_Vertices.size())
+				directions.push_back(dir);
 			previous = dir;
 		}
 
 		assert(intersectionIndices.size() <= 2);
 
+		//Generate intersection points
 		for (int i = 0; i < intersectionIndices.size(); i++){
-			int index1 = (intersectionIndices[i] - 1) % m_Vertices.size();
-			int index2 = (intersectionIndices[i]) % m_Vertices.size();
+			int index1 = (intersectionIndices[i] - 1);
+			int index2 = (intersectionIndices[i]);
 
-			auto res = intersect(face.m_Plane, Line3r(m_Vertices[index1], m_Vertices[index2]));
+			while (index1 < 0)
+				index1 += node->m_Vertices.size();
+			while (index1 >= node->m_Vertices.size())
+				index1 -= node->m_Vertices.size();
+
+			while (index2 < 0)
+				index2 += node->m_Vertices.size();
+			while (index2 >= node->m_Vertices.size())
+				index2 -= node->m_Vertices.size();
+
+			auto res = intersect(face.m_Plane, Line3r(node->m_Vertices[index1], node->m_Vertices[index2]));
 			
-			assert(res);
+			assert(res.collided);
 
 			intersectionPoints.push_back(*res);
 		}
 
 		assert(intersectionIndices.size() == intersectionPoints.size());
 
-		auto put = [&](std::shared_ptr<BSPNode3> &target, std::shared_ptr<BSPNode3> &source) {
-			if (!target) {
+		//Create put function
+		auto put = [&](std::shared_ptr<BSPNode3> &target, std::shared_ptr<BSPNode3> &source, bool allowed) {
+			if (target) {
+				target->insert(source, allowFront, allowBack);
+			}
+			else if (allowed || face.m_ID == otherFace.m_ID) {
 				target = source;
 				target->m_Parent = this;
-			}
-			else {
-				target->insert(source);
+				target->m_BSP = m_BSP;
 			}
 		};
 
@@ -276,14 +323,14 @@ namespace ftec {
 		// Insert in the back
 		//-------------------------------------------------------------------
 		if (hasBack && !hasFront) {
-			put(m_Back, node);
+			put(m_Back, node, allowBack);
 		}
 
 		//-------------------------------------------------------------------
 		// Insert in the front
 		//-------------------------------------------------------------------
 		else if (hasFront && !hasBack) {
-			put(m_Front, node);
+			put(m_Front, node, allowFront);
 		}
 
 		//-------------------------------------------------------------------
@@ -292,84 +339,106 @@ namespace ftec {
 		else if (hasBack && hasFront) {
 			//Split the polygon.
 			assert(onCount <= 2);
-			assert(intersectionPoints.size() - onCount == 0);
+			assert(intersectionPoints.size() + onCount == 2);
 
-			auto front = std::make_shared<BSPNode3>();
-			auto back = std::make_shared<BSPNode3>();
+			auto findNext = [&](BSPDirection dir, int offset) -> int {
+				for (int i = offset; i < directions.size() + offset; i++) {
+					int index = i % directions.size();
+					if (directions[index] == dir)
+						return index;
+				}
+				assert(false);
+				return -1;
+			};
+			auto split = [&](std::shared_ptr<BSPNode3> &newNode, BSPDirection front, BSPDirection back) {
+				//Calculate front
+				int startIndex = findNext(front, 0);
+				int index = startIndex;
+				bool done = false;
 
+				auto addIndex = [&index, &directions]() { index++; index = index % directions.size(); };
 
+				while (!done) {
+					newNode->m_Vertices.push_back(node->m_Vertices[index]);
+
+					bool isOn = directions[index] == BSPDirection::ON;
+
+					addIndex();
+
+					//Ayy we found an intersection
+					if (directions[index] == back) {
+						if (!isOn) {
+							int intersectionIndex = -1;
+
+							//Find the intersection index
+							for (int i = 0; i < intersectionIndices.size(); i++) {
+								if (intersectionIndices[i] == index)
+									intersectionIndex = i;
+							}
+
+							//Assert that we found it, very improtant
+							assert(intersectionIndex >= 0);
+
+							//Insert the vertex into the right position
+							newNode->m_Vertices.push_back(intersectionPoints[intersectionIndex]);
+						}
+
+						while (directions[index] == back) {
+							addIndex();
+						}
+
+						if (directions[index] == front) {
+							int intersectionIndex = -1;
+
+							//Find the intersection index
+							for (int i = 0; i < intersectionIndices.size(); i++) {
+								if (intersectionIndices[i] == index)
+									intersectionIndex = i;
+							}
+
+							//Assert that we found it, very improtant
+							assert(intersectionIndex >= 0);
+
+							//Insert the vertex into the right position
+							newNode->m_Vertices.push_back(intersectionPoints[intersectionIndex]);
+						}
+					}
+
+					if (index == startIndex)
+						done = true;
+				}
+			};
+
+			{
+				auto front = std::make_shared<BSPNode3>();
+				front->m_BSP = m_BSP;
+				front->m_Index = node->m_Index;
+
+				split(front, BSPDirection::FRONT, BSPDirection::BACK);
+				put(m_Front, front, allowFront);
+			}
+
+			{
+				auto back = std::make_shared<BSPNode3>();
+				back->m_BSP = m_BSP;
+				back->m_Index = node->m_Index;
+
+				split(back, BSPDirection::BACK, BSPDirection::FRONT);
+				put(m_Back, back, allowBack);
+			}
 		}
 
 		//-------------------------------------------------------------------
 		// Coplaner panic
 		//-------------------------------------------------------------------
 		else { //Oh my, we are coplanar. Panic!
-			assert(false);
+			//assert(false);
+			LOG("Coplaner, may result in bugs.");
 		}
 
 		return false;
 	}
 
-	bool BSPNode3::insert(size_t index, bool allowFront, bool allowBack)
-	{
-		BSPFace &self = m_BSP->m_Planes[m_Index];
-		BSPFace &other = m_BSP->m_Planes[index];
-
-		int frontCount = 0;
-		int backCount = 0;
-
-		//testFace(self, other, frontCount, backCount);
-		
-		auto create = [&](std::shared_ptr<BSPNode3> &position, bool allowedToCreateNew) -> bool {
-			if (position) {
-				return position->insert(index, allowFront, allowBack);
-			}
-			else if (allowedToCreateNew || self.m_ID == other.m_ID) {
-				position = std::make_shared<BSPNode3>();
-				position->m_Parent = this;
-				position->m_Index = index;
-				position->m_BSP = m_BSP;
-
-				return true;
-			}
-
-			return false;
-		};
-
-		bool c = false;
-		
-		if (frontCount == 0 && backCount == 0) {
-			//TODO handle this case
-			//Look at a few things, like the normal direction might be important?
-			//assert(false);
-			LOG("This case is really weird. The planes are coplanar. ");
-			LOG("Maybe add multiple planes per face.");
-
-			return false;
-		}
-		
-		if (frontCount > 0) {
-			c = create(m_Front, allowFront) || c;
-		}
-		if (backCount > 0) {
-			c = create(m_Back, allowBack) || c;
-		}
-
-		return c;
-	}
-	void BSPNode3::invert()
-	{
-		//Planes should already be flipped right now
-		//Because planes are double references, its possible to accidentally double flip this.
-		auto t = m_Front;
-		m_Front = m_Back;
-		m_Back = t;
-
-		if (m_Front)
-			m_Front->invert();
-		if (m_Back)
-			m_Back->invert();
-	}
 	bool BSPNode3::removeWithoutID(int id)
 	{
 		BSPFace &self = m_BSP->m_Planes[m_Index];
@@ -409,11 +478,11 @@ namespace ftec {
 		return false;
 	}
 	
-#if 0
-	void BSPNode3::testFace(const BSPFace & plane, const BSPFace &vertices, int & frontCount, int & backCount)
+	void BSPNode3::testFace(const BSPFace & plane, const BSPNode3 &node, int & frontCount, int & backCount)
 	{
 		auto insertTest = [&plane](const Vector3r &point) -> rational {
-			return plane.m_Plane.distanceFrom(point);
+			auto r = plane.m_Plane.distanceFrom(point);
+			return std::move(r);
 		};
 		auto compare = [&frontCount, &backCount](const rational &v) {
 			int s = v.sign();
@@ -425,54 +494,22 @@ namespace ftec {
 		};
 
 		//Test the triangle
-		for (const auto &v : vertices.m_Vertices)
+		for (const auto &v : node.m_Vertices)
 		{
 			//We calculate the full distance stuff, however, we only use the sign
 			//We might be able to reduce this a bit.
 
-			if (frontCount > 0 && backCount > 0)
-				break;
+			//if (frontCount > 0 && backCount > 0)
+			//	break;
 
 			compare(insertTest(v));
 		}
 
 	}
-#endif
-
-	/*bool BSPNode3::clip(const std::vector<int> &indices)
-	{
-		if (m_Front && m_Front->clip(indices))
-			m_Front.reset();
-
-		if (m_Back && m_Back->clip(indices))
-			m_Back.reset();
-
-		if (!m_Front && !m_Back && !containsID(1)) { //Hardcoded contains ID :')
-			BSPFace &self = m_BSP->m_Planes[m_Index];
-
-			int frontCount = 0;
-			int backCount = 0;
-
-			for (auto index : indices) {
-				BSPFace &other = m_BSP->m_Planes[index];
-				testFace(other, self, frontCount, backCount);
-
-				if (frontCount > 0)
-					break;
-			}
-
-			if (frontCount == 0 && backCount > 0) {
-				return true;
-			}
-		}
-
-		return false;
-	}*/
 
 	//Removes everything inside the BSP
 	bool BSPNode3::clip(const BSP3 & bsp)
 	{
-#if 0
 		if (m_Front && m_Front->clip(bsp))
 			m_Front.reset();
 
@@ -480,10 +517,7 @@ namespace ftec {
 			m_Back.reset();
 
 		if (!m_Front && !m_Back) {
-
 			BSPFace &self = m_BSP->m_Planes[m_Index];
-
-			LOG("Testing " << self.m_DebugTag);
 			
 			bool done = false;
 
@@ -500,16 +534,17 @@ namespace ftec {
 					int backCount = 0;
 					
 					if (dir == 1) {
-						testFace(other, self, frontCount, backCount);
+						testFace(other, *this, frontCount, backCount);
 					}
 					if (dir == -1){
-						testFace(other, self, backCount, frontCount);
+						testFace(other, *this, backCount, frontCount);
 					}
 
-					if (frontCount == 0 && backCount > 0) {
+					if (backCount > 0) {
 						done = true;
 						break;
 					}
+
 
 					if (node->m_Parent) {
 						if (node->m_Parent->m_Front.get() == node)
@@ -522,13 +557,12 @@ namespace ftec {
 				}
 			});
 
-			return false;
+			return !done;
 		}
 
 		return false;
-#endif
-		return false;
 	}
+#if 0
 	void BSP3::insert(BSPFace ct, const std::string & dbg, int id, bool allowFront, bool allowBack)
 	{
 		ct.m_ID = id;
@@ -550,8 +584,9 @@ namespace ftec {
 				m_Planes.pop_back();
 		}
 	}
+#endif
 
-	void BSP3::insert(std::vector<Vector3r> verts, const std::string & dbg)
+	void BSP3::insert(std::vector<Vector3r> verts, const std::string & dbg, bool allowFront, bool allowBack, int id)
 	{
 		assert(verts.size() > 0);
 		
@@ -559,16 +594,18 @@ namespace ftec {
 		BSPFace &face = m_Planes.back();
 
 		face.m_DebugTag = dbg;
-		face.m_ID = 0;
+		face.m_ID = id;
 		face.m_Plane = Planer(verts[0], verts[1], verts[2]);
 
 		auto node = std::make_shared<BSPNode3>();
 		node->m_BSP = this;
 		node->m_Index = m_Planes.size() - 1;
 		node->m_Vertices = std::move(verts);
+
+		node->valid();
 		
 		if (m_Root)
-			m_Root->insert(node);
+			m_Root->insert(node, allowFront, allowBack);
 		else
 			m_Root = node;
 	}
@@ -580,16 +617,7 @@ namespace ftec {
 			p.m_ID = 0;
 		}
 	}
-	void BSP3::invert()
-	{
-		for (auto &p : m_Planes)
-		{
-			p.m_Plane.flip();
-		}
 
-		if (m_Root)
-			m_Root->invert();
-	}
 	int BSP3::cellcount() const
 	{
 		return m_Root ? m_Root->cellcount() : 0;
@@ -605,20 +633,49 @@ namespace ftec {
 	{
 		return solidcount() == 1;
 	}
-	
+
+	std::unique_ptr<BSP3> BSP3::clone() const
+	{
+		auto bsp = std::make_unique<BSP3>(*this);
+
+		bsp->m_Root = m_Root->clone(bsp.get());
+
+		return std::move(bsp);
+	}
+
 	BSP3 & BSP3::csgUnion(const BSP3 & other)
 	{
 		if (!other.isConvex())
-			LOG("Ohter BSP is not convex!");
-		
-		for (const BSPFace &p : other.m_Planes) {
-			insert(p, p.m_DebugTag, 1, false, true);
-		}
+			LOG("Other BSP is not convex!");
+
+		//Recursion not allowed when type is auto
+		std::function<void(const std::shared_ptr<BSPNode3> &node)> insertAll = [&](const std::shared_ptr<BSPNode3> &node) -> void {
+			//We recreate the plane here
+			//If this is a rational with verts, 
+			//this can be very costly.
+			//We are able to reduce this cost by just copying the planes from the old BSP
+			//TODO make that
+
+			std::vector<Vector3r> verts = node->m_Vertices;
+
+			insert(verts, node->m_BSP->getPlane(node->m_Index).m_DebugTag, false, true, 1);
+
+			if (node->m_Front)
+				insertAll(node->m_Front);
+			if (node->m_Back)
+				insertAll(node->m_Back);
+
+		};
+
+		if (m_Root && other.m_Root)
+			insertAll(other.m_Root);
 
 		resetID();
 
 		return *this;
 	}
+
+#if 0
 	BSP3 & BSP3::csgIntersection(const BSP3 & other)
 	{
 		if (!other.isConvex())
@@ -632,6 +689,7 @@ namespace ftec {
 
 		return *this;
 	}
+#endif
 	BSP3 & BSP3::csgDifference(const BSP3 & other)
 	{
 		if (!other.isConvex())
@@ -640,15 +698,30 @@ namespace ftec {
 		if (m_Root->clip(other)) {
 			m_Root = nullptr;
 		}
+		
+		//Recursion not allowed when type is auto
+		std::function<void(const std::shared_ptr<BSPNode3> &node)> insertAll = [&](const std::shared_ptr<BSPNode3> &node) -> void{
+			//We recreate the plane here
+			//If this is a rational with verts, 
+			//this can be very costly.
+			//We are able to reduce this cost by just copying the planes from the old BSP
+			//TODO make that
 
-		//Keep in mind, we copy here!
-		for (BSPFace p : other.m_Planes) {
-			p.m_Plane.flip();	
-			
-			insert(p, p.m_DebugTag, 1, true, false); //Even better, double copy
-		}
+			std::vector<Vector3r> verts = node->m_Vertices;
+			std::reverse(verts.begin(), verts.end());
 
+			insert(verts, node->m_BSP->getPlane(node->m_Index).m_DebugTag, true, false, 1);
 
+			if (node->m_Front)
+				insertAll(node->m_Front);
+			if (node->m_Back)
+				insertAll(node->m_Back);
+
+		};
+
+		if(m_Root && other.m_Root)
+			insertAll(other.m_Root);
+		
 		resetID();
 
 		return *this;
@@ -689,23 +762,23 @@ namespace ftec {
 		const Vector3r g(position.x + extends.x, position.y + extends.y, position.z + extends.z);
 		const Vector3r h(position.x - extends.x, position.y + extends.y, position.z + extends.z);
 
+		Vector3r extra(0, 0, extends.z);
 
-		bsp->insert({ a, b, c, d }, "Bottom");
+		bsp->insert({ a, b, c, d }, "Bottom", true, false);
 
-		bsp->insert({ e, h, g, f }, "Top");
+		bsp->insert({ e, h, g, f }, "Top", true, false);
 
-		bsp->insert({ a, e, f, b }, "Front");
+		bsp->insert({ a, e, f, b }, "Front", true, false);
 
-		bsp->insert({ c, g, h, d }, "Back");
+		bsp->insert({ c, g, h, d }, "Back", true, false);
+		
+		bsp->insert({ b, f, g, c}, "Left", true, false);
 
-		bsp->insert({ b, f, g, c }, "Left");
-
-		bsp->insert({ a, d, h, e }, "Right");
+		bsp->insert({ a, d, h, e }, "Right", true, false);
 
 		return std::move(bsp);
 	}
 
-#if 0	
 	std::unique_ptr<BSP3> makeCylinder(const Vector3r & position, const Vector3r extends)
 	{
 		auto bsp = std::make_unique<BSP3>();
@@ -730,79 +803,42 @@ namespace ftec {
 		BSPFace face;
 
 		{
-			face.m_Vertices.clear();
+			std::vector<Vector3r> verts;
 
 			for (int i = 0; i < vertices.size(); i++) {
-				face.m_Vertices.push_back(vertices[i] + up);
+				verts.push_back(vertices[i] + up);
 			}
-			face.m_Plane = Planer(Triangle3r(face.m_Vertices[0], face.m_Vertices[1], face.m_Vertices[2]));
 
-			bsp->insert(face, "Cylinder top Plane");
+			bsp->insert(verts, "Cylinder top Plane", true, false);
 		}
 
 		{
-			face.m_Vertices.clear();
+			std::vector<Vector3r> verts;
 
-			for (int i = vertices.size() - 1; i > 0; i--) {
-				face.m_Vertices.push_back(vertices[i] - up);
+			for (int i = vertices.size() - 1; i >= 0; i--) {
+				verts.push_back(vertices[i] - up);
 			}
-			face.m_Plane = Planer(Triangle3r(face.m_Vertices[0], face.m_Vertices[1], face.m_Vertices[2]));
 
-			bsp->insert(face, "Cylinder bottom Plane");
+			bsp->insert(verts, "Cylinder bottom Plane", true, false);
 		}
 		
-		auto makeFace = [&](const Vector3r &a, const Vector3r &b, const Vector3r &c, const Vector3r &d) {
-			face.m_Vertices.clear();
-
-			face.m_Vertices.push_back(a);
-			face.m_Vertices.push_back(b);
-			face.m_Vertices.push_back(c);
-			face.m_Vertices.push_back(d);
-
-			face.m_Plane = Planer(Triangle3r(a, b, c));
-
-			if (BSP_DEBUG) {
-				auto d1 = face.m_Plane.distanceFrom(a);
-				auto d2 = face.m_Plane.distanceFrom(b);
-				auto d3 = face.m_Plane.distanceFrom(c);
-				auto d4 = face.m_Plane.distanceFrom(d);
-
-				if (d1 != 0) {
-					LOG("Invalid distance from plane (d1) : " << d1);
-					assert(false);
-				}
-				if (d2 != 0) {
-					LOG("Invalid distance from plane (d2) : " << d2);
-					assert(false);
-				}
-				if (d3 != 0) {
-					LOG("Invalid distance from plane (d3) : " << d3);
-					assert(false);
-				}
-				if (d4 != 0) {
-					LOG("Invalid distance from plane (d4) : " << d4);
-					assert(false);
-				}
-			}
-		};
-
 		for (int i = 0; i < vertices.size(); i++)
 		{
 			int index1 = i;
 			int index2 = (i + 1) % vertices.size();
 
 
-			makeFace(
+			bsp->insert({
 				vertices[index2] + up,
 				vertices[index1] + up,
 				vertices[index1] - up,
-				vertices[index2] - up);
-
-			bsp->insert(face, "Side Plane");
+				vertices[index2] - up
+			}, "Side Plane", true, false);
 		}
 
 		return std::move(bsp);
 	}
+
 	std::unique_ptr<BSP3> makeSphere(const Vector3r & position, const Vector3r extends)
 	{
 		auto bsp = std::make_unique<BSP3>();
@@ -845,71 +881,6 @@ namespace ftec {
 			innerRing.push_back(position + Vector3r(-x * diagonal, 0, z * diagonal)* diagonal);
 		}
 
-		BSPFace face;
-
-		auto makeFace4 = [&](const Vector3r &a, const Vector3r &b, const Vector3r &c, const Vector3r &d) {
-			face.m_Vertices.clear();
-
-			face.m_Vertices.push_back(a);
-			face.m_Vertices.push_back(b);
-			face.m_Vertices.push_back(c);
-			face.m_Vertices.push_back(d);
-
-			face.m_Plane = Planer(Triangle3r(a, b, c));
-
-			if (BSP_DEBUG) {
-				auto d1 = face.m_Plane.distanceFrom(a);
-				auto d2 = face.m_Plane.distanceFrom(b);
-				auto d3 = face.m_Plane.distanceFrom(c);
-				auto d4 = face.m_Plane.distanceFrom(d);
-
-				if (d1 != 0) {
-					LOG("Invalid distance from plane (d1) : " << d1);
-					assert(false);
-				}
-				if (d2 != 0) {
-					LOG("Invalid distance from plane (d2) : " << d2);
-					assert(false);
-				}
-				if (d3 != 0) {
-					LOG("Invalid distance from plane (d3) : " << d3);
-					assert(false);
-				}
-				if (d4 != 0) {
-					LOG("Invalid distance from plane (d4) : " << d4);
-					assert(false);
-				}
-			}
-		};
-		auto makeFace3 = [&](const Vector3r &a, const Vector3r &b, const Vector3r &c) {
-			face.m_Vertices.clear();
-
-			face.m_Vertices.push_back(a);
-			face.m_Vertices.push_back(b);
-			face.m_Vertices.push_back(c);
-
-			face.m_Plane = Planer(Triangle3r(a, b, c));
-
-			if (BSP_DEBUG) {
-				auto d1 = face.m_Plane.distanceFrom(a);
-				auto d2 = face.m_Plane.distanceFrom(b);
-				auto d3 = face.m_Plane.distanceFrom(c);
-
-				if (d1 != 0) {
-					LOG("Invalid distance from plane (d1) : " << d1);
-					assert(false);
-				}
-				if (d2 != 0) {
-					LOG("Invalid distance from plane (d2) : " << d2);
-					assert(false);
-				}
-				if (d3 != 0) {
-					LOG("Invalid distance from plane (d3) : " << d3);
-					assert(false);
-				}
-			}
-		};
-
 		//Make simple faces
 		{
 			for (int i = 0; i < middleRing.size(); i++)
@@ -917,21 +888,19 @@ namespace ftec {
 				int index1 = i;
 				int index2 = (i + 1) % middleRing.size();
 
-				makeFace4(
+				bsp->insert({
 					middleRing[index1],
-					middleRing[index2],
-					innerRing[index1] + innerUp,
-					innerRing[index2] + innerUp);
+					middleRing[index2] ,
+					innerRing[index2] + innerUp,
+					innerRing[index1] + innerUp
+				}, "Middle to Upper");
 
-				bsp->insert(face, "Middle To Upper");
-
-				makeFace4(
-					middleRing[index2],
+				bsp->insert({
 					middleRing[index1],
-					innerRing[index1] - innerUp,
-					innerRing[index2] - innerUp);
-
-				bsp->insert(face, "Middle To Lower");
+					innerRing[index1] - innerUp ,
+					innerRing[index2] - innerUp,
+					middleRing[index2]
+				}, "Middle to Lower");
 			}
 		}
 
@@ -942,23 +911,18 @@ namespace ftec {
 				int index1 = i;
 				int index2 = (i + 1) % middleRing.size();
 
-				makeFace3(
+				bsp->insert({
 					up + position,
 					innerRing[index1] + innerUp,
-					innerRing[index2] + innerUp);
+					innerRing[index2] + innerUp}, "Upper to top");
 
-				bsp->insert(face, "Upper to top");
-
-				makeFace3(
+				bsp->insert({
 					-up + position,
 					innerRing[index2] - innerUp,
-					innerRing[index1] - innerUp);
-
-				bsp->insert(face, "Lower to bottom");
+					innerRing[index1] - innerUp }, "Lower to bottom");
 			}
 		}
 		
 		return std::move(bsp);
 	}
-#endif
 }

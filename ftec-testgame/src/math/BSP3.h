@@ -64,6 +64,8 @@ namespace ftec {
 		int cellcount() const;
 		int solidcount() const;
 
+		bool valid() const;
+
 		BSPDirection onSide(const Vector3r &) const;
 
 		void forEachCell(std::function<void(BSPNode3 *)> &func);
@@ -72,9 +74,11 @@ namespace ftec {
 		//I don't like the name of this function, but it calculates the cell vertices.
 		BSPCell3 calculateCell();
 
+		std::shared_ptr<BSPNode3> clone(BSP3 *newBSP) const;
+
 		bool isSpace() const;
 	private:
-		bool insert(std::shared_ptr<BSPNode3> node);
+		bool insert(std::shared_ptr<BSPNode3> node, bool allowFront = true, bool allowBack = true);
 
 		bool insert(size_t index, bool allowFront = true, bool allowBack = true);
 		void invert();
@@ -82,7 +86,7 @@ namespace ftec {
 		bool removeWithoutID(int id);
 		bool containsID(int id);
 
-		void testFace(const BSPFace &self, const BSPFace &other, int &frontCount, int &backCount);
+		void testFace(const BSPFace &self, const BSPNode3 &node, int &frontCount, int &backCount);
 
 		//bool clip(const std::vector<int> &indices); //Works only for convex
 
@@ -102,7 +106,7 @@ namespace ftec {
 		//Use this instead
 		void insert(BSPFace ct, const std::string &dbg = "Node", int id = 0, bool allowFront = true, bool allowBack = true);
 		
-		void insert(std::vector<Vector3r> verts, const std::string &dbg = "Node");
+		void insert(std::vector<Vector3r> verts, const std::string &dbg = "Node", bool allowFront = true, bool allowBack = true, int id = 0);
 
 		void resetID();
 		void invert();
@@ -112,6 +116,8 @@ namespace ftec {
 		int solidcount() const;
 
 		bool isConvex() const;
+
+		std::unique_ptr<BSP3> clone() const;
 		
 		BSP3 &csgUnion(const BSP3 &other);
 		BSP3 &csgIntersection(const BSP3 &other);

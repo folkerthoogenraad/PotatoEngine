@@ -49,7 +49,6 @@ namespace ftec {
 		});
 	}
 
-#if 0
 	std::unique_ptr<BSP3> createHarryPotterThing(Scene *scene)
 	{
 		double start = Time::currentTimeMilliseconds();
@@ -86,7 +85,6 @@ namespace ftec {
 
 		return std::move(box);
 	}
-#endif 
 
 	void BSPEntity::onStart()
 	{
@@ -119,14 +117,33 @@ namespace ftec {
 		addPortals(m_Scene, *box7, box7->getRoot());
 #endif
 
-		/*auto box1 = makeBox(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
-		auto box2 = makeBox(Vector3r(1, 1, 1), Vector3r(1, 1, 1));
-
-		box1->csgDifference(*box2);*/
+		double start = Time::currentTimeMilliseconds();
 
 		auto box1 = makeBox(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
+		auto boxHole = makeBox(Vector3r(0, 0, 0), Vector3r(12, 1, 1) * 2 / 3);
 
-		box1->print();
+		auto box2 = makeSphere(Vector3r(1, 1, 1), Vector3r(1, 1, 1));
+		auto box3 = makeSphere(Vector3r(1, 1, 1), Vector3r(1, 1, 1) * 2 / 3);
+
+		auto box4 = makeCylinder(Vector3r(1, 1, 1), Vector3r(1, 10, 1) * 1 / 3);
+
+		auto sphere1 = makeSphere(Vector3r(-1, 1, -1), Vector3r(1, 1, 1));
+		auto cyl2 = makeCylinder(Vector3r(-1, 1, -1), Vector3r(1, 10, 1) * 1 / 3);
+		
+		box2->csgDifference(*box3);
+
+		box1->csgUnion(*box2);
+
+		box1->csgDifference(*box4);
+
+		sphere1->csgDifference(*cyl2);
+		box1->csgUnion(*sphere1);
+
+		box1->csgDifference(*boxHole);
+
+		double end = Time::currentTimeMilliseconds();
+
+		LOG("CSG TIME " << (end - start) << "ms.");
 
 		addPortals(m_Scene, *box1, box1->getRoot());
 	}
