@@ -119,27 +119,28 @@ namespace ftec {
 
 		double start = Time::currentTimeMilliseconds();
 
-		auto box1 = makeBox(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
-		auto boxHole = makeBox(Vector3r(0, 0, 0), Vector3r(12, 1, 1) * 2 / 3);
+		auto box1 = makeBox(Vector3r(1, 1, 1) * -5 / 17 , Vector3r(1, 1, 1));
 
 		auto box2 = makeSphere(Vector3r(1, 1, 1), Vector3r(1, 1, 1));
+		
 		auto box3 = makeSphere(Vector3r(1, 1, 1), Vector3r(1, 1, 1) * 2 / 3);
+		auto cyl1 = makeCylinder(Vector3r(1, 1, 1), Vector3r(1, 10, 1) * 1 / 3);
 
-		auto box4 = makeCylinder(Vector3r(1, 1, 1), Vector3r(1, 10, 1) * 1 / 3);
+		auto box4 = makeBox(Vector3r(0, 0, 0), Vector3r(12, 1, 1) * 4 / 5);
 
 		auto sphere1 = makeSphere(Vector3r(-1, 1, -1), Vector3r(1, 1, 1));
 		auto cyl2 = makeCylinder(Vector3r(-1, 1, -1), Vector3r(1, 10, 1) * 1 / 3);
-		
+
+
 		box2->csgDifference(*box3);
+		box2->csgDifference(*cyl1);
 
 		box1->csgUnion(*box2);
 
-		box1->csgDifference(*box4);
+		//sphere1->csgDifference(*cyl2);
+		//box1->csgDifference(*sphere1);
 
-		sphere1->csgDifference(*cyl2);
-		box1->csgUnion(*sphere1);
-
-		box1->csgDifference(*boxHole);
+		//box1->csgDifference(*box4);
 
 		double end = Time::currentTimeMilliseconds();
 

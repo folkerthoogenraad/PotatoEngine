@@ -562,29 +562,6 @@ namespace ftec {
 
 		return false;
 	}
-#if 0
-	void BSP3::insert(BSPFace ct, const std::string & dbg, int id, bool allowFront, bool allowBack)
-	{
-		ct.m_ID = id;
-		ct.m_DebugTag = dbg;
-		m_Planes.push_back(std::move(ct));
-
-		//If there is no BSP root yet, create the root
-		if (!m_Root) {
-			m_Root = std::make_shared<BSPNode3>();
-			m_Root->m_Index = 0;
-			m_Root->m_BSP = this;
-		}
-
-		//Else, if there is a root, insert it into the root and let it figure out the rest from here
-		else {
-			bool i = m_Root->insert(m_Planes.size() - 1, allowFront, allowBack);
-
-			if (!i)
-				m_Planes.pop_back();
-		}
-	}
-#endif
 
 	void BSP3::insert(std::vector<Vector3r> verts, const std::string & dbg, bool allowFront, bool allowBack, int id)
 	{
@@ -656,14 +633,14 @@ namespace ftec {
 			//We are able to reduce this cost by just copying the planes from the old BSP
 			//TODO make that
 
-			std::vector<Vector3r> verts = node->m_Vertices;
-
-			insert(verts, node->m_BSP->getPlane(node->m_Index).m_DebugTag, false, true, 1);
-
 			if (node->m_Front)
 				insertAll(node->m_Front);
 			if (node->m_Back)
 				insertAll(node->m_Back);
+
+			std::vector<Vector3r> verts = node->m_Vertices;
+
+			insert(verts, node->m_BSP->getPlane(node->m_Index).m_DebugTag, false, true, 1);
 
 		};
 
