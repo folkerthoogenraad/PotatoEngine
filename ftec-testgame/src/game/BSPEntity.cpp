@@ -19,6 +19,10 @@
 
 #include "logger/log.h"
 
+#include "graphics/GL.h"
+#include "engine/Input.h"
+#include "engine/Keycodes.h"
+
 namespace ftec {
 
 	static void addPortals(Scene *scene, BSP3 &bsp, BSPNode3* node)
@@ -62,10 +66,6 @@ namespace ftec {
 		auto sphere3 = makeSphere(Vector3r(-1, 0, -1), Vector3r(1, 2, 1) * 2 / 3);
 		auto sphere4 = makeSphere(Vector3r(1, 0, -1), Vector3r(1, 2, 1) * 2 / 3);
 
-		//auto sphere5 = makeSphere(Vector3r(0, 2, 0), Vector3r(2, 2, 2));
-
-		double split = Time::currentTimeMilliseconds();
-
 		box->csgDifference(*sphere1);
 		box->csgDifference(*sphere2);
 		box->csgDifference(*sphere3);
@@ -79,11 +79,34 @@ namespace ftec {
 
 		//box->print();
 
+
+		double split = Time::currentTimeMilliseconds();
 		double end = Time::currentTimeMilliseconds();
 
 		LOG("Building BSP took " << (end - start) << "ms. CSG time was " << (split - start) << "ms!");
 
 		return std::move(box);
+	}
+
+	std::unique_ptr<BSP3> createBug()
+	{
+		auto box1 = makeBox(Vector3r(0, 0, 0), Vector3r(1, 1, 1));
+
+		rational p = rational(1);
+
+		auto cyl1 = makeBox(Vector3r(1, 1, 1) * p, Vector3r(1, 1, 1));
+		auto sphere1 = makeSphere(Vector3r(1, 1, 1) * p, Vector3r(1, 1, 1) * 2 / 3);
+		auto box2 = makeBox(Vector3r(1, 1, 1) * p, Vector3r(1, 8, 1) * 1 / 3);
+
+		//Change this order and it breaks/fixes
+		cyl1->csgDifference(*sphere1);
+		cyl1->csgDifference(*box2);
+
+		box1->csgUnion(*cyl1);
+
+		box1->print();
+		
+		return std::move(box1);
 	}
 
 	void BSPEntity::onStart()
@@ -115,7 +138,7 @@ namespace ftec {
 
 		addPortals(m_Scene, *result, result->getRoot());
 		addPortals(m_Scene, *box7, box7->getRoot());
-#endif
+
 
 		double start = Time::currentTimeMilliseconds();
 
@@ -137,7 +160,7 @@ namespace ftec {
 
 		box1->csgUnion(*box2);
 
-		//sphere1->csgDifference(*cyl2);
+		//sphere1->csgDifference(*box2);
 		//box1->csgDifference(*sphere1);
 
 		//box1->csgDifference(*box4);
@@ -147,10 +170,32 @@ namespace ftec {
 		LOG("CSG TIME " << (end - start) << "ms.");
 
 		addPortals(m_Scene, *box1, box1->getRoot());
+#endif
+
+#if 0
+		auto box1 = createHarryPotterThing(m_Scene);
+
+		auto sphere = makeSphere(Vector3r(1, 0, 1), Vector3r(2, 2, 2));
+		auto cyl = makeCylinder(Vector3r(1, 0, 1), Vector3r(1, 8, 1) * 1 / 2);
+		
+		sphere->csgDifference(*box1);
+		sphere->csgDifference(*cyl);
+
+		addPortals(m_Scene, *sphere, sphere->getRoot());
+#endif
+		
+		auto box1 = createBug();
+
+		addPortals(m_Scene, *box1, box1->getRoot());
 	}
 
 	void BSPEntity::render()
 	{
-
+		if (Input::isKeyDown(KEY_SPACE)) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+		else {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
 	}
 }

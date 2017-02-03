@@ -432,8 +432,22 @@ namespace ftec {
 		// Coplaner panic
 		//-------------------------------------------------------------------
 		else { //Oh my, we are coplanar. Panic!
-			//assert(false);
 			LOG("Coplaner, may result in bugs.");
+
+			LOG("Self index : " << m_Index << ", Other: " << node->m_Index);
+
+			int s = Vector3r::dot(face.m_Plane.direction, otherFace.m_Plane.direction).sign();
+
+			if (s > 0) {
+				put(m_Front, node, allowFront);
+			}
+			else if (s < 0) {
+				put(m_Back, node, allowBack);
+			}
+			else {
+				LOG("BUG! planes are orthogonal");
+				assert(false);
+			}
 		}
 
 		return false;
@@ -563,6 +577,8 @@ namespace ftec {
 		return false;
 	}
 
+
+
 	void BSP3::insert(std::vector<Vector3r> verts, const std::string & dbg, bool allowFront, bool allowBack, int id)
 	{
 		assert(verts.size() > 0);
@@ -633,14 +649,14 @@ namespace ftec {
 			//We are able to reduce this cost by just copying the planes from the old BSP
 			//TODO make that
 
+			std::vector<Vector3r> verts = node->m_Vertices;
+
+			insert(verts, node->m_BSP->getPlane(node->m_Index).m_DebugTag, false, true, 1);
+			
 			if (node->m_Front)
 				insertAll(node->m_Front);
 			if (node->m_Back)
 				insertAll(node->m_Back);
-
-			std::vector<Vector3r> verts = node->m_Vertices;
-
-			insert(verts, node->m_BSP->getPlane(node->m_Index).m_DebugTag, false, true, 1);
 
 		};
 
