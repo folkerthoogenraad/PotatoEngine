@@ -2,6 +2,7 @@
 #include "engine/DesktopEngine.h"
 
 #include "logger/log.h"
+#include "potato_ui/Event.h"
 
 int main(void)
 {

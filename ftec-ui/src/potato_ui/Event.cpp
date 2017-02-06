@@ -8,9 +8,4 @@ namespace potato {
 	{
 
 	}
-
-	void Event::yield()
-	{
-
-	}
 }

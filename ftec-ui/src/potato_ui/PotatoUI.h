@@ -11,8 +11,9 @@ PotatoUI (obviously).
 */
 
 #include <string>
-#include <condition_variable>
+
 #include "graphics/Graphics2D.h"
+#include "math/Vector2.h"
 
 namespace potato {
 
@@ -49,8 +50,7 @@ namespace potato {
 		std::shared_ptr<Panel> m_Root;
 		std::shared_ptr<Panel> m_ContextMenu;
 
-		std::condition_variable m_CV;
-		std::mutex m_Mutex;
+		ftec::Vector2f m_MouseStart;
 	public:
 		PotatoUI();
 		~PotatoUI();

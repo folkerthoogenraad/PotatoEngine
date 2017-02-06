@@ -141,11 +141,6 @@
     <ClCompile Include="src\game\VoronoiCanvas.cpp" />
     <ClCompile Include="src\game\Voronoi3DEntity.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\math\bigint\BigInteger.cc" />
-    <ClCompile Include="src\math\bigint\BigIntegerAlgorithms.cc" />
-    <ClCompile Include="src\math\bigint\BigIntegerUtils.cc" />
-    <ClCompile Include="src\math\bigint\BigUnsigned.cc" />
-    <ClCompile Include="src\math\bigint\BigUnsignedInABase.cc" />
     <ClCompile Include="src\math\DelaunayVertex.cpp" />
     <ClCompile Include="src\math\StairAlgorithm.cpp" />
     <ClCompile Include="src\math\StairArc.cpp" />
@@ -163,13 +158,6 @@
     <ClInclude Include="src\game\TestCanvas.h" />
     <ClInclude Include="src\game\VoronoiCanvas.h" />
     <ClInclude Include="src\game\Voronoi3DEntity.h" />
-    <ClInclude Include="src\math\bigint\BigInteger.hh" />
-    <ClInclude Include="src\math\bigint\BigIntegerAlgorithms.hh" />
-    <ClInclude Include="src\math\bigint\BigIntegerLibrary.hh" />
-    <ClInclude Include="src\math\bigint\BigIntegerUtils.hh" />
-    <ClInclude Include="src\math\bigint\BigUnsigned.hh" />
-    <ClInclude Include="src\math\bigint\BigUnsignedInABase.hh" />
-    <ClInclude Include="src\math\bigint\NumberlikeArray.hh" />
     <ClInclude Include="src\math\BSP2.h" />
     <ClInclude Include="src\math\Delaunay2.h" />
     <ClInclude Include="src\math\Delaunay3.h" />
