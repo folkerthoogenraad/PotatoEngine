@@ -63,6 +63,9 @@
     <ClCompile Include="src\potato_ui\Canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\potato_ui\EventInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\potato_ui\Button.h">
@@ -117,6 +120,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\potato_ui\Canvas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\potato_ui\EventInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

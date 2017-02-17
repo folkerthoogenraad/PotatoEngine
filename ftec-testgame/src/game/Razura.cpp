@@ -1,6 +1,8 @@
 #include "Razura.h"
 
 #include "engine/Engine.h"
+#include "engine/Input.h"
+#include "logger/log.h"
 #include "resources/ResourceManager.h"
 
 #include "scene/Scene.h"
@@ -21,6 +23,9 @@
 #include "potato_ui/TextField.h"
 
 #include "NoClipCameraEntity.h"
+
+#include "potato_ui/Event.h"
+#include "potato_ui/EventInput.h"
 
 namespace ftec {
 

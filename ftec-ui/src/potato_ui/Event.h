@@ -1,27 +1,28 @@
 #pragma once
 
 #include <memory>
+#include <iostream>
 
 #include "math/Vector2.h"
 
 namespace potato {
 
-	enum EventType {
-		MOUSE_PRESSED,
-		MOUSE_RELEASED,
-		MOUSE_MOVE,
+	enum class EventType {
+		MOUSE_PRESSED		= 0x00,
+		MOUSE_RELEASED		= 0x01,
+		MOUSE_MOVE			= 0x02,
+		MOUSE_DRAG			= 0x04,
 
-		KEYBOARD_TYPED,
-		KEYBOARD_PRESSED,
-		KEYBOARD_RELEASED
+		KEYBOARD_TYPED		= 0x08,
+		KEYBOARD_PRESSED	= 0x10,
+		KEYBOARD_RELEASED	= 0x20
 	};
 
-	class PotatoUI;
+	std::ostream &operator <<(std::ostream &stream, EventType type);
 
 	class Event {
 	private:
 		bool m_Consumed = false;
-		std::shared_ptr<PotatoUI> m_UI;
 
 		EventType m_EventType;
 
@@ -34,8 +35,7 @@ namespace potato {
 
 		bool m_CrtlDown, m_ShiftDown, m_AltDown;
 	public:
-		//Creates a new event from the given input values in ftec::Input
-		Event(std::shared_ptr<PotatoUI> ui);
+		Event();
 		~Event() = default;
 
 		bool isConsumed() const { return m_Consumed; }
@@ -57,7 +57,7 @@ namespace potato {
 
 		operator bool() { return !m_Consumed; }
 
-		friend PotatoUI;
+		friend class EventInput;
 	};
 
 }

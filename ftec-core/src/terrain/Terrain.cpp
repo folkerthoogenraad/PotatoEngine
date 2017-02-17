@@ -24,7 +24,7 @@ namespace ftec {
 		assert(m_Height > 0);
 
 		m_Data.resize(m_Width * m_Height);
-		std::fill(m_Data.begin(), m_Data.end(), -1);
+		std::fill(m_Data.begin(), m_Data.end(), (const float)-1);
 	}
 
 	void Terrain::create()

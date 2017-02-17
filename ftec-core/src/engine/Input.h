@@ -3,6 +3,8 @@
 #include <set>
 #include <string>
 
+#include "Keycodes.h" //This is not needed, but its just better for everyone that uses input anyway. Will remove later on, probalby
+
 namespace ftec {
 
 	template <typename T>
@@ -15,6 +17,8 @@ namespace ftec {
 
 	class Input {
 	public:
+		Input() = delete;
+
 		static bool isKeyDown(int keycode);
 		static bool isKeyPressed(int keycode);
 		static bool isKeyReleased(int keycode);
@@ -23,6 +27,8 @@ namespace ftec {
 		static bool isMouseButtonDown(int keycode);
 		static bool isMouseButtonPressed(int keycode);
 		static bool isMouseButtonReleased(int keycode);
+
+		static Vector2f getMouseLastPressedPosition(int mousebutton);
 
 		static float getMouseX();
 		static float getMouseY();

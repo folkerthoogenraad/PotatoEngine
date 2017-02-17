@@ -5,6 +5,9 @@
 #include "graphics/Window.h"
 #include "graphics/Camera.h"
 
+#include "Event.h"
+#include "EventInput.h"
+
 #include "engine/Engine.h"
 
 namespace potato {
@@ -46,18 +49,22 @@ namespace potato {
 	void PotatoUI::update()	
 	{
 		if (m_Root) {
-			Event event(shared_from_this());
 
+			//TODO this kinda is an event too
 			if (ftec::Engine::getWindow().isResized()) {
 				m_Root->localbounds() = ftec::Rectanglei(0, 0, (int)ftec::Engine::getWindow().getWidth(), (int)ftec::Engine::getWindow().getHeight());
 				m_Root->updateLayout();
 			}
 
-			if(m_ContextMenu)
-				m_ContextMenu->process(event);
+			EventInput input;
 
-			if(!event.isConsumed())
-				m_Root->process(event);
+			input.forEach([this](Event &event) {
+				if (m_ContextMenu)
+					m_ContextMenu->process(event);
+
+				if (!event.isConsumed())
+					m_Root->process(event);
+			});
 
 			if (m_ContextMenu)
 				m_ContextMenu->update();

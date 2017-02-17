@@ -8,6 +8,7 @@
 #include "math/Vector2.h"
 
 #include <assert.h>
+#include <array>
 
 namespace ftec {
 
@@ -27,6 +28,8 @@ namespace ftec {
 	static Vector2f mousePosition = Vector2f();
 	static Vector2f mouseDelta = Vector2f();
 	static Vector2f scrollDelta = Vector2f();
+
+	static std::array<Vector2f, 20> mousePressPositions;
 
 	Vector2f Input::getMousePosition()
 	{
@@ -171,6 +174,7 @@ namespace ftec {
 		if (action == GLFW_PRESS) {
 			pressedMouse.insert(button);
 			downMouse.insert(button);
+			mousePressPositions[button] = mousePosition;
 		}
 		if (action == GLFW_RELEASE) {
 			releasedMouse.insert(button);
@@ -211,6 +215,11 @@ namespace ftec {
 	bool Input::isMouseButtonReleased(int keycode)
 	{
 		return !disabled && releasedMouse.find(keycode) != releasedMouse.end();
+	}
+
+	Vector2f Input::getMouseLastPressedPosition(int mb)
+	{
+		return mousePressPositions[mb];
 	}
 
 	float Input::getMouseX()
