@@ -39,7 +39,7 @@ namespace potato {
 		), true);
 	}
 
-	void Dropdown::onClick()
+	void Dropdown::onClick(Event &event)
 	{
 		Bounds bounds = getGlobalBounds();
 

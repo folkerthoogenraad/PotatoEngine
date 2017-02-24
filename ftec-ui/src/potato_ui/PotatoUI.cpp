@@ -51,10 +51,17 @@ namespace potato {
 		if (m_Root) {
 
 			//TODO this kinda is an event too
+			//This should probably be handled differently but whatever, its good for now
 			if (ftec::Engine::getWindow().isResized()) {
 				m_Root->localbounds() = ftec::Rectanglei(0, 0, (int)ftec::Engine::getWindow().getWidth(), (int)ftec::Engine::getWindow().getHeight());
 				m_Root->updateLayout();
 			}
+
+			//This has to be better, but whatever
+			if (m_ContextMenu)
+				m_ContextMenu->preEvents();
+
+			m_Root->preEvents();
 
 			EventInput input;
 

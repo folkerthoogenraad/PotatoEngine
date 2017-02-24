@@ -1,5 +1,7 @@
 #include "Panel.h"
 
+#include <assert.h>
+
 #include "graphics/Graphics2D.h"
 #include "graphics/Font.h"
 
@@ -59,6 +61,13 @@ namespace potato {
 	}
 
 
+	void Panel::preEvents()
+	{
+		for (auto child : m_Children) {
+			child->preEvents();
+		}
+	}
+
 	void Panel::process(Event &event)
 	{
 		for (auto child : m_Children) {
@@ -82,10 +91,8 @@ namespace potato {
 
 	void Panel::processSelf(Event &event)
 	{
-		//Hovering inputs
-		if (event.getType() == EventType::MOUSE_MOVE
-			|| event.getType() == EventType::MOUSE_DRAG) {
-
+		//Hover stuff
+		if (event.isMotionEvent()) {
 			bool hover = inBounds(event.getMousePosition());
 			bool childHover = inChildBounds(event.getMousePosition());
 
@@ -93,45 +100,88 @@ namespace potato {
 
 			if (hover && !m_Hovering) {
 				m_Hovering = hover;
-				onHoverEnter();
+				onHoverEnter(event);
 			}
 			else if (!hover && m_Hovering) {
 				m_Hovering = hover;
-				onHoverLeave();
+				onHoverLeave(event);
+			}
+
+			//Hover or drag pls
+			if(isHoveringSelf() || isPressed())
+				onHoverOrDrag(event);
+		}
+
+		//Move event
+		if (event.getType() == EventType::MOUSE_MOVE) {
+			if (isHoveringSelf()) {
+				onHover(event);
+			}
+		}
+		
+		//Drag event
+		if (event.getType() == EventType::MOUSE_DRAG) {
+			if (isHoveringSelf() || isPressed()) {
+				onDrag(event);
 			}
 		}
 
-		{
-			if (isHoveringSelf()) {
-				if (ftec::Input::isMouseButtonPressed(MOUSE_BUTTON_1)) {
-					m_Pressed = true;
-					if (m_Focusable) {
-						m_Focus = true;
-					}
+		//Press event
+		if (event.getType() == EventType::MOUSE_PRESSED) {
+			if (isHoveringSelf()){
+				m_Pressed = true;
+				if (m_Focusable) {
+					m_Focus = true;
 				}
-				if (m_Pressed && ftec::Input::isMouseButtonReleased(MOUSE_BUTTON_1)) {
-					m_Pressed = false; //Maybe a m_Clicked for one frame?
-					onClick();
-				}
+				onMousePressed(event);
 			}
 			else {
-				//I see how this can become a big fucking bug if someone swallows the release event
-				//Well, just pray to lord jezus christ in heaven that noone ever swallows the release event
+				m_Pressed = false;
+				m_Focus = false;
+			}
+		}
 
-				//cancel the press when its released outside the panel
-				if (m_Pressed && ftec::Input::isMouseButtonReleased(MOUSE_BUTTON_1)) {
+		//Release event
+		if (event.getType() == EventType::MOUSE_RELEASED){
+			if (isHoveringSelf()) {
+				if (m_Pressed) {
 					m_Pressed = false;
+					onClick(event);
 				}
-				if (ftec::Input::isMouseButtonPressed(MOUSE_BUTTON_1)) {
-					m_Focus = false;
+				onMouseReleased(event);
+			}
+			else {
+				if (m_Pressed)
+				{
+					m_Pressed = false;
+					onMouseReleased(event);
 				}
 			}
 		}
 
-		//Tabbing between focus things
-		{
-			if (ftec::Input::isKeyTyped(KEY_TAB)) {
-				switchFocus();
+		//Typed keys
+		if (event.getType() == EventType::KEYBOARD_TYPED) {
+			if (isFocussed()) {
+				if (event.getKeyCode() == KEY_TAB && !m_SwallowTab) {
+					switchFocus();
+				}
+				else {
+					onKeyTyped(event);
+				}
+			}
+		}
+	
+		//Keyboard press events
+		if (event.getType() == EventType::KEYBOARD_PRESSED) {
+			if (isFocussed()) {
+				onKeyPressed(event);
+			}
+		}
+
+		//Keyboard press events
+		if (event.getType() == EventType::KEYBOARD_RELEASED) {
+			if (isFocussed()) {
+				onKeyReleased(event);
 			}
 		}
 	}
@@ -144,16 +194,70 @@ namespace potato {
 		}
 	}
 
-	void Panel::onClick()
+	void Panel::onClick(Event & evt)
 	{
+		//Can be multiple events (like, keyboard type enter and stuff)
 	}
 
-	void Panel::onHoverEnter()
+	void Panel::onHoverEnter(Event & evt)
 	{
+		assert(evt.isMotionEvent());
 	}
 
-	void Panel::onHoverLeave()
+	void Panel::onHoverLeave(Event & evt)
 	{
+		assert(evt.isMotionEvent());
+	}
+
+	void Panel::onHover(Event & evt)
+	{
+		assert(evt.getType() == EventType::MOUSE_MOVE);
+	}
+
+	void Panel::onDrag(Event & evt)
+	{
+		assert(evt.getType() == EventType::MOUSE_DRAG);
+	}
+
+	void Panel::onHoverOrDrag(Event & evt)
+	{
+		assert(evt.isMotionEvent());
+	}
+
+	void Panel::onMouseReleased(Event & evt)
+	{
+		assert(evt.getType() == EventType::MOUSE_RELEASED);
+	}
+
+	void Panel::onMousePressed(Event & evt)
+	{
+		assert(evt.getType() == EventType::MOUSE_PRESSED);
+	}
+
+	void Panel::onKeyTyped(Event & evt)
+	{
+		assert(evt.getType() == EventType::KEYBOARD_TYPED);
+	}
+
+	void Panel::onKeyPressed(Event & evt)
+	{
+		assert(evt.getType() == EventType::KEYBOARD_PRESSED);
+	}
+
+	void Panel::onKeyReleased(Event & evt)
+	{
+		assert(evt.getType() == EventType::KEYBOARD_RELEASED);
+	}
+
+	void Panel::onFocusGain(Event & evt)
+	{
+		//Can be different ways
+	}
+
+	void Panel::onFocusLose(Event & evt)
+	{
+		//Can be multiple ways
+
 	}
 
 	void Panel::switchFocus()

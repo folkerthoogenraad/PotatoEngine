@@ -13,5 +13,7 @@ namespace ftec {
 		static float cos2Time;
 
 		static void calculateSinCosTime();
+
+		static void sleep(float seconds);
 	};
 }

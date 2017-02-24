@@ -37,7 +37,7 @@ namespace potato {
 		}
 	}
 
-	void Checkbox::onClick()
+	void Checkbox::onClick(Event &event)
 	{
 		m_Checked = !m_Checked;
 	}

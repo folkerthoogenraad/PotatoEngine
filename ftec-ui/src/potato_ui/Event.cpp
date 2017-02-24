@@ -21,5 +21,7 @@ namespace potato {
 		case EventType::KEYBOARD_PRESSED: return stream << "KEYBOARD_PRESSED";
 		case EventType::KEYBOARD_RELEASED: return stream << "KEYBOARD_RELEASED";
 		}
+
+		return stream;
 	}
 }

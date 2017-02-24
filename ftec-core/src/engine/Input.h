@@ -2,6 +2,7 @@
 
 #include <set>
 #include <string>
+#include <vector>
 
 #include "Keycodes.h" //This is not needed, but its just better for everyone that uses input anyway. Will remove later on, probalby
 
@@ -13,6 +14,11 @@ namespace ftec {
 
 	enum class CursorMode {
 		NORMAL, HIDDEN, GRABBED
+	};
+
+	struct TypeInput {
+		int keycode;
+		int unicode;
 	};
 
 	class Input {
@@ -50,7 +56,7 @@ namespace ftec {
 		static const std::set<int> &getKeysDown();
 		static const std::set<int> &getKeysPressed();
 		static const std::set<int> &getKeysReleased();
-		static const std::set<int> &getKeysTyped();
+		static const std::vector<TypeInput> &getKeysTyped();
 
 		static const std::set<int> &getMouseButtonsDown();
 		static const std::set<int> &getMouseButtonsPressed();

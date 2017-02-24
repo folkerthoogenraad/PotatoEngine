@@ -53,9 +53,10 @@ namespace potato {
 		{
 			evt.m_EventType = EventType::KEYBOARD_TYPED;
 
-			for (const auto &type : Input::getKeysTyped())
+			for (const auto &type : Input::getKeysTyped()) // 
 			{
-				evt.m_KeyCode = type;
+				evt.m_KeyCode = type.keycode;
+				evt.m_UnicodeKey = type.unicode;
 
 				m_Events.push_back(evt);
 			}

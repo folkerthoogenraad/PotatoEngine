@@ -45,6 +45,7 @@ namespace potato {
 
 		bool m_Focusable = false;
 		bool m_Opaque = false;
+		bool m_SwallowTab = false;
 
 		bool m_Focus = false;
 
@@ -95,14 +96,37 @@ namespace potato {
 
 		//Called each update (for animation, for everything)
 		virtual void update();
+
+		//Called each frame, before events are processed
+		virtual void preEvents();
+
 		virtual void process(Event &event);
 		virtual void processSelf(Event &event);
 
-		virtual void onClick();
-		virtual void onHoverEnter();
-		virtual void onHoverLeave();
+		//Events that get fired from the panel
+		virtual void onClick(Event &evt);
+
+		virtual void onHoverEnter(Event &evt);
+		virtual void onHoverLeave(Event &evt);
+		virtual void onHover(Event &evt);
+
+		virtual void onDrag(Event &evt);
+		virtual void onHoverOrDrag(Event &evt);
+
+		virtual void onMouseReleased(Event &evt);
+		virtual void onMousePressed(Event &evt);
+
+		virtual void onKeyTyped(Event &evt);
+		virtual void onKeyPressed(Event &evt);
+		virtual void onKeyReleased(Event &evt);
+
+		virtual void onFocusGain(Event &evt);
+		virtual void onFocusLose(Event &evt);
 
 		void switchFocus();
+
+		bool isFocussed() const { return m_Focus; }
+		bool isPressed() const { return m_Pressed; }
 
 		bool isHovering() const { return m_Hovering; }
 		bool isHoveringChild() const { return m_ChildHovering; }

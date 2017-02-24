@@ -7,7 +7,8 @@ namespace ftec {
 		static bool fullscreen;
 		static bool vsync;
 		static int msaa;
-		static int targetfps; 
+		static int targetfps;
+		static float framesleep;
 
 		static void init();
 	

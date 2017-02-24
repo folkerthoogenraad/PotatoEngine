@@ -27,6 +27,8 @@
 #include "potato_ui/Event.h"
 #include "potato_ui/EventInput.h"
 
+#include "TestCanvas.h"
+
 namespace ftec {
 
 	void Razura::update()
@@ -63,6 +65,7 @@ namespace ftec {
 		layout->addPanel(std::make_shared<potato::Button>("abcdefghijklmn"));
 		layout->addPanel(b2);
 		layout->addPanel(tf);
+		layout->addPanel(std::make_shared<TestCanvas>());
 
 		m_UI->setRoot(
 			layout

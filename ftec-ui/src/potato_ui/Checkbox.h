@@ -11,7 +11,7 @@ namespace potato {
 		Checkbox();
 
 		void drawSelf(ftec::Graphics2D &graphics) override;
-		void onClick() override;
+		void onClick(Event &event) override;
 		Size getPreferredSize() override;
 
 		inline bool isChecked() { return m_Checked; };

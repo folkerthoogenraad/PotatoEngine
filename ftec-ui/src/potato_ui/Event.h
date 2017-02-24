@@ -26,6 +26,7 @@ namespace potato {
 
 		EventType m_EventType;
 
+		int m_UnicodeKey;
 		int m_KeyCode;
 		int m_MouseButton;
 
@@ -48,12 +49,17 @@ namespace potato {
 		bool isAltDown() const { return m_AltDown; };
 		bool isModifierDown() const { return isCrtlDown() || isAltDown() || isShiftDown(); };
 
+		bool isMotionEvent() const { return m_EventType == EventType::MOUSE_DRAG || m_EventType == EventType::MOUSE_MOVE; }
+
 		int getKeyCode() const { return m_KeyCode; }
 		int getMouseButton() const { return m_MouseButton; }
 
 		ftec::Vector2f getMouseStartPosition() const { return m_MouseStartPosition; }
 		ftec::Vector2f getMousePosition() const { return m_MousePosition; }
 		ftec::Vector2f getMouseDelta() const { return m_MouseDelta; }
+
+		int getUnicodeKey() { return m_UnicodeKey; }
+		bool hasUnicodeKey() { return m_UnicodeKey > 0; }
 
 		operator bool() { return !m_Consumed; }
 

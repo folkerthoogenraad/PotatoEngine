@@ -7,9 +7,6 @@
 
 #include "logger/log.h"
 
-#include <chrono>
-#include <thread>
-
 #include "Game.h"
 #include "Engine.h"
 
@@ -95,6 +92,8 @@ namespace ftec {
 
 		//TODO see what part of this we need here, and what we need in the engine class
 		while (!Engine::getWindow().isCloseRequested()) {
+			Time::sleep(EngineConfiguration::framesleep);
+
 			Input::reset();
 
 			Engine::getWindow().poll();
@@ -121,9 +120,7 @@ namespace ftec {
 			
 			//Set the right framerate
 			if (!EngineConfiguration::vsync && EngineConfiguration::targetfps > 0) {
-				std::this_thread::sleep_for(std::chrono::milliseconds(
-					(long long)(1000.0 / EngineConfiguration::targetfps)
-				));
+				Time::sleep(1.0f / EngineConfiguration::targetfps);
 			}
 		}
 	}

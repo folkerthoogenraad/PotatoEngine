@@ -5,6 +5,8 @@
 #include "PotatoUI.h"
 #include "engine/Keycodes.h"
 
+#include <assert.h>
+
 namespace potato {
 
 	void EditText::normalize()
@@ -133,59 +135,61 @@ namespace potato {
 		return 0;
 	}
 
-	void EditText::keyboardInput()
+	void EditText::keyboardInput(Event &evt)
 	{
-		bool shiftDown = (ftec::Input::isKeyDown(KEY_LEFT_SHIFT) || ftec::Input::isKeyDown(KEY_RIGHT_SHIFT));
-		bool crtlDown = (ftec::Input::isKeyDown(KEY_LEFT_CONTROL) || ftec::Input::isKeyDown(KEY_RIGHT_CONTROL));
+		assert(evt.getType() == EventType::KEYBOARD_TYPED);
+
+		bool shiftDown = (evt.isShiftDown());
+		bool crtlDown = (evt.isCrtlDown());
 
 		Strategy strat = crtlDown ? Strategy::WORD : Strategy::CHARACTER;
 
 		//Move cursor
-		if (ftec::Input::isKeyTyped(KEY_LEFT)) {
+		if (evt.getKeyCode() == KEY_LEFT) {
 			moveCursor(Direction::BACKWARD, strat, shiftDown);
 		}
-		if (ftec::Input::isKeyTyped(KEY_RIGHT)) {
+		if (evt.getKeyCode() == KEY_RIGHT) {
 			moveCursor(Direction::FORWARD, strat, shiftDown);
 		}
-		if (ftec::Input::isKeyTyped(KEY_HOME)) {
+		if (evt.getKeyCode() == KEY_HOME) {
 			setCursorPosition(0, shiftDown);
 		}
-		if (ftec::Input::isKeyTyped(KEY_END)) {
+		if (evt.getKeyCode() == KEY_END) {
 			setCursorPosition(m_Text.length(), shiftDown);
 		}
 
 		//Input text
-		if (ftec::Input::getKeyString().length() > 0) {
-			insertAtCursor(ftec::Input::getKeyString());
+		if (ftec::Input::getKeyString().length() > 0 && evt.hasUnicodeKey()) {
+			insertAtCursor(std::string() + (char)evt.getUnicodeKey());
 		}
 
 		//Backspace and delete
-		if (ftec::Input::isKeyTyped(KEY_BACKSPACE)) {
+		if (evt.getKeyCode() == KEY_BACKSPACE) {
 			deleteAtCursor(BACKWARD, strat);
 		}
-		if (ftec::Input::isKeyTyped(KEY_DELETE)) {
+		if (evt.getKeyCode() == KEY_DELETE) {
 			deleteAtCursor(FORWARD, strat);
 		}
 
 		//Helpful functionality
 		if (crtlDown) {
-			if (ftec::Input::isKeyPressed(KEY_A)) {
+			if (evt.getKeyCode() == KEY_A) {
 				m_SelectionStart = 0;
 				m_SelectionEnd = (int)m_Text.length();
 				m_CursorPosition = (int)m_Text.length();
 			}
 
-			if (ftec::Input::isKeyPressed(KEY_C)) {
+			if (evt.getKeyCode() == KEY_C) {
 				PotatoClipboard::setData(getSelectedText());
 			}
 
-			if (ftec::Input::isKeyPressed(KEY_X)) {
+			if (evt.getKeyCode() == KEY_X) {
 				PotatoClipboard::setData(getSelectedText());
 				deleteSelection();
 			}
 
 			//crtl + v is a keytyped event
-			if (ftec::Input::isKeyTyped(KEY_V)) {
+			if (evt.getKeyCode() == KEY_V) {
 				insertAtCursor(PotatoClipboard::getData());
 			}
 

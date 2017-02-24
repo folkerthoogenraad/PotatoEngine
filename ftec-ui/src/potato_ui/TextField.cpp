@@ -10,13 +10,9 @@ namespace potato {
 		m_Focusable = true;
 	}
 
-	void TextField::processSelf(Event &event)
+	void TextField::onKeyTyped(Event & event)
 	{
-		Panel::processSelf(event);
-
-		if (m_Focus) {
-			m_EditText.keyboardInput();
-		}
+		m_EditText.keyboardInput(event);
 	}
 
 	void TextField::drawSelf(ftec::Graphics2D & graphics)

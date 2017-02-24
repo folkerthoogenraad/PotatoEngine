@@ -3,6 +3,8 @@
 #include <string>
 #include "math/math.h"
 
+#include "Event.h"
+
 namespace potato {
 
 	//Edit text must have features:
@@ -55,7 +57,7 @@ namespace potato {
 		void cancelSelection();
 		void deleteSelection();
 
-		void keyboardInput();
+		void keyboardInput(Event &evt);
 	};
 
 

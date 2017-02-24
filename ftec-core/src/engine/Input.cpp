@@ -10,12 +10,15 @@
 #include <assert.h>
 #include <array>
 
+#include "logger/log.h"
+
 namespace ftec {
 
 	static std::set<int> downKeys = std::set<int>();
 	static std::set<int> pressedKeys = std::set<int>();
 	static std::set<int> releasedKeys = std::set<int>();
-	static std::set<int> typedKeys = std::set<int>();
+
+	static std::vector<TypeInput> typedKeys = std::vector<TypeInput>();
 
 	static std::set<int> downMouse = std::set<int>();
 	static std::set<int> pressedMouse = std::set<int>();
@@ -106,7 +109,7 @@ namespace ftec {
 		return releasedKeys;
 	}
 
-	const std::set<int>& Input::getKeysTyped()
+	const std::vector<TypeInput>& Input::getKeysTyped()
 	{
 		return typedKeys;
 	}
@@ -131,16 +134,15 @@ namespace ftec {
 		if (action == GLFW_PRESS) {
 			pressedKeys.insert(key);
 			downKeys.insert(key);
-			typedKeys.insert(key);
+			typedKeys.push_back({ key, -1 });
 		}
 		if (action == GLFW_RELEASE) {
 			releasedKeys.insert(key);
 			downKeys.erase(key);
 		}
 		if (action == GLFW_REPEAT) {
-			typedKeys.insert(key);
+			typedKeys.push_back({ key, -1 });
 		}
-
 	}
 
 
@@ -166,6 +168,11 @@ namespace ftec {
 
 	void Input::handleTyped(unsigned int unicode)
 	{
+		//Oh bby lets lose some of that goodstuff input values and goodshit stuff dont even worry about it bby
+		assert(typedKeys.size() > 0);
+		typedKeys.push_back(typedKeys.back());
+		typedKeys.back().unicode = (int)unicode;
+
 		keystring += (char)unicode;
 	}
 
@@ -199,7 +206,14 @@ namespace ftec {
 
 	bool Input::isKeyTyped(int keycode)
 	{
-		return !disabled && typedKeys.find(keycode) != typedKeys.end();
+		if (disabled)
+			return true;
+
+		for (const auto key : typedKeys) {
+			if (key.keycode == keycode)
+				return true;
+		}
+		return false;
 	}
 
 	bool Input::isMouseButtonPressed(int keycode)

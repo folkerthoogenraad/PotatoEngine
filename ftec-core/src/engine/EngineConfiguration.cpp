@@ -15,6 +15,7 @@ namespace ftec {
 	bool EngineConfiguration::vsync = true;
 	int EngineConfiguration::msaa = 4;
 	int EngineConfiguration::targetfps = -1;
+	float EngineConfiguration::framesleep = 0;
 
 	void EngineConfiguration::init()
 	{
@@ -39,6 +40,7 @@ namespace ftec {
 			vsync = windowSegment->getBool("vsync", false);
 			msaa = windowSegment->getInt("msaa", 4);
 			targetfps = windowSegment->getInt("targetfps", -1);
+			framesleep = windowSegment->getFloat("framesleep", 0);
 		}
 	}
 

@@ -18,8 +18,8 @@ namespace potato {
 
 		Bounds bounds = getGlobalBounds();
 
-		if (m_Hovering) {
-			if (m_Pressed) {
+		if (isHoveringSelf()) {
+			if (isPressed()) {
 				graphics.setColor(PotatoColor::primary);
 			}
 			else {
@@ -32,7 +32,7 @@ namespace potato {
 
 		graphics.drawRectangle(bounds, true);
 
-		if (m_Focus) {
+		if (isFocussed()) {
 			graphics.setColor(PotatoColor::darkPrimary);
 			graphics.drawRectangle(bounds, false);
 		}
@@ -42,7 +42,7 @@ namespace potato {
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
 		graphics.setHorizontalAlign(ftec::FontAlign::CENTER);
 
-		if (m_Pressed) {
+		if (isPressed()) {
 			graphics.drawString(m_Text, bounds.center() + ftec::Vector2i(1, 1));
 		}
 		else {
