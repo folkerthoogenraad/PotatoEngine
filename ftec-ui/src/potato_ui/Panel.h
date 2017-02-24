@@ -54,7 +54,7 @@ namespace potato {
 		//Optional parent
 		//shared ptr from this? maybe?
 		Panel *m_Parent = nullptr;
-		std::weak_ptr<PotatoUI> m_UI;
+		PotatoUI *m_UI;
 
 		std::string m_ID = "";
 
@@ -63,7 +63,6 @@ namespace potato {
 	
 	public:
 		Panel();
-
 
 		void setOpaque(bool op) { m_Opaque = op; }
 		bool isOpaque() const { return m_Opaque; }
@@ -122,8 +121,8 @@ namespace potato {
 		void setParent(Panel *parent);
 		Panel *getParent() { return m_Parent; }
 
-		void setUI(std::weak_ptr<PotatoUI> ui) {this->m_UI = ui; }
-		std::weak_ptr<PotatoUI> getUI() { return this->m_UI; }
+		void setUI(PotatoUI *ui) {this->m_UI = ui; }
+		PotatoUI *getUI() { return this->m_UI; }
 
 		template <typename T>
 		std::shared_ptr<T> findPanelById(const std::string &id) {

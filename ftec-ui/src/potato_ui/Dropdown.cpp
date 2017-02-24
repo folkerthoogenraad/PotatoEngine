@@ -44,17 +44,17 @@ namespace potato {
 		Bounds bounds = getGlobalBounds();
 
 		//Get reference to the ui, if that failes, we can't make the popup
-		if (auto ui = m_UI.lock()) {
+		if (m_UI) {
 			if (m_List.expired()) {
 				auto list = std::make_shared<List>();
 				list->setTextOptions(m_TextOptions);
 
 				list->localbounds() = ftec::Rectanglei(bounds.left(), bounds.bottom(), bounds.width(), 64);
 
-				ui->setContextMenu(list);
+				m_UI->setContextMenu(list);
 			}
 			else {
-				ui->setContextMenu(nullptr);
+				m_UI->setContextMenu(nullptr);
 			}
 
 		}

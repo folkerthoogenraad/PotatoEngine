@@ -40,12 +40,13 @@ namespace potato {
 				event.consume();
 			}
 			else {
-				if (auto ui = m_UI.lock()) {
+				if (m_UI) {
 					//This calles our destructor, which is nice :') /s
 					//This can break lots of things if used incorrectly.
 					//Luckally we proccess our events as last (children first)
 					//If children are processed first we must find a workaroudn for this.
-					ui->setContextMenu(nullptr);
+					//TODO do that
+					m_UI->setContextMenu(nullptr);
 				}
 			}
 		}

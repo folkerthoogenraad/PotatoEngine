@@ -83,9 +83,11 @@ namespace potato {
 	void Panel::processSelf(Event &event)
 	{
 		//Hovering inputs
-		{
-			bool hover = inBounds(ftec::Input::getMousePosition());
-			bool childHover = inChildBounds(ftec::Input::getMousePosition());
+		if (event.getType() == EventType::MOUSE_MOVE
+			|| event.getType() == EventType::MOUSE_DRAG) {
+
+			bool hover = inBounds(event.getMousePosition());
+			bool childHover = inChildBounds(event.getMousePosition());
 
 			m_ChildHovering = childHover;
 
@@ -99,7 +101,6 @@ namespace potato {
 			}
 		}
 
-		//Click inputs
 		{
 			if (isHoveringSelf()) {
 				if (ftec::Input::isMouseButtonPressed(MOUSE_BUTTON_1)) {

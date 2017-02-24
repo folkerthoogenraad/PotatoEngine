@@ -50,6 +50,8 @@ namespace potato {
 		std::shared_ptr<Panel> m_Root;
 		std::shared_ptr<Panel> m_ContextMenu;
 
+		Panel *focus;
+
 		ftec::Vector2f m_MouseStart;
 	public:
 		PotatoUI();

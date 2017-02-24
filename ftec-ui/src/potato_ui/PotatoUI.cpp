@@ -96,7 +96,7 @@ namespace potato {
 	{
 		m_Root = root;
 		if (m_Root) {
-			m_Root->setUI(shared_from_this());
+			m_Root->setUI(this);
 			//Give this the full panel, this happens always, at all times
 			m_Root->localbounds() = ftec::Rectanglei(0, 0, (int)ftec::Engine::getWindow().getWidth(), (int)ftec::Engine::getWindow().getHeight());
 			m_Root->updateLayout();
@@ -107,7 +107,7 @@ namespace potato {
 	{
 		m_ContextMenu = contextMenu;
 		if (m_ContextMenu) {
-			m_ContextMenu->setUI(shared_from_this());
+			m_ContextMenu->setUI(this);
 		}
 	}
 

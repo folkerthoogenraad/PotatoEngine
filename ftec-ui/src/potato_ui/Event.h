@@ -52,7 +52,7 @@ namespace potato {
 		int getMouseButton() const { return m_MouseButton; }
 
 		ftec::Vector2f getMouseStartPosition() const { return m_MouseStartPosition; }
-		ftec::Vector2f getMouseCurrentPosition() const { return m_MousePosition; }
+		ftec::Vector2f getMousePosition() const { return m_MousePosition; }
 		ftec::Vector2f getMouseDelta() const { return m_MouseDelta; }
 
 		operator bool() { return !m_Consumed; }
