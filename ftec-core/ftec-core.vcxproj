@@ -89,6 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\local\boost_1_63_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -99,6 +100,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\local\boost_1_63_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -111,6 +113,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\local\boost_1_63_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -125,6 +128,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\local\boost_1_63_0\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -147,6 +151,7 @@
     <ClCompile Include="src\graphics\Graphics.cpp" />
     <ClCompile Include="src\graphics\Graphics2D.cpp" />
     <ClCompile Include="src\graphics\GraphicsState.cpp" />
+    <ClCompile Include="src\graphics\Image.cpp" />
     <ClCompile Include="src\graphics\ImageHelper.cpp" />
     <ClCompile Include="src\graphics\Light.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
@@ -171,6 +176,7 @@
     <ClCompile Include="src\serialization\Serialization.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\terrain\Terrain.cpp" />
+    <ClCompile Include="src\util\scope_guard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\collision\Collider.h" />
@@ -189,6 +195,7 @@
     <ClInclude Include="src\graphics\Graphics.h" />
     <ClInclude Include="src\graphics\Graphics2D.h" />
     <ClInclude Include="src\graphics\GraphicsState.h" />
+    <ClInclude Include="src\graphics\Image.h" />
     <ClInclude Include="src\graphics\ImageHelper.h" />
     <ClInclude Include="src\graphics\Layer.h" />
     <ClInclude Include="src\graphics\Light.h" />
@@ -241,6 +248,8 @@
     <ClInclude Include="src\serialization\Serialization.h" />
     <ClInclude Include="src\terrain\Terrain.h" />
     <ClInclude Include="src\threading\PotatoQueue.h" />
+    <ClInclude Include="src\util\optional.h" />
+    <ClInclude Include="src\util\scope_guard.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default2d_fragment.glsl" />

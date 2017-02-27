@@ -10,7 +10,7 @@ namespace ftec {
 	typedef Vector4<double> Vector4d;
 
 	typedef Vector4<float> Color;
-	typedef Vector4<unsigned char> Color32;
+	typedef Vector4<uint8_t> Color32;
 
 	//Implementation here
 	template<typename T>
