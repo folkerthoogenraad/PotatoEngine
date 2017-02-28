@@ -1,15 +1,20 @@
 #include "ImageHelper.h"
 
 #define FREEIMAGE_LIB
+#define FREEIMAGE_COLORORDER FREEIMAGE_COLORORDER_RGB
+
 #include <FreeImage.h>
 #include "GL.h"
+
+#include "logger/log.h"
 
 #include "util/scope_guard.h"
 
 namespace ftec {
 
 	std::optional<Image> loadImage(const std::string & filename)
-	{//image format
+	{
+		//image format
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 		//pointer to the image, once loaded
 		FIBITMAP *dib(0);
@@ -75,13 +80,14 @@ namespace ftec {
 
 	bool saveImage(const Image & image, const std::string & filename)
 	{
-		FIBITMAP* fImage = FreeImage_ConvertFromRawBits((BYTE*)&image.getColors()[0], image.getWidth(), image.getHeight(), 4, 8, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
+		BYTE* bits = (BYTE*)&image.getColors()[0];
 
-		std::scope_guard fImageGuard([&fImage]() {FreeImage_Unload(fImage); });
+		FIBITMAP* fImage = FreeImage_ConvertFromRawBits(bits, image.getWidth(), image.getHeight(), image.getWidth() * 4, 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK, false);
 
-		bool res = FreeImage_Save(FIF_PNG, fImage, filename.c_str(), 0);
+		std::scope_guard fImageGuard([&fImage]() { FreeImage_Unload(fImage); });
 
-		return res;
+		return FreeImage_Save(FIF_PNG, fImage, filename.c_str(), 0);
+		
 	}
 
 	Vector2i glLoadImage(std::string name, unsigned int target)
@@ -125,7 +131,7 @@ namespace ftec {
 
 		//store the texture data for OpenGL use
 		glTexImage2D(target, 0, GL_RGBA, width, height,
-			0, GL_BGRA, GL_UNSIGNED_BYTE, bits);
+			0, GL_RGBA, GL_UNSIGNED_BYTE, bits);
 
 		//Free FreeImage's copy of the data
 		FreeImage_Unload(dib);
