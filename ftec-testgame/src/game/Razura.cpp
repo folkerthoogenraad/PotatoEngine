@@ -47,29 +47,39 @@ namespace ftec {
 
 	void Razura::init()
 	{
-		m_UI = std::make_shared<potato::PotatoUI>();
-		auto layout = std::make_shared<potato::LinearLayout>(potato::LinearLayout::VERTICAL);
+		/*{
+			m_UI = std::make_shared<potato::PotatoUI>();
+			auto layout = std::make_shared<potato::LinearLayout>(potato::LinearLayout::VERTICAL);
 
-		auto b = std::make_shared<potato::Button>("abcdefghijklmn");
-		b->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-		auto b2 = std::make_shared<potato::Button>("more stuff");
-		b2->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
+			auto b = std::make_shared<potato::Button>("abcdefghijklmn");
+			b->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
+			auto b2 = std::make_shared<potato::Button>("more stuff");
+			b2->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
 
-		auto tf = std::make_shared<potato::TextField>();
-		tf->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
-		tf->layoutparams().m_Weight = 2.0f;
-		tf->hint() = "test text";
+			auto tf = std::make_shared<potato::TextField>();
+			tf->layoutparams().m_WidthScaling = potato::LayoutParams::MATCH_PARENT;
+			tf->layoutparams().m_Weight = 2.0f;
+			tf->hint() = "test text";
 
-		layout->addPanel(b);
-		layout->addPanel(std::make_shared<potato::Button>("Hello world"));
-		layout->addPanel(std::make_shared<potato::Button>("abcdefghijklmn"));
-		layout->addPanel(b2);
-		layout->addPanel(tf);
-		layout->addPanel(std::make_shared<TestCanvas>());
+			layout->addPanel(b);
+			layout->addPanel(std::make_shared<potato::Button>("Hello world"));
+			layout->addPanel(std::make_shared<potato::Button>("abcdefghijklmn"));
+			layout->addPanel(b2);
+			layout->addPanel(tf);
+			layout->addPanel(std::make_shared<TestCanvas>());
 
-		m_UI->setRoot(
-			layout
-		);
+			m_UI->setRoot(
+				layout
+			);
+		}*/
+
+		{
+			auto scene = std::make_unique<Scene>();
+
+			scene->addEntity(std::make_unique<NoClipCameraEntity>());
+
+			Engine::setScene(std::move(scene));
+		}
 	}
 
 	void Razura::destroy()

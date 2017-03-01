@@ -14,7 +14,7 @@ void test()
 
 	for (int y = 0; y < image.getWidth(); y++) {
 		for (int x = 0; x < image.getWidth(); x++) {
-			image.setColor(x, y, Color32::blue());
+			image.setColor(x, y, Color32::red());
 		}
 	}
 

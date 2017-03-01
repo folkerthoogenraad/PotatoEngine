@@ -1,7 +1,6 @@
 #include "ImageHelper.h"
 
 #define FREEIMAGE_LIB
-#define FREEIMAGE_COLORORDER FREEIMAGE_COLORORDER_RGB
 
 #include <FreeImage.h>
 #include "GL.h"
@@ -14,6 +13,8 @@ namespace ftec {
 
 	std::optional<Image> loadImage(const std::string & filename)
 	{
+		//TODO use FREEIMAGE_COLORORDER
+
 		//image format
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 		//pointer to the image, once loaded
@@ -66,9 +67,9 @@ namespace ftec {
 
 				Color32 c;
 
-				c.r = bits[index + 0];
+				c.r = bits[index + 2];
 				c.g = bits[index + 1];
-				c.b = bits[index + 2];
+				c.b = bits[index + 0];
 				c.a = bits[index + 3];
 
 				out.setColor(x, y, c);
@@ -80,9 +81,24 @@ namespace ftec {
 
 	bool saveImage(const Image & image, const std::string & filename)
 	{
-		BYTE* bits = (BYTE*)&image.getColors()[0];
+		//Ohyes, copy everything so we can rearange it. This is not fast, at all
+		std::vector<BYTE> bytes;
+		bytes.resize(image.getWidth() * image.getHeight() * 4); //4 color components
 
-		FIBITMAP* fImage = FreeImage_ConvertFromRawBits(bits, image.getWidth(), image.getHeight(), image.getWidth() * 4, 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK, false);
+		for (int y = 0; y < image.getHeight(); y++) {
+			for (int x = 0; x < image.getWidth(); x++) {
+				int index = (x + y * image.getWidth()) * 4;
+
+				Color32 c = image.getColor(x, y);
+
+				bytes[index + 2] = c.r;
+				bytes[index + 1] = c.g;
+				bytes[index + 0] = c.b;
+				bytes[index + 3] = c.a;
+			}
+		}
+
+		FIBITMAP* fImage = FreeImage_ConvertFromRawBits(&bytes[0], image.getWidth(), image.getHeight(), image.getWidth() * 4, 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK, false);
 
 		std::scope_guard fImageGuard([&fImage]() { FreeImage_Unload(fImage); });
 
@@ -131,7 +147,7 @@ namespace ftec {
 
 		//store the texture data for OpenGL use
 		glTexImage2D(target, 0, GL_RGBA, width, height,
-			0, GL_RGBA, GL_UNSIGNED_BYTE, bits);
+			0, GL_BGRA, GL_UNSIGNED_BYTE, bits);
 
 		//Free FreeImage's copy of the data
 		FreeImage_Unload(dib);
