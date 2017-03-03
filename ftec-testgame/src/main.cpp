@@ -6,6 +6,9 @@
 
 #include "graphics/ImageHelper.h"
 
+#include "util/not_null.h"
+#include "graphics/SoftwareGraphics.h"
+
 void test()
 {
 	using namespace ftec;
@@ -14,23 +17,20 @@ void test()
 
 	for (int y = 0; y < image.getWidth(); y++) {
 		for (int x = 0; x < image.getWidth(); x++) {
-			image.setColor(x, y, Color32::blue());
+			image.setColor(x, y, Color32::white());
 		}
 	}
+
+	SoftwareGraphics graphics(&image);
+	Paint paint;
+	paint.color = Color::black();
+
+	graphics.drawLine(paint, Vector2i(4, 4), Vector2i(16, 8));
 
 	if (!saveImage(image, "res.png")) {
 		LOG("Failed to save image");
 		return;
 	}
-
-	auto img = loadImage("res.png");
-
-	if (!img) {
-		LOG("Can't load image");
-		return;
-	}
-
-	LOG((int)img->getColor(0, 0).r << ", " << (int)img->getColor(0, 0).g << ", " << (int) img->getColor(0, 0).b << ", " << (int)img->getColor(0, 0).a);
 }
 
 int main(void)

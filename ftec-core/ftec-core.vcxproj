@@ -160,6 +160,7 @@
     <ClCompile Include="src\graphics\RenderBuffer.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
+    <ClCompile Include="src\graphics\SoftwareGraphics.cpp" />
     <ClCompile Include="src\graphics\Sprite.cpp" />
     <ClCompile Include="src\graphics\SpriteBatch.cpp" />
     <ClCompile Include="src\graphics\Texture.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="src\graphics\MeshBuilder.h" />
     <ClInclude Include="src\graphics\Primitive.h" />
     <ClInclude Include="src\graphics\RenderBuffer.h" />
+    <ClInclude Include="src\graphics\SoftwareGraphics.h" />
     <ClInclude Include="src\graphics\Sprite.h" />
     <ClInclude Include="src\graphics\VBORenderable.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
@@ -248,6 +250,7 @@
     <ClInclude Include="src\serialization\Serialization.h" />
     <ClInclude Include="src\terrain\Terrain.h" />
     <ClInclude Include="src\threading\PotatoQueue.h" />
+    <ClInclude Include="src\util\not_null.h" />
     <ClInclude Include="src\util\optional.h" />
     <ClInclude Include="src\util\scope_guard.h" />
   </ItemGroup>
