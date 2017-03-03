@@ -37,9 +37,9 @@ int main(void)
 {
 	using namespace ftec;
 
-	//ftec::DesktopEngine::create<ftec::Razura>();
+	ftec::DesktopEngine::create<ftec::Razura>();
 	
-	test();
+	//test();
 
 	WAIT();
 
