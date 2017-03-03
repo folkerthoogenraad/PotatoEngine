@@ -75,6 +75,13 @@ namespace ftec {
 
 		{
 			auto scene = std::make_unique<Scene>();
+			scene->setMode(Scene::SceneMode::GRAPHICS_BOTH);
+
+			scene->m_Cameras[0] = Camera::orthagonal(10, 16.0f / 9.0f, -100, 100, false);
+			scene->m_Cameras[0].m_Yaw = 45.0f;
+			scene->m_Cameras[0].m_Pitch = 45.0f / 2.0f;
+
+			LOG(scene->m_Cameras[0].getViewMatrix());
 
 			scene->addEntity(std::make_unique<NoClipCameraEntity>());
 

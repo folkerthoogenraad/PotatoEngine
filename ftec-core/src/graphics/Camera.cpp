@@ -46,6 +46,7 @@ namespace ftec {
 		//TODO quaternion class and stuff
 		return Matrix4f::rotationX(m_Pitch) * Matrix4f::rotationY(m_Yaw) * Matrix4f::translation(-m_Position);
 	}
+
 	bool Camera::operator==(const Camera & other)
 	{
 		return false; //TODO implement this
