@@ -45,6 +45,17 @@ namespace ftec {
 	{
 		//TODO quaternion class and stuff
 		return Matrix4f::rotationX(m_Pitch) * Matrix4f::rotationY(m_Yaw) * Matrix4f::translation(-m_Position);
+
+		/*Vector3f xaxis = Vector3f(2,1,0).normalize();
+		Vector3f yaxis = Vector3f(-1,2,0).normalize();
+		Vector3f zaxis = Vector3f(0, 0,1).normalize();
+
+		return Matrix4f({
+			xaxis.x, xaxis.y, xaxis.z, 0,
+			yaxis.x, yaxis.y, yaxis.z, 0,
+			zaxis.x, zaxis.y, zaxis.z, 0,
+			0, 0, 0, 1,
+		});*/
 	}
 
 	bool Camera::operator==(const Camera & other)

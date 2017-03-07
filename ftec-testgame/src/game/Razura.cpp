@@ -12,6 +12,8 @@
 #include "graphics/Renderer.h"
 #include "graphics/Window.h"
 #include "graphics/Camera.h"
+#include "graphics/Mesh.h"
+#include "graphics/Graphics.h"
 
 #include "razura/RazuraPlayer.h"
 #include "razura/RazuraWorldEntity.h"
@@ -36,6 +38,31 @@ namespace ftec {
 		if (m_UI)
 			m_UI->update();
 	}
+
+	class TestTempEntity : public Entity{
+		std::shared_ptr<Mesh> mesh;
+		std::shared_ptr<PBRMaterial> material;
+	public:
+		TestTempEntity()
+		{
+			material = std::make_shared<PBRMaterial>(
+				Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE),
+				Engine::getResourceManager().load<Shader>("shaders/default")
+				);
+
+			material->m_NormalMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
+			material->m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
+			material->m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
+
+			mesh = Engine::getResourceManager().load<Mesh>("mesh/cube.obj");
+		}
+
+		void render() override
+		{
+			Graphics::enqueueMesh(mesh.get(), material.get(), Matrix4f::identity());
+		}
+	};
+
 
 	void Razura::render()
 	{
@@ -79,11 +106,12 @@ namespace ftec {
 
 			scene->m_Cameras[0] = Camera::orthagonal(10, 16.0f / 9.0f, -100, 100, false);
 			scene->m_Cameras[0].m_Yaw = 45.0f;
-			scene->m_Cameras[0].m_Pitch = 45.0f / 2.0f;
+			scene->m_Cameras[0].m_Pitch = 30.0f;
 
 			LOG(scene->m_Cameras[0].getViewMatrix());
 
 			scene->addEntity(std::make_unique<NoClipCameraEntity>());
+			scene->addEntity(std::make_unique<TestTempEntity>());
 
 			Engine::setScene(std::move(scene));
 		}

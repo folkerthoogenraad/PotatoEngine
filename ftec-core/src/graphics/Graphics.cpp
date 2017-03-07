@@ -180,6 +180,7 @@ namespace ftec {
 			GraphicsState::matrixModel = Matrix4f::translation(c->m_Position);
 
 			//Drawing skybox
+			/*
 			GraphicsState::m_Lights[0].enabled = false; //Idk man
 
 			SkyboxMaterial skyboxMaterial(Engine::getResourceManager().load<Shader>("shaders/skybox"));
@@ -189,6 +190,7 @@ namespace ftec {
 
 
 			Renderer::drawDirect(*mesh);
+			*/
 
 			glClear(GL_DEPTH_BUFFER_BIT);
 			
