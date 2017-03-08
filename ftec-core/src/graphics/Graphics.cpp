@@ -189,8 +189,8 @@ namespace ftec {
 			auto mesh = Engine::getResourceManager().load<Mesh>("mesh/skybox.obj");
 
 
-			Renderer::drawDirect(*mesh);
-			*/
+			Renderer::drawDirect(*mesh);*/
+			
 
 			glClear(GL_DEPTH_BUFFER_BIT);
 			

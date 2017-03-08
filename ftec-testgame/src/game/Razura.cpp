@@ -33,21 +33,32 @@
 
 namespace ftec {
 
+	const float PIXEL_UNIT_WIDTH = 0.79056941504; // (1/2 * sqrt(2)) / (cos( atan(1/2) ))
+	const float PIXEL_UNIT_HEIGHT = 0.86602540378;
+
+	const int PIXELS_PER_UNIT = 32;
+
+	const float SQRT_2 = 1.41421356237;
+
 	void Razura::update()
 	{ 
 		if (m_UI)
 			m_UI->update();
 	}
 
+	const int tiles = 4;
+
 	class TestTempEntity : public Entity{
 		std::shared_ptr<Mesh> mesh;
 		std::shared_ptr<PBRMaterial> material;
+	
+		float heights[tiles * tiles];
 	public:
 		TestTempEntity()
 		{
 			material = std::make_shared<PBRMaterial>(
-				Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE),
-				Engine::getResourceManager().load<Shader>("shaders/default")
+				Engine::getResourceManager().load<Texture>("textures/pixel_test.png"),
+				Engine::getResourceManager().load<Shader>("shaders/diffuse")
 				);
 
 			material->m_NormalMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
@@ -55,11 +66,36 @@ namespace ftec {
 			material->m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
 
 			mesh = Engine::getResourceManager().load<Mesh>("mesh/cube.obj");
+
+			for (int x = 0; x < tiles; x++) {
+				for (int y = 0; y < tiles; y++) {
+					heights[x + y * tiles] = (rand() % (PIXELS_PER_UNIT / 2)) / (float)(PIXELS_PER_UNIT / 2);
+				}
+			}
 		}
+
+		float offset = 0.00f;
 
 		void render() override
 		{
-			Graphics::enqueueMesh(mesh.get(), material.get(), Matrix4f::identity());
+			const float scale = 1.2248 - offset;
+
+			if (Input::isKeyTyped(KEY_UP)){
+				offset += 0.0001f;
+				LOG("Offset: " << offset << ", Scale : " << scale);
+			}
+			if (Input::isKeyTyped(KEY_DOWN)) {
+				offset -= 0.0001f;
+				LOG("Offset: " << offset << ", Scale : " << scale);
+			}
+
+			Matrix4f center = Matrix4f::scaled(scale, 1, scale);
+
+			for (int x = 0; x < tiles; x++) {
+				for (int y = 0; y < tiles; y++) {
+					Graphics::enqueueMesh(mesh.get(), material.get(), center * Matrix4f::translation(x - tiles / 2, heights[x + y * tiles], y - tiles / 2));
+				}
+			}
 		}
 	};
 
@@ -104,9 +140,13 @@ namespace ftec {
 			auto scene = std::make_unique<Scene>();
 			scene->setMode(Scene::SceneMode::GRAPHICS_BOTH);
 
-			scene->m_Cameras[0] = Camera::orthagonal(10, 16.0f / 9.0f, -100, 100, false);
-			scene->m_Cameras[0].m_Yaw = 45.0f;
-			scene->m_Cameras[0].m_Pitch = 30.0f;
+			//16 px per unit
+			scene->m_Cameras[0] = Camera::orthagonal(Engine::getWindow().getHeight() / PIXELS_PER_UNIT * PIXEL_UNIT_HEIGHT, 16.0f / 9.0f, 0.1f, 100, false);
+
+			//scene->m_Cameras[0] = Camera::perspective(60, 16.0f / 9.0f, 0.1f, 100);
+			scene->m_Cameras[0].m_Position = Vector3f(-10, 10, -10);
+			scene->m_Cameras[0].m_Yaw = -45.0f;
+			scene->m_Cameras[0].m_Pitch = -30.0f;
 
 			LOG(scene->m_Cameras[0].getViewMatrix());
 

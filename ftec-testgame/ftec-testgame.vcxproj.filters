@@ -141,5 +141,7 @@
     <None Include="shaders\terrain_vertex.glsl" />
     <None Include="shaders\mandelbrot_vertex.glsl" />
     <None Include="shaders\mandelbrot_fragment.glsl" />
+    <None Include="shaders\diffuse_vertex.glsl" />
+    <None Include="shaders\diffuse_fragment.glsl" />
   </ItemGroup>
 </Project>
