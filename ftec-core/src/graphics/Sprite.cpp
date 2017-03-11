@@ -9,26 +9,26 @@ namespace ftec {
 	{ }
 
 	Sprite::Sprite(std::shared_ptr<Texture> texture, const Rectanglef & rectangle)
-		: m_Texture(texture), m_TextureRectangle(rectangle)
+		: m_Texture(texture)
 	{
-		this->recalculateUVRectangle();
-		this->recalculateLocalBounds();
+		this->recalculateUVRectangle(rectangle);
+		this->recalculateLocalBounds(rectangle);
 	}
 
-	void Sprite::recalculateUVRectangle()
+	void Sprite::recalculateUVRectangle(const Rectanglef &textureRectangle)
 	{
-		m_UVRectangle.x() = m_TextureRectangle.x() / (float)m_Texture->getWidth();
-		m_UVRectangle.y() = m_TextureRectangle.y() / (float)m_Texture->getHeight();
+		m_UVRectangle.x() = textureRectangle.x() / (float)m_Texture->getWidth();
+		m_UVRectangle.y() = textureRectangle.y() / (float)m_Texture->getHeight();
 
-		m_UVRectangle.width() = m_TextureRectangle.width() / (float)m_Texture->getWidth();
-		m_UVRectangle.height() = m_TextureRectangle.height() / (float)m_Texture->getHeight();
+		m_UVRectangle.width() = textureRectangle.width() / (float)m_Texture->getWidth();
+		m_UVRectangle.height() = textureRectangle.height() / (float)m_Texture->getHeight();
 	}
 
-	void Sprite::recalculateLocalBounds()
+	void Sprite::recalculateLocalBounds(const Rectanglef &textureRectangle)
 	{
-		m_LocalBounds.x() = 0;
-		m_LocalBounds.y() = 0;
-		m_LocalBounds.width() = m_TextureRectangle.width();
-		m_LocalBounds.height() = m_TextureRectangle.height();
+		m_Offset.x = 0;
+		m_Offset.y= 0;
+		m_Size.width = textureRectangle.width();
+		m_Size.height = textureRectangle.height();
 	}
 }

@@ -1,9 +1,6 @@
 #include "RazuraPlayer.h"
 
-#include "graphics/Mesh.h"
-#include "graphics/MeshBuilder.h"
-#include "graphics/Material.h"
-#include "graphics/Shader.h"
+#include "graphics/Graphics2D.h"
 
 #include "engine/Time.h"
 #include "engine/Input.h"
@@ -15,32 +12,27 @@
 #include "engine/Engine.h"
 #include "resources/ResourceManager.h"
 
+#include "isometric/isometric_helpers.h"
+
 namespace ftec {
 	RazuraPlayer::RazuraPlayer()
-		: m_Position(0,0.5f,0)
+		: m_Position(0, 0, 0)
 	{
+		m_Sprite = Sprite(Engine::getResourceManager().load<Texture>("sprites/player.png"));
+
+		m_Sprite.size().width /= 20.0f;
+		m_Sprite.size().height /= 20.0f;
+		
+		m_Sprite.offset().x = 0.5f;
 	}
+
 	RazuraPlayer::~RazuraPlayer()
 	{
 	}
+
 	void RazuraPlayer::onStart()
 	{
-		m_Mesh = std::make_unique<Mesh>();
 
-		MeshBuilder::addQuad(*m_Mesh, Matrix4f::identity());
-		MeshBuilder::apply(*m_Mesh);
-
-		m_Mesh->recalculateNormals();
-		m_Mesh->recalculateTangents();
-		m_Mesh->upload();
-
-		m_Material = std::make_unique<PBRMaterial>();
-		m_Material->m_Shader = Engine::getResourceManager().load<Shader>("shaders/default");
-
-		m_Material->m_TextureMap = Engine::getResourceManager().load<Texture>("textures/mario.png");
-		m_Material->m_NormalMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
-		m_Material->m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
-		m_Material->m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
 	}
 
 	void RazuraPlayer::onEnd()
@@ -67,13 +59,9 @@ namespace ftec {
 		}
 	}
 
-	void RazuraPlayer::render()
+	void RazuraPlayer::render2D(Graphics2D & graphics)
 	{
-		Graphics::enqueueMesh(
-			m_Mesh.get(),
-			m_Material.get(),
-			Matrix4f::translation(m_Position)
-		);
+		graphics.drawSprite(m_Sprite, isometricTransform(m_Position));
 	}
 
 }

@@ -5,6 +5,8 @@
 #include "math/Vector3.h"
 #include "scene/Entity.h"
 
+#include "graphics/Sprite.h"
+
 namespace ftec {
 
 	class Mesh;
@@ -12,16 +14,15 @@ namespace ftec {
 
 	class RazuraPlayer : public Entity {
 		Vector3f m_Position;
-		std::unique_ptr<Mesh> m_Mesh;
-		std::unique_ptr<PBRMaterial> m_Material;
+		Sprite m_Sprite;
 	public:
 		RazuraPlayer();
 		~RazuraPlayer();
 
-		virtual void onStart();
-		virtual void onEnd();
+		virtual void onStart() override;
+		virtual void onEnd() override;
 
-		virtual void update();
-		virtual void render();
+		virtual void update() override;
+		virtual void render2D(Graphics2D &graphics) override;
 	};
 }
