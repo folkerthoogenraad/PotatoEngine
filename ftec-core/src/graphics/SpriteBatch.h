@@ -40,6 +40,7 @@ namespace ftec {
 		void end();
 
 		void depth(float d);
+		float depth() const { return m_Depth; };
 
 		void vertex(Vector3f position);
 

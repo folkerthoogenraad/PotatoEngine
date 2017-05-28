@@ -2,6 +2,7 @@
 
 #include "math/Line2.h"
 #include "math/Circle.h"
+#include "math/Matrix3.h"
 
 #include "SpriteBatch.h"	//For spritebatch
 #include "Material.h"		//TODO remove this
@@ -62,6 +63,10 @@ namespace ftec {
 
 		void drawString(const std::string &text, const Vector2f &position);
 		void drawSprite(const Sprite &sprite, const Vector2f &position);
+		void drawSprite(const Sprite &sprite, const Vector3f &position);
+
+		void drawSprite(const Sprite &sprite, const Matrix3f &transformation);
+		
 		void drawLine(const Vector2f &start, const Vector2f &end);
 		void drawLine(const Line2f &line);
 		void drawPoint(const Vector2f &point);

@@ -2,12 +2,15 @@
 #include "engine/DesktopEngine.h"
 
 #include "logger/log.h"
+#include "networking/Client.h"
 
 int main(void)
 {
 	using namespace ftec;
 
-	ftec::DesktopEngine::create<ftec::Razura>();
+	//ftec::DesktopEngine::create<ftec::Razura>();
+
+	test_client();
 
 	WAIT();
 

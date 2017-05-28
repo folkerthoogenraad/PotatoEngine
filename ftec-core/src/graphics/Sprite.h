@@ -10,8 +10,9 @@ namespace ftec {
 	private:
 		std::shared_ptr<Texture> m_Texture = 0;
 		
+		//This needs to be fixed though. 
 		//This is where stuff gets weird. This needs some explaining
-		//Rectanglef m_LocalBounds;
+
 		Vector2f m_Size;
 		Vector2f m_Offset;
 

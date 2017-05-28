@@ -195,6 +195,17 @@ namespace ftec {
 
 	}
 
+	void Graphics2D::drawSprite(const Sprite & sprite, const Vector3f & position)
+	{
+		float d = batch.depth();
+
+		batch.depth(position.z);
+
+		drawSprite(sprite, Vector2f(position.x, position.y));
+
+		setDepth(d);
+	}
+
 	void Graphics2D::drawSprite(const Sprite & sprite, const Vector2f & position)
 	{
 		if (drawing3D) {
@@ -215,6 +226,39 @@ namespace ftec {
 
 		batch.uv(sprite.uvs().topright());
 		batch.vertex(position + sprite.bounds().topright());
+	}
+
+	void Graphics2D::drawSprite(const Sprite & sprite, const Matrix3f & transformation)
+	{
+
+		if (drawing3D) {
+			LOG_ERROR("Can't draw 2D when drawing in 3D");
+		}
+		setTexture(sprite.texture());
+
+		Vector3f positions[4] = {
+			Vector3f(sprite.bounds().topleft()),
+			Vector3f(sprite.bounds().bottomleft()),
+			Vector3f(sprite.bounds().bottomright()),
+			Vector3f(sprite.bounds().topright())
+		};
+
+		for (int i = 0; i < 4; i++)
+			positions[i].z = 1;
+
+		batch.color(m_Color);
+
+		batch.uv(sprite.uvs().topleft());
+		batch.vertex(transformation * positions[0]);
+
+		batch.uv(sprite.uvs().bottomleft());
+		batch.vertex(transformation * positions[1]);
+
+		batch.uv(sprite.uvs().bottomright());
+		batch.vertex(transformation * positions[2]);
+
+		batch.uv(sprite.uvs().topright());
+		batch.vertex(transformation * positions[3]);
 	}
 
 	void Graphics2D::drawLine(const Vector2f & start, const Vector2f & end)
