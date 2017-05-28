@@ -10,7 +10,8 @@ int main(void)
 
 	//ftec::DesktopEngine::create<ftec::Razura>();
 
-	test_client();
+	Client client;
+	client.connect("localhost", "9898");
 
 	WAIT();
 

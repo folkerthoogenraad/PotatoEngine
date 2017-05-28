@@ -177,6 +177,7 @@
     <ClCompile Include="src\serialization\Serialization.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\terrain\Terrain.cpp" />
+    <ClCompile Include="src\util\CallbackHandler.cpp" />
     <ClCompile Include="src\util\scope_guard.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -250,8 +251,10 @@
     <ClInclude Include="src\serialization\Serialization.h" />
     <ClInclude Include="src\terrain\Terrain.h" />
     <ClInclude Include="src\threading\PotatoQueue.h" />
+    <ClInclude Include="src\util\CallbackHandler.h" />
     <ClInclude Include="src\util\not_null.h" />
     <ClInclude Include="src\util\optional.h" />
+    <ClInclude Include="src\util\Property.h" />
     <ClInclude Include="src\util\scope_guard.h" />
   </ItemGroup>
   <ItemGroup>

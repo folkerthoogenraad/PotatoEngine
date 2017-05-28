@@ -1,21 +1,32 @@
 #pragma once
 
+#include <boost/asio.hpp>		//TODO try to remove this
+
+#include "util/CallbackHandler.h"
+
+//TODO way better error handling
+
 namespace ftec {
-	void test_client();
 
 	class Client {
 	private:
-
-	public:
+		boost::asio::ip::tcp::socket m_Socket;
 		bool m_Connected;
-
+	public:
+		CallbackHandler<void()> onConnect;
+		CallbackHandler<void()> onDisconnect;
+		CallbackHandler<void()> onMessage;
 	public:
 		Client();
-		~Client();
 
-		void connect(const std::string &ip, const std::string &service);
+		bool connect(const std::string &ip, const std::string &service);
 		void disconnect();
 
+		bool isConnected() const { return m_Connected; };
 
+	private:
+		void listen();
 	};
+
+	void test_client();
 }
