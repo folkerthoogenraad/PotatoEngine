@@ -11,6 +11,7 @@
 
 namespace ftec {
 
+#if 0
 	std::optional<Image> loadImage(const std::string & filename)
 	{
 		//TODO use FREEIMAGE_COLORORDER
@@ -105,6 +106,7 @@ namespace ftec {
 		return FreeImage_Save(FIF_PNG, fImage, filename.c_str(), 0);
 		
 	}
+#endif
 
 	Vector2i glLoadImage(std::string name, unsigned int target)
 	{
