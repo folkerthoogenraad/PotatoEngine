@@ -21,6 +21,8 @@ namespace ftec {
 	struct Line3;
 	template <typename T>
 	struct Plane;
+	template <typename T>
+	struct Rectangle;
 
 	template<typename T>
 	T distance(const Vector2<T> &a, const Vector2<T> &b)
@@ -57,6 +59,42 @@ namespace ftec {
 
 		return l1.origin() + l1.direction() * (
 			Vector2<T>::cross(l2.origin() - l1.origin(), l2.direction()) / d );
+	}
+
+
+	template<typename T>
+	CollisionResult<Vector2<T>>	intersectSegment(const Line2<T> &l1, const Line2<T> &l2)
+	{
+		//p + t r = q + u s
+
+		//p = origin1
+		//q = origin2
+		//r = dir1
+		//s = dir2
+
+		T d = Vector2<T>::cross(l1.direction(), l2.direction());
+
+		//TODO fix this function
+
+		if (d == 0)
+			return false;
+
+		float b = Vector2<T>::cross(l1.origin() - l2.origin(), l1.direction()) / d;
+		
+		if (b < 0)
+			return false;
+		if (b > 1)
+			return false;
+
+
+		float f = Vector2<T>::cross(l2.origin() - l1.origin(), l2.direction()) / d;
+
+		if (f < 0)
+			return false;
+		if (f > 1)
+			return false;
+
+		return l1.origin() + l1.direction() * f;
 	}
 
 	template<typename T>
@@ -110,6 +148,13 @@ namespace ftec {
 	template<typename T>
 	bool contains(const Circle<T> &c, const Vector2<T> &point) {
 		return distance(c.center, point) <= c.radius;
+	}
+
+	template<typename T>
+	bool contains(const Rectangle<T> &c, const Vector2<T> &point) {
+		//Oh boy, y up vs y down
+		return !(point.x <= c.left() && point.x >= c.right() 
+			&& point.y <= c.bottom() && point.y >= c.top());
 	}
 	
 	template<typename T>

@@ -18,6 +18,8 @@
 
 #include "math/Vector2.h"
 
+#include <assert.h>
+
 namespace ftec {
 	RazuraPlayer::RazuraPlayer()
 		: m_Position(0, 0, 0)
@@ -57,6 +59,7 @@ namespace ftec {
 		Vector2f p = Vector2f(m_Position.x, m_Position.y);
 
 		Line2f motionLine(p, p + motion);
+		Vector2f direction = motionLine.direction().normalize();
 
 		//Collision testing
 		m_Scene->forEach([&](const Entity *entity) {
@@ -86,7 +89,11 @@ namespace ftec {
 
 				Line2f line(loop[from], loop[to]);
 
-				CollisionResult<Vector2f> result = intersect(motionLine, line);
+				// Don't check the wrong side
+				if (Vector2f::dot(line.normal().direction().normalize(), direction) > 0)
+					continue;
+
+				CollisionResult<Vector2f> result = intersectSegment(motionLine, line);
 
 				if (result) {
 					float dist = motionLine.length();
