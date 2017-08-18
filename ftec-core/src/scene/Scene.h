@@ -2,6 +2,7 @@
 
 #include <memory>					//For std::shared_ptr
 #include <vector>					//For std::vector
+#include <functional>				//For std::vector
 
 #include "math/Vector3.h"			//For Vector3
 
@@ -50,6 +51,8 @@ namespace ftec {
 
 		Entity					   *addEntity(std::unique_ptr<Entity> entity);
 		std::unique_ptr<Entity>		removeEntity(Entity *entity);
+
+		void forEach(std::function<void(const Entity*)>);
 
 		void addMesh(const Vector3f &position, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material);
 		

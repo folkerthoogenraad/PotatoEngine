@@ -4,26 +4,22 @@
 
 #include "scene/Entity.h"
 
-#include "tiles/Tilemap.h"
+#include "math/Rectangle.h"
 
 namespace ftec {
 
-	class Mesh;
-	struct PBRMaterial;
-
 	class RazuraWorldEntity : public Entity {
-		Tilemap m_Map;
-		std::unique_ptr<Mesh> m_Mesh;
-		std::unique_ptr<PBRMaterial> m_Material;
 	public:
-		RazuraWorldEntity();
+		Rectanglef m_Bounds;
+	public:
+		RazuraWorldEntity(Rectanglef rectangle);
 		~RazuraWorldEntity();
 
 		virtual void onStart();
 		virtual void onEnd();
 
 		virtual void update();
-		virtual void render();
+		virtual void render2D(Graphics2D &graphics);
 	};
 
 }
