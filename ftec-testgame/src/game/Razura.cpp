@@ -34,7 +34,6 @@
 #include "TestCanvas.h"
 
 namespace ftec {
-
 	void Razura::update()
 	{
 	}
@@ -46,16 +45,16 @@ namespace ftec {
 
 	void Razura::init()
 	{
-		{
-			auto scene = std::make_unique<Scene>();
-			scene->setMode(Scene::SceneMode::GRAPHICS_2D);
+		auto scene = std::make_unique<Scene>();
+		scene->setMode(Scene::SceneMode::GRAPHICS_2D);
+		scene->m_Cameras[0] = Camera::orthagonal(10, 16.0f / 9.0f, -100, 100, false);
 
-			scene->m_Cameras[0] = Camera::orthagonal(10, 16.0f / 9.0f, -100, 100, false);
+		scene->addEntity(std::make_unique<RazuraPlayer>());
 
-			scene->addEntity(std::make_unique<RazuraPlayer>());
+		scene->addEntity(std::make_unique<RazuraWorldEntity>(Rectanglef(1, -1, 1, 2)));
+		scene->addEntity(std::make_unique<RazuraWorldEntity>(Rectanglef(-2, -1, 1, 2)));
 
-			Engine::setScene(std::move(scene));
-		}
+		Engine::setScene(std::move(scene));
 	}
 
 	void Razura::destroy()

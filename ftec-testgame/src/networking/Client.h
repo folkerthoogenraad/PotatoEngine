@@ -1,5 +1,6 @@
 #pragma once
 
+#if 0
 #include <boost/asio.hpp>		//TODO try to remove this
 
 #include "util/CallbackHandler.h"
@@ -30,3 +31,5 @@ namespace ftec {
 
 	void test_client();
 }
+
+#endif

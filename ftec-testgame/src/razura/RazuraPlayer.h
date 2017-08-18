@@ -9,13 +9,9 @@
 
 namespace ftec {
 
-	class Mesh;
-	struct PBRMaterial;
-
 	class RazuraPlayer : public Entity {
-		Vector3f m_Position;
+		Vector2f m_Position;
 		Sprite m_Sprite;
-		Sprite m_Sprite2;
 	public:
 		RazuraPlayer();
 		~RazuraPlayer();
@@ -23,7 +19,7 @@ namespace ftec {
 		virtual void onStart() override;
 		virtual void onEnd() override;
 
-		virtual void update() override;
+		virtual void update();
 		virtual void render2D(Graphics2D &graphics) override;
 	};
 }

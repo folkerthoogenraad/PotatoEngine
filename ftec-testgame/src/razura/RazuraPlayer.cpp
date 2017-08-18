@@ -1,16 +1,26 @@
 #include "RazuraPlayer.h"
 
+#include <array>
+
 #include "graphics/Graphics2D.h"
 
 #include "engine/Time.h"
+#include "engine/Engine.h"
 #include "engine/Input.h"
 #include "engine/Keycodes.h"
+#include "resources/ResourceManager.h"
 
 #include "graphics/Graphics.h"
 #include "math/Matrix4.h"
 
-#include "engine/Engine.h"
-#include "resources/ResourceManager.h"
+#include "scene/Scene.h"
+
+#include "RazuraWorldEntity.h"
+#include "math/collision.h"
+
+#include "math/Vector2.h"
+
+#include <assert.h>
 
 #include "isometric/isometric_helpers.h"
 
@@ -18,21 +28,13 @@
 
 namespace ftec {
 	RazuraPlayer::RazuraPlayer()
-		: m_Position(0, 0, 0)
+		: m_Position(0, 0)
 	{
 		m_Sprite = Sprite(Engine::getResourceManager().load<Texture>("sprites/player.png"));
-		m_Sprite2 = Sprite(Engine::getResourceManager().load<Texture>("textures/pixel_test.png"));
 
-		m_Sprite.size().width /= 20.0f;
-		m_Sprite.size().height /= 20.0f;
-		m_Sprite2.size().width = 1.0f;
-		m_Sprite2.size().height = 1.0f;
-
-		m_Sprite.offset().x = 0.5f;
-		m_Sprite.offset().y = 0;
-
-		m_Sprite2.offset().x = 0.5f;
-		m_Sprite2.offset().y = 0.5f;
+		m_Sprite.size().width = 1.0f;
+		m_Sprite.size().height = 1.0f;
+		m_Sprite.offset() = Vector2f(0.5f, 0.5f);
 	}
 
 	RazuraPlayer::~RazuraPlayer()
@@ -50,7 +52,7 @@ namespace ftec {
 
 	void RazuraPlayer::update()
 	{
-		Vector3f motion(0, 0, 0);
+		Vector2f motion(0, 0);
 
 		if (Input::isKeyDown(KEY_W)) {
 			motion.y += 1;
@@ -64,85 +66,66 @@ namespace ftec {
 
 		if (motion.sqrmagnitude() > 0) {
 			motion.normalize();
-			m_Position += motion * 2 * Time::deltaTime;
+			motion *= 4 * Time::deltaTime;
 		}
-		m_Position.z = 0;
+
+		Line2f motionLine(m_Position, m_Position + motion);
+		Vector2f direction = motionLine.direction().normalize();
+
+		//Collision testing
+		m_Scene->forEach([&](const Entity *entity) {
+			const RazuraWorldEntity *rwe = dynamic_cast<const RazuraWorldEntity*>(entity);
+
+			if (!rwe)
+				return;
+
+			Rectanglef toCheck = rwe->m_Bounds;
+
+			//Use the whatever product 
+			toCheck.x() -= 0.5f;
+			toCheck.y() -= 0.5f;
+			toCheck.width() += 1.0f;
+			toCheck.height() += 1.0f;
+
+			std::array<Vector2f, 4> loop{
+				toCheck.topleft(),
+				toCheck.topright(),
+				toCheck.bottomright(),
+				toCheck.bottomleft()
+			};
+
+			for (int i = 0; i < loop.size(); i++) {
+				int from = i;
+				int to = (i + 1) % loop.size();
+
+				Line2f line(loop[from], loop[to]);
+
+				// Don't check the wrong side
+				if (Vector2f::dot(line.normal().direction().normalize(), direction) > 0)
+					continue;
+
+				CollisionResult<Vector2f> result = intersectSegment(motionLine, line);
+
+				if (result) {
+					float dist = motionLine.length();
+					float nDist = (motionLine.a - *result).magnitude();
+					if (nDist < dist) {
+						motionLine.b = *result;
+					}
+				}
+			}
+		});
+
+		m_Position.x = motionLine.b.x;
+		m_Position.y = motionLine.b.y;
 	}
 
-	void RazuraPlayer::render2D(Graphics2D & graphics)
+	void RazuraPlayer::render2D(Graphics2D &graphics)
 	{
-		graphics.drawSprite(m_Sprite, getIsometricTransformationMatrix(m_Position));
-
-		graphics.drawSprite(m_Sprite, getIsometricTransformationMatrix(Vector3f(1, 0, 0)));
-		graphics.drawSprite(m_Sprite, getIsometricTransformationMatrix(Vector3f(0, 1, 0)));
-		graphics.drawSprite(m_Sprite, getIsometricTransformationMatrix(Vector3f(-1, 0, 0)));
-		graphics.drawSprite(m_Sprite, getIsometricTransformationMatrix(Vector3f(0, -1, 0)));
-
-
-		graphics.drawSprite(m_Sprite2, getIsometricTransformationMatrix(Vector3f(-1, 0, 0), true));
-		graphics.drawSprite(m_Sprite2, getIsometricTransformationMatrix(Vector3f(-1, 1, 0), true));
-		graphics.drawSprite(m_Sprite2, getIsometricTransformationMatrix(Vector3f(-1, -1, 0), true));
-
-		graphics.drawSprite(m_Sprite2, getIsometricTransformationMatrix(Vector3f(0, 0, 0), true));
-		graphics.drawSprite(m_Sprite2, getIsometricTransformationMatrix(Vector3f(0, 1, 0), true));
-		graphics.drawSprite(m_Sprite2, getIsometricTransformationMatrix(Vector3f(0, -1, 0), true));
-
-		graphics.drawSprite(m_Sprite2, getIsometricTransformationMatrix(Vector3f(1, 0, 0), true));
-		graphics.drawSprite(m_Sprite2, getIsometricTransformationMatrix(Vector3f(1, 1, 0), true));
-		graphics.drawSprite(m_Sprite2, getIsometricTransformationMatrix(Vector3f(1, -1, 0), true));
-
-		graphics.setColor(Color32::red());
-		graphics.drawSprite(m_Sprite2, getIsometricTransformationMatrix(Vector3f(
-			Time::sinTime, 
-			Time::cosTime,
-			0.1f), true));
 		graphics.setColor(Color32::white());
-
-		/*Matrix3f transform({
-			1,0,m_Position.x,
-			0,1,m_Position.y,
-			0,0,m_Position.y
-		});
-
-		Matrix3f transform1({
-			1,0, 0,
-			0,1, 0.1f,
-			0,0, 0.1f
-		});
-		Matrix3f transform2({
-			1,0, 0,
-			0,1, 0.2f,
-			0,0, 0.2f
-		});
-
-
-		graphics.drawSprite(m_Sprite, transform);
-		graphics.drawSprite(m_Sprite, transform1);
-		graphics.drawSprite(m_Sprite, transform2);
-
-		float height = Time::sin2Time / 8 + 0.125f;
-		float height2 = Time::cos2Time / 8 + 0.125f;
-		float yPos = 0;
-
-		Matrix3f transform3({
-			1,0, 0,
-			0,1, yPos + height,
-			0,1, yPos - height
-		});
-
-		Matrix3f transform4({
-			1,0, 0,
-			0,1, yPos + height2,
-			0,1, yPos - height2
-		});
-
-		graphics.drawSprite(m_Sprite2, transform3);
-
-		graphics.setColor(Color32::red());
-
-		graphics.drawSprite(m_Sprite2, transform4);
-		
-		graphics.setColor(Color32::white());*/
+		graphics.drawSprite(m_Sprite, Matrix3f::translation(m_Position));
+		//graphics.setColor(Color32::red());
+		//graphics.drawRectangle(Rectanglef::centered(m_Position.x, m_Position.y, 1, 1), true);
 	}
 
 }

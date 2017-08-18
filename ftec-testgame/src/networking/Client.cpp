@@ -1,5 +1,7 @@
 #include "Client.h"
 
+#if 0
+
 #include <iostream>
 #include <boost/asio.hpp>
 #include <thread>
@@ -126,3 +128,5 @@ namespace ftec {
 	}
 	
 }
+
+#endif

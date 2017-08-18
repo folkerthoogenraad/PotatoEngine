@@ -1,5 +1,6 @@
 #pragma once
 
+#if 0
 #include <boost/optional.hpp>
 
 namespace std {
@@ -7,3 +8,5 @@ namespace std {
 	template <typename T>
 	using optional = boost::optional<T>;
 }
+
+#endif

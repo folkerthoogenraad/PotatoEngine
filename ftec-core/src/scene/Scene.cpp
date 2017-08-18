@@ -123,6 +123,13 @@ namespace ftec {
 		return std::move(value);
 	}
 
+	void Scene::forEach(std::function<void(const Entity*)> func)
+	{
+		for (const auto &i : m_Entities) {
+			func(i.get());
+		}
+	}
+
 	void Scene::addMesh(const Vector3f & position, std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material)
 	{
 		StaticGeometry s;
