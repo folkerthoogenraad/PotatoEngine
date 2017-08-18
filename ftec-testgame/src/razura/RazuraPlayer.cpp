@@ -104,7 +104,7 @@ namespace ftec {
 				if (Vector2f::dot(line.normal().direction().normalize(), direction) > 0)
 					continue;
 
-				CollisionResult<Vector2f> result = intersectSegment(motionLine, line);
+				CollisionResult<Vector2f> result = intersect(motionLine, line);
 
 				if (result) {
 					float dist = motionLine.length();
@@ -122,10 +122,10 @@ namespace ftec {
 
 	void RazuraPlayer::render2D(Graphics2D &graphics)
 	{
-		graphics.setColor(Color32::white());
-		graphics.drawSprite(m_Sprite, Matrix3f::translation(m_Position));
-		//graphics.setColor(Color32::red());
-		//graphics.drawRectangle(Rectanglef::centered(m_Position.x, m_Position.y, 1, 1), true);
+		//graphics.setColor(Color32::white());
+		//graphics.drawSprite(m_Sprite, Matrix3f::translation(m_Position));
+		graphics.setColor(Color32::red());
+		graphics.drawRectangle(Rectanglef::centered(m_Position.x, m_Position.y, 1, 1), true);
 	}
 
 }
