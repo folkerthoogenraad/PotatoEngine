@@ -20,8 +20,10 @@ namespace potato {
 		void update() override;
 		void draw(ftec::Graphics2D &graphics) override;
 		void drawSelf(ftec::Graphics2D &graphics) override;
-		void process(Event &event) override;
+		//void process(Event &event) override;
 		void processSelf(Event & event) override;
+
+		virtual std::vector<std::shared_ptr<Panel>> getChildren() const override;
 
 		Size getPreferredSize() override;
 	};

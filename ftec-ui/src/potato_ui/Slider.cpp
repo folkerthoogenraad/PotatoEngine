@@ -30,7 +30,7 @@ namespace potato {
 		graphics.setColor(PotatoColor::primary);
 		graphics.drawRectangle(getSliderBounds(), true);
 
-		if (m_Focus) {
+		if (isFocused()) {
 			graphics.setColor(PotatoColor::darkPrimary);
 			graphics.drawRectangle(bounds, false);
 		}

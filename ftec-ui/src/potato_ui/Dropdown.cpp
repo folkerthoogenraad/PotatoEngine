@@ -15,7 +15,7 @@ namespace potato {
 
 		Bounds bounds = getGlobalBounds();
 
-		if (m_Focus) {//Make this a function (draw focus box, or something)
+		if (isFocused()) {//Make this a function (draw focus box, or something)
 			graphics.setColor(PotatoColor::darkPrimary);
 			graphics.drawRectangle(bounds, false);
 		}

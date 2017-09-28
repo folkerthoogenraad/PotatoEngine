@@ -26,7 +26,7 @@ namespace potato {
 
 		graphics.drawRectangle(bounds, true);
 
-		if (m_Focus) {
+		if (isFocused()) {
 			graphics.setColor(PotatoColor::primary);
 			graphics.drawRectangle(bounds, false);
 		}
@@ -44,7 +44,7 @@ namespace potato {
 		}
 
 		//A bit of alpha here
-		if(m_Focus)
+		if(isFocused())
 			graphics.setColor(ftec::Color32(0x81, 0x22, 0x22, 0x88));
 		else
 			graphics.setColor(ftec::Color32(0x81, 0x22, 0x22, 0x33));

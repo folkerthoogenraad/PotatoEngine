@@ -11,7 +11,7 @@ namespace ftec {
 	public:
 		TestCanvas();
 
-		void preEvents() override;
+		void onPreEvents() override;
 
 		void drawSelf(Graphics2D &graphics) override;
 

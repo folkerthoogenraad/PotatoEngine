@@ -36,14 +36,14 @@ namespace potato {
 		Panel::update();
 
 		//TODO maybe synchronize this with other sceneviews? 
-		if (!m_Focus) //TODO make a safe object that has a destructor that re-enables the input, thats just more safe
+		if (!isFocused()) //TODO make a safe object that has a destructor that re-enables the input, thats just more safe
 			ftec::Input::setEnabled(false);
 		
 		if (ftec::Engine::getScene()) {
 			ftec::Engine::getScene()->update();
 		}
 
-		if (!m_Focus)
+		if (!isFocused())
 			ftec::Input::setEnabled(true);
 	}
 	Size SceneView::getPreferredSize()

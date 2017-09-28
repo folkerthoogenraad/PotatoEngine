@@ -7,6 +7,7 @@
 #include "Label.h"
 #include "Slider.h"
 #include "Checkbox.h"
+#include "NodeEditor.h"
 
 namespace potato {
 
@@ -164,6 +165,16 @@ namespace potato {
 			node.getAttribute("text", value);
 
 			panel->text() = value;
+
+			//Load the layout params
+			UILoader::loadLayoutParams(panel, node);
+
+			return panel;
+		};
+
+		out["NodeEditor"] = [](ftec::xml::XMLNode &node) -> std::shared_ptr<Panel>
+		{
+			auto panel = std::make_shared<NodeEditor>();
 
 			//Load the layout params
 			UILoader::loadLayoutParams(panel, node);

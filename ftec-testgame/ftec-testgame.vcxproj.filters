@@ -145,7 +145,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="text.xml" />
+    <Xml Include="UIEditor.xml" />
+    <Xml Include="UISettings.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="settings\config.ini" />

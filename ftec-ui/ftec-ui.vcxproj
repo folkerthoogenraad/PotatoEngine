@@ -29,6 +29,8 @@
     <ClCompile Include="src\potato_ui\Label.cpp" />
     <ClCompile Include="src\potato_ui\LinearLayout.cpp" />
     <ClCompile Include="src\potato_ui\List.cpp" />
+    <ClCompile Include="src\potato_ui\Node.cpp" />
+    <ClCompile Include="src\potato_ui\NodeEditor.cpp" />
     <ClCompile Include="src\potato_ui\Panel.cpp" />
     <ClCompile Include="src\potato_ui\PotatoUI.cpp" />
     <ClCompile Include="src\potato_ui\SceneView.cpp" />
@@ -50,6 +52,8 @@
     <ClInclude Include="src\potato_ui\LayoutParams.h" />
     <ClInclude Include="src\potato_ui\LinearLayout.h" />
     <ClInclude Include="src\potato_ui\List.h" />
+    <ClInclude Include="src\potato_ui\Node.h" />
+    <ClInclude Include="src\potato_ui\NodeEditor.h" />
     <ClInclude Include="src\potato_ui\Panel.h" />
     <ClInclude Include="src\potato_ui\PotatoUI.h" />
     <ClInclude Include="src\potato_ui\SceneView.h" />

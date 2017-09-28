@@ -32,7 +32,7 @@ namespace potato {
 
 		graphics.drawRectangle(bounds, true);
 
-		if (isFocussed()) {
+		if (isFocused()) {
 			graphics.setColor(PotatoColor::darkPrimary);
 			graphics.drawRectangle(bounds, false);
 		}

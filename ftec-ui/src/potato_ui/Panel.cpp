@@ -20,7 +20,17 @@ namespace potato {
 		m_Font = ftec::Engine::getResourceManager().load<ftec::Font>("fonts/Ubuntu.ttf");
 	}
 
-	Bounds Panel::getGlobalBounds()
+	Bounds Panel::getInnerBounds() const 
+	{
+		Bounds b = localbounds();
+
+		return Bounds(
+			b.x() + m_Insets.left, b.y() + m_Insets.top,
+			b.width() - m_Insets.right - m_Insets.left, b.height() - m_Insets.bottom - m_Insets.top
+		);
+	}
+
+	Bounds Panel::getGlobalBounds() const
 	{
 		Bounds b = getGlobalOutline();
 		return Bounds(
@@ -29,7 +39,7 @@ namespace potato {
 		);
 	}
 
-	Bounds Panel::getGlobalOutline()
+	Bounds Panel::getGlobalOutline() const
 	{
 		ftec::Vector2i p = m_LocalBounds.position;
 
@@ -47,8 +57,13 @@ namespace potato {
 	{
 		drawSelf(graphics);
 		//Draw children
-		for (auto child : m_Children) {
+		/*for (auto child : m_Children) {
 			child->draw(graphics);
+		}*/
+		//Back to front
+		for (auto it = m_Children.rbegin(); it != m_Children.rend(); it++)
+		{
+			(*it)->draw(graphics);
 		}
 	}
 
@@ -61,32 +76,18 @@ namespace potato {
 	}
 
 
-	void Panel::preEvents()
+	void Panel::onPreEvents()
 	{
 		for (auto child : m_Children) {
-			child->preEvents();
+			child->onPreEvents();
 		}
 	}
 
-	void Panel::process(Event &event)
+	void Panel::onPostEvents() 
 	{
 		for (auto child : m_Children) {
-			if (!event.isConsumed()) {
-				child->process(event);
-			}
-			else {
-				//No point in looping any further
-				break;
-			}
+			child->onPostEvents();
 		}
-
-		if (event.isConsumed())
-			return;
-
-		//If the event is still not consumed by one of our children,
-		//we might be able to use it ourselfs!
-		processSelf(event);
-
 	}
 
 	void Panel::processSelf(Event &event)
@@ -129,15 +130,15 @@ namespace potato {
 		//Press event
 		if (event.getType() == EventType::MOUSE_PRESSED) {
 			if (isHoveringSelf()){
-				m_Pressed = true;
+				m_Pressed = true; //Pressed should be handled by the UI as well...
 				if (m_Focusable) {
-					m_Focus = true;
+					if(m_UI) 
+						m_UI->setFocus(this);
 				}
 				onMousePressed(event);
 			}
 			else {
 				m_Pressed = false;
-				m_Focus = false;
 			}
 		}
 
@@ -161,7 +162,7 @@ namespace potato {
 
 		//Typed keys
 		if (event.getType() == EventType::KEYBOARD_TYPED) {
-			if (isFocussed()) {
+			if (isFocused()) {
 				if (event.getKeyCode() == KEY_TAB && !m_SwallowTab) {
 					switchFocus();
 				}
@@ -173,14 +174,14 @@ namespace potato {
 	
 		//Keyboard press events
 		if (event.getType() == EventType::KEYBOARD_PRESSED) {
-			if (isFocussed()) {
+			if (isFocused()) {
 				onKeyPressed(event);
 			}
 		}
 
 		//Keyboard press events
 		if (event.getType() == EventType::KEYBOARD_RELEASED) {
-			if (isFocussed()) {
+			if (isFocused()) {
 				onKeyReleased(event);
 			}
 		}
@@ -262,6 +263,9 @@ namespace potato {
 
 	void Panel::switchFocus()
 	{
+		if (!m_UI)
+			return;
+
 		//TODO optimize this function with only one loop (keep track of first focusable index, and next after current)
 		if (m_Children.size() == 0)
 			return;
@@ -272,7 +276,7 @@ namespace potato {
 
 		//Find the child with focus
 		for (auto c : m_Children) {
-			if (c->m_Focus) {
+			if (c->isFocused()) {
 				currentFocus = idx;
 				focusCount++;
 			}
@@ -285,14 +289,11 @@ namespace potato {
 		}if (focusCount > 1)
 			LOG_ERROR("Focus count > 1");
 		
-		//Unfocus the current focus
-		m_Children[currentFocus]->m_Focus = false;
-
 		//See if we can find a next target to focus
 		for (int i = currentFocus + 1; i < m_Children.size(); i++) {
 			if (m_Children[i]->isFocusable()) {
 				//if we can, we return
-				m_Children[i]->m_Focus = true;
+				m_UI->setFocus(m_Children[i].get());
 				return;
 			}
 		}
@@ -300,17 +301,17 @@ namespace potato {
 		//If we can't, we look for our next target!
 		for (auto c : m_Children) {
 			if (c->m_Focusable) {
-				c->m_Focus = true;
+				m_UI->setFocus(c.get());
 				return;
 			}
 		}
 	}
 
-	bool Panel::inBounds(ftec::Vector2i point)
+	bool Panel::inBounds(ftec::Vector2i point) const 
 	{
 		return getGlobalBounds().contains(point);
 	}
-	bool Panel::inChildBounds(ftec::Vector2i point)
+	bool Panel::inChildBounds(ftec::Vector2i point) const
 	{
 		//If not in our bounds, it certainly is not in our childs bounds
 		if (!inBounds(point))
@@ -324,7 +325,7 @@ namespace potato {
 
 		return false;
 	}
-	bool Panel::inSelfBounds(ftec::Vector2i point)
+	bool Panel::inSelfBounds(ftec::Vector2i point) const
 	{
 		return inBounds(point) && !inChildBounds(point);
 	}
@@ -344,10 +345,25 @@ namespace potato {
 		}
 	}
 
+	void Panel::setUI(PotatoUI * ui)
+	{
+		m_UI = ui;
+
+		for (auto c : m_Children) {
+			c->setUI(ui);
+		}
+	}
+
 	void Panel::setParent(Panel * parent)
 	{
 		this->m_Parent = parent;
 		requestUpdateLayout();
+	}
+
+	void Panel::initChild(std::shared_ptr<Panel> child)
+	{
+		child->setParent(this);
+		child->setUI(m_UI);
 	}
 	
 }

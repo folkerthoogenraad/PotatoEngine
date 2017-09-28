@@ -1,60 +1,53 @@
 #include "Razura.h"
 
-#include "engine/Engine.h"
-#include "engine/Input.h"
-#include "logger/log.h"
-#include "resources/ResourceManager.h"
-
-#include "scene/Scene.h"
-
-#include "math/Matrix4.h"
-
 #include "graphics/Renderer.h"
-#include "graphics/Window.h"
-#include "graphics/Camera.h"
-#include "graphics/Mesh.h"
-#include "graphics/Graphics.h"
 
-#include "razura/RazuraPlayer.h"
-#include "razura/RazuraWorldEntity.h"
+#include "potato_ui/UILoader.h"
 
-#include "potato_ui/PotatoUI.h"
-#include "potato_ui/Button.h"
-#include "potato_ui/LinearLayout.h"
-#include "potato_ui/Slider.h"
-#include "potato_ui/TextField.h"
+#include "potato_ui/NodeEditor.h"
+#include "potato_ui/Node.h"
+#include "potato_ui/TabbedPanel.h"
 
-#include "NoClipCameraEntity.h"
-
-#include "potato_ui/Event.h"
-#include "potato_ui/EventInput.h"
-
-#include "razura/RazuraPlayer.h"
-
-#include "TestCanvas.h"
 
 namespace ftec {
 	void Razura::update()
 	{
+		m_UI->update();
 	}
 
 	void Razura::render()
 	{
 		Renderer::clear();
+		m_UI->render();
 	}
 
 	void Razura::init()
 	{
-		auto scene = std::make_unique<Scene>();
-		scene->setMode(Scene::SceneMode::GRAPHICS_2D);
-		scene->m_Cameras[0] = Camera::orthagonal(10, 16.0f / 9.0f, -100, 100, false);
+		using namespace potato;
+		m_UI = std::make_shared<PotatoUI>();
 
-		scene->addEntity(std::make_unique<RazuraPlayer>());
+		auto nodeEditor = std::make_shared<NodeEditor>();
 
-		scene->addEntity(std::make_unique<RazuraWorldEntity>(Rectanglef(1, -1, 1, 2)));
-		scene->addEntity(std::make_unique<RazuraWorldEntity>(Rectanglef(-2, -1, 1, 2)));
+		std::vector<std::pair<std::string, std::shared_ptr<Panel>>> p = {
+			{ "Settings", UILoader::load("UISettings.xml") },
+			{ "Other stuff", nodeEditor }
+		};
 
-		Engine::setScene(std::move(scene));
+		{
+			auto m = std::make_shared<Node>("Abcdefg :)");
+			m->localbounds().position += Vector2i(128, 0);
+			m->setContent(UILoader::load("UISettings.xml"));
+			nodeEditor->addNode(m);
+		}
+
+		{
+			auto m = std::make_shared<Node>("Jouw moeder :)");
+			m->localbounds().position += Vector2i(0, 0);
+			m->setContent(UILoader::load("UISettings.xml"));
+			nodeEditor->addNode(m);
+		}
+
+		m_UI->setRoot(std::make_shared<TabbedPanel>(p));
 	}
 
 	void Razura::destroy()

@@ -11,6 +11,7 @@ namespace ftec {
 
 	class RazuraPlayer : public Entity {
 		Vector2f m_Position;
+		Vector2f m_Motion;
 		Sprite m_Sprite;
 	public:
 		RazuraPlayer();

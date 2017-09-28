@@ -161,7 +161,7 @@ namespace ftec {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		//Clear color settings
-		glClearColor(0.f, 0.f, 1.f, 1.f);
+		glClearColor(1.f, 1.f, 1.f, 1.f);
 
 	}
 }

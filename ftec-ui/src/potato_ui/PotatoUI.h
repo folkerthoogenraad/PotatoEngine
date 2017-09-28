@@ -18,6 +18,7 @@ PotatoUI (obviously).
 namespace potato {
 
 	class Panel;
+	class Event;
 
 	class PotatoColor {
 	public:PotatoColor() = delete; ~PotatoColor() = delete;
@@ -50,7 +51,7 @@ namespace potato {
 		std::shared_ptr<Panel> m_Root;
 		std::shared_ptr<Panel> m_ContextMenu;
 
-		Panel *focus;
+		Panel *m_Focus;
 
 		ftec::Vector2f m_MouseStart;
 	public:
@@ -61,8 +62,12 @@ namespace potato {
 
 		void setRoot(std::shared_ptr<Panel> root);
 		void setContextMenu(std::shared_ptr<Panel> contextMenu);
+		void setFocus(Panel *focus);
+
+		Panel *getFocus() const { return m_Focus; }
+		bool isFocused(const Panel *panel) const { return m_Focus == panel; }
 
 	private:
-
+		void process(std::shared_ptr<Panel> panel, Event &event);
 	};
 }

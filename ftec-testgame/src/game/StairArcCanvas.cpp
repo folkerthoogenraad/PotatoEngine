@@ -76,7 +76,7 @@ namespace ftec {
 
 	void StairArcCanvas::update()
 	{
-		if (!m_Focus)
+		if (!isFocused())
 			return;
 		auto getClosestIndex = [&]() -> int {
 			int closest = 0;

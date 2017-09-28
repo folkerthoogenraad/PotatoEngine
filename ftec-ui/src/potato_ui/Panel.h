@@ -24,7 +24,8 @@ namespace potato {
 		Insets() = default;
 		Insets(int a, int b, int c, int d) : top(a), right(b), bottom(c), left(d){}
 
-		static Insets defaultInsets() { return Insets(2,2,2,2); }
+		static Insets defaultInsets() { return Insets(2, 2, 2, 2); }
+		static Insets none() { return Insets(0, 0, 0, 0); }
 	};
 
 	class Panel;
@@ -47,7 +48,7 @@ namespace potato {
 		bool m_Opaque = false;
 		bool m_SwallowTab = false;
 
-		bool m_Focus = false;
+		//bool m_Focus = false;
 
 		LayoutParams m_LayoutParams = LayoutParams();
 		Insets m_Insets = Insets::defaultInsets();
@@ -65,6 +66,7 @@ namespace potato {
 	public:
 		Panel();
 
+
 		void setOpaque(bool op) { m_Opaque = op; }
 		bool isOpaque() const { return m_Opaque; }
 
@@ -75,8 +77,9 @@ namespace potato {
 		const Bounds &localbounds() const { return m_LocalBounds; }
 
 		//TODO some chaching in this
-		Bounds getGlobalBounds();
-		Bounds getGlobalOutline();
+		Bounds getGlobalBounds() const;
+		Bounds getGlobalOutline() const;
+		Bounds getInnerBounds() const;
 
 		ftec::Color32 &background() { return m_BackgroundColor; }
 		const ftec::Color32 &background() const { return m_BackgroundColor; }
@@ -98,9 +101,9 @@ namespace potato {
 		virtual void update();
 
 		//Called each frame, before events are processed
-		virtual void preEvents();
+		virtual void onPreEvents(); 
+		virtual void onPostEvents();
 
-		virtual void process(Event &event);
 		virtual void processSelf(Event &event);
 
 		//Events that get fired from the panel
@@ -125,7 +128,7 @@ namespace potato {
 
 		void switchFocus();
 
-		bool isFocussed() const { return m_Focus; }
+		bool isFocused() const { return m_UI && m_UI->isFocused(this); }
 		bool isPressed() const { return m_Pressed; }
 
 		bool isHovering() const { return m_Hovering; }
@@ -134,9 +137,14 @@ namespace potato {
 
 		virtual Size getPreferredSize() = 0;
 
-		bool inBounds(ftec::Vector2i point);
-		bool inChildBounds(ftec::Vector2i point);
-		bool inSelfBounds(ftec::Vector2i point);
+		virtual bool inBounds(ftec::Vector2i point) const;
+
+		//Should not be used? Maybe?
+		bool inChildBounds(ftec::Vector2i point) const;
+		bool inSelfBounds(ftec::Vector2i point) const;
+
+		//Copies the list... Not sure if we want this
+		virtual std::vector<std::shared_ptr<Panel>> getChildren() const { return m_Children; }
 
 		//Layout stuff
 		void requestUpdateLayout();
@@ -145,7 +153,7 @@ namespace potato {
 		void setParent(Panel *parent);
 		Panel *getParent() { return m_Parent; }
 
-		void setUI(PotatoUI *ui) {this->m_UI = ui; }
+		void setUI(PotatoUI *ui);
 		PotatoUI *getUI() { return this->m_UI; }
 
 		template <typename T>
@@ -161,5 +169,8 @@ namespace potato {
 
 			return nullptr;
 		}
+		
+	protected:
+		void initChild(std::shared_ptr<Panel> child);
 	};
 }

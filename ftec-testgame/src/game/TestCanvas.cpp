@@ -16,7 +16,7 @@ namespace ftec {
 		m_Focusable = true;
 	}
 
-	void TestCanvas::preEvents()
+	void TestCanvas::onPreEvents()
 	{
 		m_Typed = false;
 		m_Clicked = false;

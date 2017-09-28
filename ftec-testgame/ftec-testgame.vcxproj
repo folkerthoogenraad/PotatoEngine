@@ -187,9 +187,8 @@
     <ClInclude Include="src\tiles\Tilemap.h" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="text.xml">
-      <SubType>Designer</SubType>
-    </Xml>
+    <Xml Include="UIEditor.xml" />
+    <Xml Include="UISettings.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="settings\config.ini" />

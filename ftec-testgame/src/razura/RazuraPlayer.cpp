@@ -52,27 +52,33 @@ namespace ftec {
 
 	void RazuraPlayer::update()
 	{
-		Vector2f motion(0, 0);
+		float m = m_Motion.x;
 
-		if (Input::isKeyDown(KEY_W)) {
-			motion.y += 1;
-		}if (Input::isKeyDown(KEY_S)) {
-			motion.y -= 1;
-		}if (Input::isKeyDown(KEY_A)) {
-			motion.x -= 1;
+		const float grav = 32;
+		const float accel = 16;
+		const float jmp = 10;
+		const float spd = 4;
+
+		if (Input::isKeyDown(KEY_A)) {
+			m -= accel * Time::deltaTime;
 		}if (Input::isKeyDown(KEY_D)) {
-			motion.x += 1;
+			m += accel * Time::deltaTime;
+		}if (Input::isKeyPressed(KEY_SPACE)) {
+			m_Motion.y = jmp;
 		}
 
-		if (motion.sqrmagnitude() > 0) {
-			motion.normalize();
-			motion *= 4 * Time::deltaTime;
-		}
+		if (m > spd)
+			m = spd;
+		if (m < -spd)
+			m = -spd;
 
-		Line2f motionLine(m_Position, m_Position + motion);
-		Vector2f direction = motionLine.direction().normalize();
+		m_Motion.x = m;
+		m_Motion.y -= grav * Time::deltaTime;
 
 		//Collision testing
+		Line2f motionLine(m_Position, m_Position + m_Motion * Time::deltaTime);
+		Vector2f direction = motionLine.direction().normalize();
+
 		m_Scene->forEach([&](const Entity *entity) {
 			const RazuraWorldEntity *rwe = dynamic_cast<const RazuraWorldEntity*>(entity);
 
@@ -81,7 +87,7 @@ namespace ftec {
 
 			Rectanglef toCheck = rwe->m_Bounds;
 
-			//Use the whatever product 
+			// Use the whatever product 
 			toCheck.x() -= 0.5f;
 			toCheck.y() -= 0.5f;
 			toCheck.width() += 1.0f;
@@ -98,26 +104,53 @@ namespace ftec {
 				int from = i;
 				int to = (i + 1) % loop.size();
 
+				// Setup all the line variables
 				Line2f line(loop[from], loop[to]);
 
-				// Don't check the wrong side
-				if (Vector2f::dot(line.normal().direction().normalize(), direction) > 0)
+				Vector2f lineNormal = line.normal().direction().normalize();
+				Vector2f lineTangent = line.direction().normalize();
+
+				float length = line.direction().magnitude();
+
+				// If the motion and the line are in the same direction, we can just ignore the results
+				if (Vector2f::dot(lineNormal, direction) > 0)
 					continue;
 
-				CollisionResult<Vector2f> result = intersect(motionLine, line);
+				if (Vector2f::dot(lineNormal, motionLine.a - line.a) < 0)
+					continue;
+
+				if (Vector2f::dot(lineNormal, motionLine.b - line.a) > 0)
+					continue;
+
+
+				auto result = intersect(line, motionLine);
 
 				if (result) {
-					float dist = motionLine.length();
-					float nDist = (motionLine.a - *result).magnitude();
-					if (nDist < dist) {
-						motionLine.b = *result;
+					float t = Vector2f::dot(lineTangent, *result - line.a);
+					
+					if (t <= 0)
+						continue;
+					if (t >= length)
+						continue;
+
+					{
+						float d = Vector2f::dot(lineNormal, motionLine.b - line.a);
+
+						motionLine.b -= d * lineNormal;
 					}
+					{/*
+						float d = Vector2f::dot(lineNormal, motionLine.b - line.a);
+						motionLine.b = *result;
+					*/}
 				}
 			}
 		});
 
 		m_Position.x = motionLine.b.x;
 		m_Position.y = motionLine.b.y;
+
+		m_Motion = motionLine.direction() / Time::deltaTime;
+
 	}
 
 	void RazuraPlayer::render2D(Graphics2D &graphics)

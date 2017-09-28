@@ -10,7 +10,7 @@ namespace potato {
 			VERTICAL
 		};
 	protected:
-		LayoutDirection m_DiRectangleion;
+		LayoutDirection m_Direction;
 	public:
 		LinearLayout(LayoutDirection dir);
 

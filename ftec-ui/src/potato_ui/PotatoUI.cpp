@@ -59,19 +59,24 @@ namespace potato {
 
 			//This has to be better, but whatever
 			if (m_ContextMenu)
-				m_ContextMenu->preEvents();
+				m_ContextMenu->onPreEvents();
 
-			m_Root->preEvents();
+			m_Root->onPreEvents();
 
 			EventInput input;
 
 			input.forEach([this](Event &event) {
 				if (m_ContextMenu)
-					m_ContextMenu->process(event);
+					process(m_ContextMenu, event);
 
 				if (!event.isConsumed())
-					m_Root->process(event);
+					process(m_Root, event);
 			});
+
+			if (m_ContextMenu)
+				m_ContextMenu->onPostEvents();
+
+			m_Root->onPostEvents();
 
 			if (m_ContextMenu)
 				m_ContextMenu->update();
@@ -116,6 +121,33 @@ namespace potato {
 		if (m_ContextMenu) {
 			m_ContextMenu->setUI(this);
 		}
+	}
+
+	void PotatoUI::setFocus(Panel * focus)
+	{
+		m_Focus = focus;
+	}
+
+	void PotatoUI::process(std::shared_ptr<Panel> panel, Event & event)
+	{
+		auto children = panel->getChildren();
+
+		for (auto child : children) {
+			if (!event.isConsumed()) {
+				process(child, event);
+			}
+			else {
+				//No point in looping any further
+				break;
+			}
+		}
+
+		if (event.isConsumed())
+			return;
+
+		//If the event is still not consumed by one of our children,
+		//we might be able to use it ourselfs!
+		panel->processSelf(event);
 	}
 
 }
