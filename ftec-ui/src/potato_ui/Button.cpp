@@ -4,6 +4,8 @@
 #include "graphics/Font.h"
 #include "PotatoUI.h"
 
+#include "logger/log.h"
+
 namespace potato {
 	Button::Button(const std::string &text) : m_Text(text)
 	{

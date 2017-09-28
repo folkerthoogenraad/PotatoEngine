@@ -61,7 +61,8 @@ namespace potato {
 
 	void NodeEditor::onDrag(Event & event)
 	{
-		if (!m_Pressed)
+		//Redundant? I think so
+		if (!isPressed())
 			return;
 
 		m_CameraPosition -= event.getMouseDelta();

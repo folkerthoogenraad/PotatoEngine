@@ -125,22 +125,26 @@ namespace potato {
 		));
 	}
 
-	void TabbedPanel::processSelf(Event & event)
+	void TabbedPanel::onClick(Event & evt)
 	{
-		bool m = m_Pressed;
-		Panel::processSelf(event);
+		Bounds bounds = getGlobalOutline();//TODO
 
-		//Click hack :')
-		//TODO clean this up
-		if (m != m_Pressed && !m_Pressed) {
-			Bounds bounds = getGlobalOutline();//TODO
 
-			float res = (ftec::Input::getMouseX() - bounds.x()) / TAB_WIDTH;
-			if (res < m_Children.size() && res > 0) {
-				m_SelectedTab = ftec::clamp(0, (int)m_Children.size() - 1, (int)ftec::floor(res));
+		float res = (ftec::Input::getMouseX() - bounds.x()) / TAB_WIDTH;
+		if (res < m_Children.size() && res > 0) {
+			size_t selected = ftec::clamp(0, (int)m_Children.size() - 1, (int)ftec::floor(res));
+			if (m_SelectedTab != selected) {
+				// All these m_UI tests should not even have to exist.
+				if (m_UI && isChildFocused()) {
+					m_UI->resetFocus(evt);
+				}
+
+				m_SelectedTab = selected;
+
 				requestUpdateLayout();
 			}
 		}
+		evt.consume();
 	}
 
 	std::vector<std::shared_ptr<Panel>> TabbedPanel::getChildren() const

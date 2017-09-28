@@ -39,16 +39,9 @@ namespace potato {
 
 		std::shared_ptr<ftec::Font> m_Font;
 
-		bool m_Hovering = false;
-		bool m_ChildHovering = false;
-
-		bool m_Pressed = false;
-
 		bool m_Focusable = false;
 		bool m_Opaque = false;
 		bool m_SwallowTab = false;
-
-		//bool m_Focus = false;
 
 		LayoutParams m_LayoutParams = LayoutParams();
 		Insets m_Insets = Insets::defaultInsets();
@@ -62,10 +55,9 @@ namespace potato {
 
 		//List of children
 		std::vector<std::shared_ptr<Panel>> m_Children;
-	
+
 	public:
 		Panel();
-
 
 		void setOpaque(bool op) { m_Opaque = op; }
 		bool isOpaque() const { return m_Opaque; }
@@ -101,10 +93,8 @@ namespace potato {
 		virtual void update();
 
 		//Called each frame, before events are processed
-		virtual void onPreEvents(); 
+		virtual void onPreEvents();
 		virtual void onPostEvents();
-
-		virtual void processSelf(Event &event);
 
 		//Events that get fired from the panel
 		virtual void onClick(Event &evt);
@@ -129,11 +119,15 @@ namespace potato {
 		void switchFocus();
 
 		bool isFocused() const { return m_UI && m_UI->isFocused(this); }
-		bool isPressed() const { return m_Pressed; }
+		bool isPressed() const { return m_UI && m_UI->isPressed(this); }
+		bool isPressed(int mb) const { return m_UI && m_UI->isPressed(this, mb); }
 
-		bool isHovering() const { return m_Hovering; }
-		bool isHoveringChild() const { return m_ChildHovering; }
-		bool isHoveringSelf() const { return m_Hovering && !m_ChildHovering; }
+		// Ill have to look at these definitions...
+		bool isHovering() const;
+		bool isHoveringChild() const;
+		bool isHoveringSelf() const;
+
+		bool isChildFocused() const;
 
 		virtual Size getPreferredSize() = 0;
 
@@ -149,7 +143,7 @@ namespace potato {
 		//Layout stuff
 		void requestUpdateLayout();
 		virtual void updateLayout();
-		
+
 		void setParent(Panel *parent);
 		Panel *getParent() { return m_Parent; }
 
@@ -158,8 +152,9 @@ namespace potato {
 
 		template <typename T>
 		std::shared_ptr<T> findPanelById(const std::string &id) {
+			//Can't be itself, that might be a problem.
 
-			for (auto p : m_Children) {
+			for (auto p : getChildren()) {
 				if (p->getID() == id)
 					return p;
 				auto c = p->findPanelById(id);
@@ -167,9 +162,13 @@ namespace potato {
 					return c;
 			}
 
+			//Can't return itself ):
 			return nullptr;
 		}
-		
+
+		std::shared_ptr<Panel> findPanelByPosition(ftec::Vector2i input) const;
+
+		friend class PotatoUI;
 	protected:
 		void initChild(std::shared_ptr<Panel> child);
 	};

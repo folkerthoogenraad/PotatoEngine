@@ -7,6 +7,7 @@
 
 #include "Event.h"
 #include "EventInput.h"
+#include "engine/Keycodes.h"
 
 #include "engine/Engine.h"
 
@@ -67,10 +68,10 @@ namespace potato {
 
 			input.forEach([this](Event &event) {
 				if (m_ContextMenu)
-					process(m_ContextMenu, event);
+					processEvents(m_ContextMenu, event);
 
 				if (!event.isConsumed())
-					process(m_Root, event);
+					processEvents(m_Root, event);
 			});
 
 			if (m_ContextMenu)
@@ -123,18 +124,148 @@ namespace potato {
 		}
 	}
 
-	void PotatoUI::setFocus(Panel * focus)
+	void PotatoUI::resetFocus(Event &event)
 	{
+		setFocusAndFireEvents(nullptr, event);
+	}
+
+	void PotatoUI::setFocusAndFireEvents(std::shared_ptr<Panel> focus, Event &event)
+	{
+		if (m_Focus == focus)
+			return;
+
+		if (m_Focus)
+			m_Focus->onFocusGain(event);
+
+		if (focus)
+			focus->onFocusLose(event);
+
 		m_Focus = focus;
 	}
 
-	void PotatoUI::process(std::shared_ptr<Panel> panel, Event & event)
+	void PotatoUI::setHoverAndFireEvents(std::shared_ptr<Panel> hover, Event &event)
+	{
+		if (m_Hover == hover)
+			return;
+
+		if (m_Hover)
+			m_Hover->onHoverLeave(event);
+
+		if (hover)
+			hover->onHoverEnter(event);
+
+		m_Hover = hover;
+	}
+
+	bool PotatoUI::isPressed(const Panel * panel) const
+	{
+		for (int i = 0; i < m_Pressed.size(); i++)
+			if (isPressed(panel, i))
+				return true;
+
+		return false;
+	}
+
+	bool PotatoUI::isPressed(const Panel * panel, int mb) const
+	{
+		if (mb < 0 || mb > m_Pressed.size())
+			return false;
+
+		return m_Pressed[mb].get() == panel;
+	}
+
+	void PotatoUI::processEvents(std::shared_ptr<Panel> panel, Event &event)
+	{
+		// TODO event consumption currently does nothing at all
+
+		if (event.getType() == EventType::MOUSE_MOVE) {
+			auto hover = panel->findPanelByPosition(event.getMousePosition());
+
+			// TODO find a way to work around this hack (put it in find panel by position)
+			if (!hover) {
+				if (panel->inBounds(event.getMousePosition())) {
+					hover = panel;
+				}
+			}
+
+			// Hover enter and hover leave
+			setHoverAndFireEvents(hover, event);
+
+			// Constant events
+			if (m_Hover) {
+				m_Hover->onHover(event);
+				m_Hover->onHoverOrDrag(event);
+			}
+		}
+
+		if (event.getType() == EventType::MOUSE_DRAG) {
+			auto m = m_Pressed[event.getMouseButton()];
+			if (m) {
+				m->onDrag(event);
+				m->onHoverOrDrag(event);
+			}
+		}
+
+		// TODO keep track of what is pressed
+		if (event.getType() == EventType::MOUSE_PRESSED) {
+			m_Pressed[event.getMouseButton()] = m_Hover;
+
+			if (m_Hover) {
+				m_Hover->onMousePressed(event);
+
+				if (m_Hover->isFocusable()) {
+					setFocusAndFireEvents(m_Hover, event);
+				}
+			}
+		}
+
+		// TODO and what is released here.
+		if (event.getType() == EventType::MOUSE_RELEASED) {
+			auto m = m_Pressed[event.getMouseButton()];
+
+			// Reset
+			m_Pressed[event.getMouseButton()] = nullptr;
+
+			// TODO reassing the hover now
+
+			if (m) {
+				m->onMouseReleased(event);
+
+				if(m->inBounds(event.getMousePosition())){
+					m->onClick(event);
+				}
+			}
+		}
+
+
+		// TODO tab switching
+		if (event.getType() == EventType::KEYBOARD_TYPED) {
+			if (m_Focus) {
+				m_Focus->onKeyTyped(event);
+			}
+		}
+
+		if (event.getType() == EventType::KEYBOARD_PRESSED) {
+			if (m_Focus) {
+				m_Focus->onKeyPressed(event);
+			}
+		}
+
+		if (event.getType() == EventType::KEYBOARD_RELEASED) {
+			if (m_Focus) {
+				m_Focus->onKeyReleased(event);
+			}
+		}
+	}
+
+#if 0
+	void PotatoUI::processEvents(std::shared_ptr<Panel> panel, Event & event)
 	{
 		auto children = panel->getChildren();
 
 		for (auto child : children) {
 			if (!event.isConsumed()) {
-				process(child, event);
+				processEvents(child, event);
 			}
 			else {
 				//No point in looping any further
@@ -147,9 +278,121 @@ namespace potato {
 
 		//If the event is still not consumed by one of our children,
 		//we might be able to use it ourselfs!
-		panel->processSelf(event);
 
-		//TODO move this
+		Panel &p = *panel;
+
+		//Hover stuff
+		/*if (event.isMotionEvent()) {
+			bool hover = p.inBounds(event.getMousePosition());
+			bool childHover = p.inChildBounds(event.getMousePosition());
+
+			p.m_ChildHovering = childHover;
+
+			if (hover && !p.m_Hovering) {
+				p.m_Hovering = hover;
+				p.onHoverEnter(event);
+			}
+			else if (!hover && p.m_Hovering) {
+				p.m_Hovering = hover;
+				p.onHoverLeave(event);
+			}
+
+			//Hover or drag pls
+			if (p.isHoveringSelf() || p.isPressed())
+				p.onHoverOrDrag(event);
+		}*/
+
+		if (event.isMotionEvent()) {
+			bool hover = p.inBounds(event.getMousePosition());
+
+			if (hover && !isHovered(panel.get())) {
+				p.onHoverEnter(event);
+				
+				if (getHover())
+					getHover()->onHoverLeave(event);
+
+				setHover(panel.get());
+				event.consume();
+			}
+
+			//Hover or drag pls
+			if (p.isHoveringSelf() || p.isPressed())
+				p.onHoverOrDrag(event);
+		}
+
+		//Move event
+		if (event.getType() == EventType::MOUSE_MOVE) {
+			if (p.isHoveringSelf()) {
+				p.onHover(event);
+			}
+		}
+
+		//Drag event
+		if (event.getType() == EventType::MOUSE_DRAG) {
+			if (p.isHoveringSelf() || p.isPressed()) {
+				p.onDrag(event);
+			}
+		}
+
+		//Press event
+		if (event.getType() == EventType::MOUSE_PRESSED) {
+			if (p.isHoveringSelf()) {
+				p.m_Pressed = true; //Pressed should be handled by the UI as well...
+				if (p.m_Focusable) {
+					setFocus(panel.get());
+				}
+				p.onMousePressed(event);
+			}
+			else {
+				p.m_Pressed = false;
+			}
+		}
+
+		//Release event
+		if (event.getType() == EventType::MOUSE_RELEASED) {
+			if (p.isHoveringSelf()) {
+				if (p.m_Pressed) {
+					p.m_Pressed = false;
+					p.onClick(event);
+				}
+				p.onMouseReleased(event);
+			}
+			else {
+				if (p.m_Pressed)
+				{
+					p.m_Pressed = false;
+					p.onMouseReleased(event);
+				}
+			}
+		}
+
+		//Typed keys
+		if (event.getType() == EventType::KEYBOARD_TYPED) {
+			if (isFocused(panel.get())) {
+				if (event.getKeyCode() == KEY_TAB && !p.m_SwallowTab) {
+					p.switchFocus();
+				}
+				else {
+					p.onKeyTyped(event);
+				}
+			}
+		}
+
+		//Keyboard press events
+		if (event.getType() == EventType::KEYBOARD_PRESSED) {
+			if (isFocused(panel.get())) {
+				p.onKeyPressed(event);
+			}
+		}
+
+		//Keyboard press events
+		if (event.getType() == EventType::KEYBOARD_RELEASED) {
+			if (isFocused(panel.get())) {
+				p.onKeyReleased(event);
+			}
+		}
 	}
+
+#endif
 
 }

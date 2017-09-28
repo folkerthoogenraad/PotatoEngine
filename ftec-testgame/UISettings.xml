@@ -40,7 +40,7 @@
     <Slider
       width="wrap_content"
       height="wrap_content"
-      steps="3"/>
+      steps="10"/>
     <Button
       width="match_parent"
       height="match_parent"

@@ -36,32 +36,39 @@ namespace potato {
 		}
 	}
 
-	void Slider::processSelf(Event &event)
+	void Slider::onMousePressed(Event & event)
 	{
-		Panel::processSelf(event);
-		Bounds bounds = getGlobalBounds();
-
 		ftec::Rectanglef blockBounds = getSliderBounds();
 
-		if (ftec::Input::isMouseButtonPressed(MOUSE_BUTTON_1)) {
-			if (blockBounds.contains(ftec::Input::getMousePosition())) {
-				m_SliderHold = true;
-				event.consume();//Event is now consumed (Idk whether or not we need this, but whatever)
-			}
+		if (blockBounds.contains(ftec::Input::getMousePosition())) {
+			m_SliderHold = true;
+			event.consume();//Event is now consumed (Idk whether or not we need this, but whatever)
 		}
-		if (ftec::Input::isMouseButtonReleased(MOUSE_BUTTON_1)) {
-			m_SliderHold = false;
-		}
-		if (ftec::Input::isMouseButtonDown(MOUSE_BUTTON_1) && m_SliderHold) {
-			const float hs = SLIDER_BLOCK_SIZE / 2;
-			m_Value = ftec::invLerp((float)bounds.left() + hs, (float)bounds.right() - hs, ftec::Input::getMousePosition().x);
-			m_Value = ftec::clamp(0.f, 1.f, m_Value);
+	}
 
-			if (m_Steps > 1) {
-				int s = m_Steps - 1;
-				m_Value = ftec::round(m_Value * s) / s;
-			}
+	void Slider::onMouseReleased(Event & event)
+	{
+		m_SliderHold = false;
+	}
+
+	void Slider::onDrag(Event & event)
+	{
+		if (!m_SliderHold)
+			return;
+
+		Bounds bounds = getGlobalBounds();
+		ftec::Rectanglef blockBounds = getSliderBounds();
+
+		const float hs = SLIDER_BLOCK_SIZE / 2;
+		m_Value = ftec::invLerp((float)bounds.left() + hs, (float)bounds.right() - hs, ftec::Input::getMousePosition().x);
+		m_Value = ftec::clamp(0.f, 1.f, m_Value);
+
+		if (m_Steps > 1) {
+			int s = m_Steps - 1;
+			m_Value = ftec::round(m_Value * s) / s;
 		}
+
+		event.consume();
 	}
 
 	Size Slider::getPreferredSize()

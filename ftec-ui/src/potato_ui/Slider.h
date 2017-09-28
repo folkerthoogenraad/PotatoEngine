@@ -12,8 +12,11 @@ namespace potato {
 		Slider();
 
 		void drawSelf(ftec::Graphics2D &graphics) override;
-		void processSelf(Event &event) override;
-
+		
+		void onMousePressed(Event &event) override;
+		void onMouseReleased(Event &event) override;
+		void onDrag(Event &event) override;
+		
 		float getValue() { return m_Value; }
 		void setValue(float f) { m_Value = f; }
 

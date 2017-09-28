@@ -30,13 +30,11 @@ namespace potato {
 		}
 	}
 
-	void List::processSelf(Event & event)
+	void List::onMousePressed(Event & event)
 	{
-		Panel::processSelf(event);
-		
-		if (ftec::Input::isMouseButtonDown(MOUSE_BUTTON_1)) {
+		//TODO look at this.
+		if (event.getMouseButton() == MOUSE_BUTTON_1) {
 			if (isHoveringSelf()) {
-				//TODO callbacks, all that goodstuff
 				event.consume();
 			}
 			else {
@@ -51,6 +49,7 @@ namespace potato {
 			}
 		}
 	}
+
 	Size List::getPreferredSize()
 	{
 		//TODO change these accoringly

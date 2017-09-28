@@ -90,103 +90,6 @@ namespace potato {
 		}
 	}
 
-	void Panel::processSelf(Event &event)
-	{
-		//Hover stuff
-		if (event.isMotionEvent()) {
-			bool hover = inBounds(event.getMousePosition());
-			bool childHover = inChildBounds(event.getMousePosition());
-
-			m_ChildHovering = childHover;
-
-			if (hover && !m_Hovering) {
-				m_Hovering = hover;
-				onHoverEnter(event);
-			}
-			else if (!hover && m_Hovering) {
-				m_Hovering = hover;
-				onHoverLeave(event);
-			}
-			 
-			//Hover or drag pls
-			if(isHoveringSelf() || isPressed())
-				onHoverOrDrag(event);
-		}
-
-		//Move event
-		if (event.getType() == EventType::MOUSE_MOVE) {
-			if (isHoveringSelf()) {
-				onHover(event);
-			}
-		}
-		
-		//Drag event
-		if (event.getType() == EventType::MOUSE_DRAG) {
-			if (isHoveringSelf() || isPressed()) {
-				onDrag(event);
-			}
-		}
-
-		//Press event
-		if (event.getType() == EventType::MOUSE_PRESSED) {
-			if (isHoveringSelf()){
-				m_Pressed = true; //Pressed should be handled by the UI as well...
-				if (m_Focusable) {
-					if(m_UI) 
-						m_UI->setFocus(this);
-				}
-				onMousePressed(event);
-			}
-			else {
-				m_Pressed = false;
-			}
-		}
-
-		//Release event
-		if (event.getType() == EventType::MOUSE_RELEASED){
-			if (isHoveringSelf()) {
-				if (m_Pressed) {
-					m_Pressed = false;
-					onClick(event);
-				}
-				onMouseReleased(event);
-			}
-			else {
-				if (m_Pressed)
-				{
-					m_Pressed = false;
-					onMouseReleased(event);
-				}
-			}
-		}
-
-		//Typed keys
-		if (event.getType() == EventType::KEYBOARD_TYPED) {
-			if (isFocused()) {
-				if (event.getKeyCode() == KEY_TAB && !m_SwallowTab) {
-					switchFocus();
-				}
-				else {
-					onKeyTyped(event);
-				}
-			}
-		}
-	
-		//Keyboard press events
-		if (event.getType() == EventType::KEYBOARD_PRESSED) {
-			if (isFocused()) {
-				onKeyPressed(event);
-			}
-		}
-
-		//Keyboard press events
-		if (event.getType() == EventType::KEYBOARD_RELEASED) {
-			if (isFocused()) {
-				onKeyReleased(event);
-			}
-		}
-	}
-
 	void Panel::update()
 	{
 		//Update children
@@ -258,56 +161,46 @@ namespace potato {
 	void Panel::onFocusLose(Event & evt)
 	{
 		//Can be multiple ways
-
 	}
 
 	void Panel::switchFocus()
 	{
-		if (!m_UI)
-			return;
-
-		//TODO optimize this function with only one loop (keep track of first focusable index, and next after current)
-		if (m_Children.size() == 0)
-			return;
-
-		int currentFocus = -1;
-		int idx = 0;
-		int focusCount = 0;
-
-		//Find the child with focus
-		for (auto c : m_Children) {
-			if (c->isFocused()) {
-				currentFocus = idx;
-				focusCount++;
-			}
-			idx++;
-		}
-		
-		//If there currently is nothing focussed
-		if (focusCount == 0) {
-			return;
-		}if (focusCount > 1)
-			LOG_ERROR("Focus count > 1");
-		
-		//See if we can find a next target to focus
-		for (int i = currentFocus + 1; i < m_Children.size(); i++) {
-			if (m_Children[i]->isFocusable()) {
-				//if we can, we return
-				m_UI->setFocus(m_Children[i].get());
-				return;
-			}
-		}
-
-		//If we can't, we look for our next target!
-		for (auto c : m_Children) {
-			if (c->m_Focusable) {
-				m_UI->setFocus(c.get());
-				return;
-			}
-		}
+		// TODO not here.
 	}
 
-	bool Panel::inBounds(ftec::Vector2i point) const 
+	bool Panel::isHovering() const
+	{
+		return isHoveringSelf() || isHoveringChild();
+	}
+
+	bool Panel::isHoveringChild() const
+	{
+		for (const auto &c : m_Children) {
+			if (c->isHovering())
+				return true;
+			if (c->isHoveringChild())
+				return true;
+		}
+		return false;
+	}
+
+	bool Panel::isHoveringSelf() const
+	{
+		return m_UI && m_UI->isFocused(this);
+	}
+
+	bool Panel::isChildFocused() const
+	{
+		for (auto c : getChildren()) {
+			if (c->isFocused())
+				return true;
+			if (c->isChildFocused())
+				return true;
+		}
+		return false;
+	}
+
+	bool Panel::inBounds(ftec::Vector2i point) const
 	{
 		return getGlobalBounds().contains(point);
 	}
@@ -358,6 +251,23 @@ namespace potato {
 	{
 		this->m_Parent = parent;
 		requestUpdateLayout();
+	}
+
+	std::shared_ptr<Panel> Panel::findPanelByPosition(ftec::Vector2i input) const
+	{
+		//Can't be itself, might still be a problem....
+
+		for (auto p : getChildren()) {
+			auto c = p->findPanelByPosition(input);
+			if (c)
+				return c;
+
+			if (p->inBounds(input))
+				return p;
+		}
+
+		//Can't return itself ):
+		return nullptr;
 	}
 
 	void Panel::initChild(std::shared_ptr<Panel> child)

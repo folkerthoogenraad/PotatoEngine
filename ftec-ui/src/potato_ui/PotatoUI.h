@@ -51,7 +51,11 @@ namespace potato {
 		std::shared_ptr<Panel> m_Root;
 		std::shared_ptr<Panel> m_ContextMenu;
 
-		Panel *m_Focus;
+		std::shared_ptr<Panel> m_Focus = nullptr;
+		std::shared_ptr<Panel> m_Hover = nullptr;
+		
+		// 10 mouse buttons, might be a bit overkill :)
+		std::array<std::shared_ptr<Panel>, 10> m_Pressed;
 
 		ftec::Vector2f m_MouseStart;
 	public:
@@ -59,15 +63,26 @@ namespace potato {
 		~PotatoUI();
 		void update();
 		void render();
-
+		
 		void setRoot(std::shared_ptr<Panel> root);
 		void setContextMenu(std::shared_ptr<Panel> contextMenu);
-		void setFocus(Panel *focus);
 
-		Panel *getFocus() const { return m_Focus; }
-		bool isFocused(const Panel *panel) const { return m_Focus == panel; }
+		// Oh, that is nasty with that event thing there (dirty code alert)
+		void resetFocus(Event &event);
+
+		Panel *getFocus() const { return m_Focus.get(); }
+		bool isFocused(const Panel *panel) const { return m_Focus.get() == panel; }
+
+		Panel *getHover() const { return m_Hover.get(); }
+		bool isHovered(const Panel *panel) const { return m_Hover.get() == panel; }
+
+		bool isPressed(const Panel *panel) const;
+		bool isPressed(const Panel *panel, int mb) const;
 
 	private:
-		void process(std::shared_ptr<Panel> panel, Event &event);
+		void processEvents(std::shared_ptr<Panel> panel, Event &event);
+
+		void setFocusAndFireEvents(std::shared_ptr<Panel> focus, Event &event);
+		void setHoverAndFireEvents(std::shared_ptr<Panel> hover, Event &event);
 	};
 }
