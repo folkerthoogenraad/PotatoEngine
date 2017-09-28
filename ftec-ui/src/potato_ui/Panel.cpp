@@ -107,7 +107,7 @@ namespace potato {
 				m_Hovering = hover;
 				onHoverLeave(event);
 			}
-
+			 
 			//Hover or drag pls
 			if(isHoveringSelf() || isPressed())
 				onHoverOrDrag(event);

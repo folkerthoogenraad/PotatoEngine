@@ -148,6 +148,8 @@ namespace potato {
 		//If the event is still not consumed by one of our children,
 		//we might be able to use it ourselfs!
 		panel->processSelf(event);
+
+		//TODO move this
 	}
 
 }
