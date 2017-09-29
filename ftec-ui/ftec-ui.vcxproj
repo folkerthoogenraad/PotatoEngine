@@ -26,6 +26,7 @@
     <ClCompile Include="src\potato_ui\EditText.cpp" />
     <ClCompile Include="src\potato_ui\Event.cpp" />
     <ClCompile Include="src\potato_ui\EventInput.cpp" />
+    <ClCompile Include="src\potato_ui\Knob.cpp" />
     <ClCompile Include="src\potato_ui\Label.cpp" />
     <ClCompile Include="src\potato_ui\LinearLayout.cpp" />
     <ClCompile Include="src\potato_ui\List.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="src\potato_ui\EditText.h" />
     <ClInclude Include="src\potato_ui\Event.h" />
     <ClInclude Include="src\potato_ui\EventInput.h" />
+    <ClInclude Include="src\potato_ui\Knob.h" />
     <ClInclude Include="src\potato_ui\Label.h" />
     <ClInclude Include="src\potato_ui\LayoutParams.h" />
     <ClInclude Include="src\potato_ui\LinearLayout.h" />

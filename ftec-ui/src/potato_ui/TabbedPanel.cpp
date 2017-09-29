@@ -147,6 +147,14 @@ namespace potato {
 		evt.consume();
 	}
 
+	void TabbedPanel::setUI(PotatoUI * ui)
+	{
+		m_UI = ui;
+		for (auto c : m_Children) {
+			c->setUI(ui);
+		}
+	}
+
 	std::vector<std::shared_ptr<Panel>> TabbedPanel::getChildren() const
 	{
 		if (m_Children.size() == 0)

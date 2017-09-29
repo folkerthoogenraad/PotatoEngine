@@ -8,6 +8,7 @@
 #include "Slider.h"
 #include "Checkbox.h"
 #include "NodeEditor.h"
+#include "Knob.h"
 
 namespace potato {
 
@@ -185,6 +186,24 @@ namespace potato {
 		out["Slider"] = [](ftec::xml::XMLNode &node) -> std::shared_ptr<Panel>
 		{
 			auto panel = std::make_shared<Slider>();
+
+			std::string value;
+			node.getAttribute("steps", value);
+
+			if (value.size() > 0) {//TODO better conversion between this stuff
+				panel->setSteps(std::stoi(value));
+			}
+
+			//Load the layout params
+			UILoader::loadLayoutParams(panel, node);
+
+			return panel;
+		};
+
+
+		out["Knob"] = [](ftec::xml::XMLNode &node) -> std::shared_ptr<Panel>
+		{
+			auto panel = std::make_shared<Knob>();
 
 			std::string value;
 			node.getAttribute("steps", value);

@@ -61,7 +61,10 @@ namespace potato {
 			child->draw(graphics);
 		}*/
 		//Back to front
-		for (auto it = m_Children.rbegin(); it != m_Children.rend(); it++)
+
+		auto childs = getChildren();
+
+		for (auto it = childs.rbegin(); it != childs.rend(); it++)
 		{
 			(*it)->draw(graphics);
 		}
@@ -78,14 +81,14 @@ namespace potato {
 
 	void Panel::onPreEvents()
 	{
-		for (auto child : m_Children) {
+		for (auto child : getChildren()) {
 			child->onPreEvents();
 		}
 	}
 
 	void Panel::onPostEvents() 
 	{
-		for (auto child : m_Children) {
+		for (auto child : getChildren()) {
 			child->onPostEvents();
 		}
 	}
@@ -93,7 +96,7 @@ namespace potato {
 	void Panel::update()
 	{
 		//Update children
-		for (auto child : m_Children) {
+		for (auto child : getChildren()) {
 			child->update();
 		}
 	}
@@ -175,7 +178,7 @@ namespace potato {
 
 	bool Panel::isHoveringChild() const
 	{
-		for (const auto &c : m_Children) {
+		for (const auto &c : getChildren()) {
 			if (c->isHovering())
 				return true;
 			if (c->isHoveringChild())
@@ -210,7 +213,7 @@ namespace potato {
 		if (!inBounds(point))
 			return false;
 
-		for (auto c : m_Children) {
+		for (auto c : getChildren()) {
 			if (c->inBounds(point)) {
 				return true;
 			}
@@ -233,7 +236,7 @@ namespace potato {
 
 	void Panel::updateLayout()
 	{
-		for (auto child : m_Children) {
+		for (auto child : getChildren()) {
 			child->updateLayout();
 		}
 	}
@@ -242,7 +245,7 @@ namespace potato {
 	{
 		m_UI = ui;
 
-		for (auto c : m_Children) {
+		for (auto c : getChildren()) {
 			c->setUI(ui);
 		}
 	}

@@ -147,7 +147,7 @@ namespace potato {
 		void setParent(Panel *parent);
 		Panel *getParent() { return m_Parent; }
 
-		void setUI(PotatoUI *ui);
+		virtual void setUI(PotatoUI *ui);
 		PotatoUI *getUI() { return this->m_UI; }
 
 		template <typename T>

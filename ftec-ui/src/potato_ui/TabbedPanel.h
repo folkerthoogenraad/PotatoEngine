@@ -21,9 +21,10 @@ namespace potato {
 		void draw(ftec::Graphics2D &graphics) override;
 		void drawSelf(ftec::Graphics2D &graphics) override;
 
-		virtual void onClick(Event &evt);
+		void onClick(Event &evt);
 
-		virtual std::vector<std::shared_ptr<Panel>> getChildren() const override;
+		void setUI(PotatoUI *ui);
+		std::vector<std::shared_ptr<Panel>> getChildren() const override;
 
 		Size getPreferredSize() override;
 	};

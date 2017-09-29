@@ -212,7 +212,7 @@ namespace ftec {
 			LOG_ERROR("Can't draw 2D when drawing in 3D");
 		}
 		setTexture(sprite.texture());
-
+		
 		batch.color(m_Color);
 
 		batch.uv(sprite.uvs().topleft());

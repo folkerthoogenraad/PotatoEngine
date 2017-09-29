@@ -40,12 +40,49 @@
     <Slider
       width="wrap_content"
       height="wrap_content"
-      steps="10"/>
+      steps="8"/>
     <Button
       width="match_parent"
       height="match_parent"
       text="OI press meh!" />
     
+  </LinearLayout>
+
+  <LinearLayout
+    width="match_parent"
+    height="wrap_content"
+    orientation="horizontal">
+
+    <Label
+      width="match_parent"
+      height="wrap_content"
+      weight="1"
+      text="Some knobs " />
+    
+    <Knob
+      width="match_parent"
+      height="wrap_content"
+      weight="1"
+      steps="-1"/>
+    
+    <Knob
+      width="match_parent"
+      height="wrap_content"
+      weight="1"
+      steps="12"/>
+    
+    <Knob
+      width="match_parent"
+      height="wrap_content"
+      weight="1"
+      steps="8"/>
+    
+    <Knob
+      width="match_parent"
+      height="wrap_content"
+      weight="1"
+      steps="4"/>
+
   </LinearLayout>
   
 </LinearLayout>

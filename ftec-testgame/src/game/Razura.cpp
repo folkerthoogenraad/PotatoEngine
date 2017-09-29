@@ -29,25 +29,26 @@ namespace ftec {
 		auto nodeEditor = std::make_shared<NodeEditor>();
 
 		std::vector<std::pair<std::string, std::shared_ptr<Panel>>> p = {
-			{ "Settings", UILoader::load("UISettings.xml") },
-			{ "Other stuff", nodeEditor }
+			{ "Settings",  nodeEditor }, //UILoader::load("UISettings.xml")
+			{ "Other stuff", UILoader::load("UISettings.xml") }
 		};
+
+		m_UI->setRoot(std::make_shared<TabbedPanel>(p));
 
 		{
 			auto m = std::make_shared<Node>("Abcdefg :)");
+			nodeEditor->addNode(m);
 			m->localbounds().position += Vector2i(128, 0);
 			m->setContent(UILoader::load("UISettings.xml"));
-			nodeEditor->addNode(m);
 		}
 
 		{
 			auto m = std::make_shared<Node>("Jouw moeder :)");
+			nodeEditor->addNode(m);
 			m->localbounds().position += Vector2i(0, 0);
 			m->setContent(UILoader::load("UISettings.xml"));
-			nodeEditor->addNode(m);
 		}
 
-		m_UI->setRoot(std::make_shared<TabbedPanel>(p));
 	}
 
 	void Razura::destroy()

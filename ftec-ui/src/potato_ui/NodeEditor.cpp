@@ -7,13 +7,14 @@ namespace potato {
 	NodeEditor::NodeEditor()
 	{
 		m_ActiveFirst = -1;
+		m_Insets = Insets(0, 0, 0, 0);
 	}
 
 	void NodeEditor::addNode(std::shared_ptr<Node> node)
 	{
 		node->setNodeEditor(this);
-		m_Children.push_back(node);
 		initChild(node);
+		m_Children.push_back(node);
 	}
 
 	ftec::Vector2f NodeEditor::getCameraPosition() const
@@ -35,8 +36,25 @@ namespace potato {
 
 	void NodeEditor::drawSelf(ftec::Graphics2D & graphics)
 	{
+		Bounds b = this->getGlobalBounds();
+
 		graphics.setColor(ftec::Color32::white());
-		graphics.drawRectangle(this->getGlobalBounds(), true);
+		graphics.drawRectangle(b, true);
+
+		graphics.setColor(ftec::Color32::gray());
+
+		for (float x = fmod(m_CameraPosition.x, 64.0f); x < b.right(); x += 64) {
+			graphics.drawLine(ftec::Line2f(
+				ftec::Vector2f(x, b.top()),
+				ftec::Vector2f(x, b.bottom())
+			));
+		}
+		for (float y = fmod(m_CameraPosition.y, 64.0f); y < b.right(); y += 64) {
+			graphics.drawLine(ftec::Line2f(
+				ftec::Vector2f(b.left(), y),
+				ftec::Vector2f(b.right(), y)
+			));
+		}
 	}
 
 	Size NodeEditor::getPreferredSize()
@@ -65,7 +83,7 @@ namespace potato {
 		if (!isPressed())
 			return;
 
-		m_CameraPosition -= event.getMouseDelta();
+		m_CameraPosition += event.getMouseDelta();
 
 		for (auto child : m_Children) {
 			child->localbounds().position += event.getMouseDelta();
