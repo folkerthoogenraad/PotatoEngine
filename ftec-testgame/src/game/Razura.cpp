@@ -29,24 +29,20 @@ namespace ftec {
 		auto nodeEditor = std::make_shared<NodeEditor>();
 
 		std::vector<std::pair<std::string, std::shared_ptr<Panel>>> p = {
-			{ "Settings",  nodeEditor }, //UILoader::load("UISettings.xml")
-			{ "Other stuff", UILoader::load("UISettings.xml") }
+			{ "Settings",  UILoader::load("UISettings.xml") }, 
+			{ "Node editor", nodeEditor }
 		};
 
 		m_UI->setRoot(std::make_shared<TabbedPanel>(p));
 
+		for(int i = 0; i < 4; i++)
 		{
 			auto m = std::make_shared<Node>("Abcdefg :)");
-			nodeEditor->addNode(m);
-			m->localbounds().position += Vector2i(128, 0);
+			m->localbounds().position += Vector2i(128 * i, 0);
+			m->setInputs(3);
+			m->setOutputs(2);
 			m->setContent(UILoader::load("UISettings.xml"));
-		}
-
-		{
-			auto m = std::make_shared<Node>("Jouw moeder :)");
 			nodeEditor->addNode(m);
-			m->localbounds().position += Vector2i(0, 0);
-			m->setContent(UILoader::load("UISettings.xml"));
 		}
 
 	}

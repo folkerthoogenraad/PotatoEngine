@@ -29,7 +29,7 @@ namespace potato {
 	};
 
 	class Panel;
-	class Panel {
+	class Panel : public  std::enable_shared_from_this<Panel> {
 	public:
 		Bounds m_LocalBounds;
 	protected:
@@ -164,6 +164,12 @@ namespace potato {
 
 			//Can't return itself ):
 			return nullptr;
+		}
+
+		template<typename T>
+		inline std::shared_ptr<T> get_as()
+		{
+			return std::dynamic_pointer_cast<T>(shared_from_this());
 		}
 
 		std::shared_ptr<Panel> findPanelByPosition(ftec::Vector2i input) const;

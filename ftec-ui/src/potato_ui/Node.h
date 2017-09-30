@@ -8,21 +8,31 @@ namespace potato {
 	class Node;
 	class NodeNotch;
 
+	enum class NodeNotchType {
+		Input, Output
+	};
+
 	class NodeNotch : public Panel {
+		NodeNotchType m_Type;
+		Node *m_Node;
+
+		std::weak_ptr<NodeNotch> m_ConnectedTo;
 	public:
-		NodeNotch();
+		NodeNotch(NodeNotchType type);
 
 		void drawSelf(ftec::Graphics2D &graphics) override;
-		void onDrag(Event &event) override;
+		void onMouseReleased(Event &event) override;
 		Size getPreferredSize() override;
 		
+		void setNode(Node *node);
+
 		bool inBounds(ftec::Vector2i point) const;
 	};
 
 	class Node : public Panel {
 	protected:
 		std::string m_Title;
-		NodeEditor *m_NodeEditor;
+		std::weak_ptr<NodeEditor> m_NodeEditor;
 
 		std::shared_ptr<Panel> m_Content;
 		std::vector<std::shared_ptr<NodeNotch>> m_Inputs;
@@ -32,8 +42,12 @@ namespace potato {
 		Node(std::string title);
 
 		void setTitle(std::string title);
-		void setNodeEditor(NodeEditor* editor);
+		void setNodeEditor(std::weak_ptr<NodeEditor> editor);
+		std::weak_ptr<NodeEditor> getNodeEditor() const { return m_NodeEditor; };
 		void setContent(std::shared_ptr<Panel> p);
+
+		void setInputs(int count);
+		void setOutputs(int count);
 	public:
 		void drawSelf(ftec::Graphics2D &graphics) override;
 		void onDrag(Event &event) override;

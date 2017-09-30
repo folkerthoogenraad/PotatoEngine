@@ -12,7 +12,7 @@ namespace potato {
 
 	void NodeEditor::addNode(std::shared_ptr<Node> node)
 	{
-		node->setNodeEditor(this);
+		node->setNodeEditor(get_as<NodeEditor>());
 		initChild(node);
 		m_Children.push_back(node);
 	}
