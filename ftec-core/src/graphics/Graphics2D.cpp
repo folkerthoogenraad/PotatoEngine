@@ -34,6 +34,8 @@ namespace ftec {
 		m_Material->m_TextureMaps[0] = m_WhiteTexture;
 
 		m_Color = Color32(255, 255, 255, 255);
+
+		batch.setRequestFlush(std::bind(&Graphics2D::flush, this));
 	}
 
 	Graphics2D::~Graphics2D()

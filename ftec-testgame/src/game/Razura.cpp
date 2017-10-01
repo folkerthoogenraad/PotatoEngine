@@ -35,13 +35,13 @@ namespace ftec {
 
 		m_UI->setRoot(std::make_shared<TabbedPanel>(p));
 
-		for(int i = 0; i < 4; i++)
+		for(int i = 0; i < 10; i++)
 		{
-			auto m = std::make_shared<Node>("Abcdefg :)");
-			m->localbounds().position += Vector2i(128 * i, 0);
+			auto m = std::make_shared<Node>("");
+			m->localbounds().position += Vector2i(1 * i, 0);
 			m->setInputs(3);
 			m->setOutputs(2);
-			m->setContent(UILoader::load("UISettings.xml"));
+			//m->setContent(UILoader::load("UISettings.xml"));
 			nodeEditor->addNode(m);
 		}
 

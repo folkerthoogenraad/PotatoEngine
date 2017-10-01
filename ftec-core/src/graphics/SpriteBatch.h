@@ -2,15 +2,22 @@
 
 #include <memory>
 #include <vector>
+#include <functional>
 
 #include "math/Vector2.h"
+#include "math/Vector3.h"
 #include "math/Vector4.h"
 
 #include "Primitive.h"
 
 namespace ftec {
 
-	template<typename T> struct Vector3; typedef Vector3<float> Vector3f;
+	struct SpriteBatchVertex {
+		Vector3f position;
+		Vector2f uv;
+		Color32 color;
+		unsigned char texIndex;
+	};
 
 	class SpriteBatch {
 
@@ -19,16 +26,23 @@ namespace ftec {
 
 		bool m_Drawing;
 
-		Vector2f m_Uv;
-		Color32 m_Color;
+		std::function<void()> m_RequestFlush;
 
-		unsigned int m_VerticesVBO, m_UvsVBO, m_ColorsVBO;
 		unsigned int m_Size;
 		unsigned int m_VBOSize;
 
-		std::vector<Vector3f> m_Vertices;
-		std::vector<Vector2f> m_Uvs;
-		std::vector<Color32> m_Colors;
+		// unsigned int m_VerticesVBO, m_UvsVBO, m_ColorsVBO;
+		// std::vector<Vector3f> m_Vertices;
+		// std::vector<Vector2f> m_Uvs;
+		// std::vector<Color32> m_Colors;
+		// Vector2f m_Uv;
+		// Color32 m_Color;
+
+		unsigned int m_VBO;
+
+		std::vector<SpriteBatchVertex> m_Vertices;
+
+		SpriteBatchVertex m_BufferVertex;
 
 		float m_Depth = 0;
 	public:
@@ -49,6 +63,8 @@ namespace ftec {
 		void uv(Vector2f uv);
 
 		Primitive primitive();
+
+		void setRequestFlush(std::function<void()> func);
 
 		bool isDrawing() { return m_Drawing; }
 
