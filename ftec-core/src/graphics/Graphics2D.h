@@ -36,7 +36,9 @@ namespace ftec {
 		float m_LineWidth = 1.f;
 		float m_PointSize = 2.f;
 		PointType m_PointType = PointType::RECTANGLE;
-		int m_CirclePrecision = 64;
+		int m_CirclePrecision = 16;
+
+		int m_CurrentTextureIndex = 0;
 
 		SpriteBatch batch;
 		bool drawing3D = false;

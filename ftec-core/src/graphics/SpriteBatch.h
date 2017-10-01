@@ -16,7 +16,7 @@ namespace ftec {
 		Vector3f position;
 		Vector2f uv;
 		Color32 color;
-		unsigned char texIndex;
+		unsigned char texureIndex = 0;
 	};
 
 	class SpriteBatch {
@@ -61,6 +61,7 @@ namespace ftec {
 		void vertex(Vector2f position); //TODO check if this is needed
 		void color(Color32 color);
 		void uv(Vector2f uv);
+		void texureIndex(unsigned char idx);
 
 		Primitive primitive();
 

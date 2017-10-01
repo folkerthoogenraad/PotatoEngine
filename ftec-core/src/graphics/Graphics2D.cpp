@@ -16,9 +16,12 @@
 
 #include "GL.h"
 
+#include <assert.h>
+
 #include "resources/ResourceManager.h"
 
 namespace ftec {
+
 
 	Graphics2D::Graphics2D()
 	{
@@ -36,6 +39,7 @@ namespace ftec {
 		m_Color = Color32(255, 255, 255, 255);
 
 		batch.setRequestFlush(std::bind(&Graphics2D::flush, this));
+		batch.texureIndex(1);
 	}
 
 	Graphics2D::~Graphics2D()
@@ -332,9 +336,30 @@ namespace ftec {
 
 	void Graphics2D::setTexture(std::shared_ptr<Texture> texture)
 	{
-		if (texture != m_Material->m_TextureMaps[0]) {
-			flush();
-			m_Material->m_TextureMaps[0] = texture;
+		if (texture != m_Material->m_TextureMaps[m_CurrentTextureIndex]) {
+
+			size_t max = m_Material->m_TextureMaps.size();
+
+			// Search for the texture in the current materials
+			for (int i = 0; i < max; i++) {
+				if (m_Material->m_TextureMaps[i] == texture) {
+					m_CurrentTextureIndex = i;
+					batch.texureIndex(m_CurrentTextureIndex); // Oh shit, this is double
+					return;
+				}
+			}
+
+			m_CurrentTextureIndex++;
+
+			if (m_CurrentTextureIndex >= max) {
+				flush();
+				m_CurrentTextureIndex = 0;
+			}
+
+			
+			batch.texureIndex(m_CurrentTextureIndex); // Oh shit, this is double
+			
+			m_Material->m_TextureMaps[m_CurrentTextureIndex] = texture;
 		}
 	}
 
@@ -371,5 +396,10 @@ namespace ftec {
 		GraphicsState::prepare();
 
 		batch.flush();
+
+		for (size_t i = 0; i < m_Material->m_TextureMaps.size(); i++)
+			m_Material->m_TextureMaps[i].reset();
+
+		m_CurrentTextureIndex = 0;
 	}
 }

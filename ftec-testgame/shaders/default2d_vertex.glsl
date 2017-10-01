@@ -7,14 +7,17 @@ uniform mat4 u_MatrixProjection;
 in vec3 position;
 in vec2 uv;
 in vec4 color;
+in int textureIndex;
 
 out vec2 v_Uv;
 out vec4 v_Color;
+flat out int v_TextureIndex;
 
 void main()
 {
 	v_Uv = uv;
 	v_Color = color;
+	v_TextureIndex = textureIndex;
 
 	gl_Position = u_MatrixProjection * u_MatrixView * u_MatrixModel * vec4(position, 1.0);
 }

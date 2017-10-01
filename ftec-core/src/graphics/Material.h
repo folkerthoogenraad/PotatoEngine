@@ -9,6 +9,8 @@
 #include "math/Vector2.h"
 #include "math/Vector3.h"
 
+#define MATERIAL_2D_TEXTURE_COUNT 8
+
 namespace ftec {
 
 	struct Material {
@@ -21,13 +23,14 @@ namespace ftec {
 	public:
 		virtual void prepare() const = 0;
 	};
+
 	
 	struct Material2D : public Material {
 	private:
 		std::shared_ptr<Shader> m_Shader = nullptr;
-		int m_TextureLocation;
 	public:
-		std::array<std::shared_ptr<Texture>, 8> m_TextureMaps;
+		std::array<std::shared_ptr<Texture>, MATERIAL_2D_TEXTURE_COUNT> m_TextureMaps;
+		std::array<int, MATERIAL_2D_TEXTURE_COUNT> m_UniformTextureLocations;
 
 		Material2D(std::shared_ptr<Shader> shader);
 

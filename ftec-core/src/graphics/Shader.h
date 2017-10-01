@@ -11,12 +11,15 @@
 #define SHADER_ATTRIBUTE_TANGENT 4
 #define SHADER_ATTRIBUTE_INSTANCE_POSITION 5
 
+#define SHADER_ATTRIBUTE_TEXTURE_INDEX 10
+
 #define SHADER_ATTRIBUTE_POSITION_NAME "position"
 #define SHADER_ATTRIBUTE_NORMAL_NAME "normal"
 #define SHADER_ATTRIBUTE_TANGENT_NAME "tangent"
 #define SHADER_ATTRIBUTE_UV_NAME "uv"
 #define SHADER_ATTRIBUTE_COLOR_NAME "color"
 #define SHADER_ATTRIBUTE_INSTANCE_POSITION_NAME "instancePosition"
+#define SHADER_ATTRIBUTE_TEXTURE_INDEX_NAME "textureIndex"
 
 #define SHADER_OUTPUT_COLOR_NAME "FragColor"
 
@@ -48,6 +51,7 @@ namespace ftec {
 		void setUniform(int location, const Vector4f &v);
 		void setUniform(int location, float f);
 		void setUniform(int location, int i);
+		void setUniform(int location, unsigned int i);
 
 		static std::shared_ptr<Shader> load(const std::string &name);
 	protected:

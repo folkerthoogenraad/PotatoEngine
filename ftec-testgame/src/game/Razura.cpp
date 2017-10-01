@@ -37,7 +37,7 @@ namespace ftec {
 
 		for(int i = 0; i < 10; i++)
 		{
-			auto m = std::make_shared<Node>("");
+			auto m = std::make_shared<Node>("Hallo");
 			m->localbounds().position += Vector2i(1 * i, 0);
 			m->setInputs(3);
 			m->setOutputs(2);

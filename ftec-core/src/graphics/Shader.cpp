@@ -61,6 +61,8 @@ namespace ftec {
 		glBindAttribLocation(m_Program, SHADER_ATTRIBUTE_COLOR, SHADER_ATTRIBUTE_COLOR_NAME);
 		glBindAttribLocation(m_Program, SHADER_ATTRIBUTE_TANGENT, SHADER_ATTRIBUTE_TANGENT_NAME);
 		glBindAttribLocation(m_Program, SHADER_ATTRIBUTE_INSTANCE_POSITION, SHADER_ATTRIBUTE_INSTANCE_POSITION_NAME);
+		glBindAttribLocation(m_Program, SHADER_ATTRIBUTE_TEXTURE_INDEX, SHADER_ATTRIBUTE_TEXTURE_INDEX_NAME);
+
 
 		glBindFragDataLocation(m_Program, 0, SHADER_OUTPUT_COLOR_NAME);
 
@@ -145,6 +147,11 @@ namespace ftec {
 	void Shader::setUniform(int location, int i)
 	{
 		glUniform1i(location, i);
+	}
+
+	void Shader::setUniform(int location, unsigned int i)
+	{
+		glUniform1ui(location, i);
 	}
 	
 	std::shared_ptr<Shader> ftec::Shader::load(const std::string & name)

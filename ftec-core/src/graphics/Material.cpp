@@ -3,6 +3,10 @@
 #include "GraphicsState.h"
 #include "graphics/Cubemap.h"
 
+#include <sstream>
+
+#include "logger/log.h"
+
 #include "GL.h"
 
 namespace ftec {
@@ -13,8 +17,13 @@ namespace ftec {
 			m_Shader = shader;
 			loadMatrixLocations(m_Shader.get());
 			m_Shader->use();
-			m_TextureLocation = m_Shader->getUniformLocation("u_Textures[0]");
-			m_Shader->setUniform(m_TextureLocation, 0);
+		}
+
+		for (int i = 0; i < m_UniformTextureLocations.size(); i++) {
+			std::stringstream string;
+			string << "u_Textures[" << i << "]";
+			m_UniformTextureLocations[i] = m_Shader->getUniformLocation(string.str().c_str());
+			LOG("i = " << i << ". String = " << string.str() << ". Uniform = " << m_UniformTextureLocations[i]);
 		}
 	}
 
@@ -32,8 +41,9 @@ namespace ftec {
 
 		{
 			for (size_t i = 0; i < m_TextureMaps.size(); i++) {
+				shader.setUniform((int)m_UniformTextureLocations[i], (int)i);
 				if (m_TextureMaps[i]) {
-					glActiveTexture(GL_TEXTURE0 + (GLenum) i);
+					glActiveTexture(GL_TEXTURE0 + (GLenum)i);
 					m_TextureMaps[i]->bind();
 				}
 			}
