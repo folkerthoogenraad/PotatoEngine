@@ -43,6 +43,7 @@ namespace potato {
 
 		graphics.setColor(ftec::Color32::gray());
 
+		//Draw the grid :)
 		for (float x = fmod(m_CameraPosition.x, 64.0f); x < b.right(); x += 64) {
 			graphics.drawLine(ftec::Line2f(
 				ftec::Vector2f(x, b.top()),

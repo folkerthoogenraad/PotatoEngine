@@ -31,9 +31,11 @@ namespace ftec {
 		}
 
 		{
-			if (m_TextureMap) {
-				glActiveTexture(GL_TEXTURE0);
-				m_TextureMap->bind();
+			for (size_t i = 0; i < m_TextureMaps.size(); i++) {
+				if (m_TextureMaps[i]) {
+					glActiveTexture(GL_TEXTURE0 + (GLenum) i);
+					m_TextureMaps[i]->bind();
+				}
 			}
 		}
 			

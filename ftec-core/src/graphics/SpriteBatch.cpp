@@ -12,6 +12,8 @@
 
 namespace ftec {
 
+	const int MAX_BATCH_SIZE = 1200;
+
 	inline GLenum glPrimitive(const Primitive &p)
 	{
 		switch (p)
@@ -48,6 +50,8 @@ namespace ftec {
 			return;
 		}
 		m_Drawing = true;
+
+		m_FlushSize = MAX_BATCH_SIZE;
 
 		this->m_Primitive = primitive;
 

@@ -31,7 +31,7 @@ namespace ftec {
 
 		m_Material = std::make_shared<Material2D>(Engine::getResourceManager().load<Shader>("shaders/default2d"));
 
-		m_Material->m_TextureMap = m_WhiteTexture;
+		m_Material->m_TextureMaps[0] = m_WhiteTexture;
 
 		m_Color = Color32(255, 255, 255, 255);
 	}
@@ -330,9 +330,9 @@ namespace ftec {
 
 	void Graphics2D::setTexture(std::shared_ptr<Texture> texture)
 	{
-		if (texture != m_Material->m_TextureMap) {
+		if (texture != m_Material->m_TextureMaps[0]) {
 			flush();
-			m_Material->m_TextureMap = texture;
+			m_Material->m_TextureMaps[0] = texture;
 		}
 	}
 

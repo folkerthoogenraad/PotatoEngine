@@ -14,7 +14,7 @@ namespace potato {
 
 	class NodeNotch : public Panel {
 		NodeNotchType m_Type;
-		Node *m_Node;
+		Node *m_Node; // TODO change all raw pointers?
 
 		std::weak_ptr<NodeNotch> m_ConnectedTo;
 	public:

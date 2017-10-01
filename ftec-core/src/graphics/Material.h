@@ -1,5 +1,7 @@
 #pragma once
+
 #include <memory>
+#include <array>
 
 #include "Shader.h"
 #include "Texture.h"
@@ -25,7 +27,7 @@ namespace ftec {
 		std::shared_ptr<Shader> m_Shader = nullptr;
 		int m_TextureLocation;
 	public:
-		std::shared_ptr<Texture> m_TextureMap = nullptr;
+		std::array<std::shared_ptr<Texture>, 8> m_TextureMaps;
 
 		Material2D(std::shared_ptr<Shader> shader);
 

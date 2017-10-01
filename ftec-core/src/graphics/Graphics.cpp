@@ -72,7 +72,7 @@ namespace ftec {
 		}
 		if (!pointMaterial) {
 			pointMaterial = std::make_shared<Material2D>(Engine::getResourceManager().load<Shader>("shaders/default2d"));
-			pointMaterial->m_TextureMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
+			pointMaterial->m_TextureMaps[0] = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
 		}
 
 		meshes.clear();
