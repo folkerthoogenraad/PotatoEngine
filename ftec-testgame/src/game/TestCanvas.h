@@ -13,7 +13,7 @@ namespace ftec {
 
 		void onPreEvents() override;
 
-		void drawSelf(Graphics2D &graphics) override;
+		void drawSelf(Graphics2D &graphics, const potato::PotatoStyle &style) override;
 
 		virtual void onClick(potato::Event &evt) override;
 

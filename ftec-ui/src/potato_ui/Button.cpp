@@ -1,6 +1,7 @@
 #include "Button.h"
 
 #include "graphics/Graphics2D.h"
+#include "graphics/Sprite.h"
 #include "graphics/Font.h"
 #include "PotatoUI.h"
 
@@ -12,7 +13,7 @@ namespace potato {
 		m_Focusable = true;
 	}
 
-	void Button::drawSelf(ftec::Graphics2D & graphics)
+	void Button::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		graphics.setFont(m_Font);
 		//Don't call our super class, if we have children, we should ignore them
@@ -20,36 +21,28 @@ namespace potato {
 
 		Bounds bounds = getGlobalBounds();
 
+		const ftec::Sprite &background = style.getSprite(ftec::const_hash("ButtonBackground"));
+
 		if (isHoveringSelf()) {
 			if (isPressed()) {
-				graphics.setColor(PotatoColor::primary);
+				graphics.setColor(style.getColor(ftec::const_hash(COLOR_PRIMARY_DARK)));
 			}
 			else {
-				graphics.setColor(PotatoColor::lightPrimary);
+				graphics.setColor(style.getColor(ftec::const_hash(COLOR_PRIMARY_MEDIUM)));
 			}
 		}
 		else {
-			graphics.setColor(PotatoColor::lightPrimary);
+			graphics.setColor(style.getColor(ftec::const_hash(COLOR_PRIMARY_MEDIUM)));
 		}
 
-		graphics.drawRectangle(bounds, true);
+		graphics.drawSprite(background, bounds);
 
-		if (isFocused()) {
-			graphics.setColor(PotatoColor::darkPrimary);
-			graphics.drawRectangle(bounds, false);
-		}
-
-		graphics.setColor(PotatoColor::primaryText);
+		graphics.setColor(style.getColor(ftec::const_hash(COLOR_TEXT_LIGHT)));
 
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
 		graphics.setHorizontalAlign(ftec::FontAlign::CENTER);
 
-		if (isPressed()) {
-			graphics.drawString(m_Text, bounds.center() + ftec::Vector2i(1, 1));
-		}
-		else {
-			graphics.drawString(m_Text, bounds.center());
-		}
+		graphics.drawString(m_Text, bounds.center());
 	}
 	Size Button::getPreferredSize()
 	{

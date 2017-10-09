@@ -32,8 +32,6 @@ namespace ftec {
 	{
 		m_Sprite = Sprite(Engine::getResourceManager().load<Texture>("sprites/player.png"));
 
-		m_Sprite.size().width = 1.0f;
-		m_Sprite.size().height = 1.0f;
 		m_Sprite.offset() = Vector2f(0.5f, 0.5f);
 	}
 

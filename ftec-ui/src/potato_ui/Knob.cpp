@@ -14,7 +14,7 @@ namespace potato {
 		m_Focusable = true;
 	}
 
-	void Knob::drawSelf(ftec::Graphics2D & graphics)
+	void Knob::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		Bounds b = getGlobalBounds();
 

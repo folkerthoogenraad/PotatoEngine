@@ -151,11 +151,11 @@ namespace ftec {
 				if(tempBuffer.size() < size)
 					tempBuffer.resize(size);
 
-				//Upload to the temp buffer
+				//Upload to the temp buffer (and flip them, because of how OpenGL handles texture coordinates)
 				for (unsigned int x = 0; x < g->bitmap.width; x++) {
 					for (unsigned int y = 0; y < g->bitmap.rows; y++) {
 						unsigned int raw = (x + y * g->bitmap.width);
-						unsigned int index = raw * 4;
+						unsigned int index = (x + y * g->bitmap.width) * 4;
 
 						tempBuffer[index] = 255;
 						tempBuffer[index + 1] = 255;

@@ -10,9 +10,9 @@ namespace potato {
 		m_Focusable = true;
 	}
 
-	void Checkbox::drawSelf(ftec::Graphics2D & graphics)
+	void Checkbox::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
-		Panel::drawSelf(graphics);
+		Panel::drawSelf(graphics, style);
 
 		Bounds bounds = getGlobalBounds();
 

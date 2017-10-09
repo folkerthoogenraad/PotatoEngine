@@ -34,7 +34,7 @@ namespace potato {
 		}
 	}
 
-	void NodeEditor::drawSelf(ftec::Graphics2D & graphics)
+	void NodeEditor::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		Bounds b = this->getGlobalBounds();
 

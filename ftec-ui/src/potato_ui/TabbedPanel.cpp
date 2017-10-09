@@ -52,15 +52,15 @@ namespace potato {
 		}
 	}
 
-	void TabbedPanel::draw(ftec::Graphics2D & graphics)
+	void TabbedPanel::draw(ftec::Graphics2D & graphics, const PotatoStyle &style)
 	{
 		if (m_SelectedTab < m_Children.size()) {
-			m_Children[m_SelectedTab]->draw(graphics);
+			m_Children[m_SelectedTab]->draw(graphics, style);
 		}
-		drawSelf(graphics);
+		drawSelf(graphics, style);
 	}
 
-	void TabbedPanel::drawSelf(ftec::Graphics2D & graphics)
+	void TabbedPanel::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		Bounds outline = getGlobalOutline();
 		outline.height() = TAB_HEIGHT + m_Insets.top;

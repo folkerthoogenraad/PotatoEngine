@@ -11,7 +11,7 @@ namespace potato {
 	public:
 		Slider();
 
-		void drawSelf(ftec::Graphics2D &graphics) override;
+		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		
 		void onMousePressed(Event &event) override;
 		void onMouseReleased(Event &event) override;

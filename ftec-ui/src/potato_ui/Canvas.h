@@ -8,7 +8,7 @@ namespace potato {
 	public:
 
 		virtual void update() override {};
-		virtual void drawSelf(ftec::Graphics2D &graphics) override {};
+		virtual void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override {};
 
 		virtual potato::Size getPreferredSize() {
 			return potato::Size(400,300);

@@ -12,7 +12,7 @@ namespace potato {
 		m_Focusable = true;
 	}
 
-	void SceneView::drawSelf(ftec::Graphics2D & graphics)
+	void SceneView::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		Bounds bounds = getGlobalBounds();
 		//Draw the scene!

@@ -9,6 +9,8 @@
 #include "EventInput.h"
 #include "engine/Keycodes.h"
 
+#include "resources/ResourceManager.h"
+
 #include "engine/Engine.h"
 
 namespace potato {
@@ -41,6 +43,24 @@ namespace potato {
 	{
 		m_Graphics.m_Camera = ftec::Camera::orthagonal(ftec::Engine::getWindow().getHeight(), ftec::Engine::getWindow().getWidth() / ftec::Engine::getWindow().getHeight(), -100, 100, true);
 		m_Graphics.m_Camera.m_Position = ftec::Vector3f(ftec::Engine::getWindow().getWidth() / 2.0f, ftec::Engine::getWindow().getHeight() / 2.0f);
+
+		m_Style.setColor(ftec::const_hash(COLOR_TEXT_LIGHT), ftec::Color32(0xEE, 0xEE, 0xEE, 0xEE));
+		m_Style.setColor(ftec::const_hash(COLOR_TEXT_MEDIUM), ftec::Color32(0x75, 0x75, 0x75, 0xFF));
+		m_Style.setColor(ftec::const_hash(COLOR_TEXT_DARK), ftec::Color32(0x21, 0x21, 0x21, 0xFF));
+
+		m_Style.setColor(ftec::const_hash(COLOR_PRIMARY_LIGHTEST), ftec::Color32(0xDC, 0xED, 0xC8, 0xFF));
+		m_Style.setColor(ftec::const_hash(COLOR_PRIMARY_LIGHT), ftec::Color32(0xAE, 0xD5, 0x81, 0xFF));
+		m_Style.setColor(ftec::const_hash(COLOR_PRIMARY_MEDIUM), ftec::Color32(0x8B, 0xC3, 0x4A, 0xFF));
+		m_Style.setColor(ftec::const_hash(COLOR_PRIMARY_DARK), ftec::Color32(0x55, 0x8B, 0x2F, 0xFF));
+		m_Style.setColor(ftec::const_hash(COLOR_PRIMARY_DARKEST), ftec::Color32(0x33, 0x69, 0x1E, 0xFF));
+
+		m_Style.setDefaultSprite(ftec::Sprite(
+			m_Graphics.getWhiteTexture()
+		));
+
+		m_Style.setSprite(ftec::const_hash("ButtonBackground"), ftec::Sprite(
+			ftec::Engine::getResourceManager().load<ftec::Texture>("ui/skin.png"), ftec::Rectanglef(0, 0, 32, 32)
+		).flipY().setType(ftec::Sprite::Sliced).setSlices(ftec::SpriteSlices(8,8,8,8)));
 	}
 
 	PotatoUI::~PotatoUI()
@@ -51,9 +71,14 @@ namespace potato {
 	{
 		if (m_Root) {
 
-			//TODO this kinda is an event too
-			//This should probably be handled differently but whatever, its good for now
+			// TODO this kinda is an event too
+			// This should probably be handled differently but whatever, its good for now
 			if (ftec::Engine::getWindow().isResized()) {
+				if (m_ContextMenu){
+					m_ContextMenu->localbounds() = ftec::Rectanglei(0, 0, (int)ftec::Engine::getWindow().getWidth(), (int)ftec::Engine::getWindow().getHeight());
+					m_ContextMenu->updateLayout();
+				}
+
 				m_Root->localbounds() = ftec::Rectanglei(0, 0, (int)ftec::Engine::getWindow().getWidth(), (int)ftec::Engine::getWindow().getHeight());
 				m_Root->updateLayout();
 			}
@@ -69,7 +94,6 @@ namespace potato {
 			input.forEach([this](Event &event) {
 				if (m_ContextMenu)
 					processEvents(m_ContextMenu, event);
-
 				if (!event.isConsumed())
 					processEvents(m_Root, event);
 			});
@@ -96,10 +120,10 @@ namespace potato {
 		m_Graphics.begin();
 
 		if (m_Root) {
-			m_Root->draw(m_Graphics);
+			m_Root->draw(m_Graphics, m_Style);
 		}
 		if (m_ContextMenu) {
-			m_ContextMenu->draw(m_Graphics);
+			m_ContextMenu->draw(m_Graphics, m_Style);
 		}
 
 		m_Graphics.end();
@@ -120,6 +144,7 @@ namespace potato {
 	{
 		m_ContextMenu = contextMenu;
 		if (m_ContextMenu) {
+			m_ContextMenu->localbounds() = ftec::Rectanglei(0, 0, (int)ftec::Engine::getWindow().getWidth(), (int)ftec::Engine::getWindow().getHeight());
 			m_ContextMenu->setUI(this);
 		}
 	}
@@ -174,19 +199,15 @@ namespace potato {
 		return m_Pressed[mb].get() == panel;
 	}
 
+	PotatoStyle & PotatoUI::getStyle()
+	{
+		return m_Style;
+	}
+
 	void PotatoUI::processEvents(std::shared_ptr<Panel> panel, Event &event)
 	{
-		// TODO event consumption currently does nothing at all
-
 		if (event.getType() == EventType::MOUSE_MOVE) {
 			auto hover = panel->findPanelByPosition(event.getMousePosition());
-
-			// TODO find a way to work around this hack (put it in find panel by position)
-			if (!hover) {
-				if (panel->inBounds(event.getMousePosition())) {
-					hover = panel;
-				}
-			}
 
 			// Hover enter and hover leave
 			setHoverAndFireEvents(hover, event);
@@ -195,7 +216,9 @@ namespace potato {
 			if (m_Hover) {
 				m_Hover->onHover(event);
 				m_Hover->onHoverOrDrag(event);
+				event.consume();
 			}
+
 		}
 
 		if (event.getType() == EventType::MOUSE_DRAG) {
@@ -203,6 +226,8 @@ namespace potato {
 			if (m) {
 				m->onDrag(event);
 				m->onHoverOrDrag(event);
+
+				event.consume();
 			}
 		}
 
@@ -216,6 +241,11 @@ namespace potato {
 				if (m_Hover->isFocusable()) {
 					setFocusAndFireEvents(m_Hover, event);
 				}
+				else {
+					setFocusAndFireEvents(nullptr, event);
+				}
+
+				event.consume();
 			}
 		}
 
@@ -234,6 +264,8 @@ namespace potato {
 				if(m->inBounds(event.getMousePosition())){
 					m->onClick(event);
 				}
+
+				event.consume();
 			}
 		}
 

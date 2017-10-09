@@ -5,8 +5,6 @@
 
 #include <sstream>
 
-#include "logger/log.h"
-
 #include "GL.h"
 
 namespace ftec {
@@ -23,7 +21,6 @@ namespace ftec {
 			std::stringstream string;
 			string << "u_Textures[" << i << "]";
 			m_UniformTextureLocations[i] = m_Shader->getUniformLocation(string.str().c_str());
-			LOG("i = " << i << ". String = " << string.str() << ". Uniform = " << m_UniformTextureLocations[i]);
 		}
 	}
 

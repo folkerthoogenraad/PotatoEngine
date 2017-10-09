@@ -14,6 +14,7 @@ PotatoUI (obviously).
 
 #include "graphics/Graphics2D.h"
 #include "math/Vector2.h"
+#include "PotatoStyle.h"
 
 namespace potato {
 
@@ -57,6 +58,8 @@ namespace potato {
 		// 10 mouse buttons, might be a bit overkill :)
 		std::array<std::shared_ptr<Panel>, 10> m_Pressed;
 
+		PotatoStyle m_Style;
+
 		ftec::Vector2f m_MouseStart;
 	public:
 		PotatoUI();
@@ -79,6 +82,7 @@ namespace potato {
 		bool isPressed(const Panel *panel) const;
 		bool isPressed(const Panel *panel, int mb) const;
 
+		PotatoStyle &getStyle();
 	private:
 		void processEvents(std::shared_ptr<Panel> panel, Event &event);
 

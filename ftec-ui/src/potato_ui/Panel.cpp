@@ -53,9 +53,9 @@ namespace potato {
 		);
 	}
 
-	void Panel::draw(ftec::Graphics2D & graphics)
+	void Panel::draw(ftec::Graphics2D & graphics, const PotatoStyle &style)
 	{
-		drawSelf(graphics);
+		drawSelf(graphics, style);
 		//Draw children
 		/*for (auto child : m_Children) {
 			child->draw(graphics);
@@ -66,11 +66,11 @@ namespace potato {
 
 		for (auto it = childs.rbegin(); it != childs.rend(); it++)
 		{
-			(*it)->draw(graphics);
+			(*it)->draw(graphics, style);
 		}
 	}
 
-	void Panel::drawSelf(ftec::Graphics2D & graphics)
+	void Panel::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle &style)
 	{
 		if (m_Opaque) {
 			graphics.setColor(m_BackgroundColor);
@@ -189,7 +189,7 @@ namespace potato {
 
 	bool Panel::isHoveringSelf() const
 	{
-		return m_UI && m_UI->isFocused(this);
+		return m_UI && m_UI->isHovered(this);
 	}
 
 	bool Panel::isChildFocused() const
@@ -256,7 +256,7 @@ namespace potato {
 		requestUpdateLayout();
 	}
 
-	std::shared_ptr<Panel> Panel::findPanelByPosition(ftec::Vector2i input) const
+	std::shared_ptr<Panel> Panel::findPanelByPosition(ftec::Vector2i input)
 	{
 		//Can't be itself, might still be a problem....
 
@@ -264,12 +264,11 @@ namespace potato {
 			auto c = p->findPanelByPosition(input);
 			if (c)
 				return c;
-
-			if (p->inBounds(input))
-				return p;
 		}
+		if (inBounds(input))
+			return shared_from_this();
 
-		//Can't return itself ):
+		// Isn't found!
 		return nullptr;
 	}
 
@@ -277,6 +276,7 @@ namespace potato {
 	{
 		child->setParent(this);
 		child->setUI(m_UI);
+		child->init();
 	}
 	
 }

@@ -2,6 +2,8 @@
 #include "engine/DesktopEngine.h"
 
 #include "logger/log.h"
+#include "util/hash.h"
+#include <functional>
 
 int main(void)
 {

@@ -7,6 +7,9 @@
 #include "potato_ui/NodeEditor.h"
 #include "potato_ui/Node.h"
 #include "potato_ui/TabbedPanel.h"
+#include "potato_ui/Dropdown.h"
+
+#include "modularsynth/OscillatorNode.h"
 
 
 namespace ftec {
@@ -35,16 +38,7 @@ namespace ftec {
 
 		m_UI->setRoot(std::make_shared<TabbedPanel>(p));
 
-		for(int i = 0; i < 10; i++)
-		{
-			auto m = std::make_shared<Node>("Hallo");
-			m->localbounds().position += Vector2i(1 * i, 0);
-			m->setInputs(3);
-			m->setOutputs(2);
-			//m->setContent(UILoader::load("UISettings.xml"));
-			nodeEditor->addNode(m);
-		}
-
+		nodeEditor->addNode(std::make_shared<modularsynth::OscillatorNode>());
 	}
 
 	void Razura::destroy()

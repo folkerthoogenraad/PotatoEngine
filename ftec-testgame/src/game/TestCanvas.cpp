@@ -22,7 +22,7 @@ namespace ftec {
 		m_Clicked = false;
 	}
 
-	void TestCanvas::drawSelf(Graphics2D & graphics)
+	void TestCanvas::drawSelf(Graphics2D & graphics, const potato::PotatoStyle &style)
 	{
 		graphics.setColor(Color32::red());
 

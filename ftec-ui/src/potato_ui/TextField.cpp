@@ -15,7 +15,7 @@ namespace potato {
 		m_EditText.keyboardInput(event);
 	}
 
-	void TextField::drawSelf(ftec::Graphics2D & graphics)
+	void TextField::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		//TODO manage to find a solution for this
 		//graphics.setClip(getGlobalOutline());
@@ -24,7 +24,7 @@ namespace potato {
 		graphics.setFont(m_Font);
 		graphics.setColor(PotatoColor::lightPrimary);
 
-		graphics.drawRectangle(bounds, true);
+		graphics.drawRectangle(bounds, false);
 
 		if (isFocused()) {
 			graphics.setColor(PotatoColor::primary);

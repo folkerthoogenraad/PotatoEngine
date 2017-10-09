@@ -11,7 +11,7 @@ namespace potato {
 	public:
 		Knob();
 
-		void drawSelf(ftec::Graphics2D &graphics) override;
+		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 
 		void onDrag(Event &event) override;
 

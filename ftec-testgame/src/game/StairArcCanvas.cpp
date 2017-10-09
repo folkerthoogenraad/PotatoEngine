@@ -135,7 +135,7 @@ namespace ftec {
 		z = Time::sinTime / 2 + 0.5f;
 	}
 
-	void StairArcCanvas::drawSelf(Graphics2D & graphics)
+	void StairArcCanvas::drawSelf(Graphics2D & graphics, const potato::PotatoStyle &style)
 	{
 		potato::Bounds bounds = getGlobalBounds();
 

@@ -219,6 +219,7 @@
     <ClCompile Include="src\math\StairArc.cpp" />
     <ClCompile Include="src\math\Voronoi2.cpp" />
     <ClCompile Include="src\math\Voronoi3.cpp" />
+    <ClCompile Include="src\modularsynth\OscillatorNode.cpp" />
     <ClCompile Include="src\networking\Client.cpp" />
     <ClCompile Include="src\razura\RazuraPlayer.cpp" />
     <ClCompile Include="src\razura\RazuraWorldEntity.cpp" />
@@ -244,6 +245,8 @@
     <ClInclude Include="src\math\StairArc.h" />
     <ClInclude Include="src\math\Voronoi2.h" />
     <ClInclude Include="src\math\Voronoi3.h" />
+    <ClInclude Include="src\modularsynth\OscillatorNode.h" />
+    <ClInclude Include="src\modularsynth\WaveType.h" />
     <ClInclude Include="src\networking\Client.h" />
     <ClInclude Include="src\razura\RazuraPlayer.h" />
     <ClInclude Include="src\razura\RazuraWorldEntity.h" />
@@ -251,6 +254,7 @@
     <ClInclude Include="src\tiles\Tilemap.h" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="layouts\nodes\OscillatorNode.xml" />
     <Xml Include="UIEditor.xml" />
     <Xml Include="UISettings.xml" />
   </ItemGroup>

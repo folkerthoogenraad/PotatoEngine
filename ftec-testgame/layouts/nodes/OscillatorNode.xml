@@ -1,0 +1,44 @@
+<LinearLayout
+  width="match_parent"
+  height="match_parent"
+  orientation="vertical">
+
+  <LinearLayout
+  width="match_parent"
+  height="wrap_content"
+  orientation="horizontal">
+    <Label
+      width="match_parent"
+      height="wrap_content"
+      weight="1"
+      text="Amp"></Label>
+    <Label
+      width="match_parent"
+      height="wrap_content"
+      weight="1"
+      text="Out"></Label>
+  </LinearLayout>
+
+  <LinearLayout
+  width="match_parent"
+  height="wrap_content"
+  orientation="horizontal">
+    <Label
+      width="match_parent"
+      height="wrap_content"
+      weight="1"
+      text="Freq"></Label>
+  </LinearLayout>
+
+  <Dropdown
+    width="match_parent"
+    height="wrap_content"
+    id="wavetype_dropdown"> </Dropdown>
+
+  <Knob
+    width="match_parent"
+    height="wrap_content"
+    weight="1"
+    steps="0"/>
+
+</LinearLayout>

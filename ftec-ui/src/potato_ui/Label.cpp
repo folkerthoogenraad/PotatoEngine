@@ -9,9 +9,9 @@ namespace potato {
 	{
 	}
 
-	void Label::drawSelf(ftec::Graphics2D & graphics)
+	void Label::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
-		Panel::drawSelf(graphics);
+		Panel::drawSelf(graphics, style);
 		graphics.setColor(PotatoColor::primaryText);
 		graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);

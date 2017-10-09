@@ -18,7 +18,7 @@ namespace potato {
 		ftec::Vector2f getCameraPosition() const;
 		void setFocusNode(Node* node);
 	public:
-		void drawSelf(ftec::Graphics2D &graphics) override;
+		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		Size getPreferredSize() override;
 		void onPostEvents() override;
 		void onDrag(Event &event) override;

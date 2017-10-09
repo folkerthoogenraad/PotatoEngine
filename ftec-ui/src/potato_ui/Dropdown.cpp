@@ -1,6 +1,7 @@
 #include "Dropdown.h"
 #include "graphics/Font.h"
 #include "logger/log.h"
+#include "ContextMenuPanel.h"
 
 namespace potato {
 
@@ -9,9 +10,9 @@ namespace potato {
 		m_Focusable = true;
 	}
 
-	void Dropdown::drawSelf(ftec::Graphics2D & graphics)
+	void Dropdown::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
-		Panel::drawSelf(graphics);
+		Panel::drawSelf(graphics, style);
 
 		Bounds bounds = getGlobalBounds();
 
@@ -39,7 +40,7 @@ namespace potato {
 		), true);
 	}
 
-	void Dropdown::onClick(Event &event)
+	void Dropdown::onClick(Event &even)
 	{
 		Bounds bounds = getGlobalBounds();
 
@@ -49,9 +50,11 @@ namespace potato {
 				auto list = std::make_shared<List>();
 				list->setTextOptions(m_TextOptions);
 
-				list->localbounds() = ftec::Rectanglei(bounds.left(), bounds.bottom(), bounds.width(), 64);
+				list->localbounds() = ftec::Rectanglei(bounds.left(), bounds.bottom(), bounds.width(), list->getPreferredSize().height);
 
-				m_UI->setContextMenu(list);
+				list->setSelectionCallback(std::bind(&Dropdown::setSelectedIndex, this, std::placeholders::_1));
+
+				m_UI->setContextMenu(std::make_shared<ContextMenuPanel>(list));
 			}
 			else {
 				m_UI->setContextMenu(nullptr);
@@ -64,5 +67,10 @@ namespace potato {
 	{
 		//TODO change these values accordingly
 		return Size(128,32);
+	}
+
+	void Dropdown::setSelectedIndex(int i)
+	{
+		m_SelectedIndex = i;
 	}
 }

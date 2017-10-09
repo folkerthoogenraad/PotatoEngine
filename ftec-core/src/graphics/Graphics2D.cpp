@@ -16,6 +16,7 @@
 
 #include "GL.h"
 
+#include <array>
 #include <assert.h>
 
 #include "resources/ResourceManager.h"
@@ -148,6 +149,34 @@ namespace ftec {
 		}
 	}
 
+	void Graphics2D::drawBezier(const curves::VCubicBezier & bezier)
+	{
+		Vector2f from = bezier.p0;
+
+		const int subdivisions = 30;
+		const float subd = (float)subdivisions;
+		
+		for (int i = 1; i <= subdivisions; i++) {
+			Vector2f to = bezier.interpolate(i / subd);
+			drawLine(from, to);
+			from = to;
+		}
+	}
+
+	void Graphics2D::drawAutoBezier(const Vector2f & from, const Vector2f & to)
+	{
+		curves::VCubicBezier bezier;
+
+		bezier.p0 = from;
+
+		bezier.p1 = Vector2f((from.x + to.x) / 2.0f, from.y);
+		bezier.p2 = Vector2f((from.x + to.x) / 2.0f, to.y);
+
+		bezier.p3 = to;
+
+		drawBezier(bezier);
+	}
+
 	void Graphics2D::drawString(const std::string & text, const Vector2f & position)
 	{
 		if (drawing3D) {
@@ -201,39 +230,116 @@ namespace ftec {
 
 	}
 
-	void Graphics2D::drawSprite(const Sprite & sprite, const Vector3f & position)
+	void Graphics2D::drawSprite(const Sprite & sprite, Vector2f position)
 	{
-		float d = batch.depth();
-
-		batch.depth(position.z);
-
-		drawSprite(sprite, Vector2f(position.x, position.y));
-
-		setDepth(d);
+		drawSprite(sprite, position, Vector2f(1, 1), 0);
 	}
 
-	void Graphics2D::drawSprite(const Sprite & sprite, const Vector2f & position)
+	void Graphics2D::drawSprite(const Sprite & sprite, Rectanglef rectangle)
+	{
+		drawSprite(sprite, rectangle.position, rectangle.size / sprite.size(), 0);
+	}
+
+	void Graphics2D::drawSprite(const Sprite & sprite, Vector2f position, Vector2f scale, float rotation)
 	{
 		if (drawing3D) {
 			LOG_ERROR("Can't draw 2D when drawing in 3D");
 		}
+
+		Vector2f right = Vector2f(1, 0);
+		Vector2f down = Vector2f(0, 1);
+
+		Vector2f size = sprite.size() * scale;
+
+		if (rotation != 0) {
+			float s = sin(rotation);
+			float c = cos(rotation);
+
+			right = Vector2f(c, -s);
+			down = Vector2f(s, c);
+		}
+
+		position -= sprite.offset().x * scale.x * right + sprite.offset().y * scale.y * down;
+
+
 		setTexture(sprite.texture());
-		
 		batch.color(m_Color);
 
-		batch.uv(sprite.uvs().topleft());
-		batch.vertex(position + sprite.bounds().topleft());
+		if (sprite.getType() == Sprite::Default) {
+			batch.uv(sprite.uvs().topleft());
+			batch.vertex(position);
 
-		batch.uv(sprite.uvs().bottomleft());
-		batch.vertex(position + sprite.bounds().bottomleft());
+			batch.uv(sprite.uvs().bottomleft());
+			batch.vertex(position + down * size.y);
 
-		batch.uv(sprite.uvs().bottomright());
-		batch.vertex(position + sprite.bounds().bottomright());
+			batch.uv(sprite.uvs().bottomright());
+			batch.vertex(position + down * size.y + right * size.x);
 
-		batch.uv(sprite.uvs().topright());
-		batch.vertex(position + sprite.bounds().topright());
+			batch.uv(sprite.uvs().topright());
+			batch.vertex(position + right * size.x);
+		}
+		if (sprite.getType() == Sprite::Sliced) {
+			float width = sprite.size().width;
+			float height= sprite.size().height;
+			
+			SpriteSlices slices = sprite.getSlices();
+			Rectanglef uvs = sprite.uvs();
+
+			Vector2f uvOffset = uvs.topleft();
+			Vector2f uvRight(1, 0);
+			Vector2f uvDown(0, 1);
+			
+			std::array<float, 4> widthf{
+				0,
+				(slices.left / width),
+				1 - (slices.right / width),
+				1,
+			};
+
+			std::array<float, 4> heightf{
+				0,
+				(slices.top / height),
+				1 - (slices.bottom / height),
+				1,
+			};
+
+
+			std::array<float, 4> widthp{
+				0,
+				(slices.left / size.x),
+				1 - (slices.right / size.x),
+				1,
+			};
+
+			std::array<float, 4> heightp{
+				0,
+				(slices.top / size.y),
+				1 - (slices.bottom / size.y),
+				1,
+			};
+
+			auto addVertex = [&](int i, int j) {
+				batch.uv(uvOffset
+					+ uvRight * widthf[i] * uvs.size.x
+					+ uvDown * heightf[j] * uvs.size.y);
+				batch.vertex(position
+					+ right * widthp[i] * size.x
+					+ down * heightp[j] * size.y);
+			};
+
+			for (int i = 0; i < widthf.size() - 1; i++) {
+				for (int j = 0; j < heightf.size() - 1; j++) {
+					addVertex(i, j);
+					addVertex(i, j + 1);
+					addVertex(i + 1, j + 1);
+					addVertex(i + 1, j);
+				}
+			}
+		}
+
 	}
 
+#if 0
 	void Graphics2D::drawSprite(const Sprite & sprite, const Matrix3f & transformation)
 	{
 
@@ -266,6 +372,7 @@ namespace ftec {
 		batch.uv(sprite.uvs().topright());
 		batch.vertex(transformation * positions[3]);
 	}
+#endif
 
 	void Graphics2D::drawLine(const Vector2f & start, const Vector2f & end)
 	{

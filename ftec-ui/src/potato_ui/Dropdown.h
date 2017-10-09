@@ -12,9 +12,11 @@ namespace potato {
 	public:
 		Dropdown();
 
-		void drawSelf(ftec::Graphics2D &graphics) override;
+		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		void onClick(Event &event) override;
 		Size getPreferredSize() override;
+
+		void setSelectedIndex(int i);
 
 		void setTextOptions(const std::vector<std::string> &cp) { m_TextOptions = cp; }
 		std::vector<std::string> &getTextOptions() { return m_TextOptions; };

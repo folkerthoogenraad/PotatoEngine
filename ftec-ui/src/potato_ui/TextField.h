@@ -11,7 +11,7 @@ namespace potato {
 	public:
 		TextField();
 
-		void drawSelf(ftec::Graphics2D &graphics) override;
+		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 
 		void onKeyTyped(Event &event) override;
 

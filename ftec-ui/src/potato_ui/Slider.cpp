@@ -19,10 +19,10 @@ namespace potato {
 		m_Focusable = true;
 	}
 
-	void Slider::drawSelf(ftec::Graphics2D & graphics)
+	void Slider::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		Bounds bounds = getGlobalBounds();
-		Panel::drawSelf(graphics);
+		Panel::drawSelf(graphics, style);
 
 		graphics.setColor(PotatoColor::lightPrimary);
 		graphics.drawLine(bounds.centerLeft(), bounds.centerRight());

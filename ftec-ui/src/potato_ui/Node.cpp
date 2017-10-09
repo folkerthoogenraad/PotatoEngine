@@ -11,6 +11,8 @@
 
 namespace potato {
 
+	const float BAR_HEIGHT = 24;
+
 	Node::Node()
 	{
 		this->m_Insets = Insets::none();
@@ -32,11 +34,11 @@ namespace potato {
 		m_NodeEditor = editor;
 	}
 
-	void Node::drawSelf(ftec::Graphics2D & graphics)
+	void Node::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		Bounds bounds = getGlobalBounds();
 		Bounds title = bounds;
-		title.height() = 24;
+		title.height() = BAR_HEIGHT;
 
 		auto c = ftec::Color32::white();
 		c.a = (uint8_t) 200;
@@ -73,10 +75,27 @@ namespace potato {
 	{
 		if(m_Content){
 			Bounds bounds = localbounds();
+			Size contentPreferedSize = m_Content->getPreferredSize();
 
-			bounds.position.x = 0;
-			bounds.position.y = 32;
-			bounds.height() -= 32;
+			bounds.position.x = 8;
+			bounds.size.width -= 16;
+
+			bounds.position.y = BAR_HEIGHT;
+			bounds.height() -= BAR_HEIGHT;
+
+			// Exact, there is nothing we can do
+			if (m_Content->layoutparams().m_WidthScaling == LayoutParams::EXACT)
+				bounds.width() = layoutparams().m_Size.x;
+			if (m_Content->layoutparams().m_HeightScaling == LayoutParams::EXACT)
+				bounds.height() = layoutparams().m_Size.y;
+
+			// Wrap content, we can do that
+			if (m_Content->layoutparams().m_WidthScaling == LayoutParams::WRAP_CONTENT)
+				bounds.width() = contentPreferedSize.width;
+			if (m_Content->layoutparams().m_HeightScaling == LayoutParams::WRAP_CONTENT)
+				bounds.height() = contentPreferedSize.height;
+
+			// We don't have to do anything for MATCH_PARENT
 
 			m_Content->localbounds() = bounds;
 		}
@@ -86,7 +105,7 @@ namespace potato {
 
 		size_t s = 0;
 		for (auto in : m_Inputs){
-			Bounds b = Bounds::centered(0, 32 * s + 32, 16, 16);
+			Bounds b = Bounds::centered(0, 32 * s + BAR_HEIGHT + 16, 16, 16);
 
 			in->localbounds() = b;
 
@@ -96,7 +115,7 @@ namespace potato {
 
 		s = 0;
 		for (auto in : m_Outputs) {
-			Bounds b = Bounds::centered(bounds.width(), 32 * s + 32, 16, 16);
+			Bounds b = Bounds::centered(bounds.width(), 32 * s + BAR_HEIGHT + 16, 16, 16);
 
 			in->localbounds() = b;
 
@@ -128,7 +147,7 @@ namespace potato {
 			for (int i = 0; i < count; i++) {
 				auto m = std::make_shared<NodeNotch>(NodeNotchType::Input);
 				initChild(m);
-				m->setNode(this);
+				m->setNode(get_as<Node>());
 				m_Inputs.push_back(m);
 			}
 		}
@@ -141,7 +160,9 @@ namespace potato {
 			for (int i = 0; i < count; i++) {
 				auto m = std::make_shared<NodeNotch>(NodeNotchType::Output);
 				initChild(m);
-				m->setNode(this);
+				std::dynamic_pointer_cast<Node>(shared_from_this());
+
+				m->setNode(get_as<Node>());
 				m_Outputs.push_back(m);
 			}
 		}
@@ -185,7 +206,7 @@ namespace potato {
 		: m_Type(type)
 	{ }
 
-	void NodeNotch::drawSelf(ftec::Graphics2D & graphics)
+	void NodeNotch::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		Bounds b = getGlobalBounds();
 
@@ -202,31 +223,35 @@ namespace potato {
 			RADIUS
 		), false);
 
-
+		graphics.setLineWidth(2);
 		if (m_Type == NodeNotchType::Input) {
 			auto ptr = m_ConnectedTo.lock();
 			if (ptr) {
-				graphics.drawLine(ftec::Line2f(
+				graphics.drawAutoBezier(
 					b.center(),
 					ptr->getGlobalBounds().center()
-				));
+				);
 			}
 		}
 
 		if (isPressed()) {
-			graphics.drawLine(ftec::Line2f(
+			graphics.drawAutoBezier(
 				b.center(),
 				ftec::Input::getMousePosition()
-			));
+			);
 		}
+
+		graphics.setLineWidth(1);
 	}
 
 	void NodeNotch::onMouseReleased(Event & event)
 	{
-		if (!m_Node)
+		auto node = m_Node.lock();
+
+		if (!node)
 			return;
 
-		std::shared_ptr<NodeEditor> editor = m_Node->getNodeEditor().lock();
+		std::shared_ptr<NodeEditor> editor = node->getNodeEditor().lock();
 
 		if (!editor)
 			return;
@@ -246,7 +271,7 @@ namespace potato {
 		if (auto notch = std::dynamic_pointer_cast<NodeNotch>(panel)) 
 		{
 			//Input -> Output or other way around
-			if (notch->m_Type != m_Type && notch->m_Node != m_Node) {
+			if (notch->m_Type != m_Type && notch->m_Node.lock() != node) {
 				m_ConnectedTo = notch;
 
 				notch->m_ConnectedTo = get_as<NodeNotch>();
@@ -259,7 +284,7 @@ namespace potato {
 		return Size(RADIUS * 2, RADIUS * 2);
 	}
 
-	void NodeNotch::setNode(Node * node)
+	void NodeNotch::setNode(std::weak_ptr<Node> node)
 	{
 		m_Node = node;
 	}

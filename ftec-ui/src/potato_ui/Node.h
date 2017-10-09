@@ -14,17 +14,17 @@ namespace potato {
 
 	class NodeNotch : public Panel {
 		NodeNotchType m_Type;
-		Node *m_Node; // TODO change all raw pointers?
+		std::weak_ptr<Node> m_Node; // TODO change all raw pointers?
 
 		std::weak_ptr<NodeNotch> m_ConnectedTo;
 	public:
 		NodeNotch(NodeNotchType type);
 
-		void drawSelf(ftec::Graphics2D &graphics) override;
+		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		void onMouseReleased(Event &event) override;
 		Size getPreferredSize() override;
 		
-		void setNode(Node *node);
+		void setNode(std::weak_ptr<Node> node);
 
 		bool inBounds(ftec::Vector2i point) const;
 	};
@@ -49,7 +49,7 @@ namespace potato {
 		void setInputs(int count);
 		void setOutputs(int count);
 	public:
-		void drawSelf(ftec::Graphics2D &graphics) override;
+		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle& style) override;
 		void onDrag(Event &event) override;
 		void updateLayout() override;
 		void onMousePressed(Event &event) override;

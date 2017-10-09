@@ -6,7 +6,21 @@
 namespace ftec {
 	class Texture;
 
+	struct SpriteSlices {
+		SpriteSlices();
+		SpriteSlices(float top, float bottom, float left, float right);
+		float top = 0, bottom = 0;
+		float left = 0, right = 0;
+	};
+
 	class Sprite {
+	public:
+		enum SpriteType {
+			Default,
+			Sliced, // 9 sided
+			Tiled,
+			SlicedAndTiled
+		};
 	private:
 		std::shared_ptr<Texture> m_Texture = 0;
 		
@@ -17,6 +31,10 @@ namespace ftec {
 		Vector2f m_Offset;
 
 		Rectanglef m_UVRectangle;
+
+		SpriteType m_SpriteType = Default;
+		SpriteSlices m_Slices;
+
 	public:
 		Sprite() = default;
 		Sprite(std::shared_ptr<Texture> texture);
@@ -27,24 +45,34 @@ namespace ftec {
 		Rectanglef &uvs() { return m_UVRectangle; };
 		const Rectanglef &uvs() const { return m_UVRectangle; };
 
-		//Returns the size
-		Vector2f &size() { return m_Size; };
+		//Returns the size (not modifyable)
 		const Vector2f &size() const { return m_Size; };
 		
-		//Returns the offset, in 0 - 1 starting from the bottom left
+		// Returns the offset in pixels
 		Vector2f &offset() { return m_Offset; };
 		const Vector2f &offset() const { return m_Offset; };
 
+		//Returns the bounds
 		Rectanglef bounds() const { return Rectanglef(
-			-size().x * offset().x,
-			-size().y * offset().y,
-			size().x,
-			size().y
+			-offset().x,
+			-offset().y,
+			-offset().x + size().x,
+			-offset().y + size().y
 		); }
 
-		//Returns the bounds
+		Sprite &flipY();
+
+		// Type stuff
+		inline Sprite &setType(SpriteType type) { m_SpriteType = type; return *this; }
+		inline SpriteType getType() const { return m_SpriteType; }
+
+		// Returns the texture, nicely
 		std::shared_ptr<Texture> &texture() { return m_Texture; };
 		const std::shared_ptr<Texture> &texture() const { return m_Texture; };
+
+		// Sliced stuff
+		inline Sprite &setSlices(SpriteSlices slices) { m_Slices = std::move(slices); return *this; };
+		inline SpriteSlices getSlices() const { return m_Slices;  }
 	protected:
 		void recalculateUVRectangle(const Rectanglef &textureRectangle);
 		void recalculateLocalBounds(const Rectanglef &textureRectangle);

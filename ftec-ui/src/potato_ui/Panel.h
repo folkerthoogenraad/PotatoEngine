@@ -7,6 +7,7 @@
 
 #include "Event.h"
 #include "LayoutParams.h"
+#include "PotatoStyle.h"
 
 namespace ftec {
 	class Graphics2D;
@@ -86,8 +87,8 @@ namespace potato {
 		inline void setID(std::string s) { m_ID = std::move(s); }
 
 		//Called each time the panel needs to be drawn
-		virtual void draw(ftec::Graphics2D &graphics);
-		virtual void drawSelf(ftec::Graphics2D &graphics);
+		virtual void draw(ftec::Graphics2D &graphics, const PotatoStyle &style);
+		virtual void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style);
 
 		//Called each update (for animation, for everything)
 		virtual void update();
@@ -115,6 +116,8 @@ namespace potato {
 
 		virtual void onFocusGain(Event &evt);
 		virtual void onFocusLose(Event &evt);
+
+		virtual void init() {};
 
 		void switchFocus();
 
@@ -154,10 +157,11 @@ namespace potato {
 		std::shared_ptr<T> findPanelById(const std::string &id) {
 			//Can't be itself, that might be a problem.
 
+			if (id == getID())
+				return get_as<T>();
+
 			for (auto p : getChildren()) {
-				if (p->getID() == id)
-					return p;
-				auto c = p->findPanelById(id);
+				auto c = p->findPanelById<T>(id);
 				if (c)
 					return c;
 			}
@@ -172,7 +176,7 @@ namespace potato {
 			return std::dynamic_pointer_cast<T>(shared_from_this());
 		}
 
-		std::shared_ptr<Panel> findPanelByPosition(ftec::Vector2i input) const;
+		std::shared_ptr<Panel> findPanelByPosition(ftec::Vector2i input);
 
 		friend class PotatoUI;
 	protected:

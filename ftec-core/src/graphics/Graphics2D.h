@@ -3,6 +3,7 @@
 #include "math/Line2.h"
 #include "math/Circle.h"
 #include "math/Matrix3.h"
+#include "math/Curve.h"
 
 #include "SpriteBatch.h"	//For spritebatch
 #include "Material.h"		//TODO remove this
@@ -62,12 +63,15 @@ namespace ftec {
 		void drawCircle(const Vector2f &center, float radius, bool fill);
 		void drawCircle(const Circlef &circle, bool fill);
 		void drawArc(const Vector2f &center, float radius, bool fill, float startAngle, float angleLength);
+		
+		void drawBezier(const curves::VCubicBezier &bezier);
+		void drawAutoBezier(const Vector2f &from, const Vector2f &to);
 
 		void drawString(const std::string &text, const Vector2f &position);
-		void drawSprite(const Sprite &sprite, const Vector2f &position);
-		void drawSprite(const Sprite &sprite, const Vector3f &position);
 
-		void drawSprite(const Sprite &sprite, const Matrix3f &transformation);
+		void drawSprite(const Sprite &sprite, Vector2f position);
+		void drawSprite(const Sprite &sprite, Rectanglef rectangle);
+		void drawSprite(const Sprite &sprite, Vector2f position, Vector2f scale, float rotation);
 		
 		void drawLine(const Vector2f &start, const Vector2f &end);
 		void drawLine(const Line2f &line);
@@ -91,6 +95,8 @@ namespace ftec {
 		void setFont(std::shared_ptr<Font> font) { m_Font = font;}
 
 		void setCamera(Camera camera);
+
+		std::shared_ptr<Texture> getWhiteTexture() const { return m_WhiteTexture; }
 
 		inline const Color32 &getColor() { return m_Color; }
 	protected:

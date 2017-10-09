@@ -9,6 +9,7 @@
 #include "Checkbox.h"
 #include "NodeEditor.h"
 #include "Knob.h"
+#include "Dropdown.h"
 
 namespace potato {
 
@@ -82,6 +83,10 @@ namespace potato {
 		node.getAttribute("weight", value);
 		if (value.size() > 0) {
 			panel->layoutparams().m_Weight = (float)std::stoi(value);
+		}
+
+		if (node.getAttribute("id", value)) {
+			panel->setID(value);
 		}
 	}
 
@@ -193,6 +198,16 @@ namespace potato {
 			if (value.size() > 0) {//TODO better conversion between this stuff
 				panel->setSteps(std::stoi(value));
 			}
+
+			//Load the layout params
+			UILoader::loadLayoutParams(panel, node);
+
+			return panel;
+		};
+
+		out["Dropdown"] = [](ftec::xml::XMLNode &node) -> std::shared_ptr<Panel>
+		{
+			auto panel = std::make_shared<Dropdown>();
 
 			//Load the layout params
 			UILoader::loadLayoutParams(panel, node);

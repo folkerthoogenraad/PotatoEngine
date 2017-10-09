@@ -69,6 +69,9 @@
     <ClCompile Include="src\networking\Client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\modularsynth\OscillatorNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\NoClipCameraEntity.h">
@@ -143,10 +146,17 @@
     <ClInclude Include="src\networking\Client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\modularsynth\OscillatorNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modularsynth\WaveType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UIEditor.xml" />
     <Xml Include="UISettings.xml" />
+    <Xml Include="layouts\nodes\OscillatorNode.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="settings\config.ini" />

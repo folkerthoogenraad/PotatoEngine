@@ -9,7 +9,7 @@ namespace ftec {
 		StairArcCanvas();
 
 		void update() override;
-		void drawSelf(Graphics2D &graphics) override;
+		void drawSelf(Graphics2D &graphics, const potato::PotatoStyle &style) override;
 
 	};
 }

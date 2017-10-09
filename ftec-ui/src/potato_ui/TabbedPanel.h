@@ -18,8 +18,8 @@ namespace potato {
 		void addTab(const std::string &name, std::shared_ptr<Panel> panel);
 
 		void update() override;
-		void draw(ftec::Graphics2D &graphics) override;
-		void drawSelf(ftec::Graphics2D &graphics) override;
+		void draw(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
+		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 
 		void onClick(Event &evt);
 

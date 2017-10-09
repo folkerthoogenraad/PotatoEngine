@@ -10,7 +10,7 @@ namespace potato {
 	public:
 		Checkbox();
 
-		void drawSelf(ftec::Graphics2D &graphics) override;
+		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		void onClick(Event &event) override;
 		Size getPreferredSize() override;
 

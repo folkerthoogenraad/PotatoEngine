@@ -48,6 +48,15 @@ namespace ftec {
 
 			float interpolate(float x) const override;
 		};
+
+		// TODO move this to a better namespace with shapes or something
+		struct VCubicBezier{
+		public:
+			Vector2f p0, p1, p2, p3;
+		public:
+			// Also todo optimize this.
+			Vector2f interpolate(float x) const;
+		};
 	}
 
 	template <typename T>

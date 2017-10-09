@@ -9,7 +9,7 @@ namespace potato {
 	public:
 		Button(const std::string &text = "");
 
-		void drawSelf(ftec::Graphics2D &graphics) override;
+		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		Size getPreferredSize() override;
 
 		std::string &text() { return m_Text; }

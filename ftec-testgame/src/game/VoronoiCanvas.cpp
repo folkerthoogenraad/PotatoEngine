@@ -70,7 +70,7 @@ namespace ftec {
 		}
 	}
 
-	void VoronoiCanvas::drawSelf(Graphics2D & graphics)
+	void VoronoiCanvas::drawSelf(Graphics2D & graphics, const potato::PotatoStyle &style)
 	{
 
 		//Orange
