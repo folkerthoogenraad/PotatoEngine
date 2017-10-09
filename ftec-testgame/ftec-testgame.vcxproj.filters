@@ -72,6 +72,18 @@
     <ClCompile Include="src\modularsynth\OscillatorNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\audio\AudioSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\AudioClip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\AudioSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\AudioUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\NoClipCameraEntity.h">
@@ -150,6 +162,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\modularsynth\WaveType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\AudioSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\AudioClip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\AudioSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\AudioUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\synthesis\ModularSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\synthesis\AudioModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
