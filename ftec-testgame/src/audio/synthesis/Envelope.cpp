@@ -1,5 +1,7 @@
 #include "Envelope.h"
 
+#include "math/math.h"
+
 namespace ftec {
 	void Envelope::setAttack(double timeInSeconds)
 	{
@@ -41,10 +43,13 @@ namespace ftec {
 
 			if (open) {
 				if (m_Time < m_Attack) {
-					volume = m_StartVolume + (m_Time / m_Attack) * (1 - m_StartVolume);
+					volume = lerp(m_StartVolume, 1.0, m_Time / m_Attack);
+				}
+				else if (m_Time - m_Attack < m_Decay) {
+					volume = lerp(1.0, m_Sustain, (m_Time - m_Attack) / m_Decay);
 				}
 				else {
-					volume = 1;
+					volume = m_Sustain;
 				}
 			}
 			

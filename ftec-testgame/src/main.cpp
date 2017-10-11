@@ -38,13 +38,13 @@ int main(void)
 	ModularSystem master(system);
 
 	Oscillator osc;
-	osc.setFrequency(110 / 3.0);
+	osc.setFrequency(220 / 4);
 	osc.setWaveType(Oscillator::Square);
 	osc.setAmplitude(toGain(-12.0));
 
 	Oscillator modulator;
 	modulator.setFrequency(0.5);
-	modulator.setRange(0.6, 1);
+	modulator.setRange(0.2, 1);
 	modulator.setWaveType(Oscillator::Sine);
 
 	Clock clock;
@@ -53,7 +53,9 @@ int main(void)
 
 	Envelope envelope;
 	envelope.setAttack(0);
-	envelope.setRelease(0.2);
+	envelope.setSustain(1);
+	envelope.setDecay(0);
+	envelope.setRelease(0.1);
 
 	osc.setVCPulseWidth(MODULE_OUT(&Oscillator::out, &modulator));
 
