@@ -8,4 +8,8 @@ namespace ftec {
 	double audioSawtooth(double input);
 	double audioTriangle(double input);
 	double audioSquare(double input);
+
+	double remap(double startMin, double startMax, double min, double max, double value);
+
+
 }

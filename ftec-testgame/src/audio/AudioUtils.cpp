@@ -33,3 +33,8 @@ double ftec::audioSquare(double input)
 	double v = fmod(input, 1);
 	return v > 0.5 ? 1 : -1;
 }
+
+double ftec::remap(double startMin, double startMax, double min, double max, double value)
+{
+	return lerp(min, max, invLerp(startMin, startMax, value));
+}

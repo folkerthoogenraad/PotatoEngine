@@ -6,9 +6,16 @@
 
 #include "math/math.h"
 #include "audio\AudioSystem.h"
-#include "audio\AudioClip.h"
+#include "audio\AudioBuffer.h"
 #include "audio\AudioSource.h"
 #include "audio\AudioUtils.h"
+#include "audio\synthesis\ModularSystem.h"
+#include "audio\synthesis\Oscillator.h"
+#include "audio\synthesis\LowPassFilter.h"
+#include "audio\synthesis\Clock.h"
+#include "audio\synthesis\Envelope.h"
+
+#include "math/math.h"
 
 #include <climits>
 
@@ -26,43 +33,39 @@ int main(void)
 		AudioFormat::Mono
 	);
 
-	std::vector<double> data;
-
-	for (int i = 0; i < format.getSampleRate() / 2; i++) {
-		double frequency = 220;
-
-		double timeInSeconds = i / (double)format.getSampleRate();
-
-		double value = audioSawtooth(timeInSeconds * frequency);
-
-		value *= toGain(-3.0);
-		data.push_back(value);
-	}
-
 	auto system = std::make_shared<AudioSystem>(format);
 
-	AudioSource source(system);
-	AudioBuffer clip(system);
+	ModularSystem master(system);
 
-	clip.setDataNormalized(data, format);
+	Oscillator osc;
+	osc.setFrequency(110 / 3.0);
+	osc.setWaveType(Oscillator::Square);
+	osc.setAmplitude(toGain(-12.0));
+
+	Oscillator modulator;
+	modulator.setFrequency(0.5);
+	modulator.setRange(0.6, 1);
+	modulator.setWaveType(Oscillator::Sine);
+
+	Clock clock;
+	clock.setBPM(400);
+	clock.setPulseLength(0.01);
+
+	Envelope envelope;
+	envelope.setAttack(0);
+	envelope.setRelease(0.2);
+
+	osc.setVCPulseWidth(MODULE_OUT(&Oscillator::out, &modulator));
+
+	envelope.setGate(MODULE_OUT(&Clock::out, &clock));
+	osc.setVCAmplitude(MODULE_OUT(&Envelope::out, &envelope));
 	
-	source.queueBuffer(clip);
-	source.queueBuffer(clip);
-	source.play();
+	master.setInput(MODULE_OUT(&Oscillator::out, &osc));
 
-	for (; true;) {
-		LOG(source.getBuffersProcessed());
-
-		if (source.getBuffersProcessed() > 0) {
-			source.unqueueBuffer(clip);
-			source.queueBuffer(clip);
-		}
-
-		using namespace std;
-		using namespace chrono;
-
-		this_thread::sleep_for(100ms);
-	}
+	master.play();
+	
+	//debugWriteToPCM("audio.pcm", MODULE_OUT(&Oscillator::out, &osc), format, 10);
+	
 
 	WAIT();
 

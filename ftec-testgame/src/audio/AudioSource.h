@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AudioSystem.h"
-#include "AudioClip.h"
+#include "AudioBuffer.h"
 #include <memory>
 
 namespace ftec {
