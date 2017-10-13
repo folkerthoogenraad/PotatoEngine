@@ -4,9 +4,9 @@
 
 namespace ftec {
 
-	void Clock::setPulseLength(double seconds)
+	void Clock::setPulseLength(double percentage)
 	{
-		m_PulseLength = seconds;
+		m_PulseLength = percentage;
 	}
 
 	void Clock::setBPM(double bpm)
@@ -26,7 +26,7 @@ namespace ftec {
 			
 			data[i] = 0;
 
-			if (m_Phase <= m_PulseLength)
+			if (m_Phase <= m_PulseLength * secondsPerBeat)
 				data[i] = 1;
 		}
 	}

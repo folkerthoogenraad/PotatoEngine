@@ -22,12 +22,21 @@ namespace ftec {
 
 		double m_Amplitude;
 		double m_Frequency;
-		double m_Phase;
 		double m_PulseWidth;
+
+		int m_UnisonVoices = 1;
+		double m_UnisonDetune = 0;
+		double m_UnisonBlend = 0;
+		std::array<double, 16> m_UnisonPhases;
 		
 		double m_Offset;
+
 	public:
 		Oscillator();
+
+		void setUnisonBlend(double blend);
+		void setUnisonDetune(double semitones);
+		void setUnisonVoices(int unison);
 
 		void setFrequency(double freq);
 		void setAmplitude(double amp);

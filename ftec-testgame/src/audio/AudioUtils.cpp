@@ -7,6 +7,21 @@ double ftec::toGain(double db)
 	return pow(10.0, db * 0.05);
 }
 
+double ftec::toDB(double gain)
+{
+	return 20 * log10(gain);
+}
+
+double ftec::semitonesMultiplier(double semitones)
+{
+	return pow(2, semitones / 12.0);
+}
+
+double ftec::intervalMultiplier(double from, double to)
+{
+	return to / from;
+}
+
 double ftec::audioSine(double input)
 {
 	return sin(input * PI * 2);

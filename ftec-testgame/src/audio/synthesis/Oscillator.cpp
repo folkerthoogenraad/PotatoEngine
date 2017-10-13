@@ -7,8 +7,27 @@
 
 namespace ftec {
 	Oscillator::Oscillator()
-		: m_Phase(0), m_Type(WaveType::Sine), m_PulseWidth(1), m_Amplitude(1), m_Offset(0)
+		: m_Type(WaveType::Sine), m_PulseWidth(1), m_Amplitude(1), m_Offset(0)
 	{
+		m_UnisonPhases[0] = 0;
+		for (int i = 1; i < m_UnisonPhases.size(); i++) {
+			m_UnisonPhases[i] = (double)rand() / (double)(RAND_MAX);
+		}
+	}
+
+	void Oscillator::setUnisonBlend(double blend)
+	{
+		m_UnisonBlend = blend;
+	}
+
+	void Oscillator::setUnisonDetune(double detune)
+	{
+		m_UnisonDetune = detune;
+	}
+
+	void Oscillator::setUnisonVoices(int unison)
+	{
+		m_UnisonVoices = ftec::clamp(1, 16, unison);
 	}
 
 	void Oscillator::setFrequency(double freq)
@@ -75,39 +94,82 @@ namespace ftec {
 				pulseWidth *= m_VCPulseWidth.buffer[i];
 			if (bamp)
 				amplitude *= m_VCAmplitude.buffer[i];
+			if (bpitch)
+				frequency *= m_VCPitch.buffer[i];
 
-			m_Phase += m_Frequency / (double)format.getSampleRate();
+			double a = frequency / (double)format.getSampleRate();
+			double output = 0;
 
-			double evalPoint = 1;
-			
-			//TODO negative pulseWidth
-			if(pulseWidth != 0)
-				evalPoint = ftec::clamp(0.0, 1.0, fmod(m_Phase, 1) / pulseWidth);
+			double totalMultiplier = 0;
 
+			for (int i = 0; i < m_UnisonVoices; i++) {
 
-			double value = 0;
-			
-			switch (m_Type) {
-			case WaveType::Sawtooth:
-				value = audioSawtooth(evalPoint);
-				break;
-			case WaveType::Sine:
-				value = audioSine(evalPoint);
-				break;
-			case WaveType::Square:
-				value = audioSquare(evalPoint);
-				break;
-			case WaveType::Triangle:
-				value = audioTriangle(evalPoint);
-				break;
-			default:
-				assert(false);
-				break;
+				bool center = true;
+
+				if (m_UnisonVoices > 1) {
+					double cAmount = (i / (double)(m_UnisonVoices - 1)) * 2 - 1;
+					
+					if (m_UnisonVoices % 2 == 1) {
+						// 3 voices, the center one will be 1 (0 1 2)
+						center = i == m_UnisonVoices / 2;
+					}
+					else {
+						// 4 voices, the center will be either 1 or 2 (0 1 2 3)
+						center = i == m_UnisonVoices / 2 || i == m_UnisonVoices / 2 + 1;
+					}
+
+					double cUni = semitonesMultiplier(m_UnisonDetune * cAmount);// pow(2, (m_UnisonDetune * cAmount) / 12.0);
+
+					//Detune is in semitones
+					m_UnisonPhases[i] += a * cUni;
+				}
+				else {
+					m_UnisonPhases[i] += a;
+				}
+
+				double evalPoint = 1;
+
+				//TODO negative pulseWidth
+				if (pulseWidth != 0)
+					evalPoint = ftec::clamp(0.0, 1.0, fmod(m_UnisonPhases[i], 1) / pulseWidth);
+
+				double value = 0; 
+
+				switch (m_Type) {
+				case WaveType::Sawtooth:
+					value = audioSawtooth(evalPoint);
+					break;
+				case WaveType::Sine:
+					value = audioSine(evalPoint);
+					break;
+				case WaveType::Square:
+					value = audioSquare(evalPoint);
+					break;
+				case WaveType::Triangle:
+					value = audioTriangle(evalPoint);
+					break;
+				default:
+					assert(false);
+					break;
+				}
+
+				if (!center) {
+					value *= m_UnisonBlend;
+					totalMultiplier += m_UnisonBlend;
+				}
+				else {
+					totalMultiplier += 1;
+				}
+
+				output += value;
 			}
 
-			value *= amplitude;
+			//I think
+			output /= totalMultiplier;
 
-			data[i] = value + m_Offset;
+			output *= amplitude;
+
+			data[i] = output + m_Offset;
 		}
 	}
 }
