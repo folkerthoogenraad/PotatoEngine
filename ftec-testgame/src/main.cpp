@@ -11,11 +11,12 @@
 #include "audio\AudioUtils.h"
 #include "audio\synthesis\ModularSystem.h"
 #include "audio\synthesis\Oscillator.h"
-#include "audio\synthesis\LowPassFilter.h"
+#include "audio\synthesis\Filter.h"
 #include "audio\synthesis\Clock.h"
 #include "audio\synthesis\Envelope.h"
 #include "audio\synthesis\Distortion.h"
 #include "audio\synthesis\Sequencer.h"
+#include "audio\synthesis\SimpleMath.h"
 
 #include "math/math.h"
 
@@ -98,21 +99,26 @@ int main(void)
 
 	const double base = 220;
 	const double bpm = 128;
-	const double subdivisions = 4;
+	const double subdivisions = 2;
 
 	Oscillator osc;
-	osc.setFrequency(base / 2);
+	osc.setFrequency(base);
 	osc.setWaveType(Oscillator::Sawtooth);
-	osc.setAmplitude(toGain(-12));
-	osc.setUnisonVoices(7);
+	osc.setAmplitude(toGain(0));
+	osc.setUnisonVoices(1);
 	osc.setUnisonDetune(0.5);
 	osc.setUnisonBlend(0.7);
 
+	Oscillator modulator;
+	modulator.setFrequency(5);
+	modulator.setWaveType(Oscillator::Sine);
+	modulator.setRange(0.98,1.02);
+	
 	Clock sequencerClock;
 	sequencerClock.setBPM(bpm * subdivisions);
 
 	Clock envelopeClock;
-	envelopeClock.setPulseLength(0.3);
+	envelopeClock.setPulseLength(1);
 	envelopeClock.setBPM(bpm * subdivisions);
 
 	Envelope envelope;
@@ -124,27 +130,36 @@ int main(void)
 
 	sequencer.getNotes() = {
 		intervalMultiplier(base, NOTE_C4),
-		intervalMultiplier(base, NOTE_Eb4),
+		/*intervalMultiplier(base, NOTE_Eb4),
 		intervalMultiplier(base, NOTE_G4),
 		intervalMultiplier(base, NOTE_C4 * OCTAVE_UP),
 		intervalMultiplier(base, NOTE_Eb4 * OCTAVE_UP),
 		intervalMultiplier(base, NOTE_C4 * OCTAVE_UP),
 		intervalMultiplier(base, NOTE_G4),
-		intervalMultiplier(base, NOTE_Eb4),
+		intervalMultiplier(base, NOTE_Eb4),*/
 	};
+
 	sequencer.setCurrent(-1);
+	sequencer.setLegatoTime(0.1);
+
+	SimpleMath math;
+	math.addAudioInput(MODULE_OUT(&Sequencer::out, &sequencer));
+	//math.addAudioInput(MODULE_OUT(&Oscillator::out, &modulator));
+
+	Filter filter;
+	filter.setInput(MODULE_OUT(&Oscillator::out, &osc));
 
 	sequencer.setClock(MODULE_OUT(&Clock::out, &sequencerClock));
 	envelope.setGate(MODULE_OUT(&Clock::out, &envelopeClock));
 
 	osc.setVCAmplitude(MODULE_OUT(&Envelope::out, &envelope));
-	osc.setVCFrequency(MODULE_OUT(&Sequencer::out, &sequencer));
+	osc.setVCFrequency(MODULE_OUT(&SimpleMath::out, &math));
 
-	master.setInput(MODULE_OUT(&Oscillator::out, &osc));
+	master.setInput(MODULE_OUT(&Filter::out, &filter));
 
-	master.play();
+	//master.play();
 	
-	//debugWriteToPCM("audio.pcm", (MODULE_OUT(&Oscillator::out, &osc)), format, 15);
+	debugWriteToPCM("audio.pcm", (MODULE_OUT(&Filter::out, &filter)), format, 15);
 	
 
 	WAIT();

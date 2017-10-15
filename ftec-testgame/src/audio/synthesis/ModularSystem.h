@@ -8,7 +8,8 @@
 #include "audio/AudioBuffer.h"
 #include "AudioModule.h"
 
-#define MODULAR_BUFFER_SIZE 8196
+#define MODULAR_BUFFER_SIZE 1024
+#define MODULAR_BUFFER_COUNT 4
 
 namespace ftec {
 
@@ -17,8 +18,8 @@ namespace ftec {
 
 		std::weak_ptr<AudioSystem> m_System;
 
-		std::array<std::vector<double>, 2> m_Datas;
-		std::array<std::unique_ptr<AudioBuffer>, 2> m_Buffers;
+		std::array<std::vector<double>, MODULAR_BUFFER_COUNT> m_Datas;
+		std::array<std::unique_ptr<AudioBuffer>, MODULAR_BUFFER_COUNT> m_Buffers;
 
 		std::unique_ptr<AudioSource> m_Source;
 	public:

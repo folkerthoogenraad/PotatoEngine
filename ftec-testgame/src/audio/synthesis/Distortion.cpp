@@ -19,6 +19,11 @@ namespace ftec {
 		m_Threshold = gain;
 	}
 
+	void Distortion::setMode(Mode mode)
+	{
+		m_Mode = mode;
+	}
+
 	void Distortion::setInput(AudioModuleOutput out)
 	{
 		m_Input.function = out;
@@ -33,8 +38,13 @@ namespace ftec {
 
 			v *= m_Preamp;
 
-			if (abs(v) > m_Threshold)
-				v = sign(v) * m_Threshold;
+
+			if (abs(v) > m_Threshold) {
+				if(m_Mode == Mode::HardCab)
+					v = sign(v) * m_Threshold;
+				if (m_Mode == Mode::Reflect)
+					v = (m_Threshold - abs(v)) * sign(v);
+			}
 
 			v *= m_Postamp;
 

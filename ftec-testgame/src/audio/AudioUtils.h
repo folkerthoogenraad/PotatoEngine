@@ -18,9 +18,13 @@
 #define NOTE_Bb4		466.16
 #define NOTE_B4			493.88
 
+#include <complex> // For fft and ifft
+#include <vector>
+
 namespace ftec {
 	double toGain(double db);
 	double toDB(double gain);
+	double toBarSeconds(double bpm, double beatsPerBar);
 
 	double semitonesMultiplier(double semitones);
 	double intervalMultiplier(double from, double to);
@@ -31,8 +35,10 @@ namespace ftec {
 	double audioTriangle(double input);
 	double audioSquare(double input);
 
-
 	double remap(double startMin, double startMax, double min, double max, double value);
 
-
+	double sinc(double input);
+	void convolute(std::vector<std::complex<double>> &a, std::vector<std::complex<double>> &b, std::vector<std::complex<double>> &out);
+	void fft(std::vector<std::complex<double>> &samples);
+	void ifft(std::vector<std::complex<double>> &frequencies);
 }
