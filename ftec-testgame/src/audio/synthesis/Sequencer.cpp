@@ -1,6 +1,7 @@
 #include "Sequencer.h"
 #include "logger/log.h"
 #include "math/math.h"
+#include "audio/AudioUtils.h"
 
 namespace ftec {
 	Sequencer::Sequencer()
@@ -14,6 +15,17 @@ namespace ftec {
 	void Sequencer::setLegatoTime(double time)
 	{
 		m_LegatoTime = time;
+	}
+
+	void Sequencer::setRandomRange(double min, double max)
+	{
+		m_RandomRangeMin = min;
+		m_RandomRangeMax = max;
+	}
+
+	void Sequencer::setRandomness(double random)
+	{
+		m_RandomChance = random;
 	}
 
 	void Sequencer::setCurrent(int note)
@@ -43,6 +55,11 @@ namespace ftec {
 			if (up != m_ClockState) {
 				if (up) {
 					m_Current++;
+
+					if (ftec::random() < m_RandomChance) {
+						m_Notes[m_Current] = ftec::remap(0, 1, m_RandomRangeMin, m_RandomRangeMax, ftec::random());
+					}
+
 				}
 				m_ClockState = up;
 				m_TimeSinceSwitch = 0;

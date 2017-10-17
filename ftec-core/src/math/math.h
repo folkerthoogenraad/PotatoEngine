@@ -2,6 +2,7 @@
 
 #define PI 3.141592654f
 #include <math.h> //for sin, cos, tan, etc
+#include <cstdlib>
 
 namespace ftec {
 
@@ -34,6 +35,11 @@ namespace ftec {
 		if (a > b)
 			return a;
 		return b;
+	}
+
+	inline double random()
+	{
+		return static_cast <double> (rand()) / static_cast <double> (RAND_MAX);
 	}
 
 	template<typename T>

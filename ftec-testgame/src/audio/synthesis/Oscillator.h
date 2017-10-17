@@ -12,6 +12,7 @@ namespace ftec {
 			Square,
 			Triangle,
 			Sawtooth,
+			Noise
 		};
 	private:
 		AudioInput m_VCPitch;

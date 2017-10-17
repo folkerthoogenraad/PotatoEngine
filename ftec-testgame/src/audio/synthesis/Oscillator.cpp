@@ -148,6 +148,9 @@ namespace ftec {
 				case WaveType::Triangle:
 					value = audioTriangle(evalPoint);
 					break;
+				case WaveType::Noise:
+					value = random() * 2 + 1;
+					break;
 				default:
 					assert(false);
 					break;

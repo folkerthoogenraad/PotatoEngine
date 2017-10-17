@@ -17,6 +17,7 @@
 #include "audio\synthesis\Distortion.h"
 #include "audio\synthesis\Sequencer.h"
 #include "audio\synthesis\SimpleMath.h"
+#include "audio\synthesis\Delay.h"
 
 #include "math/math.h"
 
@@ -34,40 +35,75 @@ void test()
 		AudioFormat::Mono
 	);
 
+	const double base = 220;
+	const double bpm = 128;
+	const double subdivisions = 4;
+
 	Oscillator osc;
-	osc.setFrequency(220 / 4);
-	osc.setWaveType(Oscillator::Sine);
+	osc.setFrequency(base * 0.5);
+	osc.setWaveType(Oscillator::Sawtooth);
+	osc.setAmplitude(toGain(0));
+	osc.setUnisonVoices(7);
+	osc.setUnisonDetune(0.5);
+	osc.setUnisonBlend(0.7);
 
 	Oscillator modulator;
-	modulator.setFrequency(0.5);
-	modulator.setRange(0.2, 1);
+	modulator.setFrequency(5);
 	modulator.setWaveType(Oscillator::Sine);
+	modulator.setRange(0.98, 1.02);
 
-	Clock clock;
-	clock.setBPM(400);
-	clock.setPulseLength(0.01);
+	Clock sequencerClock;
+	sequencerClock.setBPM(bpm * subdivisions);
+
+	Clock envelopeClock;
+	envelopeClock.setPulseLength(1);
+	envelopeClock.setBPM(bpm * subdivisions);
 
 	Envelope envelope;
 	envelope.setAttack(0);
-	envelope.setSustain(1);
-	envelope.setDecay(0);
-	envelope.setRelease(0.2);
+	envelope.setRelease(1);
+	envelope.setRelease(0.1);
 
-	//osc.setVCPulseWidth(MODULE_OUT(&Oscillator::out, &modulator));
+	Sequencer sequencer;
 
-	envelope.setGate(MODULE_OUT(&Clock::out, &clock));
+	sequencer.getNotes() = {
+		intervalMultiplier(base, NOTE_C4),
+		intervalMultiplier(base, NOTE_Eb4),
+		intervalMultiplier(base, NOTE_G4),
+		intervalMultiplier(base, NOTE_C4 * OCTAVE_UP),
+		intervalMultiplier(base, NOTE_Eb4 * OCTAVE_UP),
+		intervalMultiplier(base, NOTE_C4 * OCTAVE_UP),
+		intervalMultiplier(base, NOTE_G4),
+		intervalMultiplier(base, NOTE_Eb4),
+	};
+
+	sequencer.setCurrent(-1);
+	sequencer.setLegatoTime(0.1);
+
+	SimpleMath math;
+	math.addAudioInput(MODULE_OUT(&Sequencer::out, &sequencer));
+	math.addAudioInput(MODULE_OUT(&Oscillator::out, &modulator));
+
+	Filter filter;
+	filter.setCutoffFrequency(220);
+	filter.setInput(MODULE_OUT(&Oscillator::out, &osc));
+
+	sequencer.setClock(MODULE_OUT(&Clock::out, &sequencerClock));
+	envelope.setGate(MODULE_OUT(&Clock::out, &envelopeClock));
+
 	osc.setVCAmplitude(MODULE_OUT(&Envelope::out, &envelope));
+	osc.setVCFrequency(MODULE_OUT(&SimpleMath::out, &math));
 
 	std::vector<double> data;
 	data.resize(MODULAR_BUFFER_SIZE);
 
-	int times = 1000;
+	int times = 10000;
 
 	LOG("Starting...");
 	auto time = std::chrono::system_clock::now();
 	
 	for(int i = 0; i < times; i++)
-		osc.out(data, format);
+		filter.out(data, format);
 
 	auto end = std::chrono::system_clock::now();
 
@@ -82,6 +118,8 @@ void test()
 int main(void)
 {
 	using namespace ftec;
+
+	srand(static_cast <unsigned> (time(0)));
 
 	//ftec::DesktopEngine::create<ftec::Razura>();
 
@@ -99,12 +137,12 @@ int main(void)
 
 	const double base = 220;
 	const double bpm = 128;
-	const double subdivisions = 2;
+	const double subdivisions = 1;
 
 	Oscillator osc;
 	osc.setFrequency(base);
-	osc.setWaveType(Oscillator::Sawtooth);
-	osc.setAmplitude(toGain(0));
+	osc.setWaveType(Oscillator::Triangle);
+	osc.setAmplitude(toGain(-6));
 	osc.setUnisonVoices(1);
 	osc.setUnisonDetune(0.5);
 	osc.setUnisonBlend(0.7);
@@ -122,7 +160,7 @@ int main(void)
 	envelopeClock.setBPM(bpm * subdivisions);
 
 	Envelope envelope;
-	envelope.setAttack(0);
+	envelope.setAttack(0.02);
 	envelope.setRelease(1);
 	envelope.setRelease(0.1);
 	
@@ -130,24 +168,35 @@ int main(void)
 
 	sequencer.getNotes() = {
 		intervalMultiplier(base, NOTE_C4),
-		/*intervalMultiplier(base, NOTE_Eb4),
+		intervalMultiplier(base, NOTE_Eb4),
 		intervalMultiplier(base, NOTE_G4),
 		intervalMultiplier(base, NOTE_C4 * OCTAVE_UP),
 		intervalMultiplier(base, NOTE_Eb4 * OCTAVE_UP),
 		intervalMultiplier(base, NOTE_C4 * OCTAVE_UP),
 		intervalMultiplier(base, NOTE_G4),
-		intervalMultiplier(base, NOTE_Eb4),*/
+		intervalMultiplier(base, NOTE_Eb4),
+
 	};
 
+	sequencer.setRandomness(0);
+	sequencer.setRandomRange(0.5, 2.0);
+
 	sequencer.setCurrent(-1);
-	sequencer.setLegatoTime(0.1);
+	sequencer.setLegatoTime(0);
 
 	SimpleMath math;
 	math.addAudioInput(MODULE_OUT(&Sequencer::out, &sequencer));
-	//math.addAudioInput(MODULE_OUT(&Oscillator::out, &modulator));
+	math.addAudioInput(MODULE_OUT(&Oscillator::out, &modulator));
 
 	Filter filter;
+	filter.setType(Filter::LowPass);
+	filter.setCutoffFrequency(1280);
 	filter.setInput(MODULE_OUT(&Oscillator::out, &osc));
+
+	Delay delay;
+	delay.setDelayTime(0.1);
+	delay.setFeedback(0.5);
+	delay.setInput(MODULE_OUT(&Filter::out, &filter));
 
 	sequencer.setClock(MODULE_OUT(&Clock::out, &sequencerClock));
 	envelope.setGate(MODULE_OUT(&Clock::out, &envelopeClock));
@@ -155,11 +204,11 @@ int main(void)
 	osc.setVCAmplitude(MODULE_OUT(&Envelope::out, &envelope));
 	osc.setVCFrequency(MODULE_OUT(&SimpleMath::out, &math));
 
-	master.setInput(MODULE_OUT(&Filter::out, &filter));
+	master.setInput(MODULE_OUT(&Delay::out, &delay));
 
-	//master.play();
+	master.play();
 	
-	debugWriteToPCM("audio.pcm", (MODULE_OUT(&Filter::out, &filter)), format, 15);
+	//debugWriteToPCM("audio.pcm", (MODULE_OUT(&Filter::out, &filter)), format, toBarSeconds(128, 4) * 100);
 	
 
 	WAIT();

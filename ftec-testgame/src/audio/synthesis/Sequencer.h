@@ -15,12 +15,19 @@ namespace ftec {
 		double m_TimeSinceSwitch = 0;
 		double m_LegatoTime = 0;
 
+		double m_RandomRangeMin = 0;
+		double m_RandomRangeMax = 0;
+		double m_RandomChance = 0;
+
 		AudioInput m_Clock;
 	public:
 		Sequencer();
 
 		void setClock(AudioModuleOutput clock);
 		void setLegatoTime(double time);
+
+		void setRandomRange(double min, double max);
+		void setRandomness(double random);
 
 		void setCurrent(int note);
 

@@ -7,18 +7,34 @@
 #include "math/math.h"
 
 namespace ftec {
+
 	Filter::Filter()
 	{
-		m_Buffer.resize(MODULAR_BUFFER_SIZE);
 	}
+
+	void Filter::setType(FilterType type)
+	{
+		m_Type = type;
+	}
+
+	void Filter::setPeakGain(double db)
+	{
+		m_PeakGain = db;
+	}
+
+	void Filter::setCutoffFrequency(double frequency)
+	{
+		m_CutoffFrequency = frequency;
+	}
+
+	void Filter::setQ(double q)
+	{
+		Q = q;
+	}
+
 	void Filter::setInput(AudioModuleOutput out)
 	{
 		m_Input.function = out;
-	}
-
-	void Filter::setAmount(double amount)
-	{
-		m_Amount = amount;
 	}
 
 	void Filter::out(std::vector<double>& input, AudioFormat format)
@@ -26,35 +42,117 @@ namespace ftec {
 		if (!m_Input.function)
 			return;
 
-		size_t n = m_Buffer.size();
-
 		m_Input.execute(format);
 
-		for (int i = 0; i < n; i++) {
-			m_Buffer[i] = std::complex<double>(m_Input.buffer[i], 0);
+		// Calculate once because it does not change at the moment
+		calcBiquad(m_Type, m_CutoffFrequency / format.getSampleRate(), Q, m_PeakGain);
+
+		for (int i = 0; i < input.size(); i++) {
+			input[i] = process(m_Input.buffer[i]);
+		}
+	}
+
+	// All credit goes to
+	// http://www.earlevel.com/main/2012/11/26/biquad-c-source-code/
+	void Filter::calcBiquad(FilterType type, double Fc, double Q, double peakGain)
+	{
+		double norm;
+		double V = pow(10, fabs(peakGain) / 20.0);
+		double K = tan(PI * Fc);
+
+		switch (type) {
+		case FilterType::LowPass:
+			norm = 1 / (1 + K / Q + K * K);
+			a0 = K * K * norm;
+			a1 = 2 * a0;
+			a2 = a0;
+			b1 = 2 * (K * K - 1) * norm;
+			b2 = (1 - K / Q + K * K) * norm;
+			break;
+
+		case FilterType::HighPass:
+			norm = 1 / (1 + K / Q + K * K);
+			a0 = 1 * norm;
+			a1 = -2 * a0;
+			a2 = a0;
+			b1 = 2 * (K * K - 1) * norm;
+			b2 = (1 - K / Q + K * K) * norm;
+			break;
+
+		case FilterType::BandPass:
+			norm = 1 / (1 + K / Q + K * K);
+			a0 = K / Q * norm;
+			a1 = 0;
+			a2 = -a0;
+			b1 = 2 * (K * K - 1) * norm;
+			b2 = (1 - K / Q + K * K) * norm;
+			break;
+
+		case FilterType::Notch:
+			norm = 1 / (1 + K / Q + K * K);
+			a0 = (1 + K * K) * norm;
+			a1 = 2 * (K * K - 1) * norm;
+			a2 = a0;
+			b1 = a1;
+			b2 = (1 - K / Q + K * K) * norm;
+			break;
+
+		case FilterType::Peak:
+			if (peakGain >= 0) {    // boost
+				norm = 1 / (1 + 1 / Q * K + K * K);
+				a0 = (1 + V / Q * K + K * K) * norm;
+				a1 = 2 * (K * K - 1) * norm;
+				a2 = (1 - V / Q * K + K * K) * norm;
+				b1 = a1;
+				b2 = (1 - 1 / Q * K + K * K) * norm;
+			}
+			else {    // cut
+				norm = 1 / (1 + V / Q * K + K * K);
+				a0 = (1 + 1 / Q * K + K * K) * norm;
+				a1 = 2 * (K * K - 1) * norm;
+				a2 = (1 - 1 / Q * K + K * K) * norm;
+				b1 = a1;
+				b2 = (1 - V / Q * K + K * K) * norm;
+			}
+			break;
+		case FilterType::LowShelf:
+			if (peakGain >= 0) {    // boost
+				norm = 1 / (1 + sqrt(2) * K + K * K);
+				a0 = (1 + sqrt(2 * V) * K + V * K * K) * norm;
+				a1 = 2 * (V * K * K - 1) * norm;
+				a2 = (1 - sqrt(2 * V) * K + V * K * K) * norm;
+				b1 = 2 * (K * K - 1) * norm;
+				b2 = (1 - sqrt(2) * K + K * K) * norm;
+			}
+			else {    // cut
+				norm = 1 / (1 + sqrt(2 * V) * K + V * K * K);
+				a0 = (1 + sqrt(2) * K + K * K) * norm;
+				a1 = 2 * (K * K - 1) * norm;
+				a2 = (1 - sqrt(2) * K + K * K) * norm;
+				b1 = 2 * (V * K * K - 1) * norm;
+				b2 = (1 - sqrt(2 * V) * K + V * K * K) * norm;
+			}
+			break;
+		case FilterType::HighShelf:
+			if (peakGain >= 0) {    // boost
+				norm = 1 / (1 + sqrt(2) * K + K * K);
+				a0 = (V + sqrt(2 * V) * K + K * K) * norm;
+				a1 = 2 * (K * K - V) * norm;
+				a2 = (V - sqrt(2 * V) * K + K * K) * norm;
+				b1 = 2 * (K * K - 1) * norm;
+				b2 = (1 - sqrt(2) * K + K * K) * norm;
+			}
+			else {    // cut
+				norm = 1 / (V + sqrt(2 * V) * K + K * K);
+				a0 = (1 + sqrt(2) * K + K * K) * norm;
+				a1 = 2 * (K * K - 1) * norm;
+				a2 = (1 - sqrt(2) * K + K * K) * norm;
+				b1 = 2 * (K * K - V) * norm;
+				b2 = (V - sqrt(2 * V) * K + K * K) * norm;
+			}
+			break;
 		}
 
-		fft(m_Buffer);
-
-		double freqPerBin = (double)format.getSampleRate() / n;
-
-		for (int i = 1; i < n / 2; i++) {
-			double f = 1;
-
-			if (freqPerBin * i > 440)
-				f = 0;
-
-			m_Buffer[i] *= f;
-			m_Buffer[n - i] *= f;
-		}
-
-		ifft(m_Buffer);
-
-		// Need to downscale because the FFT implementation does not do this
-		double scale = 1.0 / m_Buffer.size();
-
-		for (int i = 0; i < n; i++) {
-			input[i] = m_Buffer[i].real() *scale;
-		}
+		return;
 	}
 }

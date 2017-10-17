@@ -111,6 +111,9 @@
     <ClCompile Include="src\audio\synthesis\Filter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\audio\synthesis\Delay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\NoClipCameraEntity.h">
@@ -228,6 +231,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\audio\synthesis\Filter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\synthesis\Delay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

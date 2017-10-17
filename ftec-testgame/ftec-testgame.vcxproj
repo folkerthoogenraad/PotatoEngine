@@ -210,6 +210,7 @@
     <ClCompile Include="src\audio\AudioSystem.cpp" />
     <ClCompile Include="src\audio\AudioUtils.cpp" />
     <ClCompile Include="src\audio\synthesis\AudioModule.cpp" />
+    <ClCompile Include="src\audio\synthesis\Delay.cpp" />
     <ClCompile Include="src\audio\synthesis\Distortion.cpp" />
     <ClCompile Include="src\audio\synthesis\Envelope.cpp" />
     <ClCompile Include="src\audio\synthesis\Filter.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="src\audio\AudioSource.h" />
     <ClInclude Include="src\audio\AudioSystem.h" />
     <ClInclude Include="src\audio\AudioUtils.h" />
+    <ClInclude Include="src\audio\synthesis\Delay.h" />
     <ClInclude Include="src\audio\synthesis\Distortion.h" />
     <ClInclude Include="src\audio\synthesis\Envelope.h" />
     <ClInclude Include="src\audio\synthesis\Filter.h" />

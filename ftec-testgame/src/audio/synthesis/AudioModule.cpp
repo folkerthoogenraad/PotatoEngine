@@ -34,8 +34,10 @@ namespace ftec {
 			function(input, format);
 
 			//TODO check this
-			for (size_t i = 0; i < input.size(); i++) {
-				short v = (short)clamp((double)SHRT_MIN, (double)SHRT_MAX, (input[i]) * (double)SHRT_MAX);
+			for (size_t j = 0; j < input.size(); j++) {
+				if (i + j >= format.getSampleRate() * lengthInSeconds)
+					break;
+				short v = (short)clamp((double)SHRT_MIN, (double)SHRT_MAX, (input[j]) * (double)SHRT_MAX);
 				writeFile.put(v);
 				writeFile.put(v >> 8);
 			}
