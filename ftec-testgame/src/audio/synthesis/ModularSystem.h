@@ -9,7 +9,7 @@
 #include "AudioModule.h"
 
 #define MODULAR_BUFFER_SIZE 1024
-#define MODULAR_BUFFER_COUNT 4
+#define MODULAR_BUFFER_COUNT 16
 
 namespace ftec {
 

@@ -137,20 +137,20 @@ int main(void)
 
 	const double base = 220;
 	const double bpm = 128;
-	const double subdivisions = 1;
+	const double subdivisions = 2;
 
 	Oscillator osc;
 	osc.setFrequency(base);
-	osc.setWaveType(Oscillator::Triangle);
+	osc.setWaveType(Oscillator::Sawtooth);
 	osc.setAmplitude(toGain(-6));
-	osc.setUnisonVoices(1);
+	osc.setUnisonVoices(7);
 	osc.setUnisonDetune(0.5);
 	osc.setUnisonBlend(0.7);
 
 	Oscillator modulator;
-	modulator.setFrequency(5);
+	modulator.setFrequency(3);
 	modulator.setWaveType(Oscillator::Sine);
-	modulator.setRange(0.98,1.02);
+	modulator.setRange(0.99,1.01);
 	
 	Clock sequencerClock;
 	sequencerClock.setBPM(bpm * subdivisions);
@@ -161,6 +161,8 @@ int main(void)
 
 	Envelope envelope;
 	envelope.setAttack(0.02);
+	envelope.setSustain(toGain(-16));
+	envelope.setDecay(0.1);
 	envelope.setRelease(1);
 	envelope.setRelease(0.1);
 	
@@ -190,13 +192,13 @@ int main(void)
 
 	Filter filter;
 	filter.setType(Filter::LowPass);
-	filter.setCutoffFrequency(1280);
+	filter.setCutoffFrequency(500);
 	filter.setInput(MODULE_OUT(&Oscillator::out, &osc));
 
-	Delay delay;
-	delay.setDelayTime(0.1);
-	delay.setFeedback(0.5);
-	delay.setInput(MODULE_OUT(&Filter::out, &filter));
+	/*Delay delay;
+	delay.setDelayTime(0.2);
+	delay.setFeedback(0.2);
+	delay.setInput(MODULE_OUT(&Filter::out, &filter));*/
 
 	sequencer.setClock(MODULE_OUT(&Clock::out, &sequencerClock));
 	envelope.setGate(MODULE_OUT(&Clock::out, &envelopeClock));
@@ -204,11 +206,11 @@ int main(void)
 	osc.setVCAmplitude(MODULE_OUT(&Envelope::out, &envelope));
 	osc.setVCFrequency(MODULE_OUT(&SimpleMath::out, &math));
 
-	master.setInput(MODULE_OUT(&Delay::out, &delay));
+	master.setInput(MODULE_OUT(&Filter::out, &filter));
 
 	master.play();
 	
-	//debugWriteToPCM("audio.pcm", (MODULE_OUT(&Filter::out, &filter)), format, toBarSeconds(128, 4) * 100);
+	//debugWriteToPCM("audio.pcm", (MODULE_OUT(&Delay::out, &delay)), format, toBarSeconds(bpm, 4) * 7);
 	
 
 	WAIT();

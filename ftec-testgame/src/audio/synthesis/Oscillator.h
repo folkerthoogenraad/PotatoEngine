@@ -29,11 +29,14 @@ namespace ftec {
 		double m_UnisonDetune = 0;
 		double m_UnisonBlend = 0;
 		std::array<double, 16> m_UnisonPhases;
+		std::array<double, 8> m_Harmonics;
 		
 		double m_Offset;
 
 	public:
 		Oscillator();
+
+		void setHarmonic(int harmonic, double value);
 
 		void setUnisonBlend(double blend);
 		void setUnisonDetune(double semitones);

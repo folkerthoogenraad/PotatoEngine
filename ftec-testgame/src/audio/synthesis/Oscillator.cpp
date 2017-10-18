@@ -13,6 +13,15 @@ namespace ftec {
 		for (int i = 1; i < m_UnisonPhases.size(); i++) {
 			m_UnisonPhases[i] = (double)rand() / (double)(RAND_MAX);
 		}
+		m_Harmonics[0] = 1;
+		for (int i = 1; i < m_Harmonics.size(); i++) {
+			m_Harmonics[i] = 0;
+		}
+	}
+
+	void Oscillator::setHarmonic(int harmonic, double value)
+	{
+		m_Harmonics[harmonic] = value;
 	}
 
 	void Oscillator::setUnisonBlend(double blend)
@@ -134,27 +143,33 @@ namespace ftec {
 					evalPoint = ftec::clamp(0.0, 1.0, fmod(m_UnisonPhases[i], 1) / pulseWidth);
 
 				double value = 0; 
+				double harmonicsDiv = 0;
 
-				switch (m_Type) {
-				case WaveType::Sawtooth:
-					value = audioSawtooth(evalPoint);
-					break;
-				case WaveType::Sine:
-					value = audioSine(evalPoint);
-					break;
-				case WaveType::Square:
-					value = audioSquare(evalPoint);
-					break;
-				case WaveType::Triangle:
-					value = audioTriangle(evalPoint);
-					break;
-				case WaveType::Noise:
-					value = random() * 2 + 1;
-					break;
-				default:
-					assert(false);
-					break;
+				for (int i = 0; i < m_Harmonics.size(); i++) {
+					double p = evalPoint * (i + 1);
+					harmonicsDiv += m_Harmonics[i];
+					switch (m_Type) {
+					case WaveType::Sawtooth:
+						value += audioSawtooth(p) * m_Harmonics[i];
+						break;
+					case WaveType::Sine:
+						value += audioSine(p) * m_Harmonics[i];
+						break;
+					case WaveType::Square:
+						value += audioSquare(p) * m_Harmonics[i];
+						break;
+					case WaveType::Triangle:
+						value += audioTriangle(p) * m_Harmonics[i];
+						break;
+					case WaveType::Noise:
+						value += (random() * 2 + 1) * m_Harmonics[i];
+						break;
+					default:
+						assert(false);
+						break;
+					}
 				}
+				value /= harmonicsDiv;
 
 				if (!center) {
 					value *= m_UnisonBlend;

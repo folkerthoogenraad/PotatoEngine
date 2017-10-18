@@ -92,8 +92,6 @@ namespace ftec{
 	static void transform(std::vector<std::complex<double>> &vec) {
 		using namespace std;
 
-		// (TODO optimize this, usually its 1024 samples long anyway, so this can be removed comletelyye)
-
 		// Length variables
 		size_t n = vec.size();
 		int levels = 0;  // Compute levels = floor(log2(n))

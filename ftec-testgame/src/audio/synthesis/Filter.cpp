@@ -37,6 +37,8 @@ namespace ftec {
 		m_Input.function = out;
 	}
 
+	double time = 0;
+
 	void Filter::out(std::vector<double>& input, AudioFormat format)
 	{
 		if (!m_Input.function)
@@ -50,8 +52,8 @@ namespace ftec {
 		for (int i = 0; i < input.size(); i++) {
 			input[i] = process(m_Input.buffer[i]);
 		}
-	}
 
+	}
 	// All credit goes to
 	// http://www.earlevel.com/main/2012/11/26/biquad-c-source-code/
 	void Filter::calcBiquad(FilterType type, double Fc, double Q, double peakGain)
