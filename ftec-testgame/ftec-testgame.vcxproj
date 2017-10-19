@@ -209,6 +209,7 @@
     <ClCompile Include="src\audio\AudioSource.cpp" />
     <ClCompile Include="src\audio\AudioSystem.cpp" />
     <ClCompile Include="src\audio\AudioUtils.cpp" />
+    <ClCompile Include="src\audio\iir\IIRFilter.cpp" />
     <ClCompile Include="src\audio\synthesis\AudioModule.cpp" />
     <ClCompile Include="src\audio\synthesis\Delay.cpp" />
     <ClCompile Include="src\audio\synthesis\Distortion.cpp" />
@@ -244,10 +245,12 @@
     <ClInclude Include="src\audio\AudioSource.h" />
     <ClInclude Include="src\audio\AudioSystem.h" />
     <ClInclude Include="src\audio\AudioUtils.h" />
+    <ClInclude Include="src\audio\iir\IIRFilter.h" />
     <ClInclude Include="src\audio\synthesis\Delay.h" />
     <ClInclude Include="src\audio\synthesis\Distortion.h" />
     <ClInclude Include="src\audio\synthesis\Envelope.h" />
     <ClInclude Include="src\audio\synthesis\Filter.h" />
+    <ClInclude Include="src\audio\synthesis\KarplusStrongString.h" />
     <ClInclude Include="src\audio\synthesis\ModularSystem.h" />
     <ClInclude Include="src\audio\synthesis\AudioModule.h" />
     <ClInclude Include="src\audio\synthesis\Oscillator.h" />

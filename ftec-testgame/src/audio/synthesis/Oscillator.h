@@ -9,6 +9,7 @@ namespace ftec {
 	public:
 		enum WaveType {
 			Sine,
+			HalfSine,
 			Square,
 			Triangle,
 			Sawtooth,

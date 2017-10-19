@@ -31,6 +31,7 @@ namespace ftec {
 
 	// All these waveforms have a period of 1 (not 2PI!)
 	double audioSine(double input);
+	double audioHalfSine(double input);
 	double audioSawtooth(double input);
 	double audioTriangle(double input);
 	double audioSquare(double input);

@@ -155,6 +155,9 @@ namespace ftec {
 					case WaveType::Sine:
 						value += audioSine(p) * m_Harmonics[i];
 						break;
+					case WaveType::HalfSine:
+						value += audioHalfSine(p) * m_Harmonics[i];
+						break;
 					case WaveType::Square:
 						value += audioSquare(p) * m_Harmonics[i];
 						break;

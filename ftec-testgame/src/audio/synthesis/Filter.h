@@ -1,35 +1,25 @@
 #pragma once
 
+#include "audio/iir/IIRFilter.h"
+
 #include "AudioModule.h"
 #include <complex>
 
 namespace ftec {
 
 	class Filter{
-	public:
-		enum FilterType {
-			LowPass,
-			HighPass,
-			BandPass,
-			Notch,
-			Peak,
-			LowShelf,
-			HighShelf
-		};
 	private:
 		AudioInput m_Input;
 
-		FilterType m_Type = LowPass;
+		IIRFilter::FilterType m_Type = IIRFilter::LowPass;
 		double m_CutoffFrequency = 1000;
 		double Q = 0.707;
 		double m_PeakGain = 0.0;
-
-		double time = 0;
-
+		IIRFilter m_Filter;
 	public:
 		Filter();
 
-		void setType(FilterType type);
+		void setType(IIRFilter::FilterType type);
 		void setPeakGain(double db);
 		void setCutoffFrequency(double frequency);
 		void setQ(double q);
@@ -40,7 +30,7 @@ namespace ftec {
 
 	private:
 		// Values for the actual Biquad filter
-		void calcBiquad(FilterType type, double Fc, double Q, double peakGain);
+		/*void calcBiquad(FilterType type, double Fc, double Q, double peakGain);
 		
 		double a0 = 1;
 		double a1 = 0;
@@ -55,6 +45,6 @@ namespace ftec {
 			z1 = in * a1 + z2 - b1 * out;
 			z2 = in * a2 - b2 * out;
 			return out;
-		}
+		}*/
 	};
 }

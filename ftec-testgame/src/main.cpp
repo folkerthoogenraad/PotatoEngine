@@ -137,15 +137,16 @@ int main(void)
 
 	const double base = 220;
 	const double bpm = 128;
-	const double subdivisions = 2;
+	const double subdivisions = 4;
 
 	Oscillator osc;
 	osc.setFrequency(base);
-	osc.setWaveType(Oscillator::Sawtooth);
+	osc.setWaveType(Oscillator::HalfSine);
 	osc.setAmplitude(toGain(-6));
-	osc.setUnisonVoices(7);
+	osc.setUnisonVoices(1);
 	osc.setUnisonDetune(0.5);
 	osc.setUnisonBlend(0.7);
+
 
 	Oscillator modulator;
 	modulator.setFrequency(3);
@@ -156,8 +157,8 @@ int main(void)
 	sequencerClock.setBPM(bpm * subdivisions);
 
 	Clock envelopeClock;
-	envelopeClock.setPulseLength(1);
 	envelopeClock.setBPM(bpm * subdivisions);
+	envelopeClock.setPulseLength(0.1);
 
 	Envelope envelope;
 	envelope.setAttack(0.02);
@@ -168,15 +169,94 @@ int main(void)
 	
 	Sequencer sequencer;
 
-	sequencer.getNotes() = {
+	sequencer.getNotes() = { 
+		// C Major
 		intervalMultiplier(base, NOTE_C4),
-		intervalMultiplier(base, NOTE_Eb4),
+		intervalMultiplier(base, NOTE_E4),
 		intervalMultiplier(base, NOTE_G4),
-		intervalMultiplier(base, NOTE_C4 * OCTAVE_UP),
-		intervalMultiplier(base, NOTE_Eb4 * OCTAVE_UP),
+
+		intervalMultiplier(base, NOTE_E4 * OCTAVE_UP),
 		intervalMultiplier(base, NOTE_C4 * OCTAVE_UP),
 		intervalMultiplier(base, NOTE_G4),
-		intervalMultiplier(base, NOTE_Eb4),
+
+		intervalMultiplier(base, NOTE_C4),
+		intervalMultiplier(base, NOTE_E4),
+		intervalMultiplier(base, NOTE_G4),
+
+		intervalMultiplier(base, NOTE_E4 * OCTAVE_UP),
+		intervalMultiplier(base, NOTE_C4 * OCTAVE_UP),
+		intervalMultiplier(base, NOTE_G4),
+
+		intervalMultiplier(base, NOTE_C4),
+		intervalMultiplier(base, NOTE_E4),
+		intervalMultiplier(base, NOTE_G4),
+		intervalMultiplier(base, NOTE_E4),
+
+		//B major
+		intervalMultiplier(base, NOTE_B4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_D4),
+		intervalMultiplier(base, NOTE_Gb4),
+
+		intervalMultiplier(base, NOTE_D4 * OCTAVE_UP),
+		intervalMultiplier(base, NOTE_B4),
+		intervalMultiplier(base, NOTE_Gb4),
+
+		intervalMultiplier(base, NOTE_B4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_D4),
+		intervalMultiplier(base, NOTE_Gb4),
+
+		intervalMultiplier(base, NOTE_D4 * OCTAVE_UP),
+		intervalMultiplier(base, NOTE_B4),
+		intervalMultiplier(base, NOTE_Gb4),
+
+		intervalMultiplier(base, NOTE_B4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_D4),
+		intervalMultiplier(base, NOTE_Gb4),
+		intervalMultiplier(base, NOTE_D4),
+
+		//A minor
+		intervalMultiplier(base, NOTE_A4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_C4),
+		intervalMultiplier(base, NOTE_E4),
+
+		intervalMultiplier(base, NOTE_C4 * OCTAVE_UP),
+		intervalMultiplier(base, NOTE_A4),
+		intervalMultiplier(base, NOTE_E4),
+
+		intervalMultiplier(base, NOTE_A4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_C4),
+		intervalMultiplier(base, NOTE_E4),
+
+		intervalMultiplier(base, NOTE_C4 * OCTAVE_UP),
+		intervalMultiplier(base, NOTE_A4),
+		intervalMultiplier(base, NOTE_E4),
+
+		intervalMultiplier(base, NOTE_A4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_C4),
+		intervalMultiplier(base, NOTE_E4),
+		intervalMultiplier(base, NOTE_C4),
+
+		//G Major
+		intervalMultiplier(base, NOTE_G4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_B4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_D4),
+
+		intervalMultiplier(base, NOTE_B4),
+		intervalMultiplier(base, NOTE_G4),
+		intervalMultiplier(base, NOTE_D4),
+
+		intervalMultiplier(base, NOTE_G4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_B4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_D4),
+
+		intervalMultiplier(base, NOTE_B4),
+		intervalMultiplier(base, NOTE_G4),
+		intervalMultiplier(base, NOTE_D4),
+
+		intervalMultiplier(base, NOTE_G4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_B4 * OCTAVE_DOWN),
+		intervalMultiplier(base, NOTE_D4),
+		intervalMultiplier(base, NOTE_B4 * OCTAVE_DOWN),
 
 	};
 
@@ -191,14 +271,14 @@ int main(void)
 	math.addAudioInput(MODULE_OUT(&Oscillator::out, &modulator));
 
 	Filter filter;
-	filter.setType(Filter::LowPass);
-	filter.setCutoffFrequency(500);
+	filter.setType(IIRFilter::LowPass);
+	filter.setCutoffFrequency(20000);
 	filter.setInput(MODULE_OUT(&Oscillator::out, &osc));
 
-	/*Delay delay;
+	Delay delay;
 	delay.setDelayTime(0.2);
 	delay.setFeedback(0.2);
-	delay.setInput(MODULE_OUT(&Filter::out, &filter));*/
+	delay.setInput(MODULE_OUT(&Filter::out, &filter));
 
 	sequencer.setClock(MODULE_OUT(&Clock::out, &sequencerClock));
 	envelope.setGate(MODULE_OUT(&Clock::out, &envelopeClock));
@@ -206,12 +286,11 @@ int main(void)
 	osc.setVCAmplitude(MODULE_OUT(&Envelope::out, &envelope));
 	osc.setVCFrequency(MODULE_OUT(&SimpleMath::out, &math));
 
-	master.setInput(MODULE_OUT(&Filter::out, &filter));
+	master.setInput(MODULE_OUT(&Delay::out, &delay));
 
 	master.play();
 	
-	//debugWriteToPCM("audio.pcm", (MODULE_OUT(&Delay::out, &delay)), format, toBarSeconds(bpm, 4) * 7);
-	
+	//debugWriteToPCM("audio.pcm", (MODULE_OUT(&Delay::out, &delay)), format, toBarSeconds(bpm, 4) * 5);
 
 	WAIT();
 

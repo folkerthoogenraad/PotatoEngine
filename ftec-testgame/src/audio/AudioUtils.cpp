@@ -38,6 +38,12 @@ namespace ftec{
 		return sin(input * PI * 2);
 	}
 
+	double audioHalfSine(double input)
+	{
+		double v = fmod(input, 1);
+		return sin(v * PI) * 2 - 1;
+	}
+
 	double audioSawtooth(double input)
 	{
 		double v = fmod(input, 1);
