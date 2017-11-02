@@ -5,12 +5,13 @@
 #include "PotatoUI.h"
 
 namespace potato {
-	TextField::TextField()
+	TextField::TextField(std::shared_ptr<ftec::EngineContext> context)
+		:Panel(context)
 	{
 		m_Focusable = true;
 	}
 
-	void TextField::onKeyTyped(Event & event)
+	void TextField::onKeyTyped(ftec::Event & event)
 	{
 		m_EditText.keyboardInput(event);
 	}
@@ -21,33 +22,37 @@ namespace potato {
 		//graphics.setClip(getGlobalOutline());
 		Bounds bounds = getGlobalBounds();
 
-		graphics.setFont(m_Font);
-		graphics.setColor(PotatoColor::lightPrimary);
-
-		graphics.drawRectangle(bounds, false);
-
+		graphics.setLineWidth(2);
 		if (isFocused()) {
-			graphics.setColor(PotatoColor::primary);
-			graphics.drawRectangle(bounds, false);
+			graphics.setColor(style.m_AccentColor);
 		}
+		else {
+			graphics.setColor(style.m_DarkBackground);
+		}
+		graphics.drawLine(bounds.bottomright(), bounds.bottomleft());
+
+		graphics.setFont(m_Font);
 
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
 		graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
 
 		if (m_EditText.length() == 0) {
-			graphics.setColor(PotatoColor::secondaryText);
+			graphics.setColor(style.m_SecondaryColor);
 			graphics.drawString(m_Hint, ftec::Vector2i(bounds.x(), bounds.center().y));
 		}
 		else {
-			graphics.setColor(PotatoColor::primaryText);
+			graphics.setColor(style.m_PrimaryColor);
 			graphics.drawString(m_EditText.m_Text, ftec::Vector2i(bounds.x(), bounds.center().y));
 		}
 
-		//A bit of alpha here
+		ftec::Color32 color = style.m_AccentColor;
+
 		if(isFocused())
-			graphics.setColor(ftec::Color32(0x81, 0x22, 0x22, 0x88));
+			color.a = 0x88;
 		else
-			graphics.setColor(ftec::Color32(0x81, 0x22, 0x22, 0x33));
+			color.a = 0x33;
+
+		graphics.setColor(color);
 
 		auto start = m_Font->measure(m_EditText.m_Text.substr(0, m_EditText.selectionStart())).x - 1;
 		auto end = m_Font->measure(m_EditText.m_Text.substr(0, m_EditText.selectionEnd())).x + 1;

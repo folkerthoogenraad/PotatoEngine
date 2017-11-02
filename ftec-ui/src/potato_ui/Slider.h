@@ -9,13 +9,12 @@ namespace potato {
 		int m_Steps = -1;
 		bool m_SliderHold = false;
 	public:
-		Slider();
+		Slider(std::shared_ptr<ftec::EngineContext> context);
 
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		
-		void onMousePressed(Event &event) override;
-		void onMouseReleased(Event &event) override;
-		void onDrag(Event &event) override;
+		void onMousePressed(ftec::Event &event) override;
+		void onDrag(ftec::Event &event) override;
 		
 		float getValue() { return m_Value; }
 		void setValue(float f) { m_Value = f; }
@@ -24,9 +23,6 @@ namespace potato {
 		void setSteps(int steps) { m_Steps = steps; }
 
 		Size getPreferredSize() override;
-
-	protected:
-		ftec::Rectanglef getSliderBounds();
 	};
 
 }

@@ -165,7 +165,7 @@ namespace ftec {
 						value += audioTriangle(p) * m_Harmonics[i];
 						break;
 					case WaveType::Noise:
-						value += (random() * 2 + 1) * m_Harmonics[i];
+						value += (random() * 2 - 1) * m_Harmonics[i];
 						break;
 					default:
 						assert(false);

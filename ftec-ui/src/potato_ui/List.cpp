@@ -6,7 +6,8 @@
 
 
 namespace potato {
-	List::List()
+	List::List(std::shared_ptr<ftec::EngineContext> context)
+		: Panel(context)
 	{
 		m_Opaque = false;
 	}
@@ -55,7 +56,7 @@ namespace potato {
 		return Size(128, m_Insets.top + m_Insets.bottom + (int)m_TextOptions.size() * 20);
 	}
 
-	void List::onHoverOrDrag(Event & event)
+	void List::onHoverOrDrag(ftec::Event & event)
 	{
 		// Dragging can be out of the bounds
 		if (!inBounds(event.getMousePosition())) {
@@ -68,12 +69,12 @@ namespace potato {
 		m_SelectedIndex = (int) (localY / 20.0f);
 	}
 
-	void List::onHoverLeave(Event & event)
+	void List::onHoverLeave(ftec::Event & event)
 	{
 		m_SelectedIndex = -1;
 	}
 
-	void List::onClick(Event & event)
+	void List::onClick(ftec::Event & event)
 	{
 		if (m_SelectedIndex >= 0)
 			m_Callback(m_SelectedIndex);

@@ -200,6 +200,8 @@
     <ClCompile Include="src\engine\DesktopEngine.cpp" />
     <ClCompile Include="src\engine\Engine.cpp" />
     <ClCompile Include="src\engine\EngineConfiguration.cpp" />
+    <ClCompile Include="src\engine\EngineContext.cpp" />
+    <ClCompile Include="src\engine\Event.cpp" />
     <ClCompile Include="src\engine\Game.cpp" />
     <ClCompile Include="src\engine\Input.cpp" />
     <ClCompile Include="src\engine\Time.cpp" />
@@ -245,6 +247,8 @@
     <ClInclude Include="src\engine\DesktopEngine.h" />
     <ClInclude Include="src\engine\Engine.h" />
     <ClInclude Include="src\engine\EngineConfiguration.h" />
+    <ClInclude Include="src\engine\EngineContext.h" />
+    <ClInclude Include="src\engine\Event.h" />
     <ClInclude Include="src\engine\Game.h" />
     <ClInclude Include="src\engine\Input.h" />
     <ClInclude Include="src\engine\KeyCodes.h" />

@@ -135,9 +135,9 @@ namespace potato {
 		return 0;
 	}
 
-	void EditText::keyboardInput(Event &evt)
+	void EditText::keyboardInput(ftec::Event &evt)
 	{
-		assert(evt.getType() == EventType::KEYBOARD_TYPED);
+		assert(evt.getType() == ftec::EventType::KEYBOARD_TYPED);
 
 		bool shiftDown = (evt.isShiftDown());
 		bool crtlDown = (evt.isCrtlDown());

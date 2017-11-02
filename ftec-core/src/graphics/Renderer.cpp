@@ -11,6 +11,7 @@
 #include "Mesh.h"					//For mesh rendering
 
 #include "GraphicsState.h"			//For state objects
+#include "engine/EngineContext.h"
 
 namespace ftec {
 
@@ -90,24 +91,24 @@ namespace ftec {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void Renderer::clip(const Rectanglei &rectangle)
+	void Renderer::clip(const Rectanglei &rectangle, std::shared_ptr<EngineContext> context)
 	{
 		//TODO this is stupid, pls fix folkert.
 
 		//Both viewport and clip have 0,0 in the bottom left
-		glScissor(rectangle.x(), (int)Engine::getWindow().getHeight() - rectangle.y() - rectangle.height(), rectangle.width(), rectangle.height());
+		glScissor(rectangle.x(), (int)context->getWindow().getHeight() - rectangle.y() - rectangle.height(), rectangle.width(), rectangle.height());
 	}
 	
-	void Renderer::viewport(const Rectanglei &rectangle)
+	void Renderer::viewport(const Rectanglei &rectangle, std::shared_ptr<EngineContext> context)
 	{
 		//Both viewport and clip have 0,0 in the bottom left
-		glViewport(rectangle.x(), (int)Engine::getWindow().getHeight() - rectangle.y() - rectangle.height(), rectangle.width(), rectangle.height());
+		glViewport(rectangle.x(), (int)context->getWindow().getHeight() - rectangle.y() - rectangle.height(), rectangle.width(), rectangle.height());
 	}
 
-	void Renderer::renderport(const Rectanglei &rectangle)
+	void Renderer::renderport(const Rectanglei &rectangle, std::shared_ptr<EngineContext> context)
 	{
-		viewport(rectangle);
-		clip(rectangle);
+		viewport(rectangle, context);
+		clip(rectangle, context);
 	}
 
 	InstanceList::InstanceList()

@@ -3,7 +3,7 @@
 #include <string>
 #include "math/math.h"
 
-#include "Event.h"
+#include "engine/Event.h"
 
 namespace potato {
 
@@ -57,7 +57,7 @@ namespace potato {
 		void cancelSelection();
 		void deleteSelection();
 
-		void keyboardInput(Event &evt);
+		void keyboardInput(ftec::Event &evt);
 	};
 
 

@@ -5,17 +5,6 @@
 #include "math/Vector4.h"
 #include "graphics/Sprite.h"
 
-// Maybe be way more specific, but not important right now.
-#define COLOR_TEXT_LIGHT		"ColorTextLight"
-#define COLOR_TEXT_MEDIUM		"ColorTextMedium"
-#define COLOR_TEXT_DARK			"ColorTextDark"
-
-#define COLOR_PRIMARY_LIGHTEST	"ColorPrimaryLightest"
-#define COLOR_PRIMARY_LIGHT		"ColorPrimaryLight"
-#define COLOR_PRIMARY_MEDIUM	"ColorPrimaryMedium"
-#define COLOR_PRIMARY_DARK		"ColorPrimaryDark"
-#define COLOR_PRIMARY_DARKEST	"ColorPrimaryDarkest"
-
 namespace potato {
 	class PotatoStyle {
 	private:
@@ -24,6 +13,15 @@ namespace potato {
 
 		ftec::Color32 m_DefaultColor = ftec::Color32(0xff, 0x14, 0x93, 0xff);
 		ftec::Sprite m_DefaultSprite;
+	public:
+		ftec::Color32 m_BackgroundColor = ftec::Color32(75, 75, 75, 0xff);
+		ftec::Color32 m_DarkBackground = ftec::Color32(50, 50, 50, 0xff);
+		ftec::Color32 m_LightBackground = ftec::Color32(215, 213, 179, 0xff);
+
+		ftec::Color32 m_PrimaryColor = ftec::Color32(200, 200, 200, 0xff);
+		ftec::Color32 m_SecondaryColor = ftec::Color32(100, 100, 100, 0xff);
+
+		ftec::Color32 m_AccentColor = ftec::Color32(169, 206, 232, 0xff);
 	public:
 
 		void setColor(ftec::HashType hash, ftec::Color32 color);

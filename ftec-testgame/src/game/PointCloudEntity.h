@@ -30,7 +30,7 @@ namespace ftec {
 
 		Vector3f m_Position;
 	public:
-		PointCloudEntity(std::vector<Vector3d> vertices);
+		PointCloudEntity(std::shared_ptr<EngineContext> context, std::vector<Vector3d> vertices);
 		~PointCloudEntity() = default;
 		void update() override;
 

@@ -17,8 +17,8 @@
 #define SMOOTH false
 
 namespace ftec {
-	Terrain::Terrain(int width, int height, float resolution)
-		: m_Width(width), m_Height(height), m_Resolution(resolution)
+	Terrain::Terrain(std::shared_ptr<EngineContext> context, int width, int height, float resolution)
+		: m_Context(context), m_Width(width), m_Height(height), m_Resolution(resolution)
 	{
 		assert(m_Width > 0);
 		assert(m_Height > 0);
@@ -113,11 +113,12 @@ namespace ftec {
 	void Terrain::render()
 	{
 		//This ofcourse is all temp stuff, dear god
+		// Really, really ugly my god
 		static TerrainMaterial material(
-			Engine::getResourceManager().load<Shader>("shaders/terrain")
+			m_Context->getResourceManager().load<Shader>("shaders/terrain")
 			);
 
-		material.m_TextureMap = Engine::getResourceManager().load<Texture>("textures/terrain/grass.png");
+		material.m_TextureMap = m_Context->getResourceManager().load<Texture>("textures/terrain/grass.png");
 
 		Graphics::enqueueMesh(
 			m_Mesh.get(),

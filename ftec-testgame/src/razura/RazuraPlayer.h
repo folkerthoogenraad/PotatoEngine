@@ -14,7 +14,7 @@ namespace ftec {
 		Vector2f m_Motion;
 		Sprite m_Sprite;
 	public:
-		RazuraPlayer();
+		RazuraPlayer(std::shared_ptr<EngineContext> context);
 		~RazuraPlayer();
 
 		virtual void onStart() override;

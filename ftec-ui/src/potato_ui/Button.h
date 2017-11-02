@@ -7,7 +7,7 @@ namespace potato {
 	protected:
 		std::string m_Text;
 	public:
-		Button(const std::string &text = "");
+		Button(std::shared_ptr<ftec::EngineContext> context, const std::string &text = "");
 
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		Size getPreferredSize() override;

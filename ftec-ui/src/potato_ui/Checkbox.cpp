@@ -5,7 +5,7 @@
 
 namespace potato {
 
-	Checkbox::Checkbox() : m_Checked(false)
+	Checkbox::Checkbox(std::shared_ptr<ftec::EngineContext> context) : Panel(context), m_Checked(false)
 	{
 		m_Focusable = true;
 	}
@@ -19,25 +19,34 @@ namespace potato {
 		//TODO center all these things
 		ftec::Vector2i center = bounds.center();
 
-		graphics.setColor(PotatoColor::primary);
-		graphics.drawRectangle(ftec::Rectanglef((float)bounds.left(), (float)center.y - 8.0f, 16.0f,16.0f), true);
+		float height = bounds.height();
+		const float margin = 4;
+
 		if (m_Checked) {
-			graphics.setColor(PotatoColor::accent);
-			graphics.drawRectangle(ftec::Rectanglef((float)bounds.left() + 4.0f, (float)center.y - 4.0f, 8.0f, 8.0f), true);
+			graphics.setColor(style.m_AccentColor);
+		}
+		else {
+			graphics.setColor(style.m_DarkBackground);
 		}
 
-		graphics.setColor(PotatoColor::primaryText);
+		graphics.drawRectangle(ftec::Rectanglef((float)bounds.left(), (float)bounds.top(), height * 2.0f, height), true);
+
+		graphics.setColor(style.m_BackgroundColor);
+
+		graphics.drawRectangle(ftec::Rectanglef(
+			(float)bounds.left() + margin + (m_Checked ? height : 0), 
+			(float)bounds.top() + margin, 
+			height - margin * 2, 
+			height - margin * 2), true);
+
+
+		graphics.setColor(style.m_PrimaryColor);
 		graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
-		graphics.drawString(m_Text, ftec::Vector2f((float)bounds.left() + 18.0f, (float)center.y));
-
-		if (isFocused()) {
-			graphics.setColor(PotatoColor::darkPrimary);
-			graphics.drawRectangle(bounds, false);
-		}
+		graphics.drawString(m_Text, ftec::Vector2f((float)bounds.left() + height * 2.0f + 4.0f, (float)center.y));
 	}
 
-	void Checkbox::onClick(Event &event)
+	void Checkbox::onClick(ftec::Event &event)
 	{
 		m_Checked = !m_Checked;
 	}

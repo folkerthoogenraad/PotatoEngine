@@ -9,7 +9,7 @@ namespace ftec {
 		std::vector<Vector3d> m_Points;
 		void create();
 	public:
-		Voronoi3DEntity();
+		Voronoi3DEntity(std::shared_ptr<EngineContext> context);
 		~Voronoi3DEntity() = default;
 		void update() override;
 		void render() override;

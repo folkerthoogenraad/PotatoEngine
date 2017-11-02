@@ -8,8 +8,11 @@ namespace potato {
 	static const float KNOB_LENGTH = 8.0f;
 	static const float MIN_ANGLE = -PI - PI / 4;
 	static const float MAX_ANGLE = PI / 4;
+
+	static const float START_ANGLE = -PI / 2.0f;
 	
-	Knob::Knob()
+	Knob::Knob(std::shared_ptr<ftec::EngineContext> context)
+		:Panel(context)
 	{
 		m_Focusable = true;
 	}
@@ -26,25 +29,46 @@ namespace potato {
 		if(m_Steps > 1) 
 			v = ftec::floor(m_Value * m_Steps) / m_Steps;
 
-		auto angle = ftec::lerp(MIN_ANGLE, MAX_ANGLE, v);
-	
-		graphics.setColor(PotatoColor::primary);
+		graphics.setCirclePrecision(64);
+
+		float thickness = (radius / 16.0f) * 4;
+		float pointSize = (radius / 16.0f) * 2;
+
+		graphics.setColor(style.m_DarkBackground);
 		graphics.drawCircle(ftec::Circlef(
 			center,
 			radius
 		), true);
 
-		graphics.setColor(ftec::Color32::white());
-		graphics.setLineWidth(2.0f);
-		graphics.drawLine(ftec::Line2f(
-			center + ftec::Vector2f(cos(angle), sin(angle)) * (radius - KNOB_LENGTH),
-			center + ftec::Vector2f(cos(angle), sin(angle)) * radius
-		));
+		graphics.setColor(style.m_AccentColor);
+		graphics.drawArc(
+			center,
+			radius, 
+			true,
+			START_ANGLE,
+			v * PI * 2);
 
-		graphics.setLineWidth(1.0f);
+		graphics.setColor(style.m_BackgroundColor);
+		graphics.drawCircle(ftec::Circlef(
+			center,
+			radius - thickness
+		), true);
+
+		auto angle = START_ANGLE + v * 2 * PI;
+
+		graphics.setColor(style.m_PrimaryColor);
+		graphics.setPointSize(pointSize);
+		graphics.setPointType(ftec::Graphics2D::PointType::CIRCLE);
+		graphics.setCirclePrecision(8);
+		graphics.drawPoint(
+			center + ftec::Vector2f(cos(angle) * (radius - thickness * 2), sin(angle) * (radius - thickness * 2))
+			);
+
+		graphics.setCirclePrecision(16);
+
 	}
 
-	void Knob::onDrag(Event & event)
+	void Knob::onDrag(ftec::Event & event)
 	{
 		m_Value += event.getMouseDelta().y / SENSITIVITY;
 		m_Value = ftec::clamp(0.0f, 1.0f, m_Value);
@@ -52,7 +76,7 @@ namespace potato {
 
 	Size Knob::getPreferredSize()
 	{
-		return Size(32, 32);
+		return Size(64, 64);
 	}
 
 }

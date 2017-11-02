@@ -5,7 +5,9 @@
 #include <memory>
 #include <vector>
 
-//TODO cleanup these names man
+// TODO think about memory and ownership,
+// Currently this is pretty weird
+
 namespace ftec {
 
 	template <typename T>
@@ -60,8 +62,10 @@ namespace ftec {
 			invoke(std::forward<Params>(args)...);
 		}
 
-		std::shared_ptr<CallbackHandle> operator << (std::function<T> func)
-		{ return registerCallback(func); }
+		std::shared_ptr<CallbackHandle> operator << (std::function<T> func) { return registerCallback(func); }
+
+		std::shared_ptr<CallbackHandle> operator += (std::function<T> func) { return registerCallback(func); }
+		std::shared_ptr<CallbackHandle> operator -= (CallbackHandle *v) { return unregisterCallback(v); }
 
 		friend class CallbackHandle;
 	};

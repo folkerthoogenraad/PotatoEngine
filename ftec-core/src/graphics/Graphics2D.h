@@ -16,6 +16,7 @@ namespace ftec {
 	class Sprite;
 	class Texture;
 	class Font;
+	class EngineContext;
 
 	enum class FontAlign;
 
@@ -26,12 +27,15 @@ namespace ftec {
 		};
 		Camera m_Camera;
 	protected:
+		std::shared_ptr<EngineContext> m_Context;
+
 		//White texture for white shading (thanks obama)
 		std::shared_ptr<Texture> m_WhiteTexture;
 		std::shared_ptr<Font> m_Font;
 
 		//This has the current shader and the current texture.
 		std::shared_ptr<Material2D> m_Material;
+
 
 		Color32 m_Color;
 		float m_LineWidth = 1.f;
@@ -49,7 +53,7 @@ namespace ftec {
 	public:
 		int calls = 0;//TODO is this needed?
 	public:
-		Graphics2D();
+		Graphics2D(std::shared_ptr<EngineContext> context);
 		~Graphics2D();
 
 		void begin();

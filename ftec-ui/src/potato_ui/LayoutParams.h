@@ -1,5 +1,8 @@
 #pragma once
 
+#include "math/Vector2.h"
+#include "math/Rectangle.h"
+
 namespace potato {
 
 	class LayoutParams {
@@ -12,6 +15,9 @@ namespace potato {
 		LayoutScaling m_HeightScaling = WRAP_CONTENT;
 
 		ftec::Vector2i m_Size = ftec::Vector2i(-1,-1);
+
+		bool m_GridAutoLayout = true;
+		ftec::Rectanglei m_GridLayoutRectangle = ftec::Rectanglei(0, 0, 1, 1);
 
 		float m_Weight = 1.0;
 

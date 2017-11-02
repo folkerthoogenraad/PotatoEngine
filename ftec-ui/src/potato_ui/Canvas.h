@@ -6,6 +6,7 @@ namespace potato {
 
 	class Canvas : public Panel{
 	public:
+		Canvas(std::shared_ptr<ftec::EngineContext> context) : Panel(context) {};
 
 		virtual void update() override {};
 		virtual void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override {};

@@ -28,7 +28,8 @@ namespace ftec {
 	}
 
 
-	VoronoiCanvas::VoronoiCanvas()
+	VoronoiCanvas::VoronoiCanvas(std::shared_ptr<EngineContext> context)
+		: Canvas(context)
 	{
 		recreate();
 	}
@@ -51,8 +52,8 @@ namespace ftec {
 			points.clear();
 			for (int i = 0; i < 200; i++) {
 				points.push_back(Vector2i(
-					rand() % (int)(Engine::getWindow().getWidth() - 32) + 16,
-					rand() % (int)(Engine::getWindow().getHeight() - 32) + 16
+					rand() % (int)(m_Context->getWindow().getWidth() - 32) + 16,
+					rand() % (int)(m_Context->getWindow().getHeight() - 32) + 16
 				));
 			}
 			recreate();

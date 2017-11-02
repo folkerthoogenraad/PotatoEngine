@@ -28,10 +28,10 @@ namespace ftec {
 		std::shared_ptr<Mesh> mesh;
 	};
 
-	Scene::Scene()
+	Scene::Scene(std::shared_ptr<EngineContext> context)
 	{
 		//Not sure if we want to have this, but whatever
-		m_Cameras.push_back(Camera::perspective(60, Engine::getWindow().getWidth() / Engine::getWindow().getHeight(), 0.1f, 1000.f));
+		m_Cameras.push_back(Camera::perspective(60, m_Context->getWindow().getWidth() / m_Context->getWindow().getHeight(), 0.1f, 1000.f));
 		m_Mode = SceneMode::GRAPHICS_3D;
 		m_Lights.push_back(Light());
 	}
@@ -47,7 +47,7 @@ namespace ftec {
 	{
 		if (m_Mode == SceneMode::GRAPHICS_3D || m_Mode == SceneMode::GRAPHICS_BOTH) {
 
-			Graphics::begin();
+			Graphics::begin(m_Context);
 
 			for (auto &c : m_Cameras) {
 				Graphics::enqueueCamera(&c);
@@ -68,14 +68,14 @@ namespace ftec {
 				obj->render();
 			}
 
-			Graphics::end();
+			Graphics::end(m_Context);
 		}
 
 		if (m_Mode == SceneMode::GRAPHICS_2D || m_Mode == SceneMode::GRAPHICS_BOTH){
 			if (!m_Graphics2D) {
 				//NOTE i hate everything about this
 				//TODO don't do this here, because this might cause hickups and stuff
-				m_Graphics2D = std::make_unique<Graphics2D>();
+				m_Graphics2D = std::make_unique<Graphics2D>(m_Context);
 			}
 
 			m_Graphics2D->begin();

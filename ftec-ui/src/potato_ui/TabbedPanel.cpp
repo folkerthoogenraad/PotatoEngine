@@ -10,7 +10,7 @@ namespace potato {
 	const int TAB_HEIGHT = 32;
 	const int TAB_WIDTH = 128;
 
-	TabbedPanel::TabbedPanel(const std::vector<std::pair<std::string, std::shared_ptr<Panel>>> &tabs) : m_SelectedTab(0)
+	TabbedPanel::TabbedPanel(std::shared_ptr<ftec::EngineContext> context, const std::vector<std::pair<std::string, std::shared_ptr<Panel>>> &tabs) : Panel(context), m_SelectedTab(0)
 	{
 		m_Insets = { 2,2,2,2 };
 		
@@ -125,7 +125,7 @@ namespace potato {
 		));
 	}
 
-	void TabbedPanel::onClick(Event & evt)
+	void TabbedPanel::onClick(ftec::Event & evt)
 	{
 		Bounds bounds = getGlobalOutline();//TODO
 

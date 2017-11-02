@@ -12,7 +12,7 @@ namespace potato {
 	protected:
 		LayoutDirection m_Direction;
 	public:
-		LinearLayout(LayoutDirection dir);
+		LinearLayout(std::shared_ptr<ftec::EngineContext> context, LayoutDirection dir);
 
 		void updateLayout() override;
 		void addPanel(std::shared_ptr<Panel> panel);

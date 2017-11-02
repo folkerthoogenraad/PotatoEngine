@@ -1,5 +1,7 @@
 #pragma once
 
+#include "EngineContext.h"
+
 namespace ftec {
 	
 	class Game;
@@ -8,22 +10,25 @@ namespace ftec {
 		struct engine_resource;
 	public:
 		static void init();
-		static void loop(Game &game);
+		static void loop(Game &game, std::shared_ptr<EngineContext> context);
 		static void destroy();
+
+		static std::shared_ptr<EngineContext> createEngineContext();
 
 		template<typename T>
 		static void create()
 		{
 			//Use the nice resource safety here
-			engine_resource engine;
+			//engine_resource engine;
 
 			{
 				//TODO resource safety here :')
+				auto context = createEngineContext();
 
 				T game;
-				game.init();
+				game.init(context);
 
-				loop(game);
+				loop(game, context);
 
 				game.destroy();
 			}

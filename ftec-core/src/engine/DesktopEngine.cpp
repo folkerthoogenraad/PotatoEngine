@@ -25,11 +25,10 @@ namespace ftec {
 	
 	void DesktopEngine::init()
 	{
-		//Set the resource manager
-		Engine::setResourceManager(std::make_unique<ResourceManager>());
-
+#if 0
 		//Load the engine configuration
-		EngineConfiguration::init();
+		EngineConfiguration config;
+		config.init(DEFAULT_GLOBAL_CONFIG_FILE);
 
 		LOG("Loading GLFW...");
 
@@ -42,11 +41,13 @@ namespace ftec {
 
 		//Create the window
 		auto window = std::make_unique<Window>("PotatoEngine", 
-			EngineConfiguration::width, 
-			EngineConfiguration::height, 
-			EngineConfiguration::fullscreen, 
-			EngineConfiguration::vsync, 
-			EngineConfiguration::msaa);
+			config.width, 
+			config.height,
+			config.fullscreen,
+			config.vsync,
+			config.msaa);
+
+		auto manager = std::make_unique<ResourceManager>();
 
 		window->setVisible(true);
 
@@ -75,28 +76,30 @@ namespace ftec {
 		LOG("");
 
 		//Set the window
+		Engine::setResourceManager(std::move(manager));
 		Engine::setWindow(std::move(window));
 
 		Engine::init();
+#endif
 	}
 
-	void DesktopEngine::loop(Game & game)
+	void DesktopEngine::loop(Game& game, std::shared_ptr<EngineContext> context)
 	{
 		double previousTime = glfwGetTime();
 		double second = 0;
 		int frames = 0;
 
-		Engine::getWindow().setVisible(true);
+		context->getWindow().setVisible(true);
 
 		//Start running the shit out of this game
 
 		//TODO see what part of this we need here, and what we need in the engine class
-		while (!Engine::getWindow().isCloseRequested()) {
-			Time::sleep(EngineConfiguration::framesleep);
+		while (!context->getWindow().isCloseRequested()) {
+			Time::sleep(context->getConfiguration().framesleep);
 
 			Input::reset();
 
-			Engine::getWindow().poll();
+			context->getWindow().poll();
 
 			double currentTime = glfwGetTime();
 			Time::deltaTime = (float)(currentTime - previousTime);
@@ -112,15 +115,17 @@ namespace ftec {
 
 			previousTime = currentTime;
 			
-			Engine::update(game);
+			game.update();
+			game.render();
+			
 
 			frames++;
 			
-			Engine::getWindow().swap();
+			context->getWindow().swap();
 			
 			//Set the right framerate
-			if (!EngineConfiguration::vsync && EngineConfiguration::targetfps > 0) {
-				Time::sleep(1.0f / EngineConfiguration::targetfps);
+			if (!context->getConfiguration().vsync && context->getConfiguration().targetfps > 0) {
+				Time::sleep(1.0f / context->getConfiguration().targetfps);
 			}
 		}
 	}
@@ -132,6 +137,64 @@ namespace ftec {
 
 		FreeImage_DeInitialise();
 		glfwTerminate();
+	}
+
+	std::shared_ptr<EngineContext> DesktopEngine::createEngineContext()
+	{
+		std::shared_ptr<EngineContext> context;
+
+		//Load the engine configuration
+		EngineConfiguration config;
+		config.init(DEFAULT_GLOBAL_CONFIG_FILE);
+
+		LOG("Loading GLFW...");
+
+		// Initialize GLFW
+		// TODO check this with multiple windows and contexts
+		if (!glfwInit()) {
+			TERMINATE("Failed to initialize GLFW");
+		}
+
+		LOG("GLFW Loaded.");
+
+		//Create the window
+		auto window = std::make_unique<Window>("PotatoEngine",
+			config.width,
+			config.height,
+			config.fullscreen,
+			config.vsync,
+			config.msaa);
+
+		auto manager = std::make_unique<ResourceManager>();
+
+		window->setVisible(true);
+
+		LOG("Loading GLEW...");
+
+		//Initialize extentions
+		if (glewInit() != GLEW_OK) {
+			//LOG("Failed to init glew");
+			TERMINATE("Couldn't init glew!");
+		}
+		LOG("GLEW Loaded.");
+
+		LOG("Loading FreeImage...");
+		FreeImage_Initialise();
+		LOG("FreeImage loaded.");
+
+		LOG("");
+
+		LOG("Setting up OpenGL...");
+
+		//Initialize the OpenGL stuff
+		initGL();
+
+		//Tell the world how great we are
+		LOG("OpenGL " << glGetString(GL_VERSION) << " Loaded.");
+
+		LOG("");
+
+		return std::make_shared<EngineContext>(config, std::move(window), std::move(manager));
 	}
 
 	static void initGL() {

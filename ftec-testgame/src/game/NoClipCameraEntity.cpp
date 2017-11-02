@@ -15,7 +15,7 @@
 #include "engine/Keycodes.h"
 
 namespace ftec {
-	NoClipCameraEntity::NoClipCameraEntity() : m_MouseGrabbed(false)
+	NoClipCameraEntity::NoClipCameraEntity(std::shared_ptr<EngineContext> context) : Entity(context), m_MouseGrabbed(false)
 	{ }
 
 	NoClipCameraEntity::~NoClipCameraEntity()
@@ -28,6 +28,8 @@ namespace ftec {
 			Input::setCursorMode(m_MouseGrabbed ? CursorMode::GRABBED : CursorMode::NORMAL);
 		}
 
+		// TODO fix the noclip camera entity (scenes and shit not working atm)
+#if 0
 		if (m_MouseGrabbed) {
 			Camera &cam = Engine::getScene()->m_Cameras[0];
 
@@ -68,6 +70,7 @@ namespace ftec {
 
 			cam.m_Position += motion * 3.f * Time::deltaTime;
 		}
+#endif
 
 	}
 }

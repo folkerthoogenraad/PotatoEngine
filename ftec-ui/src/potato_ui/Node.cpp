@@ -13,12 +13,14 @@ namespace potato {
 
 	const float BAR_HEIGHT = 24;
 
-	Node::Node()
+	Node::Node(std::shared_ptr<ftec::EngineContext> context)
+		:Panel(context)
 	{
 		this->m_Insets = Insets::none();
 	}
 
-	Node::Node(std::string title)
+	Node::Node(std::shared_ptr<ftec::EngineContext> context, std::string title)
+		: Panel(context)
 	{
 		setTitle(title);
 		this->m_Insets = Insets::none();
@@ -59,7 +61,7 @@ namespace potato {
 		graphics.drawString(m_Title, title.center());
 	}
 
-	void Node::onDrag(Event & event)
+	void Node::onDrag(ftec::Event & event)
 	{
 		if (!isPressed())
 			return;
@@ -125,7 +127,7 @@ namespace potato {
 		Panel::updateLayout();
 	}
 
-	void Node::onMousePressed(Event & event)
+	void Node::onMousePressed(ftec::Event & event)
 	{
 		if (auto l = m_NodeEditor.lock()) {
 			l->setFocusNode(this);
@@ -145,7 +147,7 @@ namespace potato {
 		if (m_Inputs.size() != count) {
 			m_Inputs.clear();
 			for (int i = 0; i < count; i++) {
-				auto m = std::make_shared<NodeNotch>(NodeNotchType::Input);
+				auto m = std::make_shared<NodeNotch>(m_Context, NodeNotchType::Input);
 				initChild(m);
 				m->setNode(get_as<Node>());
 				m_Inputs.push_back(m);
@@ -158,7 +160,7 @@ namespace potato {
 		if (m_Outputs.size() != count) {
 			m_Outputs.clear();
 			for (int i = 0; i < count; i++) {
-				auto m = std::make_shared<NodeNotch>(NodeNotchType::Output);
+				auto m = std::make_shared<NodeNotch>(m_Context, NodeNotchType::Output);
 				initChild(m);
 				std::dynamic_pointer_cast<Node>(shared_from_this());
 
@@ -202,9 +204,10 @@ namespace potato {
 	static const float RADIUS = 6;
 
 
-	NodeNotch::NodeNotch(NodeNotchType type)
-		: m_Type(type)
+	NodeNotch::NodeNotch(std::shared_ptr<ftec::EngineContext> context, NodeNotchType type)
+		: Panel(context), m_Type(type)
 	{ }
+
 
 	void NodeNotch::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
@@ -244,7 +247,7 @@ namespace potato {
 		graphics.setLineWidth(1);
 	}
 
-	void NodeNotch::onMouseReleased(Event & event)
+	void NodeNotch::onMouseReleased(ftec::Event & event)
 	{
 		auto node = m_Node.lock();
 

@@ -1,8 +1,6 @@
 #include "Event.h"
-#include "engine/Input.h"
-#include "PotatoUI.h"
 
-namespace potato {
+namespace ftec {
 
 	Event::Event() : m_Consumed(false)
 	{

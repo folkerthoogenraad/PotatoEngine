@@ -24,21 +24,21 @@ namespace ftec {
 		m_UI->render();
 	}
 
-	void Razura::init()
+	void Razura::init(std::shared_ptr<EngineContext> context)
 	{
+		Game::init(context);
+
 		using namespace potato;
-		m_UI = std::make_shared<PotatoUI>();
+		m_UI = std::make_shared<PotatoUI>(context);
 
-		auto nodeEditor = std::make_shared<NodeEditor>();
+		auto ui = UILoader::load(context, "UISettings.xml");
 
-		std::vector<std::pair<std::string, std::shared_ptr<Panel>>> p = {
-			{ "Settings",  UILoader::load("UISettings.xml") }, 
-			{ "Node editor", nodeEditor }
-		};
+		PotatoStyle style;
+		ui->background() = style.m_BackgroundColor;
+		ui->setOpaque(true);
 
-		m_UI->setRoot(std::make_shared<TabbedPanel>(p));
+		m_UI->setRoot(ui);
 
-		nodeEditor->addNode(std::make_shared<modularsynth::OscillatorNode>());
 	}
 
 	void Razura::destroy()

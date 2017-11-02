@@ -8,10 +8,10 @@ namespace potato {
 		bool m_Checked;
 		std::string m_Text;
 	public:
-		Checkbox();
+		Checkbox(std::shared_ptr<ftec::EngineContext> context);
 
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
-		void onClick(Event &event) override;
+		void onClick(ftec::Event &event) override;
 		Size getPreferredSize() override;
 
 		inline bool isChecked() { return m_Checked; };

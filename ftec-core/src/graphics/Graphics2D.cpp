@@ -20,20 +20,23 @@
 #include <assert.h>
 
 #include "resources/ResourceManager.h"
+#include "engine/EngineContext.h"
 
 namespace ftec {
 
 
-	Graphics2D::Graphics2D()
+	Graphics2D::Graphics2D(std::shared_ptr<EngineContext> context)
+		:m_Context(context)
 	{
-		m_WhiteTexture = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
+		m_WhiteTexture = context->getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
 		//m_Font = Engine::getResourceManager().load<Font>("fonts/default14.fnt");
-		m_Font = Engine::getResourceManager().load<Font>("fonts/Ubuntu.ttf");
+		m_Font = context->getResourceManager().load<Font>("fonts/Ubuntu.ttf");
+		//m_Font = Engine::getResourceManager().load<Font>("fonts/font.ttf");
 
 		m_VAlign = FontAlign::TOP;
 		m_HAlign = FontAlign::LEFT;
 
-		m_Material = std::make_shared<Material2D>(Engine::getResourceManager().load<Shader>("shaders/default2d"));
+		m_Material = std::make_shared<Material2D>(context->getResourceManager().load<Shader>("shaders/default2d"));
 
 		m_Material->m_TextureMaps[0] = m_WhiteTexture;
 
@@ -66,14 +69,14 @@ namespace ftec {
 	{
 		drawing3D = true;
 		flush();
-		Renderer::renderport(rectangle);
+		Renderer::renderport(rectangle, m_Context);
 
-		Graphics::begin();
+		Graphics::begin(m_Context);
 	}
 
 	void Graphics2D::end3D()
 	{
-		Graphics::end();
+		Graphics::end(m_Context);
 		//Clear the depth values from the 3D rendering
 		glClear(GL_DEPTH_BUFFER_BIT);
 		drawing3D = false;
@@ -479,8 +482,8 @@ namespace ftec {
 		//Just for debugging actually
 		calls++;
 
-		float bufferWidth = Engine::getWindow().getWidth();
-		float bufferHeight = Engine::getWindow().getHeight();
+		float bufferWidth = m_Context->getWindow().getWidth();
+		float bufferHeight = m_Context->getWindow().getHeight();
 
 		//TODO Is Graphics2D responseable for this?
 		Rectanglei clipping(0, 0, (int)bufferWidth, (int)bufferHeight);
@@ -491,8 +494,8 @@ namespace ftec {
 			(int)(m_Camera.m_Viewport.height() * bufferHeight)
 		);
 
-		Renderer::clip(clipping);
-		Renderer::viewport(viewport);
+		Renderer::clip(clipping, m_Context);
+		Renderer::viewport(viewport, m_Context);
 
 		GraphicsState::m_Material = m_Material.get();
 		GraphicsState::matrixModel = Matrix4f::identity();

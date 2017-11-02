@@ -5,7 +5,8 @@
 
 namespace potato {
 
-	Dropdown::Dropdown()
+	Dropdown::Dropdown(std::shared_ptr<ftec::EngineContext> context)
+		:Panel(context)
 	{
 		m_Focusable = true;
 	}
@@ -40,21 +41,21 @@ namespace potato {
 		), true);
 	}
 
-	void Dropdown::onClick(Event &even)
+	void Dropdown::onClick(ftec::Event &even)
 	{
 		Bounds bounds = getGlobalBounds();
 
 		//Get reference to the ui, if that failes, we can't make the popup
 		if (m_UI) {
 			if (m_List.expired()) {
-				auto list = std::make_shared<List>();
+				auto list = std::make_shared<List>(m_Context);
 				list->setTextOptions(m_TextOptions);
 
 				list->localbounds() = ftec::Rectanglei(bounds.left(), bounds.bottom(), bounds.width(), list->getPreferredSize().height);
 
 				list->setSelectionCallback(std::bind(&Dropdown::setSelectedIndex, this, std::placeholders::_1));
 
-				m_UI->setContextMenu(std::make_shared<ContextMenuPanel>(list));
+				m_UI->setContextMenu(std::make_shared<ContextMenuPanel>(m_Context, list));
 			}
 			else {
 				m_UI->setContextMenu(nullptr);

@@ -7,19 +7,38 @@
     width="match_parent"
     height="wrap_content"
     orientation="horizontal">
-    
-    <TextField 
+
+    <LinearLayout
       width="match_parent"
       height="wrap_content"
-      weight="2"
-      hint="Input Text"
+      orientation="vertical"
+      weight="2">
+
+      <TextField
+        width="match_parent"
+        height="wrap_content"
+        hint="User name"
       />
-  
+      
+      <TextField
+        width="match_parent"
+        height="wrap_content"
+        hint="Password"
+      />
+      
+      <TextField
+        width="match_parent"
+        height="wrap_content"
+        hint="Email"
+      />
+      
+    </LinearLayout>
+
     <Button
       width="match_parent"
       height="wrap_content"
       weight="1"
-      text="Test!"/>
+      text="Pizza is great" />
     
   </LinearLayout>
   
@@ -28,11 +47,31 @@
     height="wrap_content"
     orientation="horizontal">
 
-    <Checkbox
-      width="wrap_content"
+    <LinearLayout
+      width="match_parent"
       height="wrap_content"
-      checked="true"
-      text="Whynot"/>
+      orientation="vertical">
+      <Checkbox
+        width="wrap_content"
+        height="wrap_content"
+        checked="true"
+        text="Whynot"/>
+      <Checkbox
+        width="wrap_content"
+        height="wrap_content"
+        checked="true"
+        text="Whynot"/>
+      <Checkbox
+        width="wrap_content"
+        height="wrap_content"
+        checked="true"
+        text="Whynot"/>
+      <Checkbox
+        width="wrap_content"
+        height="wrap_content"
+        checked="true"
+        text="Whynot"/>
+    </LinearLayout>
     <Label
       width="wrap_content"
       height="wrap_content"
@@ -40,11 +79,17 @@
     <Slider
       width="wrap_content"
       height="wrap_content"
-      steps="8"/>
+      steps="10"/>
     <Button
       width="match_parent"
-      height="match_parent"
-      text="OI press meh!" />
+      height="wrap_content"
+      weight="1"
+      text="Jouw Moeder" />
+    <Button
+      width="match_parent"
+      height="wrap_content"
+      weight="1"
+      text="HJarr ypotter" />
     
   </LinearLayout>
 

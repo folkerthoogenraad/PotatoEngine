@@ -55,7 +55,7 @@ namespace ftec {
 	}
 
 
-	PointCloudEntity::PointCloudEntity(std::vector<Vector3d> vertices) : m_Points(std::move(vertices))
+	PointCloudEntity::PointCloudEntity(std::shared_ptr<EngineContext> context, std::vector<Vector3d> vertices) : Entity(context), m_Points(std::move(vertices))
 	{
 		if (m_Points.size() == 0)
 			return;
@@ -112,13 +112,13 @@ namespace ftec {
 		m_Mesh->upload();
 
 		m_Material = std::make_shared<PBRMaterial>(
-			Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE),
-			Engine::getResourceManager().load<Shader>("shaders/default")
+			context->getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE),
+			context->getResourceManager().load<Shader>("shaders/default")
 			);
 		
-		m_Material->m_NormalMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
-		m_Material->m_RoughnessMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
-		m_Material->m_MetallicMap = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
+		m_Material->m_NormalMap = context->getResourceManager().load<Texture>(DEFAULT_TEXTURE_NORMAL);
+		m_Material->m_RoughnessMap = context->getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
+		m_Material->m_MetallicMap = context->getResourceManager().load<Texture>(DEFAULT_TEXTURE_BLACK);
 	}
 
 	void PointCloudEntity::update()

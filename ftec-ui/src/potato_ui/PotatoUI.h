@@ -16,10 +16,15 @@ PotatoUI (obviously).
 #include "math/Vector2.h"
 #include "PotatoStyle.h"
 
+#include "engine/EngineContext.h"
+
+namespace ftec {
+	class Event;
+}
+
 namespace potato {
 
 	class Panel;
-	class Event;
 
 	class PotatoColor {
 	public:PotatoColor() = delete; ~PotatoColor() = delete;
@@ -54,6 +59,8 @@ namespace potato {
 
 		std::shared_ptr<Panel> m_Focus = nullptr;
 		std::shared_ptr<Panel> m_Hover = nullptr;
+
+		std::shared_ptr<ftec::EngineContext> m_Context;
 		
 		// 10 mouse buttons, might be a bit overkill :)
 		std::array<std::shared_ptr<Panel>, 10> m_Pressed;
@@ -62,7 +69,7 @@ namespace potato {
 
 		ftec::Vector2f m_MouseStart;
 	public:
-		PotatoUI();
+		PotatoUI(std::shared_ptr<ftec::EngineContext> context);
 		~PotatoUI();
 		void update();
 		void render();
@@ -71,7 +78,7 @@ namespace potato {
 		void setContextMenu(std::shared_ptr<Panel> contextMenu);
 
 		// Oh, that is nasty with that event thing there (dirty code alert)
-		void resetFocus(Event &event);
+		void resetFocus(ftec::Event &event);
 
 		Panel *getFocus() const { return m_Focus.get(); }
 		bool isFocused(const Panel *panel) const { return m_Focus.get() == panel; }
@@ -84,9 +91,9 @@ namespace potato {
 
 		PotatoStyle &getStyle();
 	private:
-		void processEvents(std::shared_ptr<Panel> panel, Event &event);
+		void processEvents(std::shared_ptr<Panel> panel, ftec::Event &event);
 
-		void setFocusAndFireEvents(std::shared_ptr<Panel> focus, Event &event);
-		void setHoverAndFireEvents(std::shared_ptr<Panel> hover, Event &event);
+		void setFocusAndFireEvents(std::shared_ptr<Panel> focus, ftec::Event &event);
+		void setHoverAndFireEvents(std::shared_ptr<Panel> hover, ftec::Event &event);
 	};
 }

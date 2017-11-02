@@ -6,7 +6,7 @@ namespace ftec {
 	private:
 		bool m_MouseGrabbed = false;
 	public:
-		NoClipCameraEntity();
+		NoClipCameraEntity(std::shared_ptr<EngineContext> context);
 		~NoClipCameraEntity();
 
 		void update() override;

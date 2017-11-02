@@ -9,17 +9,10 @@
 
 namespace ftec {
 
-	int EngineConfiguration::width = 1280;
-	int EngineConfiguration::height = 720;
-	bool EngineConfiguration::fullscreen = false;
-	bool EngineConfiguration::vsync = true;
-	int EngineConfiguration::msaa = 4;
-	int EngineConfiguration::targetfps = -1;
-	float EngineConfiguration::framesleep = 0;
 
-	void EngineConfiguration::init()
+	void EngineConfiguration::init(const std::string &filename)
 	{
-		auto file = Engine::getResourceManager().load<INIFile>(DEFAULT_GLOBAL_CONFIG_FILE);
+		auto file = INIFile::load(filename);
 
 		if (!file) {
 			LOG_WARNING("settings/config.ini does not exist.");
@@ -30,7 +23,7 @@ namespace ftec {
 			INISegment *windowSegment = file->getSegmentByName("Window");
 
 			if (!windowSegment) {
-				LOG_WARNING("settings/config.ini does not contain segment [Window].");
+				LOG_WARNING(filename << " does not contain segment [Window].");
 				return;
 			}
 

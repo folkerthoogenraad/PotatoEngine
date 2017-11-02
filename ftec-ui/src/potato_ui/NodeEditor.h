@@ -12,7 +12,7 @@ namespace potato {
 		ftec::Vector2f m_CameraPosition;
 		int m_ActiveFirst;
 	public:
-		NodeEditor();
+		NodeEditor(std::shared_ptr<ftec::EngineContext> context);
 
 		void addNode(std::shared_ptr<Node> node);
 		ftec::Vector2f getCameraPosition() const;
@@ -21,7 +21,7 @@ namespace potato {
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		Size getPreferredSize() override;
 		void onPostEvents() override;
-		void onDrag(Event &event) override;
+		void onDrag(ftec::Event &event) override;
 		void updateLayout() override;
 
 	};

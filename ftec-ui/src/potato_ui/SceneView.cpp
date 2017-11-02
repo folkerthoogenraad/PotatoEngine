@@ -7,7 +7,8 @@
 #include "scene/Scene.h"
 
 namespace potato {
-	SceneView::SceneView()
+	SceneView::SceneView(std::shared_ptr<ftec::EngineContext> context)
+		: Panel(context)
 	{
 		m_Focusable = true;
 	}
@@ -15,13 +16,17 @@ namespace potato {
 	void SceneView::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		Bounds bounds = getGlobalBounds();
+		
+		// TODO fix the sceneview component!
+		
 		//Draw the scene!
-		if (ftec::Engine::getScene()) {
-			graphics.begin3D(bounds);
-			ftec::Engine::getScene()->render();
-			graphics.end3D();
-		}
-		else {
+		//if (ftec::Engine::getScene()) {
+		//	graphics.begin3D(bounds);
+		//	ftec::Engine::getScene()->render();
+		//	graphics.end3D();
+		//}
+		//else {
+		{
 			graphics.setColor(ftec::Color32::blue());
 			graphics.drawRectangle(bounds, true);
 			graphics.setColor(ftec::Color32::white());
@@ -39,9 +44,11 @@ namespace potato {
 		if (!isFocused()) //TODO make a safe object that has a destructor that re-enables the input, thats just more safe
 			ftec::Input::setEnabled(false);
 		
-		if (ftec::Engine::getScene()) {
-			ftec::Engine::getScene()->update();
-		}
+		//TODO fucking fix this.
+
+		//if (ftec::Engine::getScene()) {
+		//	ftec::Engine::getScene()->update();
+		//}
 
 		if (!isFocused())
 			ftec::Input::setEnabled(true);

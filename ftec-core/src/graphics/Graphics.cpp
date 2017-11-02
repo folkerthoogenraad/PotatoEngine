@@ -26,6 +26,7 @@
 
 //This should not be here, because this is a graphics stuff
 #include "resources/ResourceManager.h"
+#include "engine/EngineContext.h"
 
 #define DEBUG_GRAPHICS 0
 
@@ -59,7 +60,7 @@ namespace ftec {
 	std::vector<ColorType<Spheref>> Graphics::spheres;
 	std::vector<ColorType<Triangle3f>> Graphics::triangles;
 
-	void Graphics::begin()
+	void Graphics::begin(std::shared_ptr<EngineContext> context)
 	{
 		if (drawing) {
 			LOG_ERROR("Cant start drawing while drawing");
@@ -71,8 +72,8 @@ namespace ftec {
 			renderer = std::make_unique<SpriteBatch>();
 		}
 		if (!pointMaterial) {
-			pointMaterial = std::make_shared<Material2D>(Engine::getResourceManager().load<Shader>("shaders/default2d"));
-			pointMaterial->m_TextureMaps[0] = Engine::getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
+			pointMaterial = std::make_shared<Material2D>(context->getResourceManager().load<Shader>("shaders/default2d"));
+			pointMaterial->m_TextureMaps[0] = context->getResourceManager().load<Texture>(DEFAULT_TEXTURE_WHITE);
 		}
 
 		meshes.clear();
@@ -122,7 +123,7 @@ namespace ftec {
 		lights.push_back(light);
 	}
 
-	void Graphics::end()
+	void Graphics::end(std::shared_ptr<EngineContext> context)
 	{
 		if (!drawing) {
 			LOG_ERROR("Can't stop drawing while not drawing");
@@ -175,7 +176,7 @@ namespace ftec {
 			GraphicsState::matrixView = c->getViewMatrix();
 
 			//Set skybox to normal version //This should obviously not be here
-			GraphicsState::m_Skybox = Engine::getResourceManager().load<Cubemap>("textures/skybox/daylight");
+			GraphicsState::m_Skybox = context->getResourceManager().load<Cubemap>("textures/skybox/daylight");
 			
 			GraphicsState::matrixModel = Matrix4f::translation(c->m_Position);
 
@@ -262,7 +263,7 @@ namespace ftec {
 			}
 			renderer->end();
 
-			auto sphere = Engine::getResourceManager().load<Mesh>("mesh/sphere.obj");
+			auto sphere = context->getResourceManager().load<Mesh>("mesh/sphere.obj");
 
 			for (auto &s : spheres) {
 				GraphicsState::matrixModel = Matrix4f::translation(s.mesh.center) * Matrix4f::scaled(Vector3f(s.mesh.radius, s.mesh.radius, s.mesh.radius));

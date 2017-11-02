@@ -26,7 +26,7 @@ namespace ftec {
 		m_Viewport(0,0,1,1)
 	{ }
 
-	Matrix4f ftec::Camera::getProjectionMatrix() const
+	Matrix4f Camera::getProjectionMatrix() const
 	{
 		if (m_Projection == Projection::PERSPECTIVE) {
 			return Matrix4f::perspective(m_Fov, m_AspectRatio, m_Near, m_Far);

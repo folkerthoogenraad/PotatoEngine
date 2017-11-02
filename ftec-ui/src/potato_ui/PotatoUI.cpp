@@ -5,7 +5,7 @@
 #include "graphics/Window.h"
 #include "graphics/Camera.h"
 
-#include "Event.h"
+#include "engine/Event.h"
 #include "EventInput.h"
 #include "engine/Keycodes.h"
 
@@ -39,28 +39,12 @@ namespace potato {
 		data = input;
 	}
 
-	PotatoUI::PotatoUI()
+	PotatoUI::PotatoUI(std::shared_ptr<ftec::EngineContext> context)
+		:m_Context(context), m_Graphics(context)
 	{
-		m_Graphics.m_Camera = ftec::Camera::orthagonal(ftec::Engine::getWindow().getHeight(), ftec::Engine::getWindow().getWidth() / ftec::Engine::getWindow().getHeight(), -100, 100, true);
-		m_Graphics.m_Camera.m_Position = ftec::Vector3f(ftec::Engine::getWindow().getWidth() / 2.0f, ftec::Engine::getWindow().getHeight() / 2.0f);
-
-		m_Style.setColor(ftec::const_hash(COLOR_TEXT_LIGHT), ftec::Color32(0xEE, 0xEE, 0xEE, 0xEE));
-		m_Style.setColor(ftec::const_hash(COLOR_TEXT_MEDIUM), ftec::Color32(0x75, 0x75, 0x75, 0xFF));
-		m_Style.setColor(ftec::const_hash(COLOR_TEXT_DARK), ftec::Color32(0x21, 0x21, 0x21, 0xFF));
-
-		m_Style.setColor(ftec::const_hash(COLOR_PRIMARY_LIGHTEST), ftec::Color32(0xDC, 0xED, 0xC8, 0xFF));
-		m_Style.setColor(ftec::const_hash(COLOR_PRIMARY_LIGHT), ftec::Color32(0xAE, 0xD5, 0x81, 0xFF));
-		m_Style.setColor(ftec::const_hash(COLOR_PRIMARY_MEDIUM), ftec::Color32(0x8B, 0xC3, 0x4A, 0xFF));
-		m_Style.setColor(ftec::const_hash(COLOR_PRIMARY_DARK), ftec::Color32(0x55, 0x8B, 0x2F, 0xFF));
-		m_Style.setColor(ftec::const_hash(COLOR_PRIMARY_DARKEST), ftec::Color32(0x33, 0x69, 0x1E, 0xFF));
-
-		m_Style.setDefaultSprite(ftec::Sprite(
-			m_Graphics.getWhiteTexture()
-		));
-
-		m_Style.setSprite(ftec::const_hash("ButtonBackground"), ftec::Sprite(
-			ftec::Engine::getResourceManager().load<ftec::Texture>("ui/skin.png"), ftec::Rectanglef(0, 0, 32, 32)
-		).flipY().setType(ftec::Sprite::Sliced).setSlices(ftec::SpriteSlices(8,8,8,8)));
+		m_Graphics.m_Camera 
+			= ftec::Camera::orthagonal(context->getWindow().getHeight(), context->getWindow().getWidth() / context->getWindow().getHeight(), -100, 100, true);
+		m_Graphics.m_Camera.m_Position = ftec::Vector3f(context->getWindow().getWidth() / 2.0f, context->getWindow().getHeight() / 2.0f);
 	}
 
 	PotatoUI::~PotatoUI()
@@ -73,13 +57,13 @@ namespace potato {
 
 			// TODO this kinda is an event too
 			// This should probably be handled differently but whatever, its good for now
-			if (ftec::Engine::getWindow().isResized()) {
+			if (m_Context->getWindow().isResized()) {
 				if (m_ContextMenu){
-					m_ContextMenu->localbounds() = ftec::Rectanglei(0, 0, (int)ftec::Engine::getWindow().getWidth(), (int)ftec::Engine::getWindow().getHeight());
+					m_ContextMenu->localbounds() = ftec::Rectanglei(0, 0, (int)m_Context->getWindow().getWidth(), (int)m_Context->getWindow().getHeight());
 					m_ContextMenu->updateLayout();
 				}
 
-				m_Root->localbounds() = ftec::Rectanglei(0, 0, (int)ftec::Engine::getWindow().getWidth(), (int)ftec::Engine::getWindow().getHeight());
+				m_Root->localbounds() = ftec::Rectanglei(0, 0, (int)m_Context->getWindow().getWidth(), (int)m_Context->getWindow().getHeight());
 				m_Root->updateLayout();
 			}
 
@@ -91,7 +75,7 @@ namespace potato {
 
 			EventInput input;
 
-			input.forEach([this](Event &event) {
+			input.forEach([this](ftec::Event &event) {
 				if (m_ContextMenu)
 					processEvents(m_ContextMenu, event);
 				if (!event.isConsumed())
@@ -113,8 +97,8 @@ namespace potato {
 	void PotatoUI::render()
 	{
 		//Always set the right size and stuff
-		m_Graphics.m_Camera = ftec::Camera::orthagonal(ftec::Engine::getWindow().getHeight(), ftec::Engine::getWindow().getWidth() / ftec::Engine::getWindow().getHeight(), -100, 100, true);
-		m_Graphics.m_Camera.m_Position = ftec::Vector3f(ftec::Engine::getWindow().getWidth() / 2.0f, ftec::Engine::getWindow().getHeight() / 2.0f);
+		m_Graphics.m_Camera = ftec::Camera::orthagonal(m_Context->getWindow().getHeight(), m_Context->getWindow().getWidth() / m_Context->getWindow().getHeight(), -100, 100, true);
+		m_Graphics.m_Camera.m_Position = ftec::Vector3f(m_Context->getWindow().getWidth() / 2.0f, m_Context->getWindow().getHeight() / 2.0f);
 
 		m_Graphics.drawClear();
 		m_Graphics.begin();
@@ -135,7 +119,7 @@ namespace potato {
 		if (m_Root) {
 			m_Root->setUI(this);
 			//Give this the full panel, this happens always, at all times
-			m_Root->localbounds() = ftec::Rectanglei(0, 0, (int)ftec::Engine::getWindow().getWidth(), (int)ftec::Engine::getWindow().getHeight());
+			m_Root->localbounds() = ftec::Rectanglei(0, 0, (int)m_Context->getWindow().getWidth(), (int)m_Context->getWindow().getHeight());
 			m_Root->updateLayout();
 		}
 	}
@@ -144,17 +128,17 @@ namespace potato {
 	{
 		m_ContextMenu = contextMenu;
 		if (m_ContextMenu) {
-			m_ContextMenu->localbounds() = ftec::Rectanglei(0, 0, (int)ftec::Engine::getWindow().getWidth(), (int)ftec::Engine::getWindow().getHeight());
+			m_ContextMenu->localbounds() = ftec::Rectanglei(0, 0, (int)m_Context->getWindow().getWidth(), (int)m_Context->getWindow().getHeight());
 			m_ContextMenu->setUI(this);
 		}
 	}
 
-	void PotatoUI::resetFocus(Event &event)
+	void PotatoUI::resetFocus(ftec::Event &event)
 	{
 		setFocusAndFireEvents(nullptr, event);
 	}
 
-	void PotatoUI::setFocusAndFireEvents(std::shared_ptr<Panel> focus, Event &event)
+	void PotatoUI::setFocusAndFireEvents(std::shared_ptr<Panel> focus, ftec::Event &event)
 	{
 		if (m_Focus == focus)
 			return;
@@ -168,7 +152,7 @@ namespace potato {
 		m_Focus = focus;
 	}
 
-	void PotatoUI::setHoverAndFireEvents(std::shared_ptr<Panel> hover, Event &event)
+	void PotatoUI::setHoverAndFireEvents(std::shared_ptr<Panel> hover, ftec::Event &event)
 	{
 		if (m_Hover == hover)
 			return;
@@ -204,9 +188,9 @@ namespace potato {
 		return m_Style;
 	}
 
-	void PotatoUI::processEvents(std::shared_ptr<Panel> panel, Event &event)
+	void PotatoUI::processEvents(std::shared_ptr<Panel> panel, ftec::Event &event)
 	{
-		if (event.getType() == EventType::MOUSE_MOVE) {
+		if (event.getType() == ftec::EventType::MOUSE_MOVE) {
 			auto hover = panel->findPanelByPosition(event.getMousePosition());
 
 			// Hover enter and hover leave
@@ -221,7 +205,7 @@ namespace potato {
 
 		}
 
-		if (event.getType() == EventType::MOUSE_DRAG) {
+		if (event.getType() == ftec::EventType::MOUSE_DRAG) {
 			auto m = m_Pressed[event.getMouseButton()];
 			if (m) {
 				m->onDrag(event);
@@ -232,7 +216,7 @@ namespace potato {
 		}
 
 		// TODO keep track of what is pressed
-		if (event.getType() == EventType::MOUSE_PRESSED) {
+		if (event.getType() == ftec::EventType::MOUSE_PRESSED) {
 			m_Pressed[event.getMouseButton()] = m_Hover;
 
 			if (m_Hover) {
@@ -250,7 +234,7 @@ namespace potato {
 		}
 
 		// TODO and what is released here.
-		if (event.getType() == EventType::MOUSE_RELEASED) {
+		if (event.getType() == ftec::EventType::MOUSE_RELEASED) {
 			auto m = m_Pressed[event.getMouseButton()];
 
 			// Reset
@@ -271,19 +255,19 @@ namespace potato {
 
 
 		// TODO tab switching
-		if (event.getType() == EventType::KEYBOARD_TYPED) {
+		if (event.getType() == ftec::EventType::KEYBOARD_TYPED) {
 			if (m_Focus) {
 				m_Focus->onKeyTyped(event);
 			}
 		}
 
-		if (event.getType() == EventType::KEYBOARD_PRESSED) {
+		if (event.getType() == ftec::EventType::KEYBOARD_PRESSED) {
 			if (m_Focus) {
 				m_Focus->onKeyPressed(event);
 			}
 		}
 
-		if (event.getType() == EventType::KEYBOARD_RELEASED) {
+		if (event.getType() == ftec::EventType::KEYBOARD_RELEASED) {
 			if (m_Focus) {
 				m_Focus->onKeyReleased(event);
 			}
@@ -291,7 +275,7 @@ namespace potato {
 	}
 
 #if 0
-	void PotatoUI::processEvents(std::shared_ptr<Panel> panel, Event & event)
+	void PotatoUI::processEvents(std::shared_ptr<Panel> panel, ftec::Event & event)
 	{
 		auto children = panel->getChildren();
 

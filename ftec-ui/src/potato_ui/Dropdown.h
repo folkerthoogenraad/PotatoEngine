@@ -10,10 +10,10 @@ namespace potato {
 		std::vector<std::string> m_TextOptions;
 		size_t m_SelectedIndex = 0;
 	public:
-		Dropdown();
+		Dropdown(std::shared_ptr<ftec::EngineContext> context);
 
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
-		void onClick(Event &event) override;
+		void onClick(ftec::Event &event) override;
 		Size getPreferredSize() override;
 
 		void setSelectedIndex(int i);

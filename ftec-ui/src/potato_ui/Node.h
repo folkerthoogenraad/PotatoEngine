@@ -18,10 +18,10 @@ namespace potato {
 
 		std::weak_ptr<NodeNotch> m_ConnectedTo;
 	public:
-		NodeNotch(NodeNotchType type);
+		NodeNotch(std::shared_ptr<ftec::EngineContext> context, NodeNotchType type);
 
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
-		void onMouseReleased(Event &event) override;
+		void onMouseReleased(ftec::Event &event) override;
 		Size getPreferredSize() override;
 		
 		void setNode(std::weak_ptr<Node> node);
@@ -38,8 +38,8 @@ namespace potato {
 		std::vector<std::shared_ptr<NodeNotch>> m_Inputs;
 		std::vector<std::shared_ptr<NodeNotch>> m_Outputs;
 	public:
-		Node();
-		Node(std::string title);
+		Node(std::shared_ptr<ftec::EngineContext> context);
+		Node(std::shared_ptr<ftec::EngineContext> context, std::string title);
 
 		void setTitle(std::string title);
 		void setNodeEditor(std::weak_ptr<NodeEditor> editor);
@@ -50,9 +50,9 @@ namespace potato {
 		void setOutputs(int count);
 	public:
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle& style) override;
-		void onDrag(Event &event) override;
+		void onDrag(ftec::Event &event) override;
 		void updateLayout() override;
-		void onMousePressed(Event &event) override;
+		void onMousePressed(ftec::Event &event) override;
 		Size getPreferredSize() override;
 
 		std::vector<std::shared_ptr<Panel>> getChildren() const override;

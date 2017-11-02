@@ -8,7 +8,8 @@
 
 namespace modularsynth {
 
-	OscillatorNode::OscillatorNode()
+	OscillatorNode::OscillatorNode(std::shared_ptr<ftec::EngineContext> context)
+		: Node(context)
 	{
 		
 	}
@@ -17,7 +18,7 @@ namespace modularsynth {
 	{
 		using namespace potato;
 
-		auto layout = UILoader::load("layouts/nodes/OscillatorNode.xml");
+		auto layout = UILoader::load(m_Context, "layouts/nodes/OscillatorNode.xml");
 
 		// Make the dropdown
 		{

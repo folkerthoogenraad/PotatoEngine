@@ -5,14 +5,14 @@
 
 namespace potato {
 
-	Label::Label(const std::string text) : m_Text(text)
+	Label::Label(std::shared_ptr<ftec::EngineContext> context, const std::string text) : Panel(context), m_Text(text)
 	{
 	}
 
 	void Label::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		Panel::drawSelf(graphics, style);
-		graphics.setColor(PotatoColor::primaryText);
+		graphics.setColor(style.m_PrimaryColor);
 		graphics.setHorizontalAlign(ftec::FontAlign::LEFT);
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
 		graphics.drawString(m_Text, getGlobalBounds().centerLeft());

@@ -1,11 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 namespace ftec {
 
 	class InstanceList;
 	class Mesh;
+	class EngineContext;
 
 	template <typename T> struct Rectangle; typedef Rectangle<int> Rectanglei;
 	template <typename T> struct Vector3; typedef Vector3<float> Vector3f;
@@ -19,12 +21,13 @@ namespace ftec {
 		static void drawDirect(const Mesh &mesh, const InstanceList &list);
 
 		//Sets the clipping plane
-		static void clip(const Rectanglei &rectangle);
+		static void clip(const Rectanglei &rectangle, std::shared_ptr<EngineContext> context);
+
 		//Sets the viewport
-		static void viewport(const Rectanglei &rectangle);
+		static void viewport(const Rectanglei &rectangle, std::shared_ptr<EngineContext> context);
 
 		//Sets both the viewport and the clipping plane
-		static void renderport(const Rectanglei &rectangle);
+		static void renderport(const Rectanglei &rectangle, std::shared_ptr<EngineContext> context);
 
 		static void clear();
 	};

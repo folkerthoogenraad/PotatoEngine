@@ -3,8 +3,8 @@
 #include "math/math.h"
 
 namespace potato {
-	LinearLayout::LinearLayout(LayoutDirection dir)
-		: m_Direction(dir)
+	LinearLayout::LinearLayout(std::shared_ptr<ftec::EngineContext> context, LayoutDirection dir)
+		: Panel(context), m_Direction(dir)
 	{
 		m_Insets = { 0,0,0,0 };
 	}

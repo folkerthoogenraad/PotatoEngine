@@ -5,8 +5,6 @@
 #include <vector>
 #include <memory>
 
-#define DEFAULT_GLOBAL_CONFIG_FILE "settings/config.ini"
-
 namespace ftec {
 
 	class INIFile;

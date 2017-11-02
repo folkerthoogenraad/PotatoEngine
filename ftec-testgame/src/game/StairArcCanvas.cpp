@@ -69,7 +69,8 @@ namespace ftec {
 		}
 	}
 
-	StairArcCanvas::StairArcCanvas()
+	StairArcCanvas::StairArcCanvas(std::shared_ptr<EngineContext> context)
+		: Canvas(context)
 	{
 		m_Focusable = true;
 	}

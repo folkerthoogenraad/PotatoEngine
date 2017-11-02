@@ -4,7 +4,8 @@
 
 namespace potato {
 
-	NodeEditor::NodeEditor()
+	NodeEditor::NodeEditor(std::shared_ptr<ftec::EngineContext> context)
+		: Panel(context)
 	{
 		m_ActiveFirst = -1;
 		m_Insets = Insets(0, 0, 0, 0);
@@ -78,7 +79,7 @@ namespace potato {
 		}
 	}
 
-	void NodeEditor::onDrag(Event & event)
+	void NodeEditor::onDrag(ftec::Event & event)
 	{
 		//Redundant? I think so
 		if (!isPressed())

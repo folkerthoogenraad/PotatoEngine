@@ -1,6 +1,6 @@
 #include "EventInput.h"
 
-#include "Event.h"
+#include "engine/Event.h"
 
 #include "engine/Input.h"
 
@@ -115,7 +115,7 @@ namespace potato {
 		}
 	}
 
-	void EventInput::forEach(std::function<void(Event &evt)> function)
+	void EventInput::forEach(std::function<void(ftec::Event &evt)> function)
 	{
 		for (auto &e : m_Events)
 		{

@@ -68,14 +68,16 @@ namespace ftec {
 		delaunay.triangulate(m_Points);
 		voronoi.create(delaunay);
 
+		// No scenes right now TODO
 		for (const auto &l : voronoi.getLegos()) {
-			Engine::getScene()->addEntity(std::make_unique<PointCloudEntity>(l.m_Vertices));
+			//Engine::getScene()->addEntity(std::make_unique<PointCloudEntity>(l.m_Vertices));
 		}
 		//Engine::getScene()->addEntity(std::make_shared<PointCloudEntity>(m_Points));
 	}
 
 
-	Voronoi3DEntity::Voronoi3DEntity()
+	Voronoi3DEntity::Voronoi3DEntity(std::shared_ptr<EngineContext> context)
+		: Entity(context)
 	{
 		
 	}

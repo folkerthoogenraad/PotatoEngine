@@ -21,9 +21,6 @@
     <ClCompile Include="src\potato_ui\EditText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\potato_ui\Event.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\potato_ui\Panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -87,9 +84,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\potato_ui\EditText.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\potato_ui\Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\potato_ui\Panel.h">

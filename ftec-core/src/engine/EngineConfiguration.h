@@ -1,19 +1,20 @@
 #pragma once
 
+#include <string>
+
+#define DEFAULT_GLOBAL_CONFIG_FILE "settings/config.ini"
+
 namespace ftec {
 	struct EngineConfiguration {
-		static int width;
-		static int height;
-		static bool fullscreen;
-		static bool vsync;
-		static int msaa;
-		static int targetfps;
-		static float framesleep;
+		int width;
+		int height;
+		bool fullscreen;
+		bool vsync;
+		int msaa;
+		int targetfps;
+		float framesleep;
 
-		static void init();
-	
 	public:
-		EngineConfiguration() = delete;
-		~EngineConfiguration() = delete;
+		void init(const std::string &filename);
 	};
 }

@@ -14,6 +14,7 @@
 
 namespace ftec {
 
+#if 1
 	static std::set<int> downKeys = std::set<int>();
 	static std::set<int> pressedKeys = std::set<int>();
 	static std::set<int> releasedKeys = std::set<int>();
@@ -33,6 +34,7 @@ namespace ftec {
 	static Vector2f scrollDelta = Vector2f();
 
 	static std::array<Vector2f, 20> mousePressPositions;
+#endif
 
 	Vector2f Input::getMousePosition()
 	{
@@ -63,7 +65,9 @@ namespace ftec {
 		else
 			assert(false);
 
-		Engine::getWindow().setCursorMode(c);
+		// TODO fix input class ):
+
+		//Engine::getWindow().setCursorMode(c);
 	}
 
 
@@ -156,7 +160,7 @@ namespace ftec {
 			mousePosition = newPosition;
 		}
 		else {
-			Engine::getWindow().setMousePosition(mousePosition.x, mousePosition.y);
+			//Engine::getWindow().setMousePosition(mousePosition.x, mousePosition.y);
 		}
 
 	}

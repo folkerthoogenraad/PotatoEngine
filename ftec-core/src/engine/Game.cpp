@@ -9,12 +9,13 @@ namespace ftec {
 
 	}
 
-	Game::~Game() 
+	Game::~Game()
 	{
 
 	}
+
 	bool Game::isCloseRequested()
 	{
-		return Engine::getWindow().isCloseRequested();
+		return m_Context->getWindow().isCloseRequested();
 	}
 }

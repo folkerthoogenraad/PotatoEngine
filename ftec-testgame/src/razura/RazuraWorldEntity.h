@@ -12,7 +12,7 @@ namespace ftec {
 	public:
 		Rectanglef m_Bounds;
 	public:
-		RazuraWorldEntity(Rectanglef rectangle);
+		RazuraWorldEntity(std::shared_ptr<EngineContext> context, Rectanglef rectangle);
 		~RazuraWorldEntity();
 
 		virtual void onStart();

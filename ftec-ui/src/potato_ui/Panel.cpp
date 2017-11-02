@@ -15,9 +15,10 @@
 #include "engine/Keycodes.h"
 
 namespace potato {
-	Panel::Panel()
+	Panel::Panel(std::shared_ptr<ftec::EngineContext> context)
+		:m_Context(context)
 	{
-		m_Font = ftec::Engine::getResourceManager().load<ftec::Font>("fonts/Ubuntu.ttf");
+		m_Font = context->getResourceManager().load<ftec::Font>("fonts/Ubuntu.ttf");
 	}
 
 	Bounds Panel::getInnerBounds() const 
@@ -101,67 +102,67 @@ namespace potato {
 		}
 	}
 
-	void Panel::onClick(Event & evt)
+	void Panel::onClick(ftec::Event & evt)
 	{
 		//Can be multiple events (like, keyboard type enter and stuff)
 	}
 
-	void Panel::onHoverEnter(Event & evt)
+	void Panel::onHoverEnter(ftec::Event & evt)
 	{
 		assert(evt.isMotionEvent());
 	}
 
-	void Panel::onHoverLeave(Event & evt)
+	void Panel::onHoverLeave(ftec::Event & evt)
 	{
 		assert(evt.isMotionEvent());
 	}
 
-	void Panel::onHover(Event & evt)
+	void Panel::onHover(ftec::Event & evt)
 	{
-		assert(evt.getType() == EventType::MOUSE_MOVE);
+		assert(evt.getType() == ftec::EventType::MOUSE_MOVE);
 	}
 
-	void Panel::onDrag(Event & evt)
+	void Panel::onDrag(ftec::Event & evt)
 	{
-		assert(evt.getType() == EventType::MOUSE_DRAG);
+		assert(evt.getType() == ftec::EventType::MOUSE_DRAG);
 	}
 
-	void Panel::onHoverOrDrag(Event & evt)
+	void Panel::onHoverOrDrag(ftec::Event & evt)
 	{
 		assert(evt.isMotionEvent());
 	}
 
-	void Panel::onMouseReleased(Event & evt)
+	void Panel::onMouseReleased(ftec::Event & evt)
 	{
-		assert(evt.getType() == EventType::MOUSE_RELEASED);
+		assert(evt.getType() == ftec::EventType::MOUSE_RELEASED);
 	}
 
-	void Panel::onMousePressed(Event & evt)
+	void Panel::onMousePressed(ftec::Event & evt)
 	{
-		assert(evt.getType() == EventType::MOUSE_PRESSED);
+		assert(evt.getType() == ftec::EventType::MOUSE_PRESSED);
 	}
 
-	void Panel::onKeyTyped(Event & evt)
+	void Panel::onKeyTyped(ftec::Event & evt)
 	{
-		assert(evt.getType() == EventType::KEYBOARD_TYPED);
+		assert(evt.getType() == ftec::EventType::KEYBOARD_TYPED);
 	}
 
-	void Panel::onKeyPressed(Event & evt)
+	void Panel::onKeyPressed(ftec::Event & evt)
 	{
-		assert(evt.getType() == EventType::KEYBOARD_PRESSED);
+		assert(evt.getType() == ftec::EventType::KEYBOARD_PRESSED);
 	}
 
-	void Panel::onKeyReleased(Event & evt)
+	void Panel::onKeyReleased(ftec::Event & evt)
 	{
-		assert(evt.getType() == EventType::KEYBOARD_RELEASED);
+		assert(evt.getType() == ftec::EventType::KEYBOARD_RELEASED);
 	}
 
-	void Panel::onFocusGain(Event & evt)
+	void Panel::onFocusGain(ftec::Event & evt)
 	{
 		//Can be different ways
 	}
 
-	void Panel::onFocusLose(Event & evt)
+	void Panel::onFocusLose(ftec::Event & evt)
 	{
 		//Can be multiple ways
 	}

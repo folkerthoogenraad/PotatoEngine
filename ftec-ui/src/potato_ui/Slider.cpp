@@ -12,9 +12,10 @@
 
 namespace potato {
 
-	static const float SLIDER_BLOCK_SIZE = 16;
+	static const float SLIDER_BLOCK_WIDTH = 10;
 
-	Slider::Slider()
+	Slider::Slider(std::shared_ptr<ftec::EngineContext> context)
+		: Panel(context)
 	{
 		m_Focusable = true;
 	}
@@ -24,43 +25,42 @@ namespace potato {
 		Bounds bounds = getGlobalBounds();
 		Panel::drawSelf(graphics, style);
 
-		graphics.setColor(PotatoColor::lightPrimary);
-		graphics.drawLine(bounds.centerLeft(), bounds.centerRight());
+		graphics.setLineWidth(6.0f);
 
-		graphics.setColor(PotatoColor::primary);
-		graphics.drawRectangle(getSliderBounds(), true);
+		const float hs = SLIDER_BLOCK_WIDTH / 2;
 
-		if (isFocused()) {
-			graphics.setColor(PotatoColor::darkPrimary);
-			graphics.drawRectangle(bounds, false);
-		}
+		auto sliderPosition = bounds.centerLeft()
+			+ ftec::Vector2f(hs, 0)
+			+ ftec::Vector2f(bounds.width() - hs * 2.0f, 0) * m_Value;
+
+		graphics.setColor(style.m_AccentColor);
+		graphics.drawLine(bounds.centerLeft(), sliderPosition);
+
+		graphics.setColor(style.m_DarkBackground);
+		graphics.drawLine(sliderPosition, bounds.centerRight());
+
+		graphics.setLineWidth(2.0f);
+
+		graphics.setColor(style.m_DarkBackground);
+		graphics.drawRectangle(Bounds::centered(sliderPosition.x, sliderPosition.y, SLIDER_BLOCK_WIDTH, bounds.height() * 0.8f), true);
+
+		graphics.setColor(style.m_AccentColor);
+		graphics.drawLine(
+			sliderPosition + ftec::Vector2f(0, bounds.height() * 0.25f), 
+			sliderPosition + ftec::Vector2f(0, -bounds.height() * 0.25f));
 	}
 
-	void Slider::onMousePressed(Event & event)
+	void Slider::onMousePressed(ftec::Event & event)
 	{
-		ftec::Rectanglef blockBounds = getSliderBounds();
-
-		if (blockBounds.contains(ftec::Input::getMousePosition())) {
-			m_SliderHold = true;
-			event.consume();//Event is now consumed (Idk whether or not we need this, but whatever)
-		}
+		onDrag(event);
 	}
 
-	void Slider::onMouseReleased(Event & event)
+	void Slider::onDrag(ftec::Event & event)
 	{
-		m_SliderHold = false;
-	}
-
-	void Slider::onDrag(Event & event)
-	{
-		if (!m_SliderHold)
-			return;
-
 		Bounds bounds = getGlobalBounds();
-		ftec::Rectanglef blockBounds = getSliderBounds();
 
-		const float hs = SLIDER_BLOCK_SIZE / 2;
-		m_Value = ftec::invLerp((float)bounds.left() + hs, (float)bounds.right() - hs, ftec::Input::getMousePosition().x);
+		const float hs = SLIDER_BLOCK_WIDTH / 2;
+		m_Value = ftec::invLerp((float)bounds.left() + hs, (float)bounds.right() - hs, event.getMousePosition().x);
 		m_Value = ftec::clamp(0.f, 1.f, m_Value);
 
 		if (m_Steps > 1) {
@@ -75,17 +75,5 @@ namespace potato {
 	{
 		//TODO change these accoringly
 		return Size(128,32);
-	}
-
-	ftec::Rectanglef Slider::getSliderBounds()
-	{
-		const float s = SLIDER_BLOCK_SIZE;
-		const float hs = SLIDER_BLOCK_SIZE / 2;
-		Bounds bounds = getGlobalBounds();
-
-		ftec::Vector2f center = bounds.center();
-		ftec::Vector2f position = ftec::Vector2f(ftec::lerp((float)bounds.left() + hs, (float)bounds.right() - hs, m_Value), center.y);
-
-		return ftec::Rectanglef(position.x - hs, position.y - hs, s, s);
 	}
 }

@@ -3,19 +3,22 @@
 #include <vector>
 #include <functional>
 
+namespace ftec {
+	class Event;
+}
+
 namespace potato {
 
-	class Event;
 	
 	class EventInput {
 	private:
-		std::vector<Event> m_Events;
+		std::vector<ftec::Event> m_Events;
 	public:
 		EventInput() { poll(); }
 
-		void forEach(std::function<void(Event &evt)> function);
+		void forEach(std::function<void(ftec::Event &evt)> function);
 		
-		std::vector<Event> &getEvents() { return m_Events; }; // ? const? maybe?
+		std::vector<ftec::Event> &getEvents() { return m_Events; }; // ? const? maybe?
 	private:
 		void poll();
 	};

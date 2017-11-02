@@ -5,9 +5,11 @@
 
 #include "PotatoUI.h"
 
-#include "Event.h"
+#include "engine/Event.h"
 #include "LayoutParams.h"
 #include "PotatoStyle.h"
+
+#include "engine/EngineContext.h"
 
 namespace ftec {
 	class Graphics2D;
@@ -39,6 +41,7 @@ namespace potato {
 		ftec::Color32 m_ForegroundColor = ftec::Color32::black();
 
 		std::shared_ptr<ftec::Font> m_Font;
+		std::shared_ptr<ftec::EngineContext> m_Context;
 
 		bool m_Focusable = false;
 		bool m_Opaque = false;
@@ -58,7 +61,7 @@ namespace potato {
 		std::vector<std::shared_ptr<Panel>> m_Children;
 
 	public:
-		Panel();
+		Panel(std::shared_ptr<ftec::EngineContext> context);
 
 		void setOpaque(bool op) { m_Opaque = op; }
 		bool isOpaque() const { return m_Opaque; }
@@ -98,24 +101,24 @@ namespace potato {
 		virtual void onPostEvents();
 
 		//Events that get fired from the panel
-		virtual void onClick(Event &evt);
+		virtual void onClick(ftec::Event &evt);
 
-		virtual void onHoverEnter(Event &evt);
-		virtual void onHoverLeave(Event &evt);
-		virtual void onHover(Event &evt);
+		virtual void onHoverEnter(ftec::Event &evt);
+		virtual void onHoverLeave(ftec::Event &evt);
+		virtual void onHover(ftec::Event &evt);
 
-		virtual void onDrag(Event &evt);
-		virtual void onHoverOrDrag(Event &evt);
+		virtual void onDrag(ftec::Event &evt);
+		virtual void onHoverOrDrag(ftec::Event &evt);
 
-		virtual void onMouseReleased(Event &evt);
-		virtual void onMousePressed(Event &evt);
+		virtual void onMouseReleased(ftec::Event &evt);
+		virtual void onMousePressed(ftec::Event &evt);
 
-		virtual void onKeyTyped(Event &evt);
-		virtual void onKeyPressed(Event &evt);
-		virtual void onKeyReleased(Event &evt);
+		virtual void onKeyTyped(ftec::Event &evt);
+		virtual void onKeyPressed(ftec::Event &evt);
+		virtual void onKeyReleased(ftec::Event &evt);
 
-		virtual void onFocusGain(Event &evt);
-		virtual void onFocusLose(Event &evt);
+		virtual void onFocusGain(ftec::Event &evt);
+		virtual void onFocusLose(ftec::Event &evt);
 
 		virtual void init() {};
 

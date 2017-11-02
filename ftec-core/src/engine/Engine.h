@@ -20,14 +20,14 @@ namespace ftec {
 		static void destroy();
 
 	public:
-		static Scene *getScene();
-		static void setScene(std::unique_ptr<Scene> scene);
+		//static Scene *getScene();
+		//static void setScene(std::unique_ptr<Scene> scene);
 
-		static Window& getWindow();
-		static ResourceManager& getResourceManager();
+		//static Window& getWindow();
+		//static ResourceManager& getResourceManager();
 
-		static void setWindow(std::unique_ptr<Window> win);
-		static void setResourceManager(std::unique_ptr<ResourceManager> res);
+		//static void setWindow(std::unique_ptr<Window> win);
+		//static void setResourceManager(std::unique_ptr<ResourceManager> res);
 
 		
 	};

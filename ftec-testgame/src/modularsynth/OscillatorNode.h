@@ -5,7 +5,7 @@
 namespace modularsynth{
 	class OscillatorNode : public potato::Node {
 	public:
-		OscillatorNode();
+		OscillatorNode(std::shared_ptr<ftec::EngineContext> context);
 
 		void init() override;
 	};

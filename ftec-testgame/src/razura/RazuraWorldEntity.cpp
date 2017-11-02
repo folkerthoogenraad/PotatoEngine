@@ -4,8 +4,8 @@
 
 
 namespace ftec {
-	RazuraWorldEntity::RazuraWorldEntity(Rectanglef rectangle)
-		:m_Bounds(rectangle)
+	RazuraWorldEntity::RazuraWorldEntity(std::shared_ptr<EngineContext> context, Rectanglef rectangle)
+		: Entity(context), m_Bounds(rectangle)
 	{
 	}
 

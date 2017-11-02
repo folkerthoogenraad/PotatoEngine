@@ -9,11 +9,11 @@ namespace potato {
 		int m_Steps = -1;
 		bool m_SliderHold = false;
 	public:
-		Knob();
+		Knob(std::shared_ptr<ftec::EngineContext> context);
 
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 
-		void onDrag(Event &event) override;
+		void onDrag(ftec::Event &event) override;
 
 		float getValue() { return m_Value; }
 		void setValue(float f) { m_Value = f; }

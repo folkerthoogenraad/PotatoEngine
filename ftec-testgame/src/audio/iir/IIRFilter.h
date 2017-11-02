@@ -24,7 +24,7 @@ namespace ftec {
 	public:
 		void setFilter(FilterType type, double filterCutoff, double Q, double peakGain);
 
-		inline float process(float in) {
+		inline double process(double in) {
 			double out = in * a0 + z1;
 			z1 = in * a1 + z2 - b1 * out;
 			z2 = in * a2 - b2 * out;

@@ -11,7 +11,8 @@
 namespace ftec {
 
 
-	TestCanvas::TestCanvas()
+	TestCanvas::TestCanvas(std::shared_ptr<EngineContext> context)
+		: Canvas(context)
 	{
 		m_Focusable = true;
 	}
@@ -37,52 +38,52 @@ namespace ftec {
 		graphics.drawRectangle(Rectanglef::centered(m_Position.x, m_Position.y, 16, 16), true);
 	}
 
-	void TestCanvas::onClick(potato::Event & evt)
+	void TestCanvas::onClick(Event & evt)
 	{
 		m_Clicked = true;
 	}
 
-	void TestCanvas::onHoverEnter(potato::Event & evt)
+	void TestCanvas::onHoverEnter(Event & evt)
 	{
 	}
 
-	void TestCanvas::onHoverLeave(potato::Event & evt)
+	void TestCanvas::onHoverLeave(Event & evt)
 	{
 	}
 
-	void TestCanvas::onHover(potato::Event & evt)
+	void TestCanvas::onHover(Event & evt)
 	{
 	}
 
-	void TestCanvas::onDrag(potato::Event & evt)
+	void TestCanvas::onDrag(Event & evt)
 	{
 		m_Position = evt.getMousePosition();
 		m_Position.x = clamp((float)localbounds().left(), (float)localbounds().right(), m_Position.x);
 		m_Position.y = clamp((float)localbounds().top(), (float)localbounds().bottom(), m_Position.y);
 	}
 
-	void TestCanvas::onHoverOrDrag(potato::Event & evt)
+	void TestCanvas::onHoverOrDrag(Event & evt)
 	{
 	}
 
-	void TestCanvas::onMouseReleased(potato::Event & evt)
+	void TestCanvas::onMouseReleased(Event & evt)
 	{
 	}
 
-	void TestCanvas::onMousePressed(potato::Event & evt)
+	void TestCanvas::onMousePressed(Event & evt)
 	{
 	}
 
-	void TestCanvas::onKeyTyped(potato::Event & evt)
+	void TestCanvas::onKeyTyped(Event & evt)
 	{
 		m_Typed = true;
 	}
 
-	void TestCanvas::onKeyPressed(potato::Event & evt)
+	void TestCanvas::onKeyPressed(Event & evt)
 	{
 	}
 
-	void TestCanvas::onKeyReleased(potato::Event & evt)
+	void TestCanvas::onKeyReleased(Event & evt)
 	{
 	}
 

@@ -11,14 +11,14 @@ namespace potato {
 		std::function<void(int)> m_Callback;
 		int m_SelectedIndex = -1;
 	public:
-		List();
+		List(std::shared_ptr<ftec::EngineContext> context);
 
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		Size getPreferredSize() override;
 
-		void onHoverOrDrag(Event &event) override;
-		void onHoverLeave(Event &event) override;
-		void onClick(Event &event) override;
+		void onHoverOrDrag(ftec::Event &event) override;
+		void onHoverLeave(ftec::Event &event) override;
+		void onClick(ftec::Event &event) override;
 
 		void setSelectionCallback(std::function<void(int)> function);
 

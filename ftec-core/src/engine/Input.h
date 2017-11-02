@@ -3,6 +3,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include "math/Vector2.h"
 
 #include "Keycodes.h" //This is not needed, but its just better for everyone that uses input anyway. Will remove later on, probalby
 
@@ -22,6 +23,27 @@ namespace ftec {
 	};
 
 	class Input {
+#if 0
+		std::set<int> downKeys = std::set<int>();
+		std::set<int> pressedKeys = std::set<int>();
+		std::set<int> releasedKeys = std::set<int>();
+
+		std::vector<TypeInput> typedKeys = std::vector<TypeInput>();
+
+		std::set<int> downMouse = std::set<int>();
+		std::set<int> pressedMouse = std::set<int>();
+		std::set<int> releasedMouse = std::set<int>();
+
+		CursorMode cursorMode = CursorMode::NORMAL;
+		bool disabled = false;
+
+		std::string keystring = "";
+		Vector2f mousePosition = Vector2f();
+		Vector2f mouseDelta = Vector2f();
+		Vector2f scrollDelta = Vector2f();
+
+		std::array<Vector2f, 20> mousePressPositions;
+#endif
 	public:
 		Input() = delete;
 

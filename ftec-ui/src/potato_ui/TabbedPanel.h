@@ -12,7 +12,7 @@ namespace potato {
 		std::vector<std::string> m_TabTitles;
 
 	public:
-		TabbedPanel(const std::vector<std::pair<std::string, std::shared_ptr<Panel>>> &tabs = {});
+		TabbedPanel(std::shared_ptr<ftec::EngineContext> context, const std::vector<std::pair<std::string, std::shared_ptr<Panel>>> &tabs = {});
 
 		void updateLayout() override;
 		void addTab(const std::string &name, std::shared_ptr<Panel> panel);
@@ -21,7 +21,7 @@ namespace potato {
 		void draw(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 
-		void onClick(Event &evt);
+		void onClick(ftec::Event &evt);
 
 		void setUI(PotatoUI *ui);
 		std::vector<std::shared_ptr<Panel>> getChildren() const override;

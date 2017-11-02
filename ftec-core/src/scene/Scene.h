@@ -8,6 +8,8 @@
 
 #include "collision/CollisionWorld.h"
 
+#include "engine/EngineContext.h"
+
 namespace ftec {
 
 	class Entity;
@@ -28,6 +30,7 @@ namespace ftec {
 		std::vector<Light> m_Lights;
 
 		std::unique_ptr<Graphics2D> m_Graphics2D;
+		std::shared_ptr<EngineContext> m_Context;
 		
 		enum SceneMode {
 			GRAPHICS_2D,
@@ -43,7 +46,7 @@ namespace ftec {
 
 		SceneMode m_Mode;
 	public:
-		Scene();
+		Scene(std::shared_ptr<EngineContext> context);
 		virtual ~Scene() = default;
 
 		virtual void update();

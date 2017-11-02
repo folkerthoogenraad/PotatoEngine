@@ -2,5 +2,5 @@
 
 namespace ftec {
 	CallbackHandle::CallbackHandle(CallbackHandler<void()>* h) : m_Handler(h) {}
-	CallbackHandle::~CallbackHandle() { m_Handler->unregisterCallback(this); }
+	CallbackHandle::~CallbackHandle() { if(m_Handler) m_Handler->unregisterCallback(this); }
 }

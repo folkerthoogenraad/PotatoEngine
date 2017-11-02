@@ -1,5 +1,8 @@
 #pragma once
 
+#include "engine/EngineContext.h"
+#include <memory>
+
 /*
 The Entity class.
 
@@ -21,8 +24,9 @@ namespace ftec {
 	class Entity {
 	protected:
 		Scene *m_Scene;
+		std::shared_ptr<EngineContext> m_Context;
 	public:
-		Entity() = default;
+		Entity(std::shared_ptr<EngineContext> context) : m_Context(context) {};
 		virtual ~Entity() = default;
 
 		virtual void onStart() {};

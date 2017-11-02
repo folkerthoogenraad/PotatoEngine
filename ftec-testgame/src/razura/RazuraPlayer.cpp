@@ -27,10 +27,10 @@
 #include "logger/log.h"
 
 namespace ftec {
-	RazuraPlayer::RazuraPlayer()
-		: m_Position(0, 0)
+	RazuraPlayer::RazuraPlayer(std::shared_ptr<EngineContext> context)
+		: Entity(context), m_Position(0, 0)
 	{
-		m_Sprite = Sprite(Engine::getResourceManager().load<Texture>("sprites/player.png"));
+		m_Sprite = Sprite(context->getResourceManager().load<Texture>("sprites/player.png"));
 
 		m_Sprite.offset() = Vector2f(0.5f, 0.5f);
 	}

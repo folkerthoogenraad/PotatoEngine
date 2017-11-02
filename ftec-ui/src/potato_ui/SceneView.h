@@ -5,7 +5,7 @@
 namespace potato {
 	class SceneView : public Panel {
 	public:
-		SceneView();
+		SceneView(std::shared_ptr<ftec::EngineContext> context);
 		~SceneView() = default;
 
 		virtual void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;

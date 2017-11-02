@@ -8,7 +8,7 @@
 #include "logger/log.h"
 
 namespace potato {
-	Button::Button(const std::string &text) : m_Text(text)
+	Button::Button(std::shared_ptr<ftec::EngineContext> context, const std::string &text) : Panel(context), m_Text(text)
 	{
 		m_Focusable = true;
 	}
@@ -21,29 +21,28 @@ namespace potato {
 
 		Bounds bounds = getGlobalBounds();
 
-		const ftec::Sprite &background = style.getSprite(ftec::const_hash("ButtonBackground"));
-
-		if (isHoveringSelf()) {
-			if (isPressed()) {
-				graphics.setColor(style.getColor(ftec::const_hash(COLOR_PRIMARY_DARK)));
-			}
-			else {
-				graphics.setColor(style.getColor(ftec::const_hash(COLOR_PRIMARY_MEDIUM)));
-			}
+		if (isPressed()) {
+			graphics.setColor(style.m_AccentColor);
 		}
 		else {
-			graphics.setColor(style.getColor(ftec::const_hash(COLOR_PRIMARY_MEDIUM)));
+			graphics.setColor(style.m_DarkBackground);
 		}
 
-		graphics.drawSprite(background, bounds);
+		graphics.drawRectangle(bounds, true);
 
-		graphics.setColor(style.getColor(ftec::const_hash(COLOR_TEXT_LIGHT)));
+		if (isPressed()) {
+			graphics.setColor(style.m_DarkBackground);
+		}
+		else {
+			graphics.setColor(style.m_PrimaryColor);
+		}
 
 		graphics.setVerticalAlign(ftec::FontAlign::CENTER);
 		graphics.setHorizontalAlign(ftec::FontAlign::CENTER);
 
 		graphics.drawString(m_Text, bounds.center());
 	}
+
 	Size Button::getPreferredSize()
 	{
 		//TODO change these values based on the text and stuff

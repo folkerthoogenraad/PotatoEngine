@@ -21,13 +21,14 @@ namespace ftec {
 	{
 		game.update();
 		
-		if (getScene())
-			getScene()->update();
+		// TODO reimplements scenes and shit (maybe on Game level ?)
+		//if (getScene())
+		//	getScene()->update();
 		
 		game.render();
 
-		if (getScene())
-			getScene()->render();
+		//if (getScene())
+		//	getScene()->render();
 	}
 
 	void Engine::destroy()
@@ -37,6 +38,7 @@ namespace ftec {
 		manager.reset();
 	}
 
+#if 0
 	Scene *Engine::getScene()
 	{
 		return currentScene.get();
@@ -66,6 +68,6 @@ namespace ftec {
 	{
 		manager = std::move(res);
 	}
-
+#endif
 	
 }

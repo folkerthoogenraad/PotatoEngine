@@ -28,6 +28,8 @@ namespace ftec {
 	struct Material;
 	struct Material2D;
 
+	class EngineContext;
+
 	//Stuff that should not be used outside the graphics stuff
 	struct EnqueuedMesh;
 	template <typename T> struct ColorType;
@@ -51,7 +53,7 @@ namespace ftec {
 
 	public:
 		//Begins drawing, clears all buffers
-		static void begin();
+		static void begin(std::shared_ptr<EngineContext> context);
 
 		//Enqueues the mesh for rendering
 		static void enqueueMesh(const Mesh *mesh, const Material *material, const Matrix4f &modelMatrix, Layer layer = LAYER_ALL, const InstanceList* list = nullptr);
@@ -75,6 +77,6 @@ namespace ftec {
 		static void enqueueLight(const Light *light);
 
 		//Ends drawing, performs all draw calls and stuff
-		static void end();
+		static void end(std::shared_ptr<EngineContext> context);
 	};
 }

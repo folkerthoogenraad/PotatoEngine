@@ -47,7 +47,7 @@ namespace ftec{
 	double audioSawtooth(double input)
 	{
 		double v = fmod(input, 1);
-		return lerp(-1.0, 1.0, v);
+		return v * 2 - 1;
 	}
 
 	double audioTriangle(double input)

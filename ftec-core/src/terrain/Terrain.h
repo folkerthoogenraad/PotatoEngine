@@ -3,6 +3,8 @@
 #include <memory>
 #include <vector>
 
+#include "engine/EngineContext.h"
+
 namespace ftec {
 
 	class Mesh;
@@ -25,8 +27,10 @@ namespace ftec {
 		std::shared_ptr<Mesh> m_Mesh; //TODO see comment
 		std::vector<float> m_Data;
 
+		std::shared_ptr<EngineContext> m_Context;
+
 	public:
-		Terrain(int width, int height, float resolution = 1);
+		Terrain(std::shared_ptr<EngineContext> context, int width, int height, float resolution = 1);
 
 		void create();
 
