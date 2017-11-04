@@ -15,7 +15,7 @@ namespace potato {
 		Size getPreferredSize() override;
 
 		inline bool isChecked() { return m_Checked; };
-		inline void setChecked(bool c) { m_Checked = c; };
+		inline void setChecked(bool c) { m_Checked = c; repaint(); };
 
 		std::string &text() { return m_Text; }
 		const std::string &text() const { return m_Text; }

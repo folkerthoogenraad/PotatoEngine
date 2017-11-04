@@ -45,7 +45,7 @@ namespace ftec {
 				graphics.drawLine(previousEnd, arc.getArcStart());
 				drawStairArc(graphics, arc);
 
-				if (Input::isKeyDown(KEY_SPACE)) {
+				{ //Only when space is down? not possible from here, no context object
 					graphics.setColor(Color32::blue());
 					graphics.drawRectangle(Rectanglef(
 						arc.getArcStart().x - 4,
@@ -79,12 +79,15 @@ namespace ftec {
 	{
 		if (!isFocused())
 			return;
+
+		const Input& input = m_Context->getInput();
+		
 		auto getClosestIndex = [&]() -> int {
 			int closest = 0;
-			float distance = (alg.m_Vertices.front().m_Position - Input::getMousePosition()).magnitude();
+			float distance = (alg.m_Vertices.front().m_Position - input.getMousePosition()).magnitude();
 
 			for (int i = 1; i < alg.m_Vertices.size(); i++) {
-				float d = (alg.m_Vertices[i].m_Position - Input::getMousePosition()).magnitude();
+				float d = (alg.m_Vertices[i].m_Position - input.getMousePosition()).magnitude();
 				if (d < distance) {
 					closest = i;
 					distance = d;
@@ -92,24 +95,24 @@ namespace ftec {
 			}
 			return closest;
 		};
-		if (Input::isMouseButtonPressed(MOUSE_BUTTON_1)) {
+		if (input.isMouseButtonPressed(MOUSE_BUTTON_1)) {
 			StairVertex vert{
-				Input::getMousePosition(),
+				input.getMousePosition(),
 				d
 			};
 			alg.m_Vertices.push_back(vert);
 
 		}
 
-		if (alg.m_Vertices.size() > 0 && Input::isMouseButtonDown(MOUSE_BUTTON_3)) {
-			alg.m_Vertices[getClosestIndex()].m_Position = Input::getMousePosition();
+		if (alg.m_Vertices.size() > 0 && input.isMouseButtonDown(MOUSE_BUTTON_3)) {
+			alg.m_Vertices[getClosestIndex()].m_Position = input.getMousePosition();
 		}
 
-		if (Input::isMouseButtonReleased(MOUSE_BUTTON_2)) {
+		if (input.isMouseButtonReleased(MOUSE_BUTTON_2)) {
 			alg.m_Vertices.clear();
 		}
 
-		if (Input::isKeyPressed(KEY_ENTER)) {
+		if (input.isKeyPressed(KEY_ENTER)) {
 			for (int i = 1; i + 1 < alg.m_Vertices.size(); ++i) {
 				auto &previous = alg.m_Vertices[i - 1];
 				auto &current = alg.m_Vertices[i];
@@ -129,11 +132,11 @@ namespace ftec {
 			}
 		}
 
-		if (Input::getScroll().y != 0 && alg.m_Vertices.size() > 0) {
-			alg.m_Vertices[getClosestIndex()].m_Range += Input::getScroll().y * 5;
+		if (input.getScroll().y != 0 && alg.m_Vertices.size() > 0) {
+			alg.m_Vertices[getClosestIndex()].m_Range += input.getScroll().y * 5;
 		}
 
-		z = Time::sinTime / 2 + 0.5f;
+		z = m_Context->getTime().sinTime / 2 + 0.5f;
 	}
 
 	void StairArcCanvas::drawSelf(Graphics2D & graphics, const potato::PotatoStyle &style)

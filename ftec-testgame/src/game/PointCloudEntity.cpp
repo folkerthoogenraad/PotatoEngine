@@ -123,20 +123,23 @@ namespace ftec {
 
 	void PointCloudEntity::update()
 	{// || Input::isKeyTyped(KEY_R) || Input::isKeyTyped(KEY_E) || 
-		if ((Input::isKeyTyped(KEY_SPACE) || Input::isKeyTyped(KEY_ENTER)) && m_Time != -1) {
+
+		const Input &input = m_Context->getInput();
+
+		if ((input.isKeyPressed(KEY_SPACE) || input.isKeyReleased(KEY_ENTER)) && m_Time != -1) {
 			m_Render = false;
 		}
 
-		if (Input::isKeyDown(KEY_N)) {
-			m_Time += Time::deltaTime * 4;
+		if (input.isKeyDown(KEY_N)) {
+			m_Time += m_Context->getTime().deltaTime * 4;
 		}
 		else {
-			m_Time -= Time::deltaTime * 4;
+			m_Time -= m_Context->getTime().deltaTime * 4;
 		}
 
-		if (Input::isKeyTyped(KEY_UP)) {
+		if (input.isKeyPressed(KEY_UP)) {
 			away += 0.25f;
-		}if(Input::isKeyTyped(KEY_DOWN)) {
+		}if(input.isKeyPressed(KEY_DOWN)) {
 			away -= 0.25f;
 		}
 
@@ -157,7 +160,7 @@ namespace ftec {
 
 			Matrix4f rotation = Matrix4f::translation(-center);// Matrix4f::rotationY(amount * 37) * Matrix4f::rotationX(amount * 27) * Matrix4f::translation(-center);
 
-			if (Input::isKeyDown(KEY_T)){
+			if (m_Context->getInput().isKeyDown(KEY_T)) {
 
 				model =  Matrix4f::translation(this->m_Position + center);
 				

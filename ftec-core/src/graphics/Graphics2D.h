@@ -11,6 +11,9 @@
 
 #include <memory>
 
+//TODO fix this somewhere else or something, i dunno man
+#define GRAPHICS_COPY_SWAP false
+
 namespace ftec {
 
 	class Sprite;

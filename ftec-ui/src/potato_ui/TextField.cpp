@@ -14,6 +14,7 @@ namespace potato {
 	void TextField::onKeyTyped(ftec::Event & event)
 	{
 		m_EditText.keyboardInput(event);
+		repaint();
 	}
 
 	void TextField::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
@@ -70,6 +71,14 @@ namespace potato {
 
 		//TODO see top of function
 		//graphics.resetClip();
+	}
+	void TextField::onFocusGain(ftec::Event & event)
+	{
+		repaint();
+	}
+	void TextField::onFocusLose(ftec::Event & event)
+	{
+		repaint();
 	}
 	Size TextField::getPreferredSize()
 	{

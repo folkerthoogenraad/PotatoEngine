@@ -53,7 +53,7 @@ namespace potato {
 		//Optional parent
 		//shared ptr from this? maybe?
 		Panel *m_Parent = nullptr;
-		PotatoUI *m_UI;
+		PotatoUI *m_UI = nullptr;
 
 		std::string m_ID = "";
 
@@ -149,6 +149,7 @@ namespace potato {
 		//Layout stuff
 		void requestUpdateLayout();
 		virtual void updateLayout();
+		void repaint();
 
 		void setParent(Panel *parent);
 		Panel *getParent() { return m_Parent; }

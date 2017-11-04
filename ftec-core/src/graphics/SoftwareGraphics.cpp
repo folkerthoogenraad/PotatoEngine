@@ -16,7 +16,7 @@ namespace ftec {
 			int dx = sign(delta.x);
 			
 			for (int x = 0; x != delta.x; x += dx) {
-				drawPixel(paint, Vector2i(start.x + x, start.y + floor(y)));
+				drawPixel(paint, Vector2i(start.x + x, start.y + (int) floor(y)));
 				y += dy;
 			}
 		}
@@ -29,7 +29,7 @@ namespace ftec {
 			int dy = sign(delta.y);
 
 			for (int y = 0; y != delta.y; y += dy){
-				drawPixel(paint, Vector2i(start.x + floor(x), start.y + y));
+				drawPixel(paint, Vector2i(start.x + (int) floor(x), start.y + y));
 				x += dx;
 			}
 		}

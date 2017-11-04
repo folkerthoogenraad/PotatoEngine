@@ -83,7 +83,7 @@ namespace ftec {
 		// Create or update the data
 		if (m_Vertices.size() > m_VBOSize) {
 			glBufferData(GL_ARRAY_BUFFER, m_Vertices.size() * sizeof(SpriteBatchVertex), (void*)&m_Vertices[0], GL_DYNAMIC_DRAW);
-			m_VBOSize = m_Vertices.size();
+			m_VBOSize = (unsigned int) m_Vertices.size();
 		}
 		else {
 			glBufferSubData(GL_ARRAY_BUFFER, 0, m_Vertices.size() * sizeof(SpriteBatchVertex), (void*)&m_Vertices[0]);

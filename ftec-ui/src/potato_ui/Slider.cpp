@@ -67,6 +67,7 @@ namespace potato {
 			int s = m_Steps - 1;
 			m_Value = ftec::round(m_Value * s) / s;
 		}
+		repaint();
 
 		event.consume();
 	}

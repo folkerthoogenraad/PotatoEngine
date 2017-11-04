@@ -58,6 +58,7 @@ namespace potato {
 
 	void List::onHoverOrDrag(ftec::Event & event)
 	{
+		repaint();
 		// Dragging can be out of the bounds
 		if (!inBounds(event.getMousePosition())) {
 			m_SelectedIndex = -1;
@@ -72,6 +73,7 @@ namespace potato {
 	void List::onHoverLeave(ftec::Event & event)
 	{
 		m_SelectedIndex = -1;
+		repaint();
 	}
 
 	void List::onClick(ftec::Event & event)

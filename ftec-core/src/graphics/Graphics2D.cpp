@@ -38,12 +38,11 @@ namespace ftec {
 
 		m_Material = std::make_shared<Material2D>(context->getResourceManager().load<Shader>("shaders/default2d"));
 
-		m_Material->m_TextureMaps[0] = m_WhiteTexture;
+		setTexture(m_WhiteTexture);
 
 		m_Color = Color32(255, 255, 255, 255);
 
 		batch.setRequestFlush(std::bind(&Graphics2D::flush, this));
-		batch.texureIndex(1);
 	}
 
 	Graphics2D::~Graphics2D()
@@ -475,27 +474,33 @@ namespace ftec {
 
 	void Graphics2D::flush()
 	{
-		if (batch.count() <= 0) {
-			return;
-		}
-
-		//Just for debugging actually
-		calls++;
 
 		float bufferWidth = m_Context->getWindow().getWidth();
 		float bufferHeight = m_Context->getWindow().getHeight();
 
 		//TODO Is Graphics2D responseable for this?
-		Rectanglei clipping(0, 0, (int)bufferWidth, (int)bufferHeight);
+		Rectanglei clipping(
+			(int)(m_Camera.m_ClippingRectangle.x() * bufferWidth),
+			(int)(m_Camera.m_ClippingRectangle.y() * bufferHeight),
+			(int)(m_Camera.m_ClippingRectangle.width() * bufferWidth),
+			(int)(m_Camera.m_ClippingRectangle.height() * bufferHeight));
+
 		Rectanglei viewport(
-			(int)(m_Camera.m_Viewport.x() * bufferWidth), 
+			(int)(m_Camera.m_Viewport.x() * bufferWidth),
 			(int)(m_Camera.m_Viewport.y() * bufferHeight),
 			(int)(m_Camera.m_Viewport.width() * bufferWidth),
-			(int)(m_Camera.m_Viewport.height() * bufferHeight)
-		);
+			(int)(m_Camera.m_Viewport.height() * bufferHeight));
 
 		Renderer::clip(clipping, m_Context);
 		Renderer::viewport(viewport, m_Context);
+
+		if (batch.count() <= 0) {
+			return;
+		}
+
+		// TODO this is not at all thread safe at the moment. Please Fix ~Folkert!
+		//Just for debugging actually
+		calls++;
 
 		GraphicsState::m_Material = m_Material.get();
 		GraphicsState::matrixModel = Matrix4f::identity();

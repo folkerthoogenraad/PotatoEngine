@@ -24,10 +24,7 @@ namespace potato {
 		auto center = b.center();
 		auto radius = ftec::min(b.width(), b.height()) / 2.0f;
 
-		float v = m_Value;
-
-		if(m_Steps > 1) 
-			v = ftec::floor(m_Value * m_Steps) / m_Steps;
+		float v = getSteppedValue();
 
 		graphics.setCirclePrecision(64);
 
@@ -70,8 +67,25 @@ namespace potato {
 
 	void Knob::onDrag(ftec::Event & event)
 	{
-		m_Value += event.getMouseDelta().y / SENSITIVITY;
+		float g = getSteppedValue();
+
+		float amount = event.getMouseDelta().y / SENSITIVITY;
+		m_Value += amount;
 		m_Value = ftec::clamp(0.0f, 1.0f, m_Value);
+
+		float v = getSteppedValue();
+
+		if (v != g)
+			repaint();
+	}
+
+	float Knob::getSteppedValue() const
+	{
+		float v = m_Value;
+
+		if (m_Steps > 1)
+			v = ftec::floor(m_Value * m_Steps) / m_Steps;
+		return v;
 	}
 
 	Size Knob::getPreferredSize()

@@ -36,6 +36,7 @@ namespace ftec {
 
 		Layer m_LayerMask;
 		Rectanglef m_Viewport;
+		Rectanglef m_ClippingRectangle;
 
 		std::shared_ptr<RenderBuffer> m_RenderTarget;
 

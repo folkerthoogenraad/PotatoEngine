@@ -40,7 +40,7 @@ namespace potato {
 	{
 		Bounds bounds = getGlobalBounds();
 		Bounds title = bounds;
-		title.height() = BAR_HEIGHT;
+		title.height() = (int)BAR_HEIGHT;
 
 		auto c = ftec::Color32::white();
 		c.a = (uint8_t) 200;
@@ -82,8 +82,8 @@ namespace potato {
 			bounds.position.x = 8;
 			bounds.size.width -= 16;
 
-			bounds.position.y = BAR_HEIGHT;
-			bounds.height() -= BAR_HEIGHT;
+			bounds.position.y = (int)BAR_HEIGHT;
+			bounds.height() -= (int)BAR_HEIGHT;
 
 			// Exact, there is nothing we can do
 			if (m_Content->layoutparams().m_WidthScaling == LayoutParams::EXACT)
@@ -107,7 +107,7 @@ namespace potato {
 
 		size_t s = 0;
 		for (auto in : m_Inputs){
-			Bounds b = Bounds::centered(0, 32 * s + BAR_HEIGHT + 16, 16, 16);
+			Bounds b = Bounds::centered(0, 32 * (int)s + (int)BAR_HEIGHT + 16, 16, 16);
 
 			in->localbounds() = b;
 
@@ -117,7 +117,7 @@ namespace potato {
 
 		s = 0;
 		for (auto in : m_Outputs) {
-			Bounds b = Bounds::centered(bounds.width(), 32 * s + BAR_HEIGHT + 16, 16, 16);
+			Bounds b = Bounds::centered(bounds.width(), 32 * (int)s + (int)BAR_HEIGHT + 16, 16, 16);
 
 			in->localbounds() = b;
 
@@ -240,7 +240,7 @@ namespace potato {
 		if (isPressed()) {
 			graphics.drawAutoBezier(
 				b.center(),
-				ftec::Input::getMousePosition()
+				m_Context->getInput().getMousePosition() // TODO Remove references to this statefull stuff
 			);
 		}
 
@@ -284,7 +284,7 @@ namespace potato {
 
 	Size NodeNotch::getPreferredSize()
 	{
-		return Size(RADIUS * 2, RADIUS * 2);
+		return Size((int)(RADIUS * 2), (int)(RADIUS * 2));
 	}
 
 	void NodeNotch::setNode(std::weak_ptr<Node> node)

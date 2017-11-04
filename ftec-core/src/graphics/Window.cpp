@@ -16,16 +16,17 @@ namespace ftec {
 
 	}
 
-	void Window::update()
-	{
-		poll();
-		swap();
-	}
-
-	void Window::poll()
+	void Window::poll(std::vector<Event> &events)
 	{
 		m_Resized = false;
+		m_Events.clear();
+
 		glfwPollEvents();
+		
+		// TODO return the events as a thing now.
+
+		events = m_Events;
+
 		m_CloseRequested = glfwWindowShouldClose(m_Window) > 0;
 	}
 
@@ -62,6 +63,7 @@ namespace ftec {
 	{
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		glfwWindowHint(GLFW_SAMPLES, m_MSAA);
+		glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
 		m_Window = glfwCreateWindow(m_Width, m_Height, m_Name.c_str(), m_Fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 		if (!m_Window)
 		{
@@ -82,28 +84,62 @@ namespace ftec {
 	}
 
 	//The cursor position callback
-	void cursor_position_callback(GLFWwindow* glfwWindow, double xpos, double ypos)
+	void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 	{
-		//TODO remove legacy
-		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
-		if (wp) {
-			Window &window = *wp;
+		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		Event e = wp->createDefaultEvent();
 
-			window.m_MouseX = xpos;
-			window.m_MouseY = ypos;
+		Vector2f position = Vector2f((float) xpos, (float) ypos);
+		
+		wp->m_MouseDelta = position - wp->m_MousePosition;
+		wp->m_MousePosition = position;
+
+		e.m_MouseDelta = wp->m_MouseDelta;
+		e.m_MousePosition = wp->m_MousePosition;
+
+		if (wp->m_MouseDown.size() == 0) {
+			e.m_EventType = EventType::MOUSE_MOVE;
+
+			wp->m_Events.push_back(e);
 		}
-		Input::handleCursor((float) xpos, (float) ypos);
+		else {
+			e.m_EventType = EventType::MOUSE_DRAG;
+			for (auto i : wp->m_MouseDown) {
+				e.m_MouseButton = i;
+				wp->m_Events.push_back(e);
+			}
+		}
 	 }
 
 
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		Input::handleKey(key, scancode, action, mods);
+		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		Event e = wp->createDefaultEvent();
+		e.m_KeyCode = key;
+
+		if (action == GLFW_PRESS) {
+			wp->m_KeyDown.insert(key);
+			e.m_EventType = EventType::KEYBOARD_PRESSED;
+			wp->m_Events.push_back(e);
+		}
+		if (action == GLFW_RELEASE) {
+			wp->m_KeyDown.erase(key);
+			e.m_EventType = EventType::KEYBOARD_RELEASED;
+			wp->m_Events.push_back(e);
+		}
+
 	}
 
 	void type_callback(GLFWwindow * window, unsigned int unicode)
 	{
-		Input::handleTyped(unicode);
+		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		Event e = wp->createDefaultEvent();
+
+		e.m_EventType = EventType::KEYBOARD_TYPED;
+		e.m_UnicodeKey = unicode;
+
+		wp->m_Events.push_back(e);
 	}
 	void resize_callback(GLFWwindow * window, int width, int height)
 	{
@@ -117,12 +153,47 @@ namespace ftec {
 
 	void scroll_callback(GLFWwindow * window, double xoffset, double yoffset)
 	{
-		Input::handleScroll((float)xoffset, (float)yoffset);
+		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		Event e = wp->createDefaultEvent();
+
+		e.m_EventType = EventType::MOUSE_SCROLL;
+		e.m_ScrollDirection.x = (float)xoffset;
+		e.m_ScrollDirection.y = (float)yoffset;
+
+		wp->m_Events.push_back(e);
 	}
 
 
 	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 	{
-		Input::handleMouse(button, action, mods);
+		Window *wp = static_cast<Window*>(glfwGetWindowUserPointer(window));
+		Event e = wp->createDefaultEvent();
+
+		if (action == GLFW_PRESS) {
+			wp->m_MouseDown.insert(button);
+			e.m_EventType = EventType::MOUSE_PRESSED;
+		}
+		if (action == GLFW_RELEASE) {
+			wp->m_MouseDown.erase(button);
+			e.m_EventType = EventType::MOUSE_RELEASED;
+		}
+
+		e.m_MouseButton = button;
+
+		wp->m_Events.push_back(e);
+	}
+
+	Event Window::createDefaultEvent()
+	{
+		Event event;
+
+		event.m_MousePosition = m_MousePosition;
+		event.m_MouseDelta = m_MouseDelta;
+
+		event.m_AltDown = false;
+		event.m_CrtlDown = false;
+		event.m_ShiftDown = false;
+
+		return event;
 	}
 }

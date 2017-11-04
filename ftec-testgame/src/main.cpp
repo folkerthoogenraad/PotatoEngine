@@ -216,18 +216,21 @@ int main(void)
 
 	//std::thread d(doAudio);
 
-	std::thread s([]() {
-		//ftec::DesktopEngine::create<ftec::Razura>();
-	});
+	std::array<std::thread, 1> threads;
 
-	std::thread b([]() {
-		ftec::DesktopEngine::create<ftec::Razura>();
-	});
+	for (int i = 0; i < threads.size(); i++) {
+		threads[i] = std::thread([]() {
+			ftec::DesktopEngine::create<ftec::Razura>();
+		});
+	}
+	
+	for (int i = 0; i < threads.size(); i++) {
+		threads[i].join();
+	}
+	
+	glfwTerminate();
 
-	s.join();
-	b.join();
-
-	//d.join();
+	WAIT();
 
 	return 0;
 }

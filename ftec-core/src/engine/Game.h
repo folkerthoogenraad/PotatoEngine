@@ -21,5 +21,6 @@ namespace ftec {
 
 		std::shared_ptr<EngineContext> getContext() { return m_Context; }
 		const std::shared_ptr<EngineContext> getContext() const { return m_Context; }
+		virtual bool shouldSwapBuffers() const { return false; }
 	};
 }

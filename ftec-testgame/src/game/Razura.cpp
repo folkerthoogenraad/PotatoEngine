@@ -20,8 +20,8 @@ namespace ftec {
 
 	void Razura::render()
 	{
-		Renderer::clear();
-		m_UI->render();
+		if(m_UI->shouldRepaint())
+			m_UI->render();
 	}
 
 	void Razura::init(std::shared_ptr<EngineContext> context)
@@ -43,4 +43,11 @@ namespace ftec {
 
 	void Razura::destroy()
 	{ }
+	bool Razura::shouldSwapBuffers() const
+	{
+		if (!m_UI)
+			return false;
+
+		return m_UI->hasChanged();
+	}
 }

@@ -152,9 +152,20 @@ namespace ftec {
 
 	template<typename T>
 	bool contains(const Rectangle<T> &c, const Vector2<T> &point) {
-		//Oh boy, y up vs y down
+		// Oh boy, y up vs y down
+		// This might be very wrong...
 		return !(point.x <= c.left() && point.x >= c.right() 
 			&& point.y <= c.bottom() && point.y >= c.top());
+	}
+
+
+	template<typename T>
+	bool contains(const Rectangle<T> &c, const Rectangle<T> &inside) {
+		if (c.left() > inside.left()) return false;
+		if (c.right() < inside.right()) return false;
+		if (c.top() > inside.top()) return false;
+		if (c.bottom() < inside.bottom()) return false;
+		return true;
 	}
 	
 	template<typename T>

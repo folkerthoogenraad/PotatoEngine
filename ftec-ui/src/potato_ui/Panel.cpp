@@ -16,7 +16,7 @@
 
 namespace potato {
 	Panel::Panel(std::shared_ptr<ftec::EngineContext> context)
-		:m_Context(context)
+		:m_Context(context), m_UI(nullptr)
 	{
 		m_Font = context->getResourceManager().load<ftec::Font>("fonts/Ubuntu.ttf");
 	}
@@ -239,6 +239,14 @@ namespace potato {
 	{
 		for (auto child : getChildren()) {
 			child->updateLayout();
+		}
+		repaint();
+	}
+
+	void Panel::repaint()
+	{
+		if (m_UI) {
+			m_UI->repaint(getGlobalOutline());
 		}
 	}
 

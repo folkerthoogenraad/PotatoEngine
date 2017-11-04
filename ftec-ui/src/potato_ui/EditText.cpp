@@ -159,7 +159,7 @@ namespace potato {
 		}
 
 		//Input text
-		if (ftec::Input::getKeyString().length() > 0 && evt.hasUnicodeKey()) {
+		{ // TODO check this shit?
 			insertAtCursor(std::string() + (char)evt.getUnicodeKey());
 		}
 

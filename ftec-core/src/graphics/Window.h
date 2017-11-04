@@ -2,6 +2,12 @@
 
 #include <string>
 
+#include <set>
+#include <vector>
+#include <array>
+
+#include "engine/Event.h"
+
 struct GLFWwindow;
 
 namespace ftec {
@@ -19,12 +25,21 @@ namespace ftec {
 		bool m_CloseRequested;
 		bool m_Resized;
 		bool m_vSync;
+
+		// Stuff we need for handling events and creating the event list
+		std::set<int> m_KeyDown;
+		std::set<int> m_MouseDown;
+
+		std::array<Vector2f, 0x0F> m_MouseStartPosition;
+		Vector2f m_MousePosition;
+		Vector2f m_MouseDelta;
+
+		std::vector<Event> m_Events;
 	public:
 		Window(std::string name, int width, int height, bool full = false, bool vsync = true, int msaa = 0);
 		~Window();
-		void update();
 
-		void poll();
+		void poll(std::vector<Event> &events);
 		void swap();
 
 		void setCursorMode(int mode);
@@ -47,6 +62,7 @@ namespace ftec {
 		friend void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 		friend void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 	private:
+		Event createDefaultEvent();
 		void init();
 	};
 }

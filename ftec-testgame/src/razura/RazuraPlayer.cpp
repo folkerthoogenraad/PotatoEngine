@@ -50,6 +50,8 @@ namespace ftec {
 
 	void RazuraPlayer::update()
 	{
+		const Input &input = m_Context->getInput();
+
 		float m = m_Motion.x;
 
 		const float grav = 32;
@@ -57,11 +59,11 @@ namespace ftec {
 		const float jmp = 10;
 		const float spd = 4;
 
-		if (Input::isKeyDown(KEY_A)) {
-			m -= accel * Time::deltaTime;
-		}if (Input::isKeyDown(KEY_D)) {
-			m += accel * Time::deltaTime;
-		}if (Input::isKeyPressed(KEY_SPACE)) {
+		if (input.isKeyDown(KEY_A)) {
+			m -= accel * m_Context->getTime().deltaTime;
+		}if (input.isKeyDown(KEY_D)) {
+			m += accel * m_Context->getTime().deltaTime;
+		}if (input.isKeyPressed(KEY_SPACE)) {
 			m_Motion.y = jmp;
 		}
 
@@ -71,10 +73,10 @@ namespace ftec {
 			m = -spd;
 
 		m_Motion.x = m;
-		m_Motion.y -= grav * Time::deltaTime;
+		m_Motion.y -= grav * m_Context->getTime().deltaTime;
 
 		//Collision testing
-		Line2f motionLine(m_Position, m_Position + m_Motion * Time::deltaTime);
+		Line2f motionLine(m_Position, m_Position + m_Motion * m_Context->getTime().deltaTime);
 		Vector2f direction = motionLine.direction().normalize();
 
 		m_Scene->forEach([&](const Entity *entity) {
@@ -147,7 +149,7 @@ namespace ftec {
 		m_Position.x = motionLine.b.x;
 		m_Position.y = motionLine.b.y;
 
-		m_Motion = motionLine.direction() / Time::deltaTime;
+		m_Motion = motionLine.direction() / m_Context->getTime().deltaTime;
 
 	}
 

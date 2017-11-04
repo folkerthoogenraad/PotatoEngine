@@ -14,64 +14,23 @@
 
 namespace ftec {
 
-#if 1
-	static std::set<int> downKeys = std::set<int>();
-	static std::set<int> pressedKeys = std::set<int>();
-	static std::set<int> releasedKeys = std::set<int>();
 
-	static std::vector<TypeInput> typedKeys = std::vector<TypeInput>();
-
-	static std::set<int> downMouse = std::set<int>();
-	static std::set<int> pressedMouse = std::set<int>();
-	static std::set<int> releasedMouse = std::set<int>();
-
-	static CursorMode cursorMode = CursorMode::NORMAL;
-	static bool disabled = false;
-
-	static std::string keystring = "";
-	static Vector2f mousePosition = Vector2f();
-	static Vector2f mouseDelta = Vector2f();
-	static Vector2f scrollDelta = Vector2f();
-
-	static std::array<Vector2f, 20> mousePressPositions;
-#endif
-
-	Vector2f Input::getMousePosition()
+	Vector2f Input::getMousePosition() const
 	{
 		return mousePosition;
 	}
 
-	Vector2f Input::getMouseDelta()
+	Vector2f Input::getMouseDelta() const
 	{
 		return disabled ? Vector2f() : mouseDelta;
 	}
 
-	Vector2f Input::getScroll()
+	Vector2f Input::getScroll() const
 	{
 		return disabled ? Vector2f() : scrollDelta;
 	}
 
-	void Input::setCursorMode(CursorMode mode)
-	{
-		cursorMode = mode;
-		int c = -1;
-		
-		if (mode == CursorMode::GRABBED)
-			c = GLFW_CURSOR_DISABLED;
-		else if (mode == CursorMode::NORMAL)
-			c = GLFW_CURSOR_NORMAL;
-		else if (mode == CursorMode::HIDDEN)
-			c = GLFW_CURSOR_HIDDEN;
-		else
-			assert(false);
-
-		// TODO fix input class ):
-
-		//Engine::getWindow().setCursorMode(c);
-	}
-
-
-	void Input::reset()
+	void Input::update(const std::vector<Event>& events)
 	{
 		pressedKeys.clear();
 		releasedKeys.clear();
@@ -81,6 +40,47 @@ namespace ftec {
 		mouseDelta = Vector2f();
 		scrollDelta = Vector2f();
 		keystring = "";
+
+		this->events = events;
+
+		for (Event e : events) {
+			switch (e.getType()) {
+			case EventType::KEYBOARD_PRESSED:
+				pressedKeys.insert(e.getKeyCode());
+				downKeys.insert(e.getKeyCode());
+				break;
+			case EventType::KEYBOARD_RELEASED:
+				releasedKeys.insert(e.getKeyCode());
+				downKeys.erase(e.getKeyCode());
+				break;
+			case EventType::KEYBOARD_TYPED:
+				typedKeys.push_back(e.getUnicodeKey());
+				break;
+
+			case EventType::MOUSE_MOVE:
+			case EventType::MOUSE_DRAG:
+				mousePosition = e.getMousePosition();
+				mouseDelta += e.getMouseDelta();
+				break;
+
+			case EventType::MOUSE_PRESSED:
+				releasedMouse.insert(e.getKeyCode());
+				downMouse.insert(e.getKeyCode());
+				break;
+			case EventType::MOUSE_RELEASED:
+				releasedMouse.insert(e.getKeyCode());
+				downMouse.erase(e.getKeyCode());
+				break;
+
+			case EventType::MOUSE_SCROLL:
+				scrollDelta += e.getScrollDirection();
+				break;
+				
+			default:
+				assert(false);
+				break;
+			}
+		}
 	}
 
 	void Input::setEnabled(bool e)
@@ -88,171 +88,100 @@ namespace ftec {
 		disabled = !e;
 	}
 
-	bool Input::isEnabled()
+	bool Input::isEnabled() const
 	{
 		return !disabled;
 	}
 
-	const std::string & Input::getKeyString()
+	const std::string & Input::getKeyString() const
 	{
 		return keystring;
 	}
 
-	const std::set<int>& Input::getKeysDown()
+	const std::set<int>& Input::getKeysDown() const
 	{
 		return downKeys;
 	}
 
-	const std::set<int>& Input::getKeysPressed()
+	const std::set<int>& Input::getKeysPressed() const
 	{
 		return pressedKeys;
 	}
 
-	const std::set<int>& Input::getKeysReleased()
+	const std::set<int>& Input::getKeysReleased() const
 	{
 		return releasedKeys;
 	}
 
-	const std::vector<TypeInput>& Input::getKeysTyped()
+	const std::vector<int>& Input::getKeysTyped() const
 	{
 		return typedKeys;
 	}
 
-	const std::set<int>& Input::getMouseButtonsDown()
+	const std::set<int>& Input::getMouseButtonsDown() const
 	{
 		return downMouse;
 	}
 
-	const std::set<int>& Input::getMouseButtonsPressed()
+	const std::set<int>& Input::getMouseButtonsPressed() const
 	{
 		return pressedMouse;
 	}
 
-	const std::set<int>& Input::getMouseButtonsReleased()
+	const std::set<int>& Input::getMouseButtonsReleased() const
 	{
 		return releasedMouse;
 	}
 
-	void Input::handleKey(int key, int scancode, int action, int mods)
+	const std::vector<Event>& Input::getEvents() const
 	{
-		if (action == GLFW_PRESS) {
-			pressedKeys.insert(key);
-			downKeys.insert(key);
-			typedKeys.push_back({ key, -1 });
-		}
-		if (action == GLFW_RELEASE) {
-			releasedKeys.insert(key);
-			downKeys.erase(key);
-		}
-		if (action == GLFW_REPEAT) {
-			typedKeys.push_back({ key, -1 });
-		}
+		return events;
 	}
 
-
-	void Input::handleCursor(float x, float y)
-	{
-		Vector2f newPosition(x, y);
-		mouseDelta += newPosition - mousePosition;
-		mousePosition = newPosition;
-
-		if (cursorMode != CursorMode::GRABBED) {
-			mousePosition = newPosition;
-		}
-		else {
-			//Engine::getWindow().setMousePosition(mousePosition.x, mousePosition.y);
-		}
-
-	}
-
-	void Input::handleScroll(float x, float y)
-	{
-		scrollDelta += Vector2f(x, y);
-	}
-
-	void Input::handleTyped(unsigned int unicode)
-	{
-		//Oh bby lets lose some of that goodstuff input values and goodshit stuff dont even worry about it bby
-		assert(typedKeys.size() > 0);
-		typedKeys.push_back(typedKeys.back());
-		typedKeys.back().unicode = (int)unicode;
-
-		keystring += (char)unicode;
-	}
-
-	void Input::handleMouse(int button, int action, int mods)
-	{
-		if (action == GLFW_PRESS) {
-			pressedMouse.insert(button);
-			downMouse.insert(button);
-			mousePressPositions[button] = mousePosition;
-		}
-		if (action == GLFW_RELEASE) {
-			releasedMouse.insert(button);
-			downMouse.erase(button);
-		}
-	}
-
-	bool Input::isKeyDown(int keycode)
+	bool Input::isKeyDown(int keycode) const
 	{
 		return !disabled && downKeys.find(keycode) != downKeys.end();
 	}
 
-	bool Input::isKeyPressed(int keycode)
+	bool Input::isKeyPressed(int keycode) const
 	{
 		return !disabled && pressedKeys.find(keycode) != pressedKeys.end();
 	}
 
-	bool Input::isKeyReleased(int keycode)
+	bool Input::isKeyReleased(int keycode) const
 	{
 		return !disabled && releasedKeys.find(keycode) != releasedKeys.end();
 	}
 
-	bool Input::isKeyTyped(int keycode)
-	{
-		if (disabled)
-			return true;
 
-		for (const auto key : typedKeys) {
-			if (key.keycode == keycode)
-				return true;
-		}
-		return false;
-	}
-
-	bool Input::isMouseButtonPressed(int keycode)
+	bool Input::isMouseButtonPressed(int keycode) const
 	{
 		return !disabled && pressedMouse.find(keycode) != pressedMouse.end();
 	}
 
-	bool Input::isMouseButtonDown(int keycode)
+	bool Input::isMouseButtonDown(int keycode) const
 	{
 		return !disabled && downMouse.find(keycode) != downMouse.end();
 	}
 
-	bool Input::isMouseButtonReleased(int keycode)
+	bool Input::isMouseButtonReleased(int keycode) const
 	{
 		return !disabled && releasedMouse.find(keycode) != releasedMouse.end();
 	}
 
-	Vector2f Input::getMouseLastPressedPosition(int mb)
-	{
-		return mousePressPositions[mb];
-	}
-
-	float Input::getMouseX()
+	float Input::getMouseX() const
 	{
 		return mousePosition.x;
 	}
-	float Input::getMouseY()
+	float Input::getMouseY() const
 	{
 		return mousePosition.y;
 	}
-	float Input::getMouseDX()
+	float Input::getMouseDX() const
 	{
 		return disabled ? 0 : mouseDelta.x;
 	}
-	float Input::getMouseDY()
+	float Input::getMouseDY() const
 	{
 		return disabled ? 0 : mouseDelta.y;
 	}

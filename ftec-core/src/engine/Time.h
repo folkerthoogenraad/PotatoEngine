@@ -3,16 +3,16 @@
 namespace ftec {
 	class Time {
 	public:
-		static float deltaTime;
-		static float runTime;
+		float deltaTime;
+		float runTime;
 
-		static float sinTime;
-		static float cosTime;
+		float sinTime;
+		float cosTime;
 
-		static float sin2Time;
-		static float cos2Time;
+		float sin2Time;
+		float cos2Time;
 
-		static void calculateSinCosTime();
+		void calculateSinCosTime();
 
 		static void sleep(float seconds);
 	};

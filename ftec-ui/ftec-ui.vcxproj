@@ -33,7 +33,6 @@
     <ClCompile Include="src\potato_ui\ContextMenuPanel.cpp" />
     <ClCompile Include="src\potato_ui\Dropdown.cpp" />
     <ClCompile Include="src\potato_ui\EditText.cpp" />
-    <ClCompile Include="src\potato_ui\EventInput.cpp" />
     <ClCompile Include="src\potato_ui\Knob.cpp" />
     <ClCompile Include="src\potato_ui\Label.cpp" />
     <ClCompile Include="src\potato_ui\LinearLayout.cpp" />
@@ -57,7 +56,6 @@
     <ClInclude Include="src\potato_ui\ContextMenuPanel.h" />
     <ClInclude Include="src\potato_ui\Dropdown.h" />
     <ClInclude Include="src\potato_ui\EditText.h" />
-    <ClInclude Include="src\potato_ui\EventInput.h" />
     <ClInclude Include="src\potato_ui\Knob.h" />
     <ClInclude Include="src\potato_ui\Label.h" />
     <ClInclude Include="src\potato_ui\LayoutParams.h" />

@@ -23,7 +23,8 @@ namespace ftec {
 		m_RenderToScreen(false),
 		m_PostProcessingShader(nullptr),
 		m_Flipped(false),
-		m_Viewport(0,0,1,1)
+		m_Viewport(0, 0, 1, 1),
+		m_ClippingRectangle(0, 0, 1, 1)
 	{ }
 
 	Matrix4f Camera::getProjectionMatrix() const

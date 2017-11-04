@@ -97,16 +97,20 @@ namespace ftec {
 		while (!context->getWindow().isCloseRequested()) {
 			Time::sleep(context->getConfiguration().framesleep);
 
-			Input::reset();
+			std::vector<Event> events;
 
-			context->getWindow().poll();
+			context->getWindow().poll(events);
+			
+			context->getInput().update(events);
+
+			Time &time = context->getTime();
 
 			double currentTime = glfwGetTime();
-			Time::deltaTime = (float)(currentTime - previousTime);
-			Time::runTime += Time::deltaTime;
-			Time::calculateSinCosTime();
+			time.deltaTime = (float)(currentTime - previousTime);
+			time.runTime += time.deltaTime;
+			time.calculateSinCosTime();
 
-			second += Time::deltaTime;
+			second += time.deltaTime;
 			if (second > 1) {
 				second -= 1;
 				LOG("FPS: " << frames);
@@ -118,10 +122,15 @@ namespace ftec {
 			game.update();
 			game.render();
 			
-
-			frames++;
 			
-			context->getWindow().swap();
+			if (game.shouldSwapBuffers()) {
+				context->getWindow().swap();
+				frames++;
+			}
+
+			// TODO make this less ugly.
+			else if (context->getConfiguration().vsync)
+				Time::sleep(8.0f / 1000.0f);
 			
 			//Set the right framerate
 			if (!context->getConfiguration().vsync && context->getConfiguration().targetfps > 0) {

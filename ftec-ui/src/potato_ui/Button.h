@@ -12,6 +12,9 @@ namespace potato {
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 		Size getPreferredSize() override;
 
+		void onMousePressed(ftec::Event &event) override { repaint(); }
+		void onMouseReleased(ftec::Event &event) override { repaint(); }
+
 		std::string &text() { return m_Text; }
 		const std::string &text() const { return m_Text; }
 	};

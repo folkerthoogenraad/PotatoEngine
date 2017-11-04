@@ -19,7 +19,7 @@ namespace potato {
 		//TODO center all these things
 		ftec::Vector2i center = bounds.center();
 
-		float height = bounds.height();
+		float height = (float) bounds.height();
 		const float margin = 4;
 
 		if (m_Checked) {
@@ -48,7 +48,7 @@ namespace potato {
 
 	void Checkbox::onClick(ftec::Event &event)
 	{
-		m_Checked = !m_Checked;
+		setChecked(!isChecked());
 	}
 	Size Checkbox::getPreferredSize()
 	{

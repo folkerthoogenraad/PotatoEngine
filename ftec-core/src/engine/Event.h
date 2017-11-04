@@ -36,7 +36,7 @@ namespace ftec {
 		Vector2f m_MousePosition; //Mouse Start Position
 		Vector2f m_MouseDelta; //Mouse Start Position
 
-		float m_ScrollDirection;
+		Vector2f m_ScrollDirection;
 
 		bool m_CrtlDown, m_ShiftDown, m_AltDown;
 
@@ -64,7 +64,7 @@ namespace ftec {
 		Vector2f getMousePosition() const { return m_MousePosition; }
 		Vector2f getMouseDelta() const { return m_MouseDelta; }
 		
-		float getScrollDirection() const { return m_ScrollDirection; }
+		Vector2f getScrollDirection() const { return m_ScrollDirection; }
 
 		int getUnicodeKey() { return m_UnicodeKey; }
 		bool hasUnicodeKey() { return m_UnicodeKey > 0; }

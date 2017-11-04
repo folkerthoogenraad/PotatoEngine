@@ -13,6 +13,8 @@ namespace potato {
 
 		void drawSelf(ftec::Graphics2D &graphics, const PotatoStyle &style) override;
 
+		void onFocusGain(ftec::Event &event) override;
+		void onFocusLose(ftec::Event &event) override;
 		void onKeyTyped(ftec::Event &event) override;
 
 		EditText &text() { return m_EditText; }

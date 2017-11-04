@@ -23,9 +23,9 @@ namespace ftec {
 
 	void NoClipCameraEntity::update()
 	{
-		if (Input::isKeyPressed(KEY_ESCAPE)) {
+		if (m_Context->getInput().isKeyPressed(KEY_ESCAPE)) {
 			m_MouseGrabbed = !m_MouseGrabbed;
-			Input::setCursorMode(m_MouseGrabbed ? CursorMode::GRABBED : CursorMode::NORMAL);
+			//Input::setCursorMode(m_MouseGrabbed ? CursorMode::GRABBED : CursorMode::NORMAL);
 		}
 
 		// TODO fix the noclip camera entity (scenes and shit not working atm)
@@ -68,7 +68,7 @@ namespace ftec {
 				motion.normalize();
 			}
 
-			cam.m_Position += motion * 3.f * Time::deltaTime;
+			cam.m_Position += motion * 3.f * m_Context->getTime().deltaTime;
 		}
 #endif
 

@@ -25,6 +25,8 @@ namespace ftec {
 namespace potato {
 
 	class Panel;
+	class PotatoUI;
+	typedef ftec::Rectanglei Bounds;
 
 	class PotatoColor {
 	public:PotatoColor() = delete; ~PotatoColor() = delete;
@@ -49,10 +51,13 @@ namespace potato {
 		static void setData(const std::string &);
 	};
 
-	class PotatoUI;
 
 	class PotatoUI : public std::enable_shared_from_this<PotatoUI> {
 	private:
+		bool m_Changed = false;
+		bool m_Repaint = false;
+		Bounds m_RepaintRectangle;
+
 		ftec::Graphics2D m_Graphics;
 		std::shared_ptr<Panel> m_Root;
 		std::shared_ptr<Panel> m_ContextMenu;
@@ -71,9 +76,16 @@ namespace potato {
 	public:
 		PotatoUI(std::shared_ptr<ftec::EngineContext> context);
 		~PotatoUI();
+
 		void update();
 		void render();
-		
+
+		// Request a repaint at the end of the frame
+		void repaint();
+
+		// Request a repaint in a certain bound
+		void repaint(Bounds rectangle);
+
 		void setRoot(std::shared_ptr<Panel> root);
 		void setContextMenu(std::shared_ptr<Panel> contextMenu);
 
@@ -88,6 +100,12 @@ namespace potato {
 
 		bool isPressed(const Panel *panel) const;
 		bool isPressed(const Panel *panel, int mb) const;
+
+		// Is set to true when render needs to be called
+		bool shouldRepaint() const;
+
+		// Is true between a succesfull render and a new update (so when buffers need to be swapped)
+		bool hasChanged() const;
 
 		PotatoStyle &getStyle();
 	private:

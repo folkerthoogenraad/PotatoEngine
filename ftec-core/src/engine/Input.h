@@ -13,28 +13,23 @@ namespace ftec {
 	struct Vector2;
 	typedef Vector2<float> Vector2f;
 
+	class Event;
+
 	enum class CursorMode {
 		NORMAL, HIDDEN, GRABBED
 	};
 
-	struct TypeInput {
-		int keycode;
-		int unicode;
-	};
-
 	class Input {
-#if 0
 		std::set<int> downKeys = std::set<int>();
 		std::set<int> pressedKeys = std::set<int>();
 		std::set<int> releasedKeys = std::set<int>();
 
-		std::vector<TypeInput> typedKeys = std::vector<TypeInput>();
+		std::vector<int> typedKeys = std::vector<int>();
 
 		std::set<int> downMouse = std::set<int>();
 		std::set<int> pressedMouse = std::set<int>();
 		std::set<int> releasedMouse = std::set<int>();
 
-		CursorMode cursorMode = CursorMode::NORMAL;
 		bool disabled = false;
 
 		std::string keystring = "";
@@ -42,52 +37,43 @@ namespace ftec {
 		Vector2f mouseDelta = Vector2f();
 		Vector2f scrollDelta = Vector2f();
 
-		std::array<Vector2f, 20> mousePressPositions;
-#endif
+		std::vector<Event> events;
 	public:
-		Input() = delete;
 
-		static bool isKeyDown(int keycode);
-		static bool isKeyPressed(int keycode);
-		static bool isKeyReleased(int keycode);
-		static bool isKeyTyped(int keycode);
+		// Get key typed?
+		bool isKeyDown(int keycode) const;
+		bool isKeyPressed(int keycode) const;
+		bool isKeyReleased(int keycode) const;
 
-		static bool isMouseButtonDown(int keycode);
-		static bool isMouseButtonPressed(int keycode);
-		static bool isMouseButtonReleased(int keycode);
+		bool isMouseButtonDown(int keycode) const;
+		bool isMouseButtonPressed(int keycode) const;
+		bool isMouseButtonReleased(int keycode) const;
 
-		static Vector2f getMouseLastPressedPosition(int mousebutton);
+		float getMouseX() const;
+		float getMouseY() const;
+		float getMouseDX() const;
+		float getMouseDY() const;
 
-		static float getMouseX();
-		static float getMouseY();
-		static float getMouseDX();
-		static float getMouseDY();
+		Vector2f getMousePosition() const;
+		Vector2f getMouseDelta() const;
+		Vector2f getScroll() const;
 
-		static Vector2f getMousePosition();
-		static Vector2f getMouseDelta();
-		static Vector2f getScroll();
+		void update(const std::vector<Event> &events);
 
-		static void setCursorMode(CursorMode mode);
-		static void reset();
+		void setEnabled(bool e);
+		bool isEnabled() const;
 
-		static void setEnabled(bool e);
-		static bool isEnabled();
+		const std::string &getKeyString() const;
 
-		static const std::string &getKeyString();
+		const std::set<int> &getKeysDown() const;
+		const std::set<int> &getKeysPressed() const;
+		const std::set<int> &getKeysReleased() const;
+		const std::vector<int> &getKeysTyped() const;
 
-		static const std::set<int> &getKeysDown();
-		static const std::set<int> &getKeysPressed();
-		static const std::set<int> &getKeysReleased();
-		static const std::vector<TypeInput> &getKeysTyped();
+		const std::set<int> &getMouseButtonsDown() const;
+		const std::set<int> &getMouseButtonsPressed() const;
+		const std::set<int> &getMouseButtonsReleased() const;
 
-		static const std::set<int> &getMouseButtonsDown();
-		static const std::set<int> &getMouseButtonsPressed();
-		static const std::set<int> &getMouseButtonsReleased();
-
-		static void handleKey(int key, int scancode, int action, int mods);
-		static void handleCursor(float x, float y);
-		static void handleScroll(float x, float y);
-		static void handleTyped(unsigned int unicode);
-		static void handleMouse(int button, int action, int mods);
+		const std::vector<Event> &getEvents() const;
 	};
 }

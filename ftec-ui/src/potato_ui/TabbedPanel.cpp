@@ -98,8 +98,8 @@ namespace potato {
 			else {
 				graphics.setColor(PotatoColor::darkPrimary);
 				graphics.drawLine(ftec::Line2f(
-					ftec::Vector2f(bounds.x() + offset - TAB_WIDTH / 2, bounds.y() + TAB_HEIGHT - lineWidth / 2),
-					ftec::Vector2f(bounds.x() + offset + TAB_WIDTH / 2, bounds.y() + TAB_HEIGHT - lineWidth / 2)
+					ftec::Vector2i(bounds.x() + offset - TAB_WIDTH / 2, bounds.y() + TAB_HEIGHT - lineWidth / 2),
+					ftec::Vector2i(bounds.x() + offset + TAB_WIDTH / 2, bounds.y() + TAB_HEIGHT - lineWidth / 2)
 				));
 			}
 
@@ -130,7 +130,7 @@ namespace potato {
 		Bounds bounds = getGlobalOutline();//TODO
 
 
-		float res = (ftec::Input::getMouseX() - bounds.x()) / TAB_WIDTH;
+		float res = (evt.getMousePosition().x - bounds.x()) / TAB_WIDTH;
 		if (res < m_Children.size() && res > 0) {
 			size_t selected = ftec::clamp(0, (int)m_Children.size() - 1, (int)ftec::floor(res));
 			if (m_SelectedTab != selected) {

@@ -6,12 +6,14 @@
 #include "graphics/Camera.h"
 
 #include "engine/Event.h"
-#include "EventInput.h"
+
 #include "engine/Keycodes.h"
 
 #include "resources/ResourceManager.h"
 
 #include "engine/Engine.h"
+
+#include "math/collision.h"
 
 namespace potato {
 	//https://www.materialpalette.com/blue-grey/grey
@@ -53,6 +55,8 @@ namespace potato {
 
 	void PotatoUI::update()	
 	{
+		m_Changed = false;
+
 		if (m_Root) {
 
 			// TODO this kinda is an event too
@@ -73,14 +77,17 @@ namespace potato {
 
 			m_Root->onPreEvents();
 
-			EventInput input;
+			// Copy the events, so they are editable
+			std::vector<ftec::Event> events = m_Context->getInput().getEvents();
 
-			input.forEach([this](ftec::Event &event) {
+			for (auto event : events) {
+				event.m_Consumed = false; // Just to be sure.
+
 				if (m_ContextMenu)
 					processEvents(m_ContextMenu, event);
 				if (!event.isConsumed())
 					processEvents(m_Root, event);
-			});
+			}
 
 			if (m_ContextMenu)
 				m_ContextMenu->onPostEvents();
@@ -96,9 +103,29 @@ namespace potato {
 
 	void PotatoUI::render()
 	{
+		float width = m_Context->getWindow().getWidth();
+		float height = m_Context->getWindow().getHeight();
+
 		//Always set the right size and stuff
-		m_Graphics.m_Camera = ftec::Camera::orthagonal(m_Context->getWindow().getHeight(), m_Context->getWindow().getWidth() / m_Context->getWindow().getHeight(), -100, 100, true);
-		m_Graphics.m_Camera.m_Position = ftec::Vector3f(m_Context->getWindow().getWidth() / 2.0f, m_Context->getWindow().getHeight() / 2.0f);
+		m_Graphics.m_Camera = ftec::Camera::orthagonal(height, width / height, -100, 100, true);
+		m_Graphics.m_Camera.m_Position = ftec::Vector3f(width / 2.0f, height / 2.0f);
+
+		if (GRAPHICS_COPY_SWAP) {
+			m_Graphics.m_Camera.m_ClippingRectangle = ftec::Rectanglef(
+				m_RepaintRectangle.x() / width,
+				m_RepaintRectangle.y() / height,
+				m_RepaintRectangle.width() / width,
+				m_RepaintRectangle.height() / height
+			);
+		}
+		else {
+			m_Graphics.m_Camera.m_ClippingRectangle = ftec::Rectanglef(
+				0,
+				0,
+				1,
+				1
+			);
+		}
 
 		m_Graphics.drawClear();
 		m_Graphics.begin();
@@ -110,7 +137,42 @@ namespace potato {
 			m_ContextMenu->draw(m_Graphics, m_Style);
 		}
 
+		m_Graphics.setColor(ftec::Color32(255, 0, 0, 75));
+		//m_Graphics.drawRectangle(m_RepaintRectangle, true);
+
 		m_Graphics.end();
+
+		// Reset the repaint boolean
+		m_Repaint = false;
+		m_Changed = true;
+	}
+
+	void PotatoUI::repaint()
+	{
+		m_Repaint = true;
+		m_RepaintRectangle = Bounds(0, 0, (int)m_Context->getWindow().getWidth(), (int)m_Context->getWindow().getHeight());
+	}
+
+	void PotatoUI::repaint(Bounds rectangle)
+	{
+		// If nothing else has called repaint yet
+		if (!m_Repaint)
+			m_RepaintRectangle = rectangle;
+
+		// If the new rectangle is larger than the current rectangle
+		else if (contains(rectangle, m_RepaintRectangle)) {
+			m_RepaintRectangle = rectangle;
+		}
+		
+		// If the current repaint rectangle already contains the current rectangle
+		else if (contains(m_RepaintRectangle, rectangle)) {}
+
+		// If its just different...
+		else {
+			m_RepaintRectangle = Bounds(0, 0, (int)m_Context->getWindow().getWidth(), (int)m_Context->getWindow().getHeight());
+		}
+		
+		m_Repaint = true;
 	}
 
 	void PotatoUI::setRoot(std::shared_ptr<Panel> root)
@@ -122,6 +184,8 @@ namespace potato {
 			m_Root->localbounds() = ftec::Rectanglei(0, 0, (int)m_Context->getWindow().getWidth(), (int)m_Context->getWindow().getHeight());
 			m_Root->updateLayout();
 		}
+
+		repaint();
 	}
 
 	void PotatoUI::setContextMenu(std::shared_ptr<Panel> contextMenu)
@@ -131,6 +195,8 @@ namespace potato {
 			m_ContextMenu->localbounds() = ftec::Rectanglei(0, 0, (int)m_Context->getWindow().getWidth(), (int)m_Context->getWindow().getHeight());
 			m_ContextMenu->setUI(this);
 		}
+
+		repaint();
 	}
 
 	void PotatoUI::resetFocus(ftec::Event &event)
@@ -181,6 +247,16 @@ namespace potato {
 			return false;
 
 		return m_Pressed[mb].get() == panel;
+	}
+
+	bool PotatoUI::shouldRepaint() const
+	{
+		return m_Repaint;
+	}
+
+	bool PotatoUI::hasChanged() const
+	{
+		return m_Changed;
 	}
 
 	PotatoStyle & PotatoUI::getStyle()

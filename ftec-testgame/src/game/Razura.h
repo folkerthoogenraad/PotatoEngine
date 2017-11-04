@@ -19,5 +19,7 @@ namespace ftec {
 		void render() override;
 		void init(std::shared_ptr<EngineContext> context) override;
 		void destroy() override;
+
+		virtual bool shouldSwapBuffers() const;
 	};
 }
