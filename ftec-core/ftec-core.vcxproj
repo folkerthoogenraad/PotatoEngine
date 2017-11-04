@@ -197,8 +197,7 @@
   <ItemGroup>
     <ClCompile Include="src\collision\Collider.cpp" />
     <ClCompile Include="src\collision\CollisionWorld.cpp" />
-    <ClCompile Include="src\engine\DesktopEngine.cpp" />
-    <ClCompile Include="src\engine\Engine.cpp" />
+    <ClCompile Include="src\platform\glfw\GLFWEngineHelper.cpp" />
     <ClCompile Include="src\engine\EngineConfiguration.cpp" />
     <ClCompile Include="src\engine\EngineContext.cpp" />
     <ClCompile Include="src\engine\Event.cpp" />
@@ -234,6 +233,7 @@
     <ClCompile Include="src\math\Matrix2.cpp" />
     <ClCompile Include="src\math\Matrix3.cpp" />
     <ClCompile Include="src\math\Matrix4.cpp" />
+    <ClCompile Include="src\platform\glfw\GLFWWindowWrapper.cpp" />
     <ClCompile Include="src\serialization\Serialization.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\terrain\Terrain.cpp" />
@@ -244,8 +244,7 @@
   <ItemGroup>
     <ClInclude Include="src\collision\Collider.h" />
     <ClInclude Include="src\collision\CollisionWorld.h" />
-    <ClInclude Include="src\engine\DesktopEngine.h" />
-    <ClInclude Include="src\engine\Engine.h" />
+    <ClInclude Include="src\platform\glfw\GLFWEngineHelper.h" />
     <ClInclude Include="src\engine\EngineConfiguration.h" />
     <ClInclude Include="src\engine\EngineContext.h" />
     <ClInclude Include="src\engine\Event.h" />
@@ -307,6 +306,7 @@
     <ClInclude Include="src\math\Vector2.h" />
     <ClInclude Include="src\math\Vector3.h" />
     <ClInclude Include="src\math\Vector4.h" />
+    <ClInclude Include="src\platform\glfw\GLFWWindowWrapper.h" />
     <ClInclude Include="src\resources\ManageableResource.h" />
     <ClInclude Include="src\resources\ResourceManager.h" />
     <ClInclude Include="src\scene\Entity.h" />

@@ -5,7 +5,6 @@
 #include "graphics/Graphics2D.h"
 
 #include "engine/Time.h"
-#include "engine/Engine.h"
 #include "engine/Input.h"
 #include "engine/Keycodes.h"
 #include "resources/ResourceManager.h"

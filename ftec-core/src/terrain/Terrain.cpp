@@ -6,7 +6,6 @@
 #include "graphics/Material.h"
 
 #include "resources/ResourceManager.h"
-#include "engine/Engine.h"
 
 #include "math/Matrix4.h"
 

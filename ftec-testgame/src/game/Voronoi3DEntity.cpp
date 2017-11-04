@@ -3,7 +3,6 @@
 #include "graphics/Graphics.h"
 #include "graphics/Mesh.h"
 #include "engine/Input.h"
-#include "engine/Engine.h"
 #include "engine/Time.h"
 
 #include "scene/Scene.h"

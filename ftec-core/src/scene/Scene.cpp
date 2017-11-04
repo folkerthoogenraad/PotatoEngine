@@ -1,7 +1,5 @@
 #include "Scene.h"
 
-#include "engine/Engine.h"
-
 #include "graphics/Window.h"
 #include "graphics/Graphics.h"
 #include "graphics/Mesh.h"

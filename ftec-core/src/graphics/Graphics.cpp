@@ -3,7 +3,6 @@
 #include "GL.h"
 #include "logger/log.h"
 #include "Renderer.h"
-#include "engine/Engine.h"
 #include "GraphicsState.h"
 #include "Cubemap.h"
 

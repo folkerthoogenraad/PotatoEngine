@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "logger/log.h"
-#include "engine/Engine.h"
 #include "graphics/Texture.h"
 
 #include "GL.h"

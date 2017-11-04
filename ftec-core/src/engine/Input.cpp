@@ -1,16 +1,8 @@
 #include "Input.h"
 
-#include "Engine.h"
-
-#include "graphics/GL.h"
-#include "graphics/Window.h"
-
-#include "math/Vector2.h"
+#include "engine/Event.h"
 
 #include <assert.h>
-#include <array>
-
-#include "logger/log.h"
 
 namespace ftec {
 

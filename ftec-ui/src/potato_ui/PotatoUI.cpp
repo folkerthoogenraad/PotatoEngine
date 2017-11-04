@@ -11,8 +11,6 @@
 
 #include "resources/ResourceManager.h"
 
-#include "engine/Engine.h"
-
 #include "math/collision.h"
 
 namespace potato {

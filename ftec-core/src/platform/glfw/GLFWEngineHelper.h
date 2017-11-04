@@ -1,19 +1,20 @@
 #pragma once
 
-#include "EngineContext.h"
+#include "engine/EngineContext.h"
 
 namespace ftec {
 	
 	class Game;
 
-	class DesktopEngine {
-		struct engine_resource;
-	public:
-		static void init();
+	class GLFWEngineHelper {
+	private:
 		static void loop(Game &game, std::shared_ptr<EngineContext> context);
+	public:
+		static std::shared_ptr<EngineContext> createEngineContext();
+
+		static void init();
 		static void destroy();
 
-		static std::shared_ptr<EngineContext> createEngineContext();
 
 		template<typename T>
 		static void create()
@@ -35,11 +36,6 @@ namespace ftec {
 
 		}
 
-	private:
-		struct engine_resource {
-			engine_resource() { init(); }
-			~engine_resource() { destroy(); }
-		};
 	};
 
 }

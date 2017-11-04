@@ -1,89 +1,33 @@
 #define FREEIMAGE_LIB
 
 #include "FreeImage.h"
-#include "graphics/GL.h"
 
-#include "DesktopEngine.h"
+#include "graphics/GL.h"
+#include "GLFW/glfw3.h"
+
+#include "GLFWEngineHelper.h"
 
 #include "logger/log.h"
 
-#include "Game.h"
-#include "Engine.h"
+#include "engine/Game.h"
 
-#include "Time.h"
-#include "Input.h"
+#include "engine/Time.h"
+#include "engine/Input.h"
 
-#include "graphics/Window.h"
+#include "GLFWWindowWrapper.h"
+
 #include "resources/ResourceManager.h"
 
-#include "EngineConfiguration.h"
+#include "engine/EngineConfiguration.h"
+
+#include <time.h>
 
 
 namespace ftec {
 
 	static void initGL();
 	
-	void DesktopEngine::init()
-	{
-#if 0
-		//Load the engine configuration
-		EngineConfiguration config;
-		config.init(DEFAULT_GLOBAL_CONFIG_FILE);
-
-		LOG("Loading GLFW...");
-
-		//Initialize GLFW
-		if (!glfwInit()) {
-			TERMINATE("Failed to initialize GLFW");
-		}
-
-		LOG("GLFW Loaded.");
-
-		//Create the window
-		auto window = std::make_unique<Window>("PotatoEngine", 
-			config.width, 
-			config.height,
-			config.fullscreen,
-			config.vsync,
-			config.msaa);
-
-		auto manager = std::make_unique<ResourceManager>();
-
-		window->setVisible(true);
-
-		LOG("Loading GLEW...");
-
-		//Initialize extentions
-		if (glewInit() != GLEW_OK) {
-			TERMINATE("Couldn't init glew!");
-		}
-		LOG("GLEW Loaded.");
-
-		LOG("Loading FreeImage...");
-		FreeImage_Initialise();
-		LOG("FreeImage loaded.");
-
-		LOG("");
-
-		LOG("Setting up OpenGL...");
-
-		//Initialize the OpenGL stuff
-		initGL();
-
-		//Tell the world how great we are
-		LOG("OpenGL " << glGetString(GL_VERSION) << " Loaded.");
-
-		LOG("");
-
-		//Set the window
-		Engine::setResourceManager(std::move(manager));
-		Engine::setWindow(std::move(window));
-
-		Engine::init();
-#endif
-	}
-
-	void DesktopEngine::loop(Game& game, std::shared_ptr<EngineContext> context)
+	void GLFWEngineHelper::loop(Game& game, std::shared_ptr<EngineContext> context)
 	{
 		double previousTime = glfwGetTime();
 		double second = 0;
@@ -139,16 +83,29 @@ namespace ftec {
 		}
 	}
 
-	void DesktopEngine::destroy()
+	void GLFWEngineHelper::init()
 	{
-		//Release these resources first
-		Engine::destroy();
+		//Should this even be here? I don't know
+		srand(static_cast <unsigned> (time(0)));
 
+		LOG("Loading GLFW...");
+		if (!glfwInit()) {
+			TERMINATE("Failed to initialize GLFW");
+		}
+		LOG("GLFW Loaded.");
+
+		LOG("Loading FreeImage...");
+		FreeImage_Initialise();
+		LOG("FreeImage loaded.");
+	}
+
+	void GLFWEngineHelper::destroy()
+	{
 		FreeImage_DeInitialise();
 		glfwTerminate();
 	}
 
-	std::shared_ptr<EngineContext> DesktopEngine::createEngineContext()
+	std::shared_ptr<EngineContext> GLFWEngineHelper::createEngineContext()
 	{
 		std::shared_ptr<EngineContext> context;
 
@@ -156,18 +113,8 @@ namespace ftec {
 		EngineConfiguration config;
 		config.init(DEFAULT_GLOBAL_CONFIG_FILE);
 
-		LOG("Loading GLFW...");
-
-		// Initialize GLFW
-		// TODO check this with multiple windows and contexts
-		if (!glfwInit()) {
-			TERMINATE("Failed to initialize GLFW");
-		}
-
-		LOG("GLFW Loaded.");
-
 		//Create the window
-		auto window = std::make_unique<Window>("PotatoEngine",
+		auto window = std::make_unique<GLFWWindowWrapper>("PotatoEngine",
 			config.width,
 			config.height,
 			config.fullscreen,
@@ -178,18 +125,15 @@ namespace ftec {
 
 		window->setVisible(true);
 
-		LOG("Loading GLEW...");
+		LOG("Initializing GLEW in current thread...");
 
 		//Initialize extentions
 		if (glewInit() != GLEW_OK) {
 			//LOG("Failed to init glew");
 			TERMINATE("Couldn't init glew!");
 		}
-		LOG("GLEW Loaded.");
+		LOG("GLEW initialized.");
 
-		LOG("Loading FreeImage...");
-		FreeImage_Initialise();
-		LOG("FreeImage loaded.");
 
 		LOG("");
 

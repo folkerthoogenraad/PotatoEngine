@@ -1,5 +1,6 @@
 #include "game/Razura.h"
-#include "engine/DesktopEngine.h"
+
+#include "platform/glfw/GLFWEngineHelper.h"
 
 #include "logger/log.h"
 #include <functional>
@@ -208,19 +209,15 @@ int main(void)
 {
 	using namespace ftec;
 
-	srand(static_cast <unsigned> (time(0)));
-	
-	if (!glfwInit()) {
-		TERMINATE("Failed to initialize GLFW");
-	}
-
 	//std::thread d(doAudio);
 
-	std::array<std::thread, 1> threads;
+	GLFWEngineHelper::init();
+
+	std::array<std::thread, 2> threads;
 
 	for (int i = 0; i < threads.size(); i++) {
 		threads[i] = std::thread([]() {
-			ftec::DesktopEngine::create<ftec::Razura>();
+			GLFWEngineHelper::create<ftec::Razura>();
 		});
 	}
 	
@@ -228,7 +225,7 @@ int main(void)
 		threads[i].join();
 	}
 	
-	glfwTerminate();
+	GLFWEngineHelper::destroy();
 
 	WAIT();
 

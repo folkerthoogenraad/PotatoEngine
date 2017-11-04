@@ -6,7 +6,6 @@
 
 #include "Texture.h"
 #include "Sprite.h"
-#include "engine/Engine.h"
 #include "Font.h"
 #include "logger/log.h"
 

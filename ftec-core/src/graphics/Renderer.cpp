@@ -5,7 +5,6 @@
 #include "math/Vector3.h"
 #include "math/Rectangle.h"
 
-#include "engine/Engine.h"			//Shouldn't be needed.
 #include "graphics/Window.h"		//Shouldn't be needed.
 
 #include "Mesh.h"					//For mesh rendering

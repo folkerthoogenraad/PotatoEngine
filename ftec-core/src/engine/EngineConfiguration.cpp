@@ -1,6 +1,5 @@
 #include "EngineConfiguration.h"
 
-#include "engine/Engine.h"
 
 #include "resources/ResourceManager.h"
 
