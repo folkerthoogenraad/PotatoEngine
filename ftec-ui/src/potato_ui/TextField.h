@@ -16,6 +16,7 @@ namespace potato {
 		void onFocusGain(ftec::Event &event) override;
 		void onFocusLose(ftec::Event &event) override;
 		void onKeyTyped(ftec::Event &event) override;
+		void onKeyPressed(ftec::Event &event) override;
 
 		EditText &text() { return m_EditText; }
 		const EditText &text() const { return m_EditText; }

@@ -42,7 +42,10 @@ namespace potato {
 		graphics.setLineWidth(2.0f);
 
 		graphics.setColor(style.m_DarkBackground);
-		graphics.drawRectangle(Bounds::centered(sliderPosition.x, sliderPosition.y, SLIDER_BLOCK_WIDTH, bounds.height() * 0.8f), true);
+
+		graphics.setCirclePrecision(4);
+		graphics.setRoundedRectangleRadius(2);
+		graphics.drawRoundedRectangle(Bounds::centered(sliderPosition.x, sliderPosition.y, SLIDER_BLOCK_WIDTH, bounds.height() * 0.8f), true);
 
 		graphics.setColor(style.m_AccentColor);
 		graphics.drawLine(

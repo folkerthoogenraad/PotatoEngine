@@ -54,22 +54,18 @@
       <Checkbox
         width="wrap_content"
         height="wrap_content"
-        checked="true"
         text="Whynot"/>
       <Checkbox
         width="wrap_content"
         height="wrap_content"
-        checked="true"
         text="Whynot"/>
       <Checkbox
         width="wrap_content"
         height="wrap_content"
-        checked="true"
         text="Whynot"/>
       <Checkbox
         width="wrap_content"
         height="wrap_content"
-        checked="true"
         text="Whynot"/>
     </LinearLayout>
     <Label

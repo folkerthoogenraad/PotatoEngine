@@ -29,11 +29,14 @@ namespace potato {
 			graphics.setColor(style.m_DarkBackground);
 		}
 
-		graphics.drawRectangle(ftec::Rectanglef((float)bounds.left(), (float)bounds.top(), height * 2.0f, height), true);
+		graphics.setCirclePrecision(4);
+		graphics.setRoundedRectangleRadius(4);
+
+		graphics.drawRoundedRectangle(ftec::Rectanglef((float)bounds.left(), (float)bounds.top(), height * 2.0f, height), true);
 
 		graphics.setColor(style.m_BackgroundColor);
 
-		graphics.drawRectangle(ftec::Rectanglef(
+		graphics.drawRoundedRectangle(ftec::Rectanglef(
 			(float)bounds.left() + margin + (m_Checked ? height : 0), 
 			(float)bounds.top() + margin, 
 			height - margin * 2, 

@@ -4,6 +4,7 @@
 
 #include "EngineContext.h"
 
+// TODO create application and shit
 namespace ftec {
 
 	class Game {
@@ -21,6 +22,6 @@ namespace ftec {
 
 		std::shared_ptr<EngineContext> getContext() { return m_Context; }
 		const std::shared_ptr<EngineContext> getContext() const { return m_Context; }
-		virtual bool shouldSwapBuffers() const { return false; }
+		virtual bool shouldSwapBuffers() const { return true; }
 	};
 }

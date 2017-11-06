@@ -107,10 +107,15 @@ namespace potato {
 		return !(index < 0 || index >= m_Text.size());
 	}
 
+	bool EditText::isSpace(int index) const
+	{
+		return isspace(m_Text[index]);
+	}
+
 	int EditText::getIndexFromCursor(Direction dir, Strategy strat)
 	{
 		if (m_Text.size() == 0)
-			return 0;
+			return 0; 
 
 		int direction = dir == Direction::FORWARD ? 1 : -1;
 
@@ -118,12 +123,20 @@ namespace potato {
 			return clamp(m_CursorPosition + direction);
 		}
 		else if (strat == Strategy::WORD) {
-			int currentIndex = m_CursorPosition + direction; //Should this be added? Tune in next week to find out
-			
-			while (inbounds(currentIndex)) {
-				if (isspace(m_Text[currentIndex]))
-					break;
-				currentIndex += direction;
+			int currentIndex = m_CursorPosition;
+
+			if (dir == Direction::FORWARD) {
+				while (inbounds(currentIndex) && !isSpace(currentIndex))
+					currentIndex++;
+				while (inbounds(currentIndex) && isSpace(currentIndex))
+					currentIndex++;
+			}
+			else {
+				while (inbounds(currentIndex - 1) && isSpace(currentIndex - 1))
+					currentIndex--;
+
+				while (inbounds(currentIndex - 1) && !isSpace(currentIndex - 1))
+					currentIndex--;
 			}
 
 			return clamp(currentIndex);
@@ -137,7 +150,13 @@ namespace potato {
 
 	void EditText::keyboardInput(ftec::Event &evt)
 	{
-		assert(evt.getType() == ftec::EventType::KEYBOARD_TYPED);
+		// Input the typed stuff
+		if (evt.getType() == ftec::EventType::KeyboardTyped) {
+			insertAtCursor(std::string() + (char)evt.getUnicodeKey());
+			return;
+		}
+		
+		assert(evt.getType() == ftec::EventType::KeyboardPressed);
 
 		bool shiftDown = (evt.isShiftDown());
 		bool crtlDown = (evt.isCrtlDown());
@@ -156,11 +175,6 @@ namespace potato {
 		}
 		if (evt.getKeyCode() == KEY_END) {
 			setCursorPosition(m_Text.length(), shiftDown);
-		}
-
-		//Input text
-		{ // TODO check this shit?
-			insertAtCursor(std::string() + (char)evt.getUnicodeKey());
 		}
 
 		//Backspace and delete

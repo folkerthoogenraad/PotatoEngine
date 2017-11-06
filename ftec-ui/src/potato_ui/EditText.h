@@ -43,6 +43,7 @@ namespace potato {
 		void normalize();
 		int clamp(int index) const;
 		bool inbounds(int index) const;
+		bool isSpace(int index) const;
 		int getIndexFromCursor(Direction dir, Strategy strat);
 
 		//Selection stuff

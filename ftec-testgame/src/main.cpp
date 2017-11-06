@@ -213,7 +213,7 @@ int main(void)
 
 	GLFWEngineHelper::init();
 
-	std::array<std::thread, 2> threads;
+	std::array<std::thread, 1> threads;
 
 	for (int i = 0; i < threads.size(); i++) {
 		threads[i] = std::thread([]() {

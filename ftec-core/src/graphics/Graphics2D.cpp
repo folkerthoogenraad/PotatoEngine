@@ -103,6 +103,68 @@ namespace ftec {
 		}
 	}
 
+	void Graphics2D::drawRoundedRectangle(const Rectanglef & rectangle, bool fill)
+	{
+		if (drawing3D) {
+			LOG_ERROR("Can't draw 2D when drawing in 3D");
+		}
+		setTexture(m_WhiteTexture);
+
+		batch.color(m_Color);
+
+		if (fill) {
+			float r = m_RounedRectangleRadius;
+			Vector2f xdir = Vector2f(r, 0);
+			Vector2f ydir = Vector2f(0, r);
+			
+			// Middle slice
+			drawRectangle(Rectanglef(
+				rectangle.topleft() + xdir,
+				rectangle.size - xdir * 2
+			), true);
+
+			// Right slice
+			drawRectangle(Rectanglef(
+				rectangle.topleft() + ydir,
+				Vector2f(xdir.x, rectangle.height() - ydir.y * 2)
+			), true);
+
+			// Left Slice
+			drawRectangle(Rectanglef(
+				rectangle.topright() + ydir - xdir,
+				Vector2f(xdir.x, rectangle.height() - ydir.y * 2)
+			), true);
+			
+
+			drawArc(
+				rectangle.topleft() + xdir + ydir,
+				r, true,
+				-PI, PI / 2
+			);
+
+			drawArc(
+				rectangle.topright() - xdir + ydir,
+				r, true,
+				-PI / 2, PI / 2
+			);
+
+			drawArc(
+				rectangle.bottomleft() + xdir - ydir,
+				r, true,
+				-PI, -PI / 2
+			);
+
+			drawArc(
+				rectangle.bottomright() - xdir - ydir,
+				r, true,
+				0, PI / 2
+			);
+		}
+		else {
+			drawRectangle(rectangle, fill);
+		}
+	}
+
 	void Graphics2D::drawCircle(const Vector2f & center, float radius, bool fill)
 	{
 		if (drawing3D) {

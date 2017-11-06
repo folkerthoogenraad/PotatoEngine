@@ -11,9 +11,15 @@
 
 namespace ftec {
 
-	class Window;
-	class ResourceManager;
-
+	/**
+	 * The EngineContext class is the main context object given to all things that use the engine. 
+	 * The EngineContext is basically a global, but not global :)
+	 * @see ResourceManager
+	 * @see Window
+	 * @see Input
+	 * @see Time
+	 * @see EngineConfiguration
+	*/
 	class EngineContext {
 	private:
 		Input m_Input;
@@ -22,6 +28,11 @@ namespace ftec {
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<ResourceManager> m_Resources;
 	public:
+		/**
+		 * Creates the EngineContext with the given Window pointer and ResourceManager pointer. It automatically creates the Input object and the Time object.
+		 * It is possible to create the EngineContext without Window or ResourceManager. However, it is strongly recommended against, because of the getWindow and
+		 * getResourceManager functions. Note: at this time the EngineConfiguration is immutable.
+		*/
 		EngineContext(EngineConfiguration configuration = EngineConfiguration(), std::unique_ptr<Window> window = nullptr, std::unique_ptr<ResourceManager> resources = nullptr);
 
 		const EngineConfiguration &getConfiguration() const;

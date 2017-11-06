@@ -17,6 +17,12 @@ namespace potato {
 		repaint();
 	}
 
+	void TextField::onKeyPressed(ftec::Event & event)
+	{
+		m_EditText.keyboardInput(event);
+		repaint();
+	}
+
 	void TextField::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
 	{
 		//TODO manage to find a solution for this

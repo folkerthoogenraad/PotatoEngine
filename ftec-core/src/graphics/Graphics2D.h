@@ -39,7 +39,7 @@ namespace ftec {
 		//This has the current shader and the current texture.
 		std::shared_ptr<Material2D> m_Material;
 
-
+		float m_RounedRectangleRadius = 6.f;
 		Color32 m_Color;
 		float m_LineWidth = 1.f;
 		float m_PointSize = 2.f;
@@ -67,6 +67,7 @@ namespace ftec {
 		void end3D();
 
 		void drawRectangle(const Rectanglef& rectangle, bool fill);
+		void drawRoundedRectangle(const Rectanglef& rectangle, bool fill);
 		void drawCircle(const Vector2f &center, float radius, bool fill);
 		void drawCircle(const Circlef &circle, bool fill);
 		void drawArc(const Vector2f &center, float radius, bool fill, float startAngle, float angleLength);
@@ -95,6 +96,7 @@ namespace ftec {
 		void setPointSize(float size) { m_PointSize = size; }
 		void setPointType(PointType type) { m_PointType = type; }
 		void setCirclePrecision(int subs) { m_CirclePrecision = subs; };
+		void setRoundedRectangleRadius(float radius) { m_RounedRectangleRadius = radius; }
 
 		//Font stuff
 		void setVerticalAlign(FontAlign alignment) { m_VAlign = alignment; };

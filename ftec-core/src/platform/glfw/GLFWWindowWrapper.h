@@ -5,6 +5,8 @@
 #include <set>
 #include <array>
 
+struct GLFWwindow;
+
 namespace ftec {
 	class GLFWWindowWrapper : public Window {
 		GLFWwindow *m_Window;

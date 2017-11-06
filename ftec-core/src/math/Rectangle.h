@@ -5,8 +5,6 @@
 namespace ftec {
 
 	template <typename T>
-	struct Vector2;
-	template <typename T>
 	struct Circle;
 	
 	template <typename T>
@@ -15,7 +13,8 @@ namespace ftec {
 		
 		template<typename S>
 		Rectangle(const Rectangle<S> r) : position(r.position), size(r.size) {};
-		Rectangle(T x, T y, T w, T h) : position(x,y), size(w,h) {};
+		Rectangle(T x, T y, T w, T h) : position(x, y), size(w, h) {};
+		Rectangle(Vector2<T> position, Vector2<T> size) : position(position), size(size) {};
 
 		//TODO change to MIN and MAX position (possibly?)
 		Vector2<T> position;

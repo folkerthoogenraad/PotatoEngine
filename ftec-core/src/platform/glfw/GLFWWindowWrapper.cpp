@@ -103,12 +103,12 @@ namespace ftec {
 		e.m_MousePosition = wp->m_MousePosition;
 
 		if (wp->m_MouseDown.size() == 0) {
-			e.m_EventType = EventType::MOUSE_MOVE;
+			e.m_EventType = EventType::MouseMove;
 
 			wp->m_Events.push_back(e);
 		}
 		else {
-			e.m_EventType = EventType::MOUSE_DRAG;
+			e.m_EventType = EventType::MouseDrag;
 			for (auto i : wp->m_MouseDown) {
 				e.m_MouseButton = i;
 				wp->m_Events.push_back(e);
@@ -127,12 +127,17 @@ namespace ftec {
 
 		if (action == GLFW_PRESS) {
 			wp->m_KeyDown.insert(key);
-			e.m_EventType = EventType::KEYBOARD_PRESSED;
+			e.m_EventType = EventType::KeyboardPressed;
+			wp->m_Events.push_back(e);
+		}
+		if (action == GLFW_REPEAT) {
+			e.m_EventType = EventType::KeyboardPressed;
+			e.m_Repeat = true;
 			wp->m_Events.push_back(e);
 		}
 		if (action == GLFW_RELEASE) {
 			wp->m_KeyDown.erase(key);
-			e.m_EventType = EventType::KEYBOARD_RELEASED;
+			e.m_EventType = EventType::KeyboardReleased;
 			wp->m_Events.push_back(e);
 		}
 
@@ -145,7 +150,7 @@ namespace ftec {
 
 		Event e = wp->createDefaultEvent();
 
-		e.m_EventType = EventType::KEYBOARD_TYPED;
+		e.m_EventType = EventType::KeyboardTyped;
 		e.m_UnicodeKey = unicode;
 
 		wp->m_Events.push_back(e);
@@ -169,7 +174,7 @@ namespace ftec {
 
 		Event e = wp->createDefaultEvent();
 
-		e.m_EventType = EventType::MOUSE_SCROLL;
+		e.m_EventType = EventType::MouseScroll;
 		e.m_ScrollDirection.x = (float)xoffset;
 		e.m_ScrollDirection.y = (float)yoffset;
 
@@ -186,11 +191,11 @@ namespace ftec {
 
 		if (action == GLFW_PRESS) {
 			wp->m_MouseDown.insert(button);
-			e.m_EventType = EventType::MOUSE_PRESSED;
+			e.m_EventType = EventType::MousePressed;
 		}
 		if (action == GLFW_RELEASE) {
 			wp->m_MouseDown.erase(button);
-			e.m_EventType = EventType::MOUSE_RELEASED;
+			e.m_EventType = EventType::MouseReleased;
 		}
 
 		e.m_MouseButton = button;
@@ -205,9 +210,15 @@ namespace ftec {
 		event.m_MousePosition = m_MousePosition;
 		event.m_MouseDelta = m_MouseDelta;
 
-		event.m_AltDown = false;
-		event.m_CrtlDown = false;
-		event.m_ShiftDown = false;
+		event.m_AltDown = 
+			m_KeyDown.find(GLFW_KEY_LEFT_ALT) != m_KeyDown.end() || 
+			m_KeyDown.find(GLFW_KEY_RIGHT_ALT) != m_KeyDown.end();
+		event.m_CrtlDown =
+			m_KeyDown.find(GLFW_KEY_LEFT_CONTROL) != m_KeyDown.end() ||
+			m_KeyDown.find(GLFW_KEY_RIGHT_CONTROL) != m_KeyDown.end();
+		event.m_ShiftDown =
+			m_KeyDown.find(GLFW_KEY_LEFT_SHIFT) != m_KeyDown.end() ||
+			m_KeyDown.find(GLFW_KEY_RIGHT_SHIFT) != m_KeyDown.end();
 
 		return event;
 	}

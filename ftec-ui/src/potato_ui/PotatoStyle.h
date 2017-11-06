@@ -22,6 +22,10 @@ namespace potato {
 		ftec::Color32 m_SecondaryColor = ftec::Color32(100, 100, 100, 0xff);
 
 		ftec::Color32 m_AccentColor = ftec::Color32(169, 206, 232, 0xff);
+		//ftec::Color32 m_AccentColor = ftec::Color32(232, 169, 206, 0xff);
+		//ftec::Color32 m_AccentColor = ftec::Color32(206, 232, 169, 0xff);
+		
+		//ftec::Color32 m_AccentColor = ftec::Color32(255, 127, 0, 0xff);
 	public:
 
 		void setColor(ftec::HashType hash, ftec::Color32 color);

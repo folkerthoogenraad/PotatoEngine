@@ -10,14 +10,14 @@ namespace ftec {
 	std::ostream & operator<<(std::ostream & stream, EventType type)
 	{
 		switch (type) {
-		case EventType::MOUSE_PRESSED: return stream << "MOUSE_PRESSED";
-		case EventType::MOUSE_RELEASED: return stream << "MOUSE_RELEASED";
-		case EventType::MOUSE_MOVE: return stream << "MOUSE_MOVE";
-		case EventType::MOUSE_DRAG: return stream << "MOUSE_DRAG";
+		case EventType::MousePressed: return stream << "MousePressed";
+		case EventType::MouseReleased: return stream << "MouseReleased";
+		case EventType::MouseMove: return stream << "MouseMove";
+		case EventType::MouseDrag: return stream << "MouseDrag";
 
-		case EventType::KEYBOARD_TYPED: return stream << "KEYBOARD_TYPED";
-		case EventType::KEYBOARD_PRESSED: return stream << "KEYBOARD_PRESSED";
-		case EventType::KEYBOARD_RELEASED: return stream << "KEYBOARD_RELEASED";
+		case EventType::KeyboardTyped: return stream << "KeyboardTyped";
+		case EventType::KeyboardPressed: return stream << "KeyboardPressed";
+		case EventType::KeyboardReleased: return stream << "KeyboardReleased";
 		}
 
 		return stream;

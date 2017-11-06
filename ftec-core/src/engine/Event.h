@@ -9,15 +9,15 @@ namespace ftec {
 
 	enum class EventType {
 		// I'm really not sure why these are powers of two :')
-		MOUSE_PRESSED		= 1 << 0,
-		MOUSE_RELEASED		= 1 << 1,
-		MOUSE_MOVE			= 1 << 2,
-		MOUSE_DRAG			= 1 << 3,
-		MOUSE_SCROLL		= 1 << 4,
+		MousePressed		= 1 << 0,
+		MouseReleased		= 1 << 1,
+		MouseMove			= 1 << 2,
+		MouseDrag			= 1 << 3,
+		MouseScroll			= 1 << 4,
 
-		KEYBOARD_TYPED		= 1 << 5,
-		KEYBOARD_PRESSED	= 1 << 6,
-		KEYBOARD_RELEASED	= 1 << 7
+		KeyboardTyped		= 1 << 5,
+		KeyboardPressed	= 1 << 6,
+		KeyboardReleased	= 1 << 7
 	};
 
 	std::ostream &operator <<(std::ostream &stream, EventType type);
@@ -39,7 +39,7 @@ namespace ftec {
 		Vector2f m_ScrollDirection;
 
 		bool m_CrtlDown, m_ShiftDown, m_AltDown;
-
+		bool m_Repeat = false;
 	public:
 		Event();
 		~Event() = default;
@@ -54,8 +54,9 @@ namespace ftec {
 		bool isAltDown() const { return m_AltDown; };
 		bool isModifierDown() const { return isCrtlDown() || isAltDown() || isShiftDown(); };
 
+		bool isRepeated() const { return m_Repeat; }
 
-		bool isMotionEvent() const { return m_EventType == EventType::MOUSE_DRAG || m_EventType == EventType::MOUSE_MOVE; }
+		bool isMotionEvent() const { return m_EventType == EventType::MouseDrag || m_EventType == EventType::MouseMove; }
 
 		int getKeyCode() const { return m_KeyCode; }
 		int getMouseButton() const { return m_MouseButton; }

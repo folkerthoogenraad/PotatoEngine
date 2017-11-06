@@ -15,10 +15,10 @@ namespace ftec {
 
 	class Event;
 
-	enum class CursorMode {
-		NORMAL, HIDDEN, GRABBED
-	};
-
+	/**
+	 * Input class.
+	 * @see EngineContext
+	*/
 	class Input {
 		std::set<int> downKeys = std::set<int>();
 		std::set<int> pressedKeys = std::set<int>();
@@ -39,30 +39,62 @@ namespace ftec {
 
 		std::vector<Event> events;
 	public:
-
-		// Get key typed?
+		/**
+		 * Returns whether the given keycode is currently in the down state
+		*/
 		bool isKeyDown(int keycode) const;
+		/**
+		* Returns whether the given keycode is pressed in the last update(). Note: Repeated presses 
+		* do not count as new presses in the Input class.
+		*/
 		bool isKeyPressed(int keycode) const;
+		/**
+		* Returns whether the given keycode is released in the last update().
+		*/
 		bool isKeyReleased(int keycode) const;
 
-		bool isMouseButtonDown(int keycode) const;
-		bool isMouseButtonPressed(int keycode) const;
-		bool isMouseButtonReleased(int keycode) const;
+		/**
+		* Returns whether the given mousebutton is currently in the down state
+		*/
+		bool isMouseButtonDown(int mousebutton) const;
+		/**
+		* Returns whether the given mousebutton is pressed in the last update().
+		*/
+		bool isMouseButtonPressed(int mousebutton) const;
+		/**
+		* Returns whether the given mousebutton is released in the last update().
+		*/
+		bool isMouseButtonReleased(int mousebutton) const;
 
 		float getMouseX() const;
 		float getMouseY() const;
-		float getMouseDX() const;
-		float getMouseDY() const;
+		float getMouseDeltaX() const;
+		float getMouseDeltaY() const;
 
+		/**
+		 * Returns the mouse position
+		*/
 		Vector2f getMousePosition() const;
+		/**
+		* Returns the mouse delta since the last update().
+		*/
 		Vector2f getMouseDelta() const;
+		/**
+		* Returns the mouse scroll delta since the last update().
+		*/
 		Vector2f getScroll() const;
 
+		/**
+		 * Updates the input state with the given events.
+		*/
 		void update(const std::vector<Event> &events);
 
 		void setEnabled(bool e);
 		bool isEnabled() const;
 
+		/**
+		 * Returns the string that was typed since the last update()
+		*/
 		const std::string &getKeyString() const;
 
 		const std::set<int> &getKeysDown() const;
@@ -74,6 +106,9 @@ namespace ftec {
 		const std::set<int> &getMouseButtonsPressed() const;
 		const std::set<int> &getMouseButtonsReleased() const;
 
+		/**
+		 * Returns the events since the last update()
+		*/
 		const std::vector<Event> &getEvents() const;
 	};
 }

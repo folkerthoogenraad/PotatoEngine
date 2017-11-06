@@ -264,7 +264,7 @@ namespace potato {
 
 	void PotatoUI::processEvents(std::shared_ptr<Panel> panel, ftec::Event &event)
 	{
-		if (event.getType() == ftec::EventType::MOUSE_MOVE) {
+		if (event.getType() == ftec::EventType::MouseMove) {
 			auto hover = panel->findPanelByPosition(event.getMousePosition());
 
 			// Hover enter and hover leave
@@ -279,7 +279,7 @@ namespace potato {
 
 		}
 
-		if (event.getType() == ftec::EventType::MOUSE_DRAG) {
+		if (event.getType() == ftec::EventType::MouseDrag) {
 			auto m = m_Pressed[event.getMouseButton()];
 			if (m) {
 				m->onDrag(event);
@@ -290,7 +290,7 @@ namespace potato {
 		}
 
 		// TODO keep track of what is pressed
-		if (event.getType() == ftec::EventType::MOUSE_PRESSED) {
+		if (event.getType() == ftec::EventType::MousePressed) {
 			m_Pressed[event.getMouseButton()] = m_Hover;
 
 			if (m_Hover) {
@@ -308,7 +308,7 @@ namespace potato {
 		}
 
 		// TODO and what is released here.
-		if (event.getType() == ftec::EventType::MOUSE_RELEASED) {
+		if (event.getType() == ftec::EventType::MouseReleased) {
 			auto m = m_Pressed[event.getMouseButton()];
 
 			// Reset
@@ -329,19 +329,19 @@ namespace potato {
 
 
 		// TODO tab switching
-		if (event.getType() == ftec::EventType::KEYBOARD_TYPED) {
+		if (event.getType() == ftec::EventType::KeyboardTyped) {
 			if (m_Focus) {
 				m_Focus->onKeyTyped(event);
 			}
 		}
 
-		if (event.getType() == ftec::EventType::KEYBOARD_PRESSED) {
+		if (event.getType() == ftec::EventType::KeyboardPressed) {
 			if (m_Focus) {
 				m_Focus->onKeyPressed(event);
 			}
 		}
 
-		if (event.getType() == ftec::EventType::KEYBOARD_RELEASED) {
+		if (event.getType() == ftec::EventType::KeyboardReleased) {
 			if (m_Focus) {
 				m_Focus->onKeyReleased(event);
 			}
@@ -411,21 +411,21 @@ namespace potato {
 		}
 
 		//Move event
-		if (event.getType() == EventType::MOUSE_MOVE) {
+		if (event.getType() == EventType::MouseMove) {
 			if (p.isHoveringSelf()) {
 				p.onHover(event);
 			}
 		}
 
 		//Drag event
-		if (event.getType() == EventType::MOUSE_DRAG) {
+		if (event.getType() == EventType::MouseDrag) {
 			if (p.isHoveringSelf() || p.isPressed()) {
 				p.onDrag(event);
 			}
 		}
 
 		//Press event
-		if (event.getType() == EventType::MOUSE_PRESSED) {
+		if (event.getType() == EventType::MousePressed) {
 			if (p.isHoveringSelf()) {
 				p.m_Pressed = true; //Pressed should be handled by the UI as well...
 				if (p.m_Focusable) {
@@ -439,7 +439,7 @@ namespace potato {
 		}
 
 		//Release event
-		if (event.getType() == EventType::MOUSE_RELEASED) {
+		if (event.getType() == EventType::MouseReleased) {
 			if (p.isHoveringSelf()) {
 				if (p.m_Pressed) {
 					p.m_Pressed = false;
@@ -457,7 +457,7 @@ namespace potato {
 		}
 
 		//Typed keys
-		if (event.getType() == EventType::KEYBOARD_TYPED) {
+		if (event.getType() == EventType::KeyboardTyped) {
 			if (isFocused(panel.get())) {
 				if (event.getKeyCode() == KEY_TAB && !p.m_SwallowTab) {
 					p.switchFocus();
@@ -469,14 +469,14 @@ namespace potato {
 		}
 
 		//Keyboard press events
-		if (event.getType() == EventType::KEYBOARD_PRESSED) {
+		if (event.getType() == EventType::KeyboardPressed) {
 			if (isFocused(panel.get())) {
 				p.onKeyPressed(event);
 			}
 		}
 
 		//Keyboard press events
-		if (event.getType() == EventType::KEYBOARD_RELEASED) {
+		if (event.getType() == EventType::KeyboardReleased) {
 			if (isFocused(panel.get())) {
 				p.onKeyReleased(event);
 			}

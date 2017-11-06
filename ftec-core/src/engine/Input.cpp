@@ -37,34 +37,37 @@ namespace ftec {
 
 		for (Event e : events) {
 			switch (e.getType()) {
-			case EventType::KEYBOARD_PRESSED:
+			case EventType::KeyboardPressed:
+				if (e.isRepeated())
+					break;
+
 				pressedKeys.insert(e.getKeyCode());
 				downKeys.insert(e.getKeyCode());
 				break;
-			case EventType::KEYBOARD_RELEASED:
+			case EventType::KeyboardReleased:
 				releasedKeys.insert(e.getKeyCode());
 				downKeys.erase(e.getKeyCode());
 				break;
-			case EventType::KEYBOARD_TYPED:
+			case EventType::KeyboardTyped:
 				typedKeys.push_back(e.getUnicodeKey());
 				break;
 
-			case EventType::MOUSE_MOVE:
-			case EventType::MOUSE_DRAG:
+			case EventType::MouseMove:
+			case EventType::MouseDrag:
 				mousePosition = e.getMousePosition();
 				mouseDelta += e.getMouseDelta();
 				break;
 
-			case EventType::MOUSE_PRESSED:
+			case EventType::MousePressed:
 				releasedMouse.insert(e.getKeyCode());
 				downMouse.insert(e.getKeyCode());
 				break;
-			case EventType::MOUSE_RELEASED:
+			case EventType::MouseReleased:
 				releasedMouse.insert(e.getKeyCode());
 				downMouse.erase(e.getKeyCode());
 				break;
 
-			case EventType::MOUSE_SCROLL:
+			case EventType::MouseScroll:
 				scrollDelta += e.getScrollDirection();
 				break;
 				
@@ -169,11 +172,11 @@ namespace ftec {
 	{
 		return mousePosition.y;
 	}
-	float Input::getMouseDX() const
+	float Input::getMouseDeltaX() const
 	{
 		return disabled ? 0 : mouseDelta.x;
 	}
-	float Input::getMouseDY() const
+	float Input::getMouseDeltaY() const
 	{
 		return disabled ? 0 : mouseDelta.y;
 	}

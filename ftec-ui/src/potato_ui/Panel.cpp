@@ -118,12 +118,12 @@ namespace potato {
 
 	void Panel::onHover(ftec::Event & evt)
 	{
-		assert(evt.getType() == ftec::EventType::MOUSE_MOVE);
+		assert(evt.getType() == ftec::EventType::MouseMove);
 	}
 
 	void Panel::onDrag(ftec::Event & evt)
 	{
-		assert(evt.getType() == ftec::EventType::MOUSE_DRAG);
+		assert(evt.getType() == ftec::EventType::MouseDrag);
 	}
 
 	void Panel::onHoverOrDrag(ftec::Event & evt)
@@ -133,27 +133,27 @@ namespace potato {
 
 	void Panel::onMouseReleased(ftec::Event & evt)
 	{
-		assert(evt.getType() == ftec::EventType::MOUSE_RELEASED);
+		assert(evt.getType() == ftec::EventType::MouseReleased);
 	}
 
 	void Panel::onMousePressed(ftec::Event & evt)
 	{
-		assert(evt.getType() == ftec::EventType::MOUSE_PRESSED);
+		assert(evt.getType() == ftec::EventType::MousePressed);
 	}
 
 	void Panel::onKeyTyped(ftec::Event & evt)
 	{
-		assert(evt.getType() == ftec::EventType::KEYBOARD_TYPED);
+		assert(evt.getType() == ftec::EventType::KeyboardTyped);
 	}
 
 	void Panel::onKeyPressed(ftec::Event & evt)
 	{
-		assert(evt.getType() == ftec::EventType::KEYBOARD_PRESSED);
+		assert(evt.getType() == ftec::EventType::KeyboardPressed);
 	}
 
 	void Panel::onKeyReleased(ftec::Event & evt)
 	{
-		assert(evt.getType() == ftec::EventType::KEYBOARD_RELEASED);
+		assert(evt.getType() == ftec::EventType::KeyboardReleased);
 	}
 
 	void Panel::onFocusGain(ftec::Event & evt)

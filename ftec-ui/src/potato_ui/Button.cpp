@@ -28,7 +28,9 @@ namespace potato {
 			graphics.setColor(style.m_DarkBackground);
 		}
 
-		graphics.drawRectangle(bounds, true);
+		graphics.setCirclePrecision(4);
+		graphics.setRoundedRectangleRadius(4);
+		graphics.drawRoundedRectangle(bounds, true);
 
 		if (isPressed()) {
 			graphics.setColor(style.m_DarkBackground);

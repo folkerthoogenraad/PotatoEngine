@@ -38,7 +38,7 @@ namespace ftec {
 		//Start running the shit out of this game
 
 		//TODO see what part of this we need here, and what we need in the engine class
-		while (!context->getWindow().isCloseRequested()) {
+		while (!game.isCloseRequested()) {
 			Time::sleep(context->getConfiguration().framesleep);
 
 			std::vector<Event> events;
@@ -49,10 +49,15 @@ namespace ftec {
 
 			Time &time = context->getTime();
 
+			time.update();
+			
+			/*
 			double currentTime = glfwGetTime();
 			time.deltaTime = (float)(currentTime - previousTime);
 			time.runTime += time.deltaTime;
 			time.calculateSinCosTime();
+			previousTime = currentTime;
+			*/
 
 			second += time.deltaTime;
 			if (second > 1) {
@@ -61,18 +66,15 @@ namespace ftec {
 				frames = 0;
 			}
 
-			previousTime = currentTime;
 			
 			game.update();
 			game.render();
-			
+
 			
 			if (game.shouldSwapBuffers()) {
 				context->getWindow().swap();
 				frames++;
 			}
-
-			// TODO make this less ugly.
 			else if (context->getConfiguration().vsync)
 				Time::sleep(8.0f / 1000.0f);
 			
@@ -122,8 +124,6 @@ namespace ftec {
 			config.msaa);
 
 		auto manager = std::make_unique<ResourceManager>();
-
-		window->setVisible(true);
 
 		LOG("Initializing GLEW in current thread...");
 
