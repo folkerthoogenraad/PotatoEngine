@@ -9,7 +9,7 @@
 namespace ftec {
 #if 0
 	std::optional<Image>	loadImage(const std::string &filename);
-	bool					saveImage(const Image &image, const std::string &filename);
 #endif
+	bool					saveImage(const Image &image, const std::string &filename);
 	Vector2i glLoadImage(std::string name, unsigned int target);
 }

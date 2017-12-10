@@ -8,6 +8,7 @@
 #include "logger/log.h"
 
 #include "util/scope_guard.h"
+#include "util/optional.h"
 
 namespace ftec {
 
@@ -79,7 +80,7 @@ namespace ftec {
 
 		return std::move(out);
 	}
-
+#endif
 	bool saveImage(const Image & image, const std::string & filename)
 	{
 		//Ohyes, copy everything so we can rearange it. This is not fast, at all
@@ -106,7 +107,6 @@ namespace ftec {
 		return FreeImage_Save(FIF_PNG, fImage, filename.c_str(), 0);
 		
 	}
-#endif
 
 	Vector2i glLoadImage(std::string name, unsigned int target)
 	{

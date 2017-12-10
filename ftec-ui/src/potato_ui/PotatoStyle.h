@@ -21,9 +21,11 @@ namespace potato {
 		ftec::Color32 m_PrimaryColor = ftec::Color32(200, 200, 200, 0xff);
 		ftec::Color32 m_SecondaryColor = ftec::Color32(100, 100, 100, 0xff);
 
-		ftec::Color32 m_AccentColor = ftec::Color32(169, 206, 232, 0xff);
+		//ftec::Color32 m_AccentColor = ftec::Color32(169, 206, 232, 0xff);
 		//ftec::Color32 m_AccentColor = ftec::Color32(232, 169, 206, 0xff);
 		//ftec::Color32 m_AccentColor = ftec::Color32(206, 232, 169, 0xff);
+
+		ftec::Color32 m_AccentColor = ftec::Color32(255, 153, 51, 0xff);
 		
 		//ftec::Color32 m_AccentColor = ftec::Color32(255, 127, 0, 0xff);
 	public:

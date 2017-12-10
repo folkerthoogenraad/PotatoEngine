@@ -10,10 +10,12 @@
 #include "GL.h"
 
 #include "math/math.h"
+#include <algorithm>
 
 //Freetype stuff <3
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include "freetype/ftlcdfil.h"
 
 namespace ftec {
 
@@ -65,6 +67,7 @@ namespace ftec {
 			if (FT_Init_FreeType(&ft)) {
 				LOG_ERROR("Could not initialize freetype library");
 			}
+			FT_Library_SetLcdFilter(ft, FT_LCD_FILTER_DEFAULT);
 		}
 		~Library()
 		{
@@ -87,6 +90,7 @@ namespace ftec {
 			face,   /* handle to face object */
 			0,      /* pixel_width           */
 			16);   /* pixel_height          */
+
 
 
 		FT_GlyphSlot g = face->glyph;
@@ -143,7 +147,16 @@ namespace ftec {
 			FT_Render_Glyph(face->glyph,   /* glyph slot  */
 				FT_RENDER_MODE_NORMAL); /* render mode */
 
-			int size = g->bitmap.width * g->bitmap.rows * 4;
+
+			int bwidth = g->bitmap.width;
+			int bheight = g->bitmap.rows;
+			int rowAdvance = g->bitmap.pitch;
+
+			if (g->bitmap.pixel_mode == FT_PIXEL_MODE_LCD) {
+				bwidth /= 3;
+			}
+
+			int size = bwidth * bheight * 4;
 
 			if (size > 0) {
 
@@ -151,19 +164,37 @@ namespace ftec {
 					tempBuffer.resize(size);
 
 				//Upload to the temp buffer (and flip them, because of how OpenGL handles texture coordinates)
-				for (unsigned int x = 0; x < g->bitmap.width; x++) {
-					for (unsigned int y = 0; y < g->bitmap.rows; y++) {
-						unsigned int raw = (x + y * g->bitmap.width);
-						unsigned int index = (x + y * g->bitmap.width) * 4;
+				if (g->bitmap.pixel_mode == FT_PIXEL_MODE_LCD) {
+					for (unsigned int x = 0; x < bwidth; x++) {
+						for (unsigned int y = 0; y < bheight; y++) {
+							unsigned int raw = (x * 3 + y * rowAdvance);
+							unsigned int index = (x + y * bwidth) * 4;
 
-						tempBuffer[index] = 255;
-						tempBuffer[index + 1] = 255;
-						tempBuffer[index + 2] = 255;
-						tempBuffer[index + 3] = g->bitmap.buffer[raw];
+							tempBuffer[index] = g->bitmap.buffer[raw];
+							tempBuffer[index + 1] = g->bitmap.buffer[raw + 1];
+							tempBuffer[index + 2] = g->bitmap.buffer[raw + 2];
+							tempBuffer[index + 3] = (unsigned char)ftec::max(
+								(float)g->bitmap.buffer[raw],
+								ftec::max((float)g->bitmap.buffer[raw],
+								(float)g->bitmap.buffer[raw]));
+						}
+					}
+				}
+				else {
+					for (unsigned int x = 0; x < bwidth; x++) {
+						for (unsigned int y = 0; y < bheight; y++) {
+							unsigned int raw = (x + y * rowAdvance);
+							unsigned int index = (x + y * bwidth) * 4;
+
+							tempBuffer[index] = 255;
+							tempBuffer[index + 1] = 255;
+							tempBuffer[index + 2] = 255;
+							tempBuffer[index + 3] = g->bitmap.buffer[raw];
+						}
 					}
 				}
 
-				glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, g->bitmap.width, g->bitmap.rows,
+				glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, bwidth, bheight,
 					GL_RGBA, GL_UNSIGNED_BYTE, &tempBuffer[0]);//g->bitmap.buffer for less VRAM usage
 			}
 
@@ -171,7 +202,7 @@ namespace ftec {
 
 			FontCharacter ch;
 			Rectanglef rect( //TODO correct the rows here
-				(float)x, 0.0f, (float)g->bitmap.width, (float)g->bitmap.rows
+				(float)x, 0.0f, (float)bwidth, (float)bheight
 			);
 
 			ch.sprite = Sprite(texture, rect);
@@ -183,10 +214,10 @@ namespace ftec {
 			ch.yadvance = g->advance.y >> 6;
 			ch.top = g->bitmap_top;
 			ch.left = g->bitmap_left;
-			ch.width = g->bitmap.width;
-			ch.height = g->bitmap.rows;
+			ch.width = bwidth;
+			ch.height = bheight;
 
-			x += g->bitmap.width + 1; //Add some padding to prevent texture bleeding
+			x += bwidth + 1; //Add some padding to prevent texture bleeding
 
 			//TODO this should not be a map probably
 			font->m_Characters.insert(std::make_pair(c, ch));

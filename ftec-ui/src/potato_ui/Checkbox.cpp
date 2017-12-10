@@ -3,11 +3,33 @@
 #include "graphics/Font.h"
 #include "PotatoUI.h"
 
+#include "math/Curve.h"
+#include "math/math.h"
+
 namespace potato {
 
 	Checkbox::Checkbox(std::shared_ptr<ftec::EngineContext> context) : Panel(context), m_Checked(false)
 	{
 		m_Focusable = true;
+	}
+
+	void Checkbox::update()
+	{
+		if (m_Animating) {
+			m_AnimationTime += m_Context->getTime().deltaTime * m_AnimationDirection * 5;
+
+			if (m_AnimationTime < 0) {
+				m_AnimationTime = 0;
+				m_Animating = false;
+			}
+			if (m_AnimationTime > 1) {
+				m_AnimationTime = 1;
+				m_Animating = true;
+			}
+
+			m_AnimationPosition = ftec::curves::CubicBezier().interpolate(m_AnimationTime);
+			repaint();
+		}
 	}
 
 	void Checkbox::drawSelf(ftec::Graphics2D & graphics, const PotatoStyle& style)
@@ -22,12 +44,18 @@ namespace potato {
 		float height = (float) bounds.height();
 		const float margin = 4;
 
-		if (m_Checked) {
+		graphics.setColor(ftec::lerp(
+			style.m_DarkBackground,
+			style.m_AccentColor,
+			m_AnimationPosition
+		));
+
+		/*if (m_Checked) {
 			graphics.setColor(style.m_AccentColor);
 		}
 		else {
 			graphics.setColor(style.m_DarkBackground);
-		}
+		}*/
 
 		graphics.setCirclePrecision(4);
 		graphics.setRoundedRectangleRadius(4);
@@ -37,7 +65,7 @@ namespace potato {
 		graphics.setColor(style.m_BackgroundColor);
 
 		graphics.drawRoundedRectangle(ftec::Rectanglef(
-			(float)bounds.left() + margin + (m_Checked ? height : 0), 
+			(float)bounds.left() + margin + m_AnimationPosition * height,//(m_Checked ? height : 0),
 			(float)bounds.top() + margin, 
 			height - margin * 2, 
 			height - margin * 2), true);
@@ -51,6 +79,9 @@ namespace potato {
 
 	void Checkbox::onClick(ftec::Event &event)
 	{
+		m_AnimationDirection = -m_AnimationDirection;
+		m_Animating = true;
+
 		setChecked(!isChecked());
 	}
 	Size Checkbox::getPreferredSize()

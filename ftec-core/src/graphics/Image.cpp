@@ -18,4 +18,19 @@ namespace ftec {
 		m_Data[x + y * m_Width] = c;
 	}
 
+	void Image::flip()
+	{
+		for (int y = 0; y < getHeight() / 2; y++) {
+			for (int x = 0; x < getWidth(); x++) {
+				int iy = getHeight() - y - 1;
+
+				Color32 source = getColor(x, y);
+				Color32 destination = getColor(x, iy);
+
+				setColor(x, y, destination);
+				setColor(x, iy, source);
+			}
+		}
+	}
+
 }

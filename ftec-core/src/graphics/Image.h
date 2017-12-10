@@ -19,6 +19,8 @@ namespace ftec {
 		const std::vector<Color32> &getColors() const { return m_Data; };
 		std::vector<Color32> &getColors() { return m_Data; };
 
+		void flip();
+
 		inline int getWidth() const { return m_Width; }
 		inline int getHeight() const { return m_Height; }
 	};

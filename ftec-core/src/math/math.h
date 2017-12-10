@@ -80,6 +80,20 @@ namespace ftec {
 		return a + (b - a) * f;
 	}
 
+
+	template <typename T, typename S>
+	Vector4<T> lerp(Vector4<T> a, Vector4<T> b, S f)
+	{
+		Vector4<T> v;
+
+		v.x = (T) lerp((S)a.x, (S)b.x, f);
+		v.y = (T) lerp((S)a.y, (S)b.y, f);
+		v.z = (T) lerp((S)a.z, (S)b.z, f);
+		v.w = (T) lerp((S)a.w, (S)b.w, f);
+
+		return v;
+	}
+
 	template <typename T>
 	T invLerp(T a, T b, T v)
 	{

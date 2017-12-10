@@ -5,6 +5,11 @@
 #include "logger/log.h"
 #include <functional>
 
+
+#include "graphics/Image.h"
+#include "graphics/SoftwareGraphics.h"
+#include "graphics/ImageHelper.h"
+
 #include "graphics/GL.h"
 
 #include "math/math.h"
@@ -205,11 +210,9 @@ void doAudio()
 	WAIT();
 }
 
-int main(void)
+void createEngineAndShitBricks()
 {
 	using namespace ftec;
-
-	//std::thread d(doAudio);
 
 	GLFWEngineHelper::init();
 
@@ -220,12 +223,58 @@ int main(void)
 			GLFWEngineHelper::create<ftec::Razura>();
 		});
 	}
-	
+
 	for (int i = 0; i < threads.size(); i++) {
 		threads[i].join();
 	}
-	
+
 	GLFWEngineHelper::destroy();
+}
+
+int main(void)
+{
+	using namespace ftec;
+
+	const int windowWidth = 8;
+	const int windowHeight = 4;
+
+	const int windowHSpacing = 4;
+	const int windowVSpacing = 4;
+
+	Image image(256, 256);
+	SoftwareGraphics graphics = SoftwareGraphics(&image);
+
+
+	Paint paint;
+	paint.mode = Paint::FILL;
+	paint.color = Color32::black();
+
+	graphics.drawRectangle(paint, 0, 0, image.getWidth(), image.getHeight());
+	
+	paint.color = Color32::white();
+
+	int currentX = windowHSpacing;
+	int currentY = windowVSpacing;
+
+	while (currentY < image.getHeight()){
+
+		uint8_t v = (uint8_t) (random() * 256);
+
+		paint.color = Color32(v,v,v,255);
+		
+		//TODO draw the window at currentX and currentY
+		graphics.drawRectangle(paint, currentX, currentY, windowWidth, windowHeight);
+
+		currentX += windowWidth + windowHSpacing;
+
+		if (currentX > image.getWidth()) {
+			currentY += windowHeight + windowVSpacing;
+			currentX = windowHSpacing;
+		}
+	}
+
+	image.flip();
+	saveImage(image, "windows.png");
 
 	WAIT();
 
